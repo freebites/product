@@ -4,7 +4,7 @@ const Home = () => {
 
     return (
         <View>
-            <Text> TEST WOOT </Text>
+            <Text> TESTing SLAY </Text>
         </View>
     )
     
