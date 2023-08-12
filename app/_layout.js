@@ -1,7 +1,20 @@
-import { Stack } from 'expo-router'; 
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Stack } from 'expo-router';
 
 const Layout = () => {
-    return <Stack />;
+    return (
+        <View style={styles.container}>
+            <Stack />
+        </View>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#EEE1D5',
+    }
+});
 
 export default Layout;
