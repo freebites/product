@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": [
+      "es7"
+    ],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "target": "esnext",
+    "noImplicitAny": false,
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "module": "commonjs"
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ],
+  "extends": "expo/tsconfig.base"
+}
