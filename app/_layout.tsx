@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Stack, router } from 'expo-router';
+import { Provider } from '../context/auth';
 
 const Layout = () => {
     return (
-        <View style={styles.container}>
+        <Provider>
             <Stack />
-        </View>
+        </Provider>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EEE1D5',
+        backgroundColor: '#F0E1D2',
     }
 });
 

@@ -1,12 +1,20 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView, Image } from 'react-native';
+import { useAuth } from '../../context/auth'
+import {Link, } from 'expo-router';
+import React from 'react';
+import Button from '../../components/common/Button';
+import { Welcome } from '../../components';
 
-const login = () => {
+export default function SignIn() {
+  const { signIn } = useAuth();
   return (
-    <View>
-      <Text>login</Text>
-    </View>
-  )
-}
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      
+        <Welcome />
+        <Button />
+        <Link href="(auth)/signup">Signup</Link>
 
-export default login
+        <Text onPress={() => signIn()}>Sign In</Text>
+    </SafeAreaView>
+  );
+}

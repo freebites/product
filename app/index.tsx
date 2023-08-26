@@ -6,17 +6,18 @@ import { COLORS, icons, images, SIZES } from '../constants';
 import { Welcome } from '../components'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Stack, Link, useRouter, useSegments, useFocusEffect, router } from 'expo-router';
+import { useAuth } from '../context/auth'
 
 const Home = () => {
-    //const = logout();
+    const { signOut } = useAuth();
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Text> HIHIHI </Text>
 
             <ScrollView>
                 <Welcome />
-                <Link href="profile/login">Login</Link>
-                <Link href="profile/signup">Signup</Link>
+                <Text onPress={() => signOut()}>Sign Out</Text>
             </ScrollView>
         </SafeAreaView>
     )

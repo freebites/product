@@ -33,14 +33,13 @@ export function Provider(props) {
 
     return (
         <AuthContext.Provider
-            value = { {
-                signIn: () => setAuth({}),
-                signOut: () => setAuth(null),
-                user,
-            }}>
-            {props.children}
+          value={{
+            signIn: () => setAuth({}),
+            signOut: () => setAuth(null),
+            user,
+          }}>
+          {props.children}
         </AuthContext.Provider>
-
-    )
+      );
     
 }
