@@ -5,6 +5,7 @@ import { Provider } from '../context/auth';
 
 const Layout = () => {
     return (
+        
         <Provider>
             <Stack />
         </Provider>

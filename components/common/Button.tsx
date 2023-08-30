@@ -6,17 +6,22 @@ const LoginButtonUI = styled.TouchableOpacity`
     border-radius: 100px;
     background: #EDA76E;
     display: flex;
-    width: 343px;
+    width: 80%;
     padding: 16px 32px;
     flex-direction: column;
     align-items: center;
     gap: 12px; 
 
 `
-const LoginButton = () => {
+
+const ButtonText = styled.Text`
+    font-size: 13px;
+`
+
+const LoginButton = (props) => {
     return(
-        <LoginButtonUI>
-            hi
+        <LoginButtonUI onPress={props.onPress}>
+            <ButtonText>{props.text}</ButtonText>
         </LoginButtonUI>
     )
 }

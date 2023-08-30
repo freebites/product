@@ -32,6 +32,7 @@ export function Provider(props) {
     useProtectedRoute(user);
 
     return (
+        
         <AuthContext.Provider
           value={{
             signIn: () => setAuth({}),
