@@ -12,9 +12,7 @@ const Profile = () => {
 		>
 			<Text> Profile </Text>
 
-			<ScrollView>
-				<Text onPress={() => signOut()}>Sign Out</Text>
-			</ScrollView>
+			<Text onPress={() => signOut()}>Sign Out</Text>
 		</SafeAreaView>
 	);
 };

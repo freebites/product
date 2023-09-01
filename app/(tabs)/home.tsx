@@ -3,11 +3,14 @@ import { View, Text, SafeAreaView, Image } from "react-native"; // views are div
 import { ScrollView } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
 import { globalStyles } from "../../components/global";
+import SearchBar from "../../components/common/SearchBar";
+
 const Home = () => {
 	return (
 		<SafeAreaView
-			style={[globalStyles.container, { alignItems: "center" }]}
+			style={[globalStyles.container, { flex: 1, alignItems: "center" }]}
 		>
+			<SearchBar />
 			<Text> Home </Text>
 		</SafeAreaView>
 	);
