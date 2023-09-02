@@ -1,7 +1,8 @@
 import { View, Image, StyleSheet } from "react-native";
 import React from "react";
 import styled from "styled-components/native";
-import { AiOutlineSearch } from "react-icons/ai";
+
+const searchIcon = require("../../assets/icons/freebites/search.png");
 const SearchBarStyle = styled.View`
 	background: #fffbf9;
 	border-radius: 30px;
@@ -13,7 +14,7 @@ const SearchBarStyle = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	margin-top: 5%;
+	margin-top: 20.1%;
 `;
 
 const SearchBarInput = styled.TextInput`
@@ -40,7 +41,7 @@ const SearchBar = () => {
 					alignItems: "flex-end",
 				}}
 			>
-				<AiOutlineSearch style={imageStyle.stretch} />
+				<Image source={searchIcon} style={imageStyle.stretch} />
 			</View>
 			<SearchBarInput />
 			<View

@@ -1,8 +1,9 @@
 import { View, Text, Image } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { globalStyles } from "../../components/global";
 import LoginButton from "../../components/common/Button";
 import { useAuth } from "../../context/auth";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 //import React from 'react'
 
@@ -68,12 +69,46 @@ const signup = () => {
 						width: "100%",
 					}}
 				>
-					<Text onPress={() => setLoginSelected(true)}>Login</Text>
-					<Text onPress={() => setLoginSelected(false)}>Sign Up</Text>
+					<View style={{ width: "30%" }}>
+						<TouchableHighlight
+							style={{
+								borderBottomWidth: 1,
+								borderColor: loginSelected
+									? "#EDA76E"
+									: "transparent",
+								alignItems: "center",
+							}}
+							underlayColor="transparent"
+							onPress={() => setLoginSelected(true)}
+						>
+							<Text>Login</Text>
+						</TouchableHighlight>
+					</View>
+
+					{/* sets a border width that's normally transparent, 
+						and then is tied to the 'loginSelected' boolean 
+						TODO: figure out how to animate it, might need 
+						a different component for this. Also make more 
+						readable  */}
+					<View style={{ width: "30%" }}>
+						<TouchableHighlight
+							style={{
+								borderBottomWidth: 1,
+								borderColor: !loginSelected
+									? "#EDA76E"
+									: "transparent",
+								alignItems: "center",
+							}}
+							underlayColor="transparent"
+							onPress={() => setLoginSelected(false)}
+						>
+							<Text>Sign Up</Text>
+						</TouchableHighlight>
+					</View>
 				</View>
 			</View>
 			{/* toggles between login and sign up section */}
-			{loginSelected ? <LoginSection /> : <SignupSection />}{" "}
+			{loginSelected ? <LoginSection /> : <SignupSection />}
 		</View>
 	);
 };
