@@ -1,38 +1,15 @@
 import { View, Text, Image } from "react-native";
 import { useState } from "react";
 import { globalStyles } from "../../components/global";
-import LoginButton from "../../components/common/Button";
-import { useAuth } from "../../context/auth";
 import { TouchableHighlight } from "react-native-gesture-handler";
-
+import LoginSection from "../../components/LoginSection";
+import SignupSection from "../../components/SignupSection";
 //import React from 'react'
 
 //import top image icon thingy
 const icon = require("../../assets/icons/freebites/logo.png");
 
 // TODO: convert to form and then probably turn it into its own component
-const LoginSection = () => {
-	const { signIn } = useAuth();
-
-	return (
-		<View style={{ alignItems: "center", width: "100%" }}>
-			<Text> LOGIN SECTION </Text>
-			<LoginButton onPress={() => signIn()} text="login" />
-		</View>
-	);
-};
-
-// TODO: convert to form and then probably turn it into its own component
-const SignupSection = () => {
-	const { signIn } = useAuth();
-
-	return (
-		<View style={{ alignItems: "center", width: "100%" }}>
-			<Text> SIGNUP SECTION </Text>
-			<LoginButton onPress={() => signIn()} text="login" />
-		</View>
-	);
-};
 
 const signup = () => {
 	const [loginSelected, setLoginSelected] = useState(true);
