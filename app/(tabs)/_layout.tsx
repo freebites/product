@@ -33,7 +33,7 @@ export default () => {
 				}}
 			/>
 			<Tabs.Screen
-				name="profile"
+				name="profile/profile"
 				options={{
 					headerShown: false,
 					tabBarIcon: () => <Image source={profIcon} />,

@@ -10,6 +10,7 @@ const Post = () => {
 		<SafeAreaView
 			style={[globalStyles.container, { alignItems: "center" }]}
 		>
+			<View style={{ backgroundColor: "white" }}></View>
 			<Text> Make a post! </Text>
 		</SafeAreaView>
 	);
