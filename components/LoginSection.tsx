@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import LoginButton from "../components/common/Button";
+import LoginButton from "./common/LoginButton";
 import { useAuth } from "../context/auth";
 import LoginInput from "./common/LoginInput";
 

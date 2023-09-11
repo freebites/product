@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Image } from "react-native";
 import { useAuth } from "../../context/auth";
 import { router } from "expo-router";
 import React from "react";
-import LoginButton from "../../components/common/Button";
+import LoginButton from "../../components/common/LoginButton";
 import { Welcome } from "../../components";
 import { globalStyles } from "../../components/global";
 
