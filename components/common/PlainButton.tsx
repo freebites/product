@@ -2,7 +2,7 @@ import { Image } from "react-native";
 import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 
-const leftArrow = require("../../assets/icons/chevron-left.png");
+const leftArrow = require("../../assets/icons/chevron-right.png");
 const PlainButtonUI = styled.Pressable`
 	border-radius: 20px;
 	background: #fffbf9;

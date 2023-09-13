@@ -5,42 +5,49 @@ import { useAuth } from "../../../context/auth";
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
-import Header from "../../../components/common/Header";
+
 const Profile = () => {
 	const { signOut } = useAuth();
 	return (
 		<SafeAreaView style={globalStyles.container}>
-			<Header text="My Profile" />
+			<Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
+				My Profile
+			</Text>
 
 			<View
 				style={{
 					height: "7%",
 					flexDirection: "row",
 					alignItems: "center",
-					justifyContent: "flex-end",
+					width: "100%",
 				}}
 			>
 				<Text
-					style={{
-						fontSize: 16,
-						height: 20,
-						justifyContent: "flex-end",
-						fontWeight: "bold",
-						color: "#505A4E",
-					}}
+					style={[
+						globalStyles.text,
+						{
+							height: 20,
+							fontWeight: "bold",
+							width: "45%",
+							margin: "15%",
+							textAlign: "right",
+						},
+					]}
 				>
 					Personal details
 				</Text>
-				<Text
-					style={{
-						fontSize: 16,
-						color: "#FA4A0C",
-						height: 20,
-						justifyContent: "flex-end",
-					}}
-				>
-					Edit
-				</Text>
+				<Link href="/profile/edit">
+					<Text
+						style={{
+							fontSize: 16,
+							color: "#FA4A0C",
+							height: 20,
+							width: "40%",
+						}}
+					>
+						Edit
+					</Text>
+				</Link>
 			</View>
 			<ProfileCard />
 			<Link href="/(tabs)/profile/history" asChild>

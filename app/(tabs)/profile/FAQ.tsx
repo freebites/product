@@ -5,7 +5,7 @@ import Header from "../../../components/common/Header";
 const FAQ = () => {
 	return (
 		<SafeAreaView style={globalStyles.container}>
-			<Header text="Drafts" />
+			<Header text="FAQ" />
 		</SafeAreaView>
 	);
 };
