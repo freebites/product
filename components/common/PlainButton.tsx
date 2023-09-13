@@ -1,9 +1,9 @@
 import { Image } from "react-native";
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 
 const leftArrow = require("../../assets/icons/chevron-left.png");
-const PlainButtonUI = styled.TouchableOpacity`
+const PlainButtonUI = styled.Pressable`
 	border-radius: 20px;
 	background: #fffbf9;
 	display: flex;
@@ -21,15 +21,18 @@ const ButtonText = styled.Text`
 	margin-left: 30px;
 `;
 
-const PlainButton = (props) => {
+const PlainButton = (props, ref) => {
 	return (
 		<PlainButtonUI
 			onPress={props.onPress}
 			style={{ width: props.width, height: props.height }}
+			ref={ref}
 		>
 			<ButtonText>{props.text}</ButtonText>
 			<Image source={leftArrow} style={{ marginRight: 18 }}></Image>
 		</PlainButtonUI>
 	);
 };
-export default PlainButton;
+
+// need to add forward ref if you want to wrap button in <Link>
+export default forwardRef(PlainButton);
