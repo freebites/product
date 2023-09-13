@@ -6,9 +6,7 @@ import SearchBar from "../../components/common/SearchBar";
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
-		<SafeAreaView
-			style={[globalStyles.container, { flex: 1, alignItems: "center" }]}
-		>
+		<SafeAreaView style={[globalStyles.container]}>
 			<SearchBar />
 			<Text> Home </Text>
 

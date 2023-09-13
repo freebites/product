@@ -7,9 +7,7 @@ import { globalStyles } from "../../components/global";
 const Post = () => {
 	const { signOut } = useAuth();
 	return (
-		<SafeAreaView
-			style={[globalStyles.container, { alignItems: "center" }]}
-		>
+		<SafeAreaView style={globalStyles.container}>
 			<View style={{ backgroundColor: "white" }}></View>
 			<Text> Make a post! </Text>
 		</SafeAreaView>

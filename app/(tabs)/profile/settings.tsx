@@ -1,11 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-
+import { globalStyles } from "../../../components/global";
+import Header from "../../../components/common/Header";
 const settings = () => {
 	return (
-		<View>
-			<Text>settings</Text>
-		</View>
+		<SafeAreaView style={globalStyles.container}>
+			<Header text="Settings" />
+		</SafeAreaView>
 	);
 };
 

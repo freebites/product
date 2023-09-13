@@ -5,26 +5,13 @@ import { useAuth } from "../../../context/auth";
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
-
+import Header from "../../../components/common/Header";
 const Profile = () => {
 	const { signOut } = useAuth();
 	return (
-		<SafeAreaView
-			style={[
-				globalStyles.container,
-				{ alignItems: "center", width: "100%" },
-			]}
-		>
-			<Text
-				style={{
-					paddingTop: "8.7%",
-					fontSize: 34,
-					color: "#505A4E",
-					fontWeight: "bold",
-				}}
-			>
-				My Profile
-			</Text>
+		<SafeAreaView style={globalStyles.container}>
+			<Header text="My Profile" />
+
 			<View
 				style={{
 					height: "7%",
