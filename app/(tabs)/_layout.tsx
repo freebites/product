@@ -5,6 +5,7 @@ import React from "react";
 const homeIcon = require("../../assets/icons/freebites/home-icon.png");
 const postIcon = require("../../assets/icons/freebites/add-post.png");
 const profIcon = require("../../assets/icons/freebites/profile.png");
+
 export default () => {
 	return (
 		<Tabs
@@ -33,7 +34,7 @@ export default () => {
 				}}
 			/>
 			<Tabs.Screen
-				name="profile/profile"
+				name="profile"
 				options={{
 					headerShown: false,
 					tabBarIcon: () => <Image source={profIcon} />,

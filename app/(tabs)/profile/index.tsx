@@ -56,11 +56,22 @@ const Profile = () => {
 				</Text>
 			</View>
 			<ProfileCard />
+			<Link href="/(tabs)/profile/history" asChild>
+				<PlainButton width="87%" height="60px" text="History" />
+			</Link>
 
-			<PlainButton width="87%" height="60px" text="History" />
-			<PlainButton width="87%" height="60px" text="Drafts" />
-			<PlainButton width="87%" height="60px" text="Settings" />
-			<PlainButton width="87%" height="60px" text="FAQ" />
+			<Link href="/(tabs)/profile/drafts" asChild>
+				<PlainButton width="87%" height="60px" text="Drafts" />
+			</Link>
+
+			<Link href="/(tabs)/profile/settings" asChild>
+				<PlainButton width="87%" height="60px" text="Settings" />
+			</Link>
+
+			<Link href="/(tabs)/profile/FAQ" asChild>
+				<PlainButton width="87%" height="60px" text="FAQ" />
+			</Link>
+
 			<Text onPress={() => signOut()}>Sign Out</Text>
 		</SafeAreaView>
 	);
