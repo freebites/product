@@ -7,7 +7,6 @@ import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
 
 const Profile = () => {
-	const { signOut } = useAuth();
 	return (
 		<SafeAreaView style={globalStyles.container}>
 			<Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
@@ -65,8 +64,6 @@ const Profile = () => {
 			<Link href="/(tabs)/profile/FAQ" asChild>
 				<PlainButton width="87%" height="60px" text="FAQ" />
 			</Link>
-
-			<Text onPress={() => signOut()}>Sign Out</Text>
 		</SafeAreaView>
 	);
 };

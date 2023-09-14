@@ -5,7 +5,8 @@ import Header from "../../../components/common/Header";
 const history = () => {
 	return (
 		<SafeAreaView style={globalStyles.container}>
-			<Header text="Settings" />
+			<Header text="History" />
+			<View style={{ margin: "5%" }} />
 		</SafeAreaView>
 	);
 };

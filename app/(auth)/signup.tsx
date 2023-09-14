@@ -21,7 +21,6 @@ const signup = () => {
 				{ flex: 1, alignItems: "center", width: "100%" },
 			]}
 		>
-			{/* top white card with logo and login/signup options */}
 			<View
 				style={{
 					alignItems: "center",
@@ -34,10 +33,8 @@ const signup = () => {
 					justifyContent: "space-evenly",
 				}}
 			>
-				{/* icon */}
 				<Image source={icon} style={{ width: 169, height: 191 }} />
 
-				{/* login/signup option */}
 				<View
 					style={{
 						flexDirection: "row",
@@ -62,11 +59,6 @@ const signup = () => {
 						</TouchableHighlight>
 					</View>
 
-					{/* sets a border width that's normally transparent, 
-						and then is tied to the 'loginSelected' boolean 
-						TODO: figure out how to animate it, might need 
-						a different component for this. Also make more 
-						readable  */}
 					<View style={{ width: "30%" }}>
 						<TouchableHighlight
 							style={{
@@ -84,7 +76,7 @@ const signup = () => {
 					</View>
 				</View>
 			</View>
-			{/* toggles between login and sign up section */}
+
 			{loginSelected ? <LoginSection /> : <SignupSection />}
 		</View>
 	);
