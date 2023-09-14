@@ -3,25 +3,24 @@ import React from "react";
 import styled from "styled-components/native";
 
 const LoginInputUI = styled.View`
-	height: 5vh;
+	max-height: 15%;
 	width: 72%;
-	display: "block";
+	flex: 1;
+	display: block;
 `;
 
 const StyledInput = styled.TextInput`
 	color: black;
-	display: block;
 	border-bottom-width: 1px;
 	border-bottom-color: #9e9797;
-	height: 10%;
-	padding: 1.75vh;
+	padding: 3%;
 `;
 
 const LoginInput = (props) => {
 	const inputType = props.isPassword ? "password" : "text";
 
 	return (
-		<LoginInputUI>
+		<LoginInputUI style={{ flex: 1 }}>
 			<Text style={{ color: "#9e9797" }}>{props.title}</Text>
 			<View>
 				<StyledInput

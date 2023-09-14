@@ -2,12 +2,16 @@ import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 import { globalStyles } from "../../components/global";
 import EditProfileHeader from "../../components/profile/EditProfileHeader";
-import Header from "../../components/common/Header";
+import EditProfileInput from "../../components/profile/EditProfileInput";
 const edit = () => {
 	return (
 		<SafeAreaView style={globalStyles.containerLight}>
 			<EditProfileHeader />
-			<Header text="Edit Profile" />
+			<View style={{ margin: "5%" }} />
+			<EditProfileInput title="Name" />
+			<EditProfileInput title="Username" />
+			<EditProfileInput title="Pronouns" />
+			<EditProfileInput title="Bio" multiline={true} />
 		</SafeAreaView>
 	);
 };

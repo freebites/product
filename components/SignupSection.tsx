@@ -12,7 +12,7 @@ const SignupSection = () => {
 				flex: 1,
 				alignItems: "center",
 				width: "100%",
-				paddingTop: "7%",
+				marginTop: "2%",
 			}}
 		>
 			<View
@@ -22,7 +22,7 @@ const SignupSection = () => {
 					justifyContent: "space-around",
 					width: "100%",
 					maxHeight: "60%",
-					paddingBottom: "3%",
+					marginBottom: "3%",
 				}}
 			>
 				{/* Your other components */}
@@ -38,6 +38,7 @@ const SignupSection = () => {
 					marginBottom: 20,
 					width: "100%",
 					alignItems: "center",
+					marginTop: 20,
 				}}
 			>
 				{/* LoginButton */}

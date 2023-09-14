@@ -12,6 +12,7 @@ const PlainButtonUI = styled.Pressable`
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px;
+	min-height: 60px;
 `;
 
 const ButtonText = styled.Text`
@@ -25,7 +26,14 @@ const PlainButton = (props, ref) => {
 	return (
 		<PlainButtonUI
 			onPress={props.onPress}
-			style={{ width: props.width, height: props.height }}
+			style={({ pressed }) => [
+				{
+					backgroundColor: pressed
+						? "rgba(209, 204, 182, 0.3)"
+						: "white",
+				},
+				{ width: props.width, height: props.height },
+			]}
 			ref={ref}
 		>
 			<ButtonText>{props.text}</ButtonText>
