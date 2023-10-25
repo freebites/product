@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../components/global";
-import SearchBar from "../../components/common/SearchBar";
+import { globalStyles } from "../../../components/global";
+import SearchBar from "../../../components/common/SearchBar";
 
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
