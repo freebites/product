@@ -44,23 +44,26 @@ export const EmptyPost: postType = {
 	postTime: undefined,
 };
 
-export const DataContext = createContext(EmptyPost);
+type PostContextType = {
+	postData: postType;
+	updatePostData: (newData: Partial<postType>) => void;
+};
 
-export const DataProvider = ({ children }) => {
-	const [contextData, setContextData] = useState({
-		theme: "light",
-		language: "en",
-		// other values...
-	});
+export const PostContext = createContext<PostContextType>({
+	postData: EmptyPost,
+	updatePostData: () => {},
+});
 
-	const updateContextData = (newData) => {
-		setContextData({ ...contextData, ...newData });
+export const PostProvider = ({ children }) => {
+	const [postData, setPostData] = useState<postType>(EmptyPost);
+
+	const updatePostData = (newData: Partial<postType>) => {
+		setPostData({ ...postData, ...newData });
 	};
 
 	return (
-		// <DataContext.Provider value={{ contextData, updateContextData }}>
-		// 	{children}
-		// </DataContext.Provider>
-		null
+		<PostContext.Provider value={{ postData, updatePostData }}>
+			{children}
+		</PostContext.Provider>
 	);
 };
