@@ -1,18 +1,21 @@
 import React, { createContext, useState } from "react";
 
-type tags = {
+/// types for tags
+export type tags = {
 	perishable: boolean;
 	allergens: string[];
 	diet: string[];
 };
 
-type comment = {
+// types for comments
+export type comment = {
 	username: string;
 	body: string;
 	timestamp: Date; // may need to be changed to string
 };
 
-type postType = {
+// types for a post
+export type postType = {
 	title: string;
 	description: string;
 	imageURIs: string[];
@@ -24,7 +27,8 @@ type postType = {
 	postTime: Date;
 };
 
-const EmptyPost: postType = {
+// default empty post
+export const EmptyPost: postType = {
 	title: "",
 	description: "",
 	imageURIs: [""],
