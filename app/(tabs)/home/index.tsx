@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
-
+import HomePost from "../../../components/common/homePost"
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
@@ -31,7 +31,7 @@ const Home = () => {
 						underlayColor="transparent"
 						onPress={() => setFavoriteSelected(true)}
 					>
-						<Text>Login</Text>
+						<Text> All </Text>
 					</TouchableHighlight>
 				</View>
 
@@ -52,9 +52,15 @@ const Home = () => {
 						underlayColor="transparent"
 						onPress={() => setFavoriteSelected(false)}
 					>
-						<Text>Sign Up</Text>
+						<Text> Bookmark </Text>
 					</TouchableHighlight>
 				</View>
+			</View>
+			<View style = {{height: 600, width: 345}}> 
+				Test 
+				<HomePost>
+
+				</HomePost>
 			</View>
 		</SafeAreaView>
 	);
