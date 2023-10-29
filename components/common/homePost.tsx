@@ -1,8 +1,9 @@
-import {Image, View, Text} from "react-native";
+import {Image, View, Text, StyleSheet} from "react-native";
 import React, { forwardRef } from "react";
 import { useState } from "react";
 import styled from "styled-components/native";
 import * as postType from "../../context/postContext"
+import { StyleSheetContext } from "styled-components";
 
 
 
@@ -26,9 +27,25 @@ const HomePost = (props) => {
 	}
 
     return (
-        <Text>Testing from component {dummyData.title}</Text>
-			
+		<View style = {styles.mainbox}>
+			<Text>Testing from component {dummyData.title}</Text>
+		</View>
+		
 	);
 };
+
+const styles = StyleSheet.create({
+	mainbox: {
+		width: '100%',
+		backgroundColor: 'white',
+		height: 151,
+		borderRadius: 20,
+		elevation: 5,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 3 },
+		shadowOpacity: 0.8,
+		shadowRadius: 3,
+	}
+})
 
 export default HomePost;

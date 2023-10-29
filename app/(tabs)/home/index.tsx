@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // views are divs and text a p tags
+import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
 import HomePost from "../../../components/common/homePost"
+
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
@@ -56,7 +57,7 @@ const Home = () => {
 					</TouchableHighlight>
 				</View>
 			</View>
-			<View style = {{height: 600, width: 345}}> 
+			<View style = {styles.postDisplay}> 
 				Test 
 				<HomePost>
 
@@ -65,5 +66,12 @@ const Home = () => {
 		</SafeAreaView>
 	);
 };
+
+const styles = StyleSheet.create({
+	postDisplay : {
+		flex : 1,
+		width : 345,
+	}
+});
 
 export default Home;
