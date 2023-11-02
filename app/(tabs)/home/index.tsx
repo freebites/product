@@ -3,6 +3,7 @@ import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
 import HomePost from "../../../components/common/homePost"
+
 const Home = () => {
 
 	const [favoriteSelected, setFavoriteSelected] = useState(true);

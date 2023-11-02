@@ -3,6 +3,7 @@ import React, { forwardRef } from "react";
 import { useState } from "react";
 import styled from "styled-components/native";
 import * as postType from "../../context/postContext"
+import { StyleSheetContext } from "styled-components";
 
 
 
