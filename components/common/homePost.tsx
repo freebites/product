@@ -44,17 +44,17 @@ const HomePost = (props) => {
 				</View>
 			</View>
 		</View>
-		
+			
 	);
 };
 
 const styles = StyleSheet.create({
-	mainbox: {
-		width: '100%',
-		backgroundColor: 'white',
-		height: 151,
-		borderRadius: 20,
-		elevation: 5,
+	mainbox : {
+		width : '100%',
+		backgroundColor : 'white',
+		height : 151,
+		// elevation: 5,
+
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.2,

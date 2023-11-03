@@ -6,6 +6,7 @@ import HomePost from "../../../components/common/homePost"
 import {Link, router} from "expo-router";
 
 const Home = () => {
+
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
