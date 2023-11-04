@@ -4,6 +4,7 @@ import {
 	SafeAreaView,
 	Button,
 	TouchableOpacity,
+	StyleSheet,
 } from "react-native";
 import { Link } from "expo-router";
 import React, { useContext, useState } from "react";
@@ -45,6 +46,7 @@ const tags = () => {
 			<Text>Title: {postData.title}</Text>
 			<FoodTypeSelect onPress={setPerishable} />
 			<Text> Perishable: {perishable ? "yes" : "no"}</Text>
+			<TagSelection />
 			<Text>Description: {postData.description}</Text>
 		</SafeAreaView>
 	);
@@ -78,10 +80,71 @@ const FoodTypeSelect = (props: { onPress?: any }) => {
 	);
 };
 
-const tagBox = ({ label, checked, onChange }) => {
-	const [isSelected, setSelected] = useState<boolean>(true);
-	<TouchableOpacity></TouchableOpacity>;
+const TagButton = ({ tag, onPress, isSelected }) => {
+	return (
+		<TouchableOpacity
+			onPress={onPress}
+			style={[
+				styles.tagButton,
+				{ backgroundColor: isSelected ? "lightblue" : "white" },
+			]}
+		>
+			<Text style={styles.tagText}>{tag}</Text>
+		</TouchableOpacity>
+	);
 };
 
-export function exportTags() {}
+const TagSelection = () => {
+	const [tags, setTags] = useState([]);
+
+	const handleTagSelection = (tag) => {
+		if (tags.includes(tag)) {
+			// if tag is in the tags array, remove from the array
+			setTags(tags.filter((t) => t !== tag));
+		} else {
+			setTags([...tags, tag]);
+		}
+	};
+
+	const renderTags = () => {
+		const availableTags = ["Tag1", "Tag2", "Tag3", "Tag4"]; // Your array of selectable tags
+
+		// map this array of tags to a new tagButton
+		return availableTags.map((tag, index) => (
+			<TagButton
+				key={index}
+				tag={tag}
+				onPress={() => handleTagSelection(tag)}
+				isSelected={tags.includes(tag)}
+			/>
+		));
+	};
+	return (
+		<View
+			style={{
+				flex: 1,
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+		>
+			<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+				{renderTags()}
+			</View>
+			<Text>Selected Tags: {tags.join(", ")}</Text>
+		</View>
+	);
+};
+
+const styles = StyleSheet.create({
+	tagButton: {
+		padding: 10,
+		margin: 5,
+		borderWidth: 1,
+		borderColor: "black",
+		borderRadius: 5,
+	},
+	tagText: {
+		color: "black",
+	},
+});
 export default tags;
