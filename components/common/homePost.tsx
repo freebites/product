@@ -8,8 +8,8 @@ import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const HomePost = (props, ref) => {
-    // const [postData, setPostData] = useState<typeof dummyData>();
+
+
     const dummyData: postType.postType = {
 		title: "testtitle",
 		description: "testDes",
@@ -26,6 +26,8 @@ const HomePost = (props, ref) => {
 		postTime: new Date(),
 	}
 
+const HomePost = (props, ref) => {
+    // const [postData, setPostData] = useState<typeof dummyData>();
     return (
 		
 			<Pressable style = {styles.mainbox}
@@ -63,36 +65,40 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.2,
-		shadowRadius: 4,
+		shadowRadius: 4,  
+		borderRadius : 20,
 		paddingHorizontal: 15,
 		paddingVertical: 15,
 
-		flexDirection: "row",
+		flexDirection: 'row'
 	},
-	imagebox: {
-		flex: 1,
+	imagebox : { 
+		flex : 1,
 		width: 85,
 		marginRight: 10,
-	}, 
-	image: {
-		flex: 1,
-		borderRadius: 15,
 	},
-	description: {
-		flex: 3,
+	image : {
+		flex : 1,
+		borderRadius : 15,
+	},
+	description : {
+		flex : 3,
 		marginLeft: 10,
-		flexDirection: "column",
+		flexDirection : "column",
 	},
-	title: {
-		height: 25,
-		flexDirection: "row",
-		justifyContent: "flex-end",
-		flex: 1,
+	title : {
+		height : 25,
+		flexDirection : 'row',
+		justifyContent: 'flex-end',
+		flex : 1,
 	},
-	bookmark: {
-		flex: 1,
-		width: 10,
+	bookmark : {
+		flex : 1,
+
+		width : 10,
 	},
+
+
 })
 
-export default forwardRef(HomePost);
+export default forwardRef (HomePost);

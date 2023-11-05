@@ -59,12 +59,12 @@ const Home = () => {
 					</TouchableHighlight>
 				</View>
 			</View>
-			<View style = {styles.postDisplay}> 
-				<HomePost onPress = {() => {
-					<Link href = "/home/postPopUp"></Link>
-				}}>
-
-				</HomePost>
+			<View style = {styles.postDisplay}>
+			<Link href = "/home/postPopUp" asChild> 
+				<HomePost/>
+		
+			</Link>
+				
 			</View>
 		</SafeAreaView>
 	);
