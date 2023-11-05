@@ -1,56 +1,143 @@
-import React, { useContext, useState } from "react";
-import { View, Text, SafeAreaView, Image, TextInput } from "react-native"; // views are divs and text a p tags
-import { useAuth } from "../../../context/auth";
-import { globalStyles } from "../../../components/global";
 import { Link } from "expo-router";
+import React, { useContext } from "react";
+import BackButton from "../../../components/common/BackButton";
+import * as ImagePicker from "expo-image-picker";
+import ImageViewer from "../../../components/common/ImageViewer";
+import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
-
-const Post = () => {
-	const { signOut } = useAuth();
+import { ScrollView } from "react-native-gesture-handler";
+import {
+	View,
+	SafeAreaView,
+	TextInput,
+	StyleSheet,
+	KeyboardAvoidingView,
+} from "react-native";
+const placeholder = require("../../../assets/images/kemal.jpg");
+// TODO: add images to context, drafting
+const gallery = () => {
 	const { postData, updatePostData } = useContext(PostContext);
 
-	const [title, setTitle] = useState("");
-
-	const [descr, setDescr] = React.useState("");
-
-	const handleUpdateData = () => {
-		updatePostData({ title: title, description: descr }); // Update multiple values
+	// handler for storing image URIs
+	const handleUpdateImages = (imageLinks) => {
+		updatePostData({
+			...postData,
+			imageURIs: imageLinks,
+		});
 	};
+	const handleUpdateTitle = (title) => {
+		updatePostData({ title: title }); // Update multiple values
+	};
+
+	const handleUpdateDesc = (descr) => {
+		updatePostData({ description: descr }); // Update multiple values
+	};
+
+	// handler for updating location (room number)
+	const handleUpdateLocation = (locationName) => {
+		updatePostData({ ...postData, location: locationName });
+	};
+
+	// TODO: ADD GOOGLE PLACE ID HERE
+
+	// This is the function that lets opens the phone gallery and pick image
+	// Use async to load images first before doing anything
+	// https://docs.expo.dev/tutorial/image-picker/
+	const pickImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsMultipleSelection: true,
+			aspect: [4, 3],
+			quality: 1,
+			selectionLimit: 5,
+		});
+
+		if (!result.canceled) {
+			// Loops through all of the images and sets strings of the uri
+			let linkArray = [];
+			for (let i = 0; i < result.assets.length; i++) {
+				// create update array
+				linkArray = [...linkArray, result.assets[i].uri];
+			}
+			handleUpdateImages(linkArray);
+		}
+	};
+
 	return (
 		<SafeAreaView
 			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
 		>
-			<View style={{ backgroundColor: "white" }}></View>
-			<Text> Make a post! </Text>
-			<TextInput
-				placeholder="Add Food Name"
-				value={title}
-				onChangeText={(text) => {
-					setTitle(text);
-					handleUpdateData();
-				}}
-			></TextInput>
-			<TextInput
-				placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-				multiline
-				numberOfLines={4}
-				maxLength={40}
-				onChangeText={(text) => {
-					setDescr(text);
-					handleUpdateData();
-				}}
-				value={descr}
-			></TextInput>
+			{/* keyboard and scrollview are for making the keyboard work 
+			    as it was blocking the stuff*/}
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				keyboardVerticalOffset={100}
+				behavior={"position"}
+			>
+				<ScrollView
+					keyboardShouldPersistTaps="handled"
+					keyboardDismissMode="on-drag"
+					contentContainerStyle={{
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					alwaysBounceVertical={false}
+				>
+					<PlainButton2
+						onPress={() => {
+							pickImage(); // pick images here
+						}}
+						text="Choose from Gallery"
+					/>
 
-			<Text> Title {postData.title}</Text>
-			<Text> Description {postData.description}</Text>
-			<View style={{ alignItems: "center", justifyContent: "center" }}>
-				<Link href="/post/camera">
-					<Text>This is the camera!</Text>
-				</Link>
-			</View>
+					{/* carousel */}
+					<View>
+						<ImageViewer
+							placeholderImageSource={placeholder}
+							selectedImage={postData.imageURIs}
+						></ImageViewer>
+					</View>
+
+					<BackButton />
+
+					{/* inputs, modularize these? */}
+					<TextInput
+						placeholder="Add Food Name"
+						placeholderTextColor="#94A38F"
+						value={postData.title}
+						onChangeText={(text) => {
+							handleUpdateTitle(text);
+						}}
+					></TextInput>
+
+					<TextInput
+						placeholder="Add Location"
+						placeholderTextColor="#94A38F"
+						value={postData.location}
+						onChangeText={(text) => {
+							handleUpdateLocation(text);
+						}}
+					></TextInput>
+
+					<TextInput
+						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
+						placeholderTextColor="#94A38F"
+						multiline
+						numberOfLines={4}
+						maxLength={40}
+						onChangeText={(text) => {
+							handleUpdateDesc(text);
+						}}
+						value={postData.description}
+					></TextInput>
+
+					<Link href="/post/tags" asChild>
+						<PlainButton2 text="Next Step" />
+					</Link>
+				</ScrollView>
+			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);
 };
 
-export default Post;
+export default gallery;
