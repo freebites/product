@@ -7,9 +7,9 @@ import { StyleSheetContext } from "styled-components";
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
-
+ 
 const dummyData: postType.postType = {
-	title: "testtitle",
+	title: "Pizzas",
 	description: "testDes",
 	imageURIs: ['../../assets/images/the-pizza-box.jpeg'],
 	tags: {
@@ -17,7 +17,7 @@ const dummyData: postType.postType = {
 		allergens: ["peanuts"],
 		diet: ["none"],
 	},
-	location: "JCC",
+	location: "JCC 160",
 	comments: [],
 	post_id: "",
 	room: "123",
@@ -29,28 +29,27 @@ const HomePost = (props) => {
     
 
     return (
+		
 		<View style = {styles.mainbox}>
+        	
 
-			<View style = {styles.imagebox}> 
-			<Image 
-				source = {{
-					uri : dummyData.imageURIs[0]
-				}}
+			<View style = {styles.imagebox}>
+				<Image	
+					source = {{
+						uri: dummyData.imageURIs[0]
+					}} 
+					style = {styles.image}
+				/>
 
-				style = {styles.image}
-			/>
 			</View>
 			
-			<View style = {styles.description}> 
-				<View style = {styles.title}>
-					Pizzas
-					<FontAwesomeIcon icon={faBookmark} style = {styles.bookmark}/>
-				</View>
+			<View style = {styles.description}>
+					<View style = {styles.title}>
+						{dummyData.title}
+						<FontAwesomeIcon icon={faBookmark} style = {styles.bookmark}/>
+					</View>
 			</View>
-				
-
 		</View>
-
 			
 	);
 };
@@ -61,44 +60,44 @@ const styles = StyleSheet.create({
 		backgroundColor : 'white',
 		height : 151,
 		// elevation: 5,
+		paddingHorizontal : 10,
+		paddingVertical: 15,
 
 		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.2,
-		shadowRadius: 4,  
-		borderRadius : 20,
-		paddingHorizontal: 15,
-		paddingVertical: 15,
+		shadowOffset: { width: 0, height: 3 },
+		shadowOpacity: 0.8,
+		shadowRadius: 3,  
+		
+		borderRadius: 20,
 
 		flexDirection: 'row'
 	},
-	imagebox : { 
-		flex : 1,
+	imagebox: {
+		flex: 1,
 		width: 85,
 		marginRight: 10,
 	},
-	image : {
-		flex : 1,
-		borderRadius : 15,
+	image: {
+		flex: 1,
+		width: '100%',
+		borderRadius: 20,
 	},
-	description : {
-		flex : 3,
+	description: {
+		flex: 3,
+		width : '100%',
 		marginLeft: 10,
-		flexDirection : "column",
+		flexDirection: 'column',
+
 	},
-	title : {
+	title: {
+		flex: 3,
+		width: '100%',
 		height : 25,
-		flexDirection : 'row',
-		justifyContent: 'flex-end',
-		flex : 1,
 	},
-	bookmark : {
-		flex : 1,
+	bookmark: {
 
-		width : 10,
-	},
-
-
+		alignSelf : 'flex-end',
+	}
 })
 
 export default HomePost;

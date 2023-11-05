@@ -3,6 +3,7 @@ import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
 import HomePost from "../../../components/common/homePost"
+import {Link, router} from "expo-router";
 
 const Home = () => {
 
@@ -59,8 +60,9 @@ const Home = () => {
 				</View>
 			</View>
 			<View style = {styles.postDisplay}>
-				Test 
-				<HomePost>
+				<HomePost onPress = {() => {
+					<Link href = "/home/postPopUp"> </Link>
+				}} >
 					
 				</HomePost>
 			</View>
