@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";

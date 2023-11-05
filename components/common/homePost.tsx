@@ -1,4 +1,4 @@
-import {Image, View, Text, StyleSheet} from "react-native";
+import {Image, View, Text, StyleSheet, Pressable} from "react-native";
 import React, { forwardRef } from "react";
 import { useState } from "react";
 import styled from "styled-components/native";
@@ -6,8 +6,9 @@ import * as postType from "../../context/postContext"
 import { StyleSheetContext } from "styled-components";
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const HomePost = (props) => {
+const HomePost = (props, ref) => {
     // const [postData, setPostData] = useState<typeof dummyData>();
     const dummyData: postType.postType = {
 		title: "testtitle",
@@ -26,24 +27,28 @@ const HomePost = (props) => {
 	}
 
     return (
-		<View style = {styles.mainbox}>
 		
-			<View style = {styles.imagebox}> 
-			<Image
-				source = {{
-					uri: dummyData.imageURIs[0]
-				}}
+			<Pressable style = {styles.mainbox}
+				ref = {ref}
+				onPress = {props.onPress}
+				>
+		
+				<View style = {styles.imagebox}> 
+				<Image
+					source = {{
+						uri: dummyData.imageURIs[0]
+					}}
 
-				style = {styles.image}
-			/>
-			</View>
-			<View style = {styles.description}>
-				<View style = {styles.title}>
-					Pizzas
+					style = {styles.image}
+				/>
+				</View>
+				<View style = {styles.description}>
+					<View style = {styles.title}>
+						Pizzas
 					<FontAwesomeIcon icon = {faBookmark} style = {styles.bookmark}/>
 				</View>
 			</View>
-		</View>
+		</Pressable>
 			
 	);
 };
@@ -90,4 +95,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default HomePost;
+export default forwardRef(HomePost);
