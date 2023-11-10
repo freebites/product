@@ -2,7 +2,7 @@ import React, { useState, forwardRef } from "react";
 import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
-import HomePost from "../../../components/common/homePost"
+import HomePost from "../../../components/common/HomePost"
 import {Link, router} from "expo-router";
 
 const Home = () => {

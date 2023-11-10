@@ -10,23 +10,23 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 
-    const dummyData: postType.postType = {
-		title: "testtitle",
-		description: "testDes",
-		imageURIs: ['../../assets/images/the-pizza-box.jpeg'],
-		tags: {
-			perishable: true,
-			allergens: ["peanuts"],
-			diet: ["none"],
-		},
-		location: "JCC",
-		comments: [],
-		post_id: "",
-		room: "123",
-		postTime: new Date(),
-	}
+const dummyData: postType.postType = {
+	title: "testtitle",
+	description: "Pizzas, burritos, tacos",
+	imageURIs: ['../../assets/images/the-pizza-box.jpeg'],
+	tags: {
+		perishable: true,
+		allergens: ["peanuts"],
+		diet: ["none"],
+	},
+	location: "JCC 180",
+	comments: [],
+	post_id: "",
+	room: "123",
+	postTime: new Date(),
+}
 
-const HomePost = (props, ref) => {
+export const HomePost = (props, ref) => {
     // const [postData, setPostData] = useState<typeof dummyData>();
     return (
 		
@@ -44,11 +44,16 @@ const HomePost = (props, ref) => {
 					style = {styles.image}
 				/>
 				</View>
-				<View style = {styles.description}>
-					<View style = {styles.title}>
-						Pizzas
+				<View style = {styles.sidebox}>
+
 					<FontAwesomeIcon icon = {faBookmark} style = {styles.bookmark}/>
-				</View>
+					<View style = {styles.location}> 
+						{dummyData.location}
+					</View>
+					<Text style = {styles.description}> 
+						{dummyData.description}
+					</Text>
+
 			</View>
 		</Pressable>
 			
@@ -67,36 +72,42 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.2,
 		shadowRadius: 4,  
 		borderRadius : 20,
-		paddingHorizontal: 15,
+		paddingHorizontal: 20,
 		paddingVertical: 15,
 
 		flexDirection: 'row'
 	},
 	imagebox : { 
-		flex : 1,
-		width: 85,
+		// flex : 1,
+		width: 135,
 		marginRight: 10,
 	},
 	image : {
 		flex : 1,
 		borderRadius : 15,
 	},
-	description : {
+	sidebox : {
 		flex : 3,
 		marginLeft: 10,
 		flexDirection : "column",
 	},
-	title : {
+	location : {
 		height : 25,
 		flexDirection : 'row',
-		justifyContent: 'flex-end',
-		flex : 1,
+
 	},
 	bookmark : {
-		flex : 1,
+		height : 25,
+		flexDirection : 'row',
+		alignSelf : "flex-end"
 
-		width : 10,
+		// flex : 1,
+		// width : 10,
 	},
+	description : {
+		height : 40,
+		flexDirection : 'row',
+	}
 
 
 })
