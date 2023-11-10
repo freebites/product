@@ -10,7 +10,7 @@ const Database = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://localhost:3001/api/Posts');
+        const response = await axios.get('http://10.247.25.36:3001/api/Posts');
         console.log("Network request to get data was successful", response.data);
         setData(response.data);
       } catch (error) {
@@ -23,21 +23,21 @@ const Database = () => {
   }, []);
 
 
-  return (
+  return data;
     
-    <View>
-      {/* <Text>Title: {data[0].title} </Text> */}
+    // <View>
+    //   {/* <Text>Title: {data[0].title} </Text> */}
 
-      {data.map((item) => (
-        <View key={item._id}>
-          <Text>Title: {item.title}</Text>
-          <Text>Description: {item.description}</Text>
-        </View>
-      ))} 
+    //   {data.map((item) => (
+    //     <View key={item._id}>
+    //       <Text>Title: {item.title}</Text>
+    //       <Text>Description: {item.description}</Text>
+    //     </View>
+    //   ))} 
 
 
-    </View>
-  );
+    // </View>
+  
 };
 
 

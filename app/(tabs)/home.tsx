@@ -1,14 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../components/global";
 import SearchBar from "../../components/common/SearchBar";
 import Database from "../../components/fetchData";
+import readData from "../../components/read";
 
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
+	console.log(readData("653c039a3a6e6c2cf7a59948"));
+	// useEffect(() => {
+	// 	const fetchData = () => {
+	// 	  readData("653c039a3a6e6c2cf7a59948")
+	// 	    .then((item) => {
+	// 	      console.log('Item data:', item);
+	    
+	// 	      // Store the result in a variable if needed
+	// 	      const myVariable = item;
+	// 	      // Now you can use `myVariable` in the rest of your component's logic
+	// 	    })
+	// 	    .catch((error) => {
+	// 	      console.error('Error:', error.message);
+	// 	    });
+	// 	};
+	    
+	// 	fetchData();
+	//       }, ["653c039a3a6e6c2cf7a59948"]);
+	// data[] = Database();
+	
+	// console.log(myVariable)
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-			<Database />
+
+			
+			
+
+			{/* <View>
+			{data.map((item) => (
+				<View key={item._id}>
+				<Text>Title: {item.title}</Text>
+				<Text>Description: {item.description}</Text>
+				</View>
+			))} 
+
+
+			</View> */}
+	
+			
 
 			<SearchBar />
 			<Text> Home </Text>
