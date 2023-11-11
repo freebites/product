@@ -1,22 +1,26 @@
 import { Link } from "expo-router";
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
+import { Camera, CameraType } from "expo-camera";
 import {
 	View,
 	SafeAreaView,
 	TextInput,
 	StyleSheet,
-	KeyboardAvoidingView,
+	Text,
+	TouchableOpacity,
+	Button,
 } from "react-native";
-const placeholder = require("../../../assets/images/kemal.jpg");
-// TODO: add images to context, drafting
-const gallery = () => {
+
+// export default function component()
+export default function openCamera() {
 	const { postData, updatePostData } = useContext(PostContext);
+	const cameraRef = useRef(null);
 
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
@@ -25,119 +29,95 @@ const gallery = () => {
 			imageURIs: imageLinks,
 		});
 	};
-	const handleUpdateTitle = (title) => {
-		updatePostData({ title: title }); // Update multiple values
-	};
 
-	const handleUpdateDesc = (descr) => {
-		updatePostData({ description: descr }); // Update multiple values
-	};
+	// states for camera usage
+	const [type, setType] = useState(CameraType.back);
+	const [permission, requestPermission] = Camera.useCameraPermissions();
 
-	// handler for updating location (room number)
-	const handleUpdateLocation = (locationName) => {
-		updatePostData({ ...postData, location: locationName });
-	};
+	function toggleCameraType() {
+		setType((current) =>
+			current === CameraType.back ? CameraType.front : CameraType.back
+		);
+	}
 
-	// TODO: ADD GOOGLE PLACE ID HERE
+	// ask for permissions before:
+	// note: during testing, our phones already gave permissions automatically
+	// and we're not sure if this is because it persists across loading or not q
+	if (permission == null) {
+		// Camera permissions are still loading
+		return <View />;
+	}
 
-	// This is the function that lets opens the phone gallery and pick image
-	// Use async to load images first before doing anything
-	// https://docs.expo.dev/tutorial/image-picker/
-	const pickImage = async () => {
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			allowsMultipleSelection: true,
-			aspect: [4, 3],
-			quality: 1,
-			selectionLimit: 5,
-		});
+	if (!permission.granted) {
+		// Camera permissions are not granted yet
+		return (
+			<View style={styles.container}>
+				<Text style={{ textAlign: "center" }}>
+					We need your permission to show the camera
+				</Text>
+				<Button onPress={requestPermission} title="grant permission" />
+			</View>
+		);
+	} else {
+		return (
+			<View style={styles.container}>
+				<Camera style={styles.camera} type={type} ref={cameraRef}>
+					<View style={styles.buttonContainer}>
+						<TouchableOpacity
+							style={styles.button}
+							onPress={toggleCameraType}
+						>
+							<Text style={styles.text}>Flip Camera</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cameraButton}
+							onPress={async () => {
+								if (cameraRef) {
+									let photo =
+										await cameraRef.current.takePictureAsync();
+									console.log(photo.uri);
+								}
+							}}
+						></TouchableOpacity>
 
-		if (!result.canceled) {
-			// Loops through all of the images and sets strings of the uri
-			let linkArray = [];
-			for (let i = 0; i < result.assets.length; i++) {
-				// create update array
-				linkArray = [...linkArray, result.assets[i].uri];
-			}
-			handleUpdateImages(linkArray);
-		}
-	};
-
-	return (
-		<SafeAreaView
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
-			{/* keyboard and scrollview are for making the keyboard work 
-			    as it was blocking the stuff*/}
-			<KeyboardAvoidingView
-				style={{ flex: 1 }}
-				keyboardVerticalOffset={100}
-				behavior={"position"}
-			>
-				<ScrollView
-					keyboardShouldPersistTaps="handled"
-					keyboardDismissMode="on-drag"
-					contentContainerStyle={{
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-					alwaysBounceVertical={false}
-				>
-					<PlainButton2
-						onPress={() => {
-							pickImage(); // pick images here
-						}}
-						text="Choose from Gallery"
-					/>
-
-					{/* carousel */}
-					<View>
-						<ImageViewer
-							placeholderImageSource={placeholder}
-							selectedImage={postData.imageURIs}
-						></ImageViewer>
+						<Link href="/post/add-title" asChild>
+							<PlainButton2 text="Next Step" />
+						</Link>
 					</View>
+				</Camera>
+			</View>
+		);
+	}
+}
 
-					<BackButton />
-
-					{/* inputs, modularize these? */}
-					<TextInput
-						placeholder="Add Food Name"
-						placeholderTextColor="#94A38F"
-						value={postData.title}
-						onChangeText={(text) => {
-							handleUpdateTitle(text);
-						}}
-					></TextInput>
-
-					<TextInput
-						placeholder="Add Location"
-						placeholderTextColor="#94A38F"
-						value={postData.location}
-						onChangeText={(text) => {
-							handleUpdateLocation(text);
-						}}
-					></TextInput>
-
-					<TextInput
-						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-						placeholderTextColor="#94A38F"
-						multiline
-						numberOfLines={4}
-						maxLength={40}
-						onChangeText={(text) => {
-							handleUpdateDesc(text);
-						}}
-						value={postData.description}
-					></TextInput>
-
-					<Link href="/post/tags" asChild>
-						<PlainButton2 text="Next Step" />
-					</Link>
-				</ScrollView>
-			</KeyboardAvoidingView>
-		</SafeAreaView>
-	);
-};
-
-export default gallery;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	camera: {
+		flex: 1,
+	},
+	buttonContainer: {
+		flex: 1,
+		flexDirection: "row",
+		backgroundColor: "transparent",
+		margin: 64,
+	},
+	button: {
+		flex: 1,
+		alignSelf: "flex-end",
+		alignItems: "center",
+	},
+	cameraButton: {
+		width: 50,
+		height: 50,
+		borderRadius: 25,
+		backgroundColor: "white",
+	},
+	text: {
+		fontSize: 24,
+		fontWeight: "bold",
+		color: "white",
+	},
+});
