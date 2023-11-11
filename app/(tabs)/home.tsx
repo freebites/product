@@ -3,11 +3,57 @@ import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // 
 import { globalStyles } from "../../components/global";
 import SearchBar from "../../components/common/SearchBar";
 import Database from "../../components/fetchData";
-import readData from "../../components/read";
+import { getAllPosts } from "../../components/read";
+import { getOne } from "../../components/read";
+import create from "../../components/create";
+import postType from "../../context/postContext";
 
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
-	console.log(readData("653c039a3a6e6c2cf7a59948"));
+	// console.log(readData("653c039a3a6e6c2cf7a59948"));
+	
+	const test: postType = {	
+		title: "hi",
+	description: "testDescription",
+	imageURIs: [""],
+	tags: {
+		perishable: true,
+		allergens: [],
+		diet: [],
+	},
+	location: "unknown",
+	comments: [],
+	post_id: "",
+	room: "",
+	postTime: undefined
+};
+	
+
+// temp useState and useEffect just for testing
+const [posts, setPosts] = useState();
+useEffect(() => {
+	// async function
+	const fetchData = async () => {
+		const postData = await getAllPosts();
+		setPosts(postData);
+		console.log(postData);
+	};
+
+	fetchData();
+	create(test);
+}, []); // the empty array in useEffect means 'only run once'
+
+// console.log(posts);
+
+// const getOneThing = async = () => {
+// 	const singlePost = await getOne("653c039a3a6e6c2cf7a59948");
+// }
+
+
+
+
+
+
 	// useEffect(() => {
 	// 	const fetchData = () => {
 	// 	  readData("653c039a3a6e6c2cf7a59948")

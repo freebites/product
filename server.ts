@@ -4,6 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+// const mongodb = require("")
+
 
 const app = express();
 const port = 3001;
@@ -46,10 +48,10 @@ const imageURI = new mongoose.Schema({ URI: String });
 
 // Define a schema for the "items" collection
 const itemSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectID,
+  // _id: mongoose.Schema.Types.ObjectID,
   title: String,
   description: String,
-  imageURIs: [imageURI],
+  imageURIs: [String],
   tag: tags,
   location: String,
   comments: [comment],
@@ -78,17 +80,6 @@ const itemSchema = new mongoose.Schema({
 // Create a model for the "items" collection
 const Item = mongoose.model("freebites", itemSchema, "Posts");
 
-// Item.createCollection().then(function (collection) {
-//   console.log("Collection made");
-// });
-
-// const getDBs = async () => {
-//   try {
-//     const collections = db.
-//   }
-// }
-
-
 // API endpoint to get all items from MongoDB
 app.get("/api/Posts", async (req, res) => {
   try {
@@ -101,17 +92,32 @@ app.get("/api/Posts", async (req, res) => {
   }
 });
 
+// API endpoint to get one specific post from MongoDB
+app.get('/api/Posts/:id', async (req, res) => {
+  const itemId = req.params.id;
+  console.log("looking");
+	try { 
+		const item = await Item.findOne({_id: itemId});
+		// console.log(Item);
+		console.log("item acquired", item);
+		res.json(item);
+	} catch (error) {
+		res.status(500).json({ error: "Something went hi" });
+	}
+});
+
 app.post('/api/Posts', async (req, res) => {
   const post = req.body; // same as the posts schema
-  console.log('body', posts);
 
-  try {
-    await Item.create(post)
+    try {
+      
+    const savedItem = await Item.create(post);
+    res.json(savedItem)
   } catch (error) {
     console.log("creating review document", error)
   }
 
-  res.json({ message: 'Successful review submission' })
+  // res.json({ message: 'Successful review submission' })
 })
 
 // Start the server
