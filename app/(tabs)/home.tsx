@@ -3,37 +3,31 @@ import { View, Text, SafeAreaView, TouchableHighlight } from "react-native"; // 
 import { globalStyles } from "../../components/global";
 import SearchBar from "../../components/common/SearchBar";
 import Database from "../../components/fetchData";
-import readData from "../../components/read";
+import { getAllPosts } from "../../components/read";
 
 const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
-	console.log(readData("653c039a3a6e6c2cf7a59948"));
-	// useEffect(() => {
-	// 	const fetchData = () => {
-	// 	  readData("653c039a3a6e6c2cf7a59948")
-	// 	    .then((item) => {
-	// 	      console.log('Item data:', item);
-	    
-	// 	      // Store the result in a variable if needed
-	// 	      const myVariable = item;
-	// 	      // Now you can use `myVariable` in the rest of your component's logic
-	// 	    })
-	// 	    .catch((error) => {
-	// 	      console.error('Error:', error.message);
-	// 	    });
-	// 	};
-	    
-	// 	fetchData();
-	//       }, ["653c039a3a6e6c2cf7a59948"]);
-	// data[] = Database();
-	
-	// console.log(myVariable)
+
+	// temp useState and useEffect just for testing
+	const [posts, setPosts] = useState([]);
+	useEffect(() => {
+		// async function
+		const fetchData = async () => {
+			try {
+				const postData = await getAllPosts();
+				setPosts(postData);
+			} catch (error) {
+				console.error("Error fetching posts:", error);
+				// Handle the error (e.g., show an error message to the user)
+			}
+		};
+
+		fetchData();
+	}, []); // the empty array in useEffect means 'only run once'
+
+	console.log(posts);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-
-			
-			
-
 			{/* <View>
 			{data.map((item) => (
 				<View key={item._id}>
@@ -44,8 +38,6 @@ const Home = () => {
 
 
 			</View> */}
-	
-			
 
 			<SearchBar />
 			<Text> Home </Text>
@@ -94,6 +86,10 @@ const Home = () => {
 					>
 						<Text>Sign Up</Text>
 					</TouchableHighlight>
+				</View>
+
+				<View>
+					<Text>{JSON.stringify(posts)}</Text>
 				</View>
 			</View>
 		</SafeAreaView>
