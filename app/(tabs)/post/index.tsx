@@ -25,9 +25,12 @@ export default function openCamera() {
 
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
+		// append image links to old array
+		const updatedImageURIs = [...postData.imageURIs, ...imageLinks];
+
 		updatePostData({
 			...postData,
-			imageURIs: imageLinks,
+			imageURIs: updatedImageURIs,
 		});
 	};
 
@@ -41,6 +44,24 @@ export default function openCamera() {
 		);
 	}
 
+	// function for adding camera picture to context.
+	const takePhoto = async () => {
+		if (cameraRef) {
+			let photo = await cameraRef.current.takePictureAsync();
+			console.log(photo.uri);
+			// handleUpdateImages expects an array of URIs
+
+			handleUpdateImages([photo.uri]);
+		}
+
+		console.log([postData.imageURIs]);
+	};
+
+	//////////////
+	//
+	// camera rendering
+	//
+	//////////////
 	// ask for permissions before:
 	// note: during testing, our phones already gave permissions automatically
 	// and we're not sure if this is because it persists across loading or not q
@@ -72,13 +93,7 @@ export default function openCamera() {
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.cameraButton}
-							onPress={async () => {
-								if (cameraRef) {
-									let photo =
-										await cameraRef.current.takePictureAsync();
-									console.log(photo.uri);
-								}
-							}}
+							onPress={takePhoto}
 						></TouchableOpacity>
 						<GalleryButton onPress={handleUpdateImages}></GalleryButton>
 
