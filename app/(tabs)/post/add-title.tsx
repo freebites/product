@@ -14,6 +14,8 @@ import {
 	TextInput,
 	StyleSheet,
 	KeyboardAvoidingView,
+	Pressable,
+	Text,
 } from "react-native";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
@@ -25,6 +27,16 @@ const gallery = () => {
 		updatePostData({
 			...postData,
 			imageURIs: imageLinks,
+		});
+	};
+
+	// handler for clearing images - async function
+	// talk with designers about flow for adding images - when is the user
+	// able to delete images/how would they?
+	const clearImages = async () => {
+		await updatePostData({
+			...postData,
+			imageURIs: [],
 		});
 	};
 	const handleUpdateTitle = (title) => {
@@ -79,6 +91,7 @@ const gallery = () => {
 
 		console.log(result);
 	};
+
 	return (
 		<SafeAreaView
 			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -119,6 +132,12 @@ const gallery = () => {
 							selectedImage={postData.imageURIs}
 						></ImageViewer>
 					</View>
+
+					<Pressable
+						onPress={() => {
+							clearImages();
+						}}
+					></Pressable>
 
 					<BackButton />
 
