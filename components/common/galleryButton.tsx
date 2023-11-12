@@ -4,24 +4,37 @@ import * as ImagePicker from "expo-image-picker";
 import PlainButton2 from "./PlainButton2";
 import React from "react";
 
-////////////////////////////////
-//// USELESS BUTTON LMAO COME BACK WITH STRATEGY TO REMEMBER PREVIUOS PAGE
-//// JUST HARD CODE THE LINKS FIRST
+const GalleryButton = (props) => {
 
-const galleryButton = (props) => {
-	
+	const pickImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsMultipleSelection: true,
+			aspect: [4, 3],
+			quality: 1,
+			selectionLimit: 5,
+		});
 
+		if (!result.canceled) {
+			// Loops through all of the images and sets strings of the uri
+			let linkArray = [];
+			for (let i = 0; i < result.assets.length; i++) {
+				// create update array
+				linkArray = [...linkArray, result.assets[i].uri];
+			}
+			props.onPress(linkArray);
+		}
+	};
 	return (
-		<View>
+		<View style={{ height: 100, width: 100 }}>
 			<PlainButton2
-				onPress={(props.onPress) => {
+				onPress={() => {
+					pickImage(); // pick images here
 				}}
 				text="Choose from Gallery"
 			/>
 		</View>
-
-				
 	);
 };
 
-export default galleryButton;
+export default GalleryButton;

@@ -4,6 +4,7 @@ import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
+import GalleryButton from "../../../components/common/GalleryButton";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
 import { Camera, CameraType } from "expo-camera";
@@ -79,6 +80,7 @@ export default function openCamera() {
 								}
 							}}
 						></TouchableOpacity>
+						<GalleryButton onPress={handleUpdateImages}></GalleryButton>
 
 						<Link href="/post/add-title" asChild>
 							<PlainButton2 text="Next Step" />
