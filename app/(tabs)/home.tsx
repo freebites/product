@@ -22,7 +22,7 @@ const Home = () => {
 		diet: [],
 	},
 	location: "unknown",
-	comments: [],
+	// comments: [],
 	post_id: "",
 	room: "",
 	postTime: undefined
