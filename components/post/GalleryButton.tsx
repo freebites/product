@@ -1,11 +1,10 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
-import PlainButton2 from "./PlainButton2";
+import PlainButton2 from "../common/PlainButton2";
 import React from "react";
 
 const GalleryButton = (props) => {
-
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
