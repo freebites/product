@@ -16,6 +16,7 @@ export type comment = {
 
 // types for a post
 export type postType = {
+	_id : string;
 	title: string;
 	description: string;
 	imageURIs: string[];
@@ -29,6 +30,7 @@ export type postType = {
 
 // default empty post
 export const EmptyPost: postType = {
+	_id : "",
 	title: "",
 	description: "",
 	imageURIs: [""],

@@ -1,17 +1,50 @@
-import React, { useState, forwardRef } from "react";
-import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet } from "react-native"; // views are divs and text a p tags
+import React, { useState, forwardRef, useEffect, useContext } from "react";
+import { View, Text, SafeAreaView, TouchableHighlight, StyleSheet, ScrollView } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
-import HomePost from "../../../components/common/HomePost"
-import {Link, router} from "expo-router";
+import HomePost from "../../../components/common/HomePost";
+import {Link, router, useLocalSearchParams} from "expo-router";
+import { getAllPosts, getOne } from "../../../components/read";
+import { PostContext, PostProvider, postType } from "../../../context/postContext";
+import Post from "../post";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+
+library.add(fab, fas)
 
 const Home = () => {
 
+
+	const [AllPosts, setPosts] = useState([]);
+	useEffect(() => {
+	// async function
+		const fetchData = async () => {
+			const postData = await getAllPosts();
+			setPosts(postData);
+			// console.log(postData);
+		};
+		fetchData();
+	}, []);
+
+	const { postData, updatePostData } = useContext(PostContext);
+
+	const handleUpdate = (eachPostData : postType) => {
+		updatePostData(eachPostData);
+	};
+
+	// const fetchPost = async (props) => {
+	// 	const postData = await getOne(props._id);
+	// 	setSinglePost(postData);
+	// }
+
+
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
+
 		<SafeAreaView style={[globalStyles.container]}>
 			<SearchBar />
-			<Text> Home </Text>
 
 			<View
 				style={{
@@ -20,6 +53,7 @@ const Home = () => {
 					justifyContent: "space-evenly",
 					width: "100%",
 					paddingTop: "3%",
+					paddingBottom : "3%"
 				}}
 			>
 				<View style={{ width: "30%" }}>
@@ -58,22 +92,52 @@ const Home = () => {
 						<Text> Bookmark </Text>
 					</TouchableHighlight>
 				</View>
-			</View>
-			<View style = {styles.postDisplay}>
-			<Link href = "/home/postPopUp" asChild> 
-				<HomePost/>
-		
-			</Link>
+			</View>		
+
+						
+			<ScrollView contentContainerStyle = {styles.postContainer}>
+				{ AllPosts.map((eachPost: postType) => {
+					// {handleUpdate(eachPost)}
+					// console.log(eachPost)
+				return	(
+					// <Link 
+					// 	href = {{
+					// 		pathname: "/home/postPopUp", 
+					// 		params: {eachPost}
+					// 	}} asChild
+					// 	key = {eachPost._id} 
+
+						
+					// > 
+						<HomePost 
+							style = {styles.postCard}
+							key = {eachPost._id} 
+							post = {eachPost}
+							onPress = {() => router.push ({
+								pathname: "/home/postPopUp",
+								params: {id: eachPost._id}
+								
+							})}
+
+						/>
+
+
+					);
+				})}
 				
-			</View>
+				
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
-	postDisplay : {
-		flex : 1,
+	postContainer : {
+		rowGap: 15,
 		width : 345,
+	},
+	postCard : {
+		marginBottom: 30,
 	}
 });
 

@@ -1,36 +1,32 @@
 import {View, Text, SafeAreaView, StyleSheet} from "react-native";
-import {Link, router} from "expo-router";
-import React from "react";
+import {Link, router, useLocalSearchParams, useNavigation, useRouter} from "expo-router";
+import React, { useContext } from "react";
 import BackButton from "../../../components/common/BackButton";
-import { postType } from "../../../context/postContext";
+import { PostContext, postType } from "../../../context/postContext";
 import PostCard from "../../../components/common/PostCard";
 import { globalStyles } from "../../../components/global";
+import post from "../../../components/common/cards/post";
+import { useLocation } from 'react-router-dom'
 
 
-const dummyData: postType = {
-	title: "Pizzas",
-	description: "there are a lot!",
-	imageURIs: ['../../assets/images/the-pizza-box.jpeg'],
-	tags: {
-		perishable: true,
-		allergens: ["peanuts"],
-		diet: ["none"],
-	},
-	location: "JCC",
-	comments: [],
-	post_id: "",
-	room: "123",
-	postTime: new Date(),
-}
+export const postPopUp = (props, state) => {
+	// const { postData, updatePostData } = useContext(PostContext);
+	// console.log("here" + postData)
+	// const postLocation = useLocation();
+	// const postData = postLocation.state?.post;
+	const navigation = useNavigation();
+	const router = useRouter();
+	const params = useLocalSearchParams();
+	
+	 console.log(JSON.stringify(params))
 
-
-const postPopUp = () => {
     return (
 		<SafeAreaView style = {globalStyles.container}> 
 
 			<View style = {styles.cardbox}> 
-			<PostCard  /> 
-				
+				<PostCard 
+					id = {params.id} 
+				/> 
 			</View>
 			<BackButton />
 		</SafeAreaView>
@@ -40,8 +36,8 @@ const postPopUp = () => {
 
 const styles = StyleSheet.create ({
 	cardbox : {
-		height : 685,
-		transform: [{translateY: 43}],
+		height : 650,
+		marginTop: 50,
 		width : 345,
 		// flex: 1
 

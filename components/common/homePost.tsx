@@ -1,16 +1,20 @@
 import {Image, View, Text, StyleSheet, Pressable} from "react-native";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components/native";
-import * as postType from "../../context/postContext"
+import {postType} from "../../context/postContext"
 import { StyleSheetContext } from "styled-components";
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getAllPosts, getOne } from "../read";
+import create from "../create";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 
 
 
-const dummyData: postType.postType = {
+const dummyData: postType = {
+	_id : '',
 	title: "testtitle",
 	description: "Pizzas, burritos, tacos",
 	imageURIs: ['../../assets/images/the-pizza-box.jpeg'],
@@ -26,14 +30,17 @@ const dummyData: postType.postType = {
 	postTime: new Date(),
 }
 
+
+
 export const HomePost = (props, ref) => {
-    // const [postData, setPostData] = useState<typeof dummyData>();
+
+
     return (
 		
 			<Pressable style = {styles.mainbox}
 				ref = {ref}
-				onPress = {props.onPress}
-				>
+				onPress = {props.onPress}	
+			>
 		
 				<View style = {styles.imagebox}> 
 				<Image
@@ -46,12 +53,16 @@ export const HomePost = (props, ref) => {
 				</View>
 				<View style = {styles.sidebox}>
 
-					<FontAwesomeIcon icon = {faBookmark} style = {styles.bookmark}/>
-					<View style = {styles.location}> 
-						{dummyData.location}
+				<Pressable >
+					<FontAwesomeIcon icon={faBookmark} style= {styles.bookmark}/>
+
+				</Pressable>
+					<View style = {styles.location}>  
+						{props.post.location}
+					
 					</View>
 					<Text style = {styles.description}> 
-						{dummyData.description}
+						{props.post.title}
 					</Text>
 
 			</View>
@@ -97,6 +108,7 @@ const styles = StyleSheet.create({
 
 	},
 	bookmark : {
+		width: 20,
 		height : 25,
 		flexDirection : 'row',
 		alignSelf : "flex-end"
