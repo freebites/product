@@ -85,23 +85,25 @@ export default function openCamera() {
 			<View style={styles.container}>
 				<Camera style={styles.camera} type={type} ref={cameraRef}>
 					<View style={styles.buttonContainer}>
-						<TouchableOpacity
-							style={styles.button}
-							onPress={toggleCameraType}
-						>
-							<Text style={styles.text}>Flip Camera</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cameraButton}
-							onPress={takePhoto}
-						></TouchableOpacity>
-						<GalleryButton
-							onPress={handleUpdateImages}
-						></GalleryButton>
-
-						<Link href="/post/add-title" asChild>
-							<PlainButton2 text="Next Step" />
+						<Link href="/(tabs)/home" asChild>
+							<TouchableOpacity style={styles.closeButton}>
+								<Text style={styles.closeText}>x</Text>
+							</TouchableOpacity>
 						</Link>
+						<View style={styles.galleryContainer}>
+							<GalleryButton
+								onPress={handleUpdateImages}
+							></GalleryButton>
+						</View>
+
+						<View style={styles.borderContainer}>
+							<View style={styles.border}>
+								<TouchableOpacity
+									style={styles.cameraButton}
+									onPress={takePhoto}
+								></TouchableOpacity>
+							</View>
+						</View>
 					</View>
 				</Camera>
 			</View>
@@ -113,30 +115,71 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",
+		flexDirection: 'column',
 	},
 	camera: {
 		flex: 1,
 	},
 	buttonContainer: {
 		flex: 1,
-		flexDirection: "row",
+		flexDirection: "column",
+		justifyContent: "flex-start",
 		backgroundColor: "transparent",
-		margin: 64,
+		margin: 15,
 	},
 	button: {
 		flex: 1,
 		alignSelf: "flex-end",
 		alignItems: "center",
+		padding: 10,
+	},
+	closeButton: {
+		width: 70,
+		height: 70,
+		borderColor: "white",
+		zIndex: 1,
+		alignContent: 'center',
+		paddingLeft: 10,
+	},
+	closeText: {
+		fontFamily: "Arial",
+		fontSize: 50,
+		color: 'white',
+		fontWeight: "bold",
+	},
+	galleryContainer: {
+		position: "absolute",
+		bottom: 0, // Adjust the bottom offset as needed
+		left: 15,
 	},
 	cameraButton: {
-		width: 50,
-		height: 50,
-		borderRadius: 25,
+		width: 70,
+		height: 70,
+		borderRadius: 35,
+		borderColor: "lightgray",
+		borderWidth: 2,
 		backgroundColor: "white",
+		zIndex: 1,
+		alignContent: 'center',
+		justifyContent: 'center',
 	},
-	text: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "white",
+	borderContainer: {
+		position: "absolute",
+		bottom: 60, // Adjust the bottom offset as needed
+		right: 150,
+		alignSelf: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'transparent',
+	},
+	border: {
+		alignContent: 'center',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 100,
+		height: 100,
+		borderRadius: 50,
+		borderWidth: 6,
+		borderColor: 'white',
 	},
 });

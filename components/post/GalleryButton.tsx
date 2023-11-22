@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import PlainButton2 from "../common/PlainButton2";
@@ -26,14 +26,22 @@ const GalleryButton = (props) => {
 	};
 	return (
 		<View style={{ height: 100, width: 100 }}>
-			<PlainButton2
-				onPress={() => {
-					pickImage(); // pick images here
-				}}
-				text="Choose from Gallery"
-			/>
+			<TouchableOpacity onPress={pickImage} style={styles.button}>
+			</TouchableOpacity>
 		</View>
 	);
 };
+const styles = StyleSheet.create({
+	button: {
+		width: 80,
+		height: 80,
+		backgroundColor: "lightblue",
+		borderRadius: 10,
+		borderColor: 'white',
+		borderWidth: 4,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+});
 
 export default GalleryButton;
