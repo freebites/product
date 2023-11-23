@@ -10,14 +10,10 @@ import deleteOne from "../../components/delete";
 import postType from "../../context/postContext";
 
 const Home = () => {
-	const [favoriteSelected, setFavoriteSelected] = useState(true);	
+	const [favoriteSelected, setFavoriteSelected] = useState(true);
 
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-
-			
-			
-
 			{/* <View>
 			{data.map((item) => (
 				<View key={item._id}>
@@ -28,8 +24,6 @@ const Home = () => {
 
 
 			</View> */}
-	
-			
 
 			<SearchBar />
 			<Text> Home </Text>

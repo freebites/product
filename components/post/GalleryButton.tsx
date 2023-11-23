@@ -10,7 +10,7 @@ const GalleryButton = (props) => {
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsMultipleSelection: true,
 			aspect: [4, 3],
-			quality: 1,
+			quality: 0.2,
 			selectionLimit: 5,
 		});
 

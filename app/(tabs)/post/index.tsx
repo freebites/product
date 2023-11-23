@@ -1,8 +1,5 @@
 import { Link } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
-import BackButton from "../../../components/common/BackButton";
-import * as ImagePicker from "expo-image-picker";
-import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import GalleryButton from "../../../components/post/GalleryButton";
 import { PostContext } from "../../../context/postContext";
@@ -17,12 +14,13 @@ import {
 	TouchableOpacity,
 	Button,
 } from "react-native";
+import { manipulateAsync } from "expo-image-manipulator";
 
 // export default function component()
 export default function openCamera() {
 	const { postData, updatePostData } = useContext(PostContext);
 	const cameraRef = useRef(null);
-
+	// console.log(postData);
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
 		// append image links to old array
@@ -48,13 +46,21 @@ export default function openCamera() {
 	const takePhoto = async () => {
 		if (cameraRef) {
 			let photo = await cameraRef.current.takePictureAsync();
-			console.log(photo.uri);
+			//console.log(photo.uri);
+			if (photo.hasOwnProperty("uri")) {
+				// compress images
+				const manipulateResult = await manipulateAsync(
+					photo.uri,
+					[],
+					{ compress: 0.2 } // from 0 to 1 "1 for best quality"
+				);
+				handleUpdateImages([manipulateResult.uri]);
+				//setImage(manipulateResult.uri);
+			}
 			// handleUpdateImages expects an array of URIs
-
-			handleUpdateImages([photo.uri]);
 		}
 
-		console.log([postData.imageURIs]);
+		//console.log([postData.imageURIs]);
 	};
 
 	//////////////

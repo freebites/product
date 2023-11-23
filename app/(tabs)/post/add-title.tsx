@@ -6,7 +6,6 @@ import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
-import { Camera, CameraType } from "expo-camera";
 
 import {
 	View,
@@ -62,7 +61,7 @@ const gallery = () => {
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsMultipleSelection: true,
 			aspect: [4, 3],
-			quality: 1,
+			quality: 0,
 			selectionLimit: 5,
 		});
 
