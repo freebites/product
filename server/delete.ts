@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
 
-const apiURL = process.env.REACT_APP_API_URL;
+const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const deleteOne = async (itemID) => {
 	try {
 		console.log(itemID);

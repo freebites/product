@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
-import LoginButton from "./common/LoginButton";
+import LoginButton from "./login/LoginButton";
 import { useAuth } from "../context/auth";
-import LoginInput from "./common/LoginInput";
+import LoginInput from "./login/LoginInput";
 
 const LoginSection = () => {
 	const { signIn } = useAuth();

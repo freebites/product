@@ -2,7 +2,7 @@ import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { EmptyPost, postType } from "../../context/postContext";
 import { globalStyles } from "../global";
-import BackButton from "./BackButton";
+import BackButton from "../common/BackButton";
 import { Divider } from "react-native-elements";
 import { PostContext } from "../../context/postContext";
 import { getOne } from "../../server/read";

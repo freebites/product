@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
 
-const apiURL = process.env.REACT_APP_API_URL;
+const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const create = async (props) => {
 	/* If props.itemId is null, assign it the next available ID
         /* If there is already an ID, do not assign it a new one */

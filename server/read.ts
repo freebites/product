@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
 
-const apiURL = process.env.REACT_APP_API_URL;
+const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getAllPosts = async () => {
 	try {
+		//console.log("env variable: ", apiURL);
 		const response = await axios.get(`${apiURL}:3001/api/Posts`);
 		//console.log(response);
 		return response.data;
