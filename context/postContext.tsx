@@ -33,7 +33,7 @@ export const EmptyPost: postType = {
 	_id : "",
 	title: "",
 	description: "",
-	imageURIs: [""],
+	imageURIs: [],
 	tags: {
 		perishable: true,
 		allergens: [],

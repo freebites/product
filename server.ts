@@ -1,3 +1,5 @@
+// import postContext from "./context/postContext";
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -96,7 +98,6 @@ app.get('/api/Posts/:id', async (req, res) => {
   console.log("looking");
 	try { 
 		const item = await Item.findOne({_id: itemId});
-		// console.log(Item);
 		console.log("item acquired", item);
 		res.json(item);
 	} catch (error) {
@@ -108,15 +109,57 @@ app.post('/api/Posts', async (req, res) => {
   const post = req.body; // same as the posts schema
 
     try {
-
+      
     const savedItem = await Item.create(post);
     res.json(savedItem)
   } catch (error) {
     console.log("creating review document", error)
   }
-
-  // res.json({ message: 'Successful review submission' })
 })
+
+app.put('/api/Posts/:id', async (req, res) => {
+  try {
+    const itemId = req.params.id;
+    const updatedData = req.body;
+
+    console.log("gets here");
+
+    // Find the item by ID and update its properties
+    const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, { new: true });
+
+    if (!updatedItem) {
+      console.log("gets here");
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json(updatedItem);
+  } catch (error) {
+    console.error('Error updating item IN BACKEND:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// API endpoint for deleting data
+app.delete('/api/Posts/:id', async (req, res) => {
+  try {
+    const itemId = req.params.id;
+
+    console.log("gets here");
+
+    // Find the item by ID and remove it
+    const deletedItem = await Item.findByIdAndRemove(itemId);
+
+    if (!deletedItem) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json({ message: 'Item deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {
