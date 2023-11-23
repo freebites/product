@@ -79,7 +79,7 @@ export default function reviewpost() {
 			<Text> Allergens: {postData.tags.allergens.join(", ")}</Text>
 			<Text>Diets: {postData.tags.diet.join(", ")}</Text>
 			<BackButton />
-			<Link href="/(tabs)/home" asChild>
+			<Link href="/home" asChild>
 				<PlainButton2
 					onPress={() => uploadAllImages(postData.imageURIs)}
 					text="Submit Post"

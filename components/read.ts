@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getAllPosts = async () => {
 	try {
-		const response = await axios.get("http://localhost:3001/api/Posts");
+		const response = await axios.get("http://192.168.1.199:3001/api/Posts");
 		//console.log(response);
 		return response.data;
 	} catch (error) {

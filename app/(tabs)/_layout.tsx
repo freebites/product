@@ -32,7 +32,7 @@ export default () => {
 					headerShown: false,
 					tabBarIcon: () => <Image source={postIcon} />,
 					tabBarShowLabel: false,
-					href: "(tabs)/post",
+					href: "/post",
 					tabBarStyle: {
 						display: "none", // disable tab bar when creating post
 					},

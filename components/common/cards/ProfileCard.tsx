@@ -34,13 +34,13 @@ const ProfileCard = () => {
 			<ProfileImageUI></ProfileImageUI>
 			<ProfileCardTextUI>
 				<CardText style={{ fontSize: 18, fontWeight: "bold" }}>
-					Name
+					<Text>Name</Text>
 				</CardText>
 
 				<CardText style={{ fontSize: 15 }}>email address</CardText>
 
 				<CardText style={{ fontSize: 15, height: "33%" }}>
-					Lorem ipsum dolor sit amet,
+					<Text>Lorem ipsum dolor sit amet,</Text>
 				</CardText>
 			</ProfileCardTextUI>
 		</ProfileCardUI>

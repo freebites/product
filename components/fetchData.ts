@@ -9,7 +9,7 @@ const Database = () => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:3001/api/Posts"
+					"http://192.168.1.199:3001/api/Posts"
 				);
 				console.log(
 					"Network request to get data was successful",
