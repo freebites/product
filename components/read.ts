@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, View, Text } from "react-native";
+import axios from "axios";
 
 export const getAllPosts = async () => {
 	try {
@@ -15,13 +15,13 @@ export const getAllPosts = async () => {
 
 export const getOne = async (itemID) => {
 	try {
-		const response = await axios.get(`http://localhost:3001/api/Posts/${itemID}`);
+		const response = await axios.get(
+			`http://localhost:3001/api/Posts/${itemID}`
+		);
 		console.log("getting one");
 		return response.data;
 	} catch (error) {
-		console.log("error getting one item:", error);
+		//console.log("error getting all items:", error);
 		throw error;
 	}
 };
-
-
