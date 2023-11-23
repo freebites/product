@@ -14,20 +14,17 @@ const create = async (props) => {
 	try {
 		// Replace 'your-backend-api-url' with the actual URL of your backend API
 		// console.log("try");
-		const response = await axios.post(
-			"http://192.168.1.199:3001/api/Posts",
-			{
-				title: props.title,
-				description: props.description,
-				imageURIs: props.imageURIs,
-				tag: props.tag,
-				location: props.location,
-				comments: props.comments,
-				post_id: props.post_id,
-				room: props.room,
-				postTime: props.postTime,
-			}
-		);
+		const response = await axios.post(`${apiURL}:3001/api/Posts`, {
+			title: props.title,
+			description: props.description,
+			imageURIs: props.imageURIs,
+			tag: props.tag,
+			location: props.location,
+			comments: props.comments,
+			post_id: props.post_id,
+			room: props.room,
+			postTime: props.postTime,
+		});
 
 		// Handle the response or any further actions
 		console.log("Item added successfully:", response);

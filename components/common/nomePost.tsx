@@ -8,8 +8,8 @@ import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { storage } from "../../config";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getAllPosts, getOne } from "../read";
-import create from "../create";
+import { getAllPosts, getOne } from "../../server/read";
+import create from "../../server/create";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref } from "firebase/storage";
 

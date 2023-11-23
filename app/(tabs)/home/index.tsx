@@ -11,7 +11,7 @@ import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/common/SearchBar";
 import HomePost from "../../../components/common/HomePost";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { getAllPosts, getOne } from "../../../components/read";
+import { getAllPosts, getOne } from "../../../server/read";
 import {
 	PostContext,
 	PostProvider,

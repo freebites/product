@@ -13,7 +13,7 @@ import {
 	uploadBytes,
 	uploadBytesResumable,
 } from "firebase/storage";
-import create from "../../../components/create";
+import create from "../../../server/create";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
