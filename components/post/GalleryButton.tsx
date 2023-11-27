@@ -26,8 +26,10 @@ const GalleryButton = (props) => {
 	};
 	return (
 		<View style={{ height: 100, width: 100 }}>
-			<TouchableOpacity onPress={pickImage} style={styles.button}>
-			</TouchableOpacity>
+			<TouchableOpacity
+				onPress={pickImage}
+				style={styles.button}
+			></TouchableOpacity>
 		</View>
 	);
 };
@@ -35,9 +37,9 @@ const styles = StyleSheet.create({
 	button: {
 		width: 80,
 		height: 80,
-		backgroundColor: "lightblue",
+		backgroundColor: "#EDA76E",
 		borderRadius: 10,
-		borderColor: 'white',
+		borderColor: "white",
 		borderWidth: 4,
 		alignItems: "center",
 		justifyContent: "center",

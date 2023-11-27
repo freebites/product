@@ -1,9 +1,9 @@
 import { Link } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
-import PlainButton2 from "../../../components/common/PlainButton2";
 import GalleryButton from "../../../components/post/GalleryButton";
-import { PostContext } from "../../../context/postContext";
-import { ScrollView } from "react-native-gesture-handler";
+import { EmptyPost, PostContext } from "../../../context/postContext";
+import { manipulateAsync } from "expo-image-manipulator";
+import NextButton from "../../../components/post/NextButton";
 import { Camera, CameraType } from "expo-camera";
 import {
 	View,
@@ -14,7 +14,6 @@ import {
 	TouchableOpacity,
 	Button,
 } from "react-native";
-import { manipulateAsync } from "expo-image-manipulator";
 
 // export default function component()
 export default function openCamera() {
@@ -92,7 +91,12 @@ export default function openCamera() {
 				<Camera style={styles.camera} type={type} ref={cameraRef}>
 					<View style={styles.buttonContainer}>
 						<Link href="/(tabs)/home" asChild>
-							<TouchableOpacity style={styles.closeButton}>
+							<TouchableOpacity
+								style={styles.closeButton}
+								onPress={() => {
+									updatePostData(EmptyPost);
+								}}
+							>
 								<Text style={styles.closeText}>x</Text>
 							</TouchableOpacity>
 						</Link>
@@ -110,6 +114,10 @@ export default function openCamera() {
 								></TouchableOpacity>
 							</View>
 						</View>
+
+						<Link href="/post/add-title" asChild>
+							<NextButton style={styles.nextButtonPosition} />
+						</Link>
 					</View>
 				</Camera>
 			</View>
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",
-		flexDirection: 'column',
+		flexDirection: "column",
 	},
 	camera: {
 		flex: 1,
@@ -144,13 +152,13 @@ const styles = StyleSheet.create({
 		height: 70,
 		borderColor: "white",
 		zIndex: 1,
-		alignContent: 'center',
+		alignContent: "center",
 		paddingLeft: 10,
 	},
 	closeText: {
 		fontFamily: "Arial",
 		fontSize: 50,
-		color: 'white',
+		color: "white",
 		fontWeight: "bold",
 	},
 	galleryContainer: {
@@ -166,26 +174,34 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		backgroundColor: "white",
 		zIndex: 1,
-		alignContent: 'center',
-		justifyContent: 'center',
+		alignContent: "center",
+		justifyContent: "center",
 	},
 	borderContainer: {
 		position: "absolute",
 		bottom: 60, // Adjust the bottom offset as needed
-		right: 150,
-		alignSelf: 'center',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'transparent',
+		right: "35%",
+		alignSelf: "center",
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "transparent",
 	},
 	border: {
-		alignContent: 'center',
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignContent: "center",
+		alignItems: "center",
+		justifyContent: "center",
 		width: 100,
 		height: 100,
 		borderRadius: 50,
 		borderWidth: 6,
-		borderColor: 'white',
+		borderColor: "white",
+	},
+	nextButtonPosition: {
+		position: "absolute",
+		bottom: 30,
+		left: "75%",
+		alignSelf: "center",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
