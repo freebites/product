@@ -16,6 +16,7 @@ import {
 	Pressable,
 	Text,
 } from "react-native";
+import NextButtonText from "../../../components/post/NextButtonText";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
@@ -172,7 +173,14 @@ const gallery = () => {
 					></TextInput>
 
 					<Link href="/post/tags" asChild>
-						<PlainButton2 text="Next Step" />
+						<NextButtonText
+							text="Next Step"
+							validInput={
+								postData.description != "" &&
+								postData.title != "" &&
+								postData.location != ""
+							}
+						/>
 					</Link>
 				</ScrollView>
 			</KeyboardAvoidingView>

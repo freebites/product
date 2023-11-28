@@ -47,6 +47,7 @@ export const HomePost = (props) => {
 				setImageURL(url);
 			} catch (error) {
 				console.error("Error loading image URL:", error);
+				setImageURL(dummyData.imageURIs[0]); // set image to dummy pizza when not found
 			}
 		};
 

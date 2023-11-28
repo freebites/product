@@ -29,3 +29,23 @@ const styles = StyleSheet.create({
 		borderRadius: 18,
 	},
 });
+export function CardImageViewer({ placeholderImageSource, selectedImage }) {
+	const imageSource = selectedImage
+		? { uri: selectedImage }
+		: placeholderImageSource;
+	// TODO: add placeholder image, and also know number of items in carousel
+	return (
+		<Carousel
+			width={320}
+			height={420}
+			loop={false}
+			data={selectedImage}
+			renderItem={({ index }) => (
+				<Image
+					source={{ uri: selectedImage[index] }}
+					style={styles.image}
+				/>
+			)}
+		/>
+	);
+}

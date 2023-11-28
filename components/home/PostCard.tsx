@@ -1,12 +1,10 @@
 import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { EmptyPost, postType } from "../../context/postContext";
-import { globalStyles } from "../global";
-import BackButton from "../common/BackButton";
 import { Divider } from "react-native-elements";
-import { PostContext } from "../../context/postContext";
 import { getOne } from "../../server/read";
-
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config";
 const dummyData: postType = {
 	_id: "",
 	title: "testtitle",
@@ -27,13 +25,19 @@ const dummyData: postType = {
 export const PostCard = (props) => {
 	// console.log(props.id);
 	const [singlePost, setSinglePost] = useState(EmptyPost);
+	const [imageURL, setImageURL] = useState(null);
 	useEffect(() => {
 		const fetchPost = async () => {
 			try {
 				const postData = await getOne(props.id);
 				setSinglePost(postData);
+				const url = await getDownloadURL(
+					ref(storage, postData.imageURIs[0])
+				);
+				setImageURL(url);
 			} catch (error) {
 				console.error("Error fetching post:", error);
+				setImageURL(dummyData.imageURIs[0]);
 			}
 		};
 
@@ -51,15 +55,12 @@ export const PostCard = (props) => {
 			<Image
 				style={styles.image}
 				source={{
-					uri: dummyData.imageURIs[0],
+					uri: imageURL,
 				}}
 			/>
 			<View style={styles.description}>
-				<Text style={styles.location}>
-					{" "}
-					{JSON.stringify(singlePost.location)}
-				</Text>
-				<Text style={styles.innerDes}> {singlePost.description}</Text>
+				<Text style={styles.location}>{singlePost.location}</Text>
+				<Text style={styles.innerDes}>{singlePost.description}</Text>
 				<View style={styles.tags}></View>
 				<Divider orientation="horizontal" style={styles.divider} />
 			</View>

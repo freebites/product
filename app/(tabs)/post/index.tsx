@@ -116,7 +116,10 @@ export default function openCamera() {
 						</View>
 
 						<Link href="/post/add-title" asChild>
-							<NextButton style={styles.nextButtonPosition} />
+							<NextButton
+								style={styles.nextButtonPosition}
+								validInput={postData.imageURIs.length != 0}
+							/>
 						</Link>
 					</View>
 				</Camera>

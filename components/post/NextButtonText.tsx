@@ -1,10 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef } from "react";
-import { AntDesign } from "@expo/vector-icons";
-const NextButton = (
-	props: { onPress?: any; validInput: boolean; style: any },
-	ref
-) => {
+
+const NextButtonText = (props, ref) => {
 	return (
 		<Pressable
 			onPress={props.onPress}
@@ -15,28 +12,20 @@ const NextButton = (
 				{ opacity: pressed || !props.validInput ? 0.5 : 1.0 },
 				props.style,
 			]}
-			disabled={!props.validInput}
 		>
-			<AntDesign name="arrowright" size={36} color="white" />
+			<Text>{props.text}</Text>
 		</Pressable>
 	);
 };
 
-export const NextButtonNoLink = (props) => {
-	return (
-		<Pressable onPress={props.onPress} style={styles.button}></Pressable>
-	);
-};
 const styles = StyleSheet.create({
 	button: {
-		width: 60,
-		height: 60,
+		width: 200,
+		height: 42,
 		backgroundColor: "#EDA76E",
-		borderRadius: 30,
-		borderWidth: 2,
-		borderColor: "white",
+		borderRadius: 20,
 		alignItems: "center",
 		justifyContent: "center",
 	},
 });
-export default forwardRef(NextButton);
+export default forwardRef(NextButtonText);
