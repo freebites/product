@@ -9,6 +9,7 @@ export type tags = {
 
 // types for comments
 export type comment = {
+	id: number;
 	username: string;
 	body: string;
 	timestamp: Date; // may need to be changed to string
@@ -16,7 +17,7 @@ export type comment = {
 
 // types for a post
 export type postType = {
-	_id : string;
+	_id: string;
 	title: string;
 	description: string;
 	imageURIs: string[];
@@ -30,7 +31,7 @@ export type postType = {
 
 // default empty post
 export const EmptyPost: postType = {
-	_id : "",
+	_id: "",
 	title: "",
 	description: "",
 	imageURIs: [],
