@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-virtualized-view";
 
 import {
 	View,
@@ -17,7 +17,10 @@ import {
 	Text,
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
+import GooglePlacesInput from "../../../components/common/GooglePlacesInput";
+
 const placeholder = require("../../../assets/images/kemal.jpg");
+
 // TODO: add images to context, drafting
 const gallery = () => {
 	const { postData, updatePostData } = useContext(PostContext);
@@ -112,76 +115,78 @@ const gallery = () => {
 					}}
 					alwaysBounceVertical={false}
 				>
-					<PlainButton2
-						onPress={() => {
-							pickImage(); // pick images here
+					<View
+						style={{
+							alignItems: "center",
+							justifyContent: "center",
 						}}
-						text="Choose from Gallery"
-					/>
-
-					<PlainButton2
-						onPress={() => {
-							openCamera(); // pick images here
-						}}
-						text="Take Picture	"
-					/>
-					{/* carousel */}
-					<View>
-						<ImageViewer
-							placeholderImageSource={placeholder}
-							selectedImage={postData.imageURIs}
-						></ImageViewer>
-					</View>
-
-					<Pressable
-						onPress={() => {
-							clearImages();
-						}}
-					></Pressable>
-
-					<BackButton />
-
-					{/* inputs, modularize these? */}
-					<TextInput
-						placeholder="Add Food Name"
-						placeholderTextColor="#94A38F"
-						value={postData.title}
-						onChangeText={(text) => {
-							handleUpdateTitle(text);
-						}}
-					></TextInput>
-
-					<TextInput
-						placeholder="Add Location"
-						placeholderTextColor="#94A38F"
-						value={postData.location}
-						onChangeText={(text) => {
-							handleUpdateLocation(text);
-						}}
-					></TextInput>
-
-					<TextInput
-						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-						placeholderTextColor="#94A38F"
-						multiline
-						numberOfLines={4}
-						maxLength={40}
-						onChangeText={(text) => {
-							handleUpdateDesc(text);
-						}}
-						value={postData.description}
-					></TextInput>
-
-					<Link href="/post/tags" asChild>
-						<NextButtonText
-							text="Next Step"
-							validInput={
-								postData.description != "" &&
-								postData.title != "" &&
-								postData.location != ""
-							}
+					>
+						<PlainButton2
+							onPress={() => {
+								pickImage(); // pick images here
+							}}
+							text="Choose from Gallery"
 						/>
-					</Link>
+
+						{/* carousel */}
+						<View>
+							<ImageViewer
+								placeholderImageSource={placeholder}
+								selectedImage={postData.imageURIs}
+							></ImageViewer>
+						</View>
+
+						<Pressable
+							onPress={() => {
+								clearImages();
+							}}
+						></Pressable>
+
+						<BackButton />
+
+						{/* inputs, modularize these? */}
+						<TextInput
+							placeholder="Add Food Name"
+							placeholderTextColor="#94A38F"
+							value={postData.title}
+							onChangeText={(text) => {
+								handleUpdateTitle(text);
+							}}
+						></TextInput>
+
+						<GooglePlacesInput />
+						<TextInput
+							placeholder="Add Location"
+							placeholderTextColor="#94A38F"
+							value={postData.location}
+							onChangeText={(text) => {
+								handleUpdateLocation(text);
+							}}
+						></TextInput>
+
+						<TextInput
+							placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
+							placeholderTextColor="#94A38F"
+							multiline
+							numberOfLines={4}
+							maxLength={40}
+							onChangeText={(text) => {
+								handleUpdateDesc(text);
+							}}
+							value={postData.description}
+						></TextInput>
+
+						<Link href="/post/tags" asChild>
+							<NextButtonText
+								text="Next Step"
+								validInput={
+									postData.description != "" &&
+									postData.title != "" &&
+									postData.location != ""
+								}
+							/>
+						</Link>
+					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
