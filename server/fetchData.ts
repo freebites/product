@@ -9,9 +9,7 @@ const Database = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(
-					`http://192.168.1.199:3001/api/Posts`
-				);
+				const response = await axios.get(`${apiURL}:3001/api/Posts/`);
 				console.log(
 					"Network request to get data was successful",
 					response.data
