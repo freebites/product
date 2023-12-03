@@ -13,6 +13,8 @@ import create from "../../server/create";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref } from "firebase/storage";
 
+const placeholderImage = require("../../assets/images/kemal.jpg");
+
 const dummyData: postType = {
 	_id: "",
 	title: "testtitle",
@@ -36,18 +38,19 @@ export const HomePost = (props) => {
 		props.post.imageURIs = [];
 	}
 
-	const [imageURL, setImageURL] = useState(null);
+	const [imageURL, setImageURL] = useState(placeholderImage);
 
 	useEffect(() => {
 		const loadImageURL = async () => {
 			try {
+				// grab firebase URL from Firebase
 				const url = await getDownloadURL(
 					ref(storage, props.post.imageURIs[0])
 				);
 				setImageURL(url);
 			} catch (error) {
+				setImageURL(placeholderImage); // set image to dummy pizza when not found
 				console.error("Error loading image URL:", error);
-				setImageURL(dummyData.imageURIs[0]); // set image to dummy pizza when not found
 			}
 		};
 
@@ -60,8 +63,9 @@ export const HomePost = (props) => {
 			<View style={styles.imagebox}>
 				<Image
 					source={{
-						uri: imageURL,
+						uri: placeholderImage,
 					}}
+					src={imageURL}
 					style={styles.image}
 				/>
 			</View>

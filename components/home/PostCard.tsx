@@ -5,22 +5,8 @@ import { Divider } from "react-native-elements";
 import { getOne } from "../../server/read";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config";
-const dummyData: postType = {
-	_id: "",
-	title: "testtitle",
-	description: "4 slices of pepperoni pizza from Dominos",
-	imageURIs: ["../../assets/images/the-pizza-box.jpeg"],
-	tags: {
-		perishable: true,
-		allergens: ["peanuts"],
-		diet: ["none"],
-	},
-	location: "JCC 180",
-	comments: [],
-	post_id: "",
-	room: "123",
-	postTime: new Date(),
-};
+
+const placeholderImage = require("../../assets/images/kemal.jpg");
 
 export const PostCard = (props) => {
 	// console.log(props.id);
@@ -36,8 +22,8 @@ export const PostCard = (props) => {
 				);
 				setImageURL(url);
 			} catch (error) {
+				setImageURL(placeholderImage);
 				console.error("Error fetching post:", error);
-				setImageURL(dummyData.imageURIs[0]);
 			}
 		};
 
