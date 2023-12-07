@@ -27,7 +27,7 @@ library.add(fab, fas);
 
 const Home = () => {
   const [user, setUser] = useState();
-  const fetchData = async () => {
+  const fetchData1 = async () => {
     const johnnyUser = await getUser("johnny.tan@tufts.edu");
     setUser(johnnyUser);
     console.log(user);
@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     // async function
-    fetchData();
+    fetchData1();
   }, []);
   const [AllPosts, setPosts] = useState([]);
 

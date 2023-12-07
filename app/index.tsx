@@ -5,7 +5,7 @@ import { PostProvider } from "../context/postContext";
 const App = () => {
   return (
     <PostProvider>
-      `<Redirect href="/${cool}" />`
+      <Redirect href="/(tabs)/home" />
     </PostProvider>
   );
 };

@@ -73,14 +73,14 @@ const userSchema = new mongoose.Schema({
 
 // Create a model for the "items" collection
 const Item = mongoose.model("freebites", itemSchema, "Posts");
-const User = mongoose.model("freebites", userSchema, "profiles");
+const User = mongoose.model("freebites1", userSchema, "profile");
 
 // API endpoint to get all items from MongoDB
 app.get("/api/Posts", async (req, res) => {
   try {
     const items = await Item.find();
     // console.log(Item);
-    console.log("items acquired", items);
+    // console.log("items acquired", items);
     res.json(items);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
@@ -157,13 +157,13 @@ app.delete("/api/Posts/:id", async (req, res) => {
 });
 
 // API endpoint to get one specific user from MongoDB
-app.get("/api/Posts/:email", async (req, res) => {
+app.get("/api/profile/:email", async (req, res) => {
   const email = req.params.email;
-  console.log("looking");
+  console.log("looking for johnny");
   try {
-    const item = await Item.findOne({ email: email });
-    console.log("item acquired", item);
-    res.json(item);
+    const user = await User.findOne({ email: email });
+    console.log("item acquired", user);
+    res.json(user);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
