@@ -6,7 +6,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 // const mongodb = require("")
 
-
 const app = express();
 const port = 3001;
 
@@ -16,10 +15,13 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb+srv://freebites7:1234@freebites.w7sk83d.mongodb.net/Posts?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://freebites7:1234@freebites.w7sk83d.mongodb.net/Posts?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .catch((err) => {
     console.log("error connecting to db", err);
   });
@@ -60,25 +62,18 @@ const itemSchema = new mongoose.Schema({
   postTime: Date,
 });
 
-// const itemSchema = new mongoose.Schema({
-//   title: String
-
-// });
-
-// const itemSchema = new mongoose.Schema({
-//   title: String,
-//   description: String,
-//   imageURIs: String,
-//   tags: String,
-//   location: String,
-//   comments: String,
-//   post_id: String,
-//   room: String,
-//   postTime: Date,
-// });
+const userSchema = new mongoose.Schema({
+  // _id: mongoose.Schema.Types.ObjectID,
+  firstName: String,
+  lastName: String,
+  pronouns: String,
+  email: String,
+  profilePic: String,
+});
 
 // Create a model for the "items" collection
 const Item = mongoose.model("freebites", itemSchema, "Posts");
+const User = mongoose.model("freebites", userSchema, "profiles");
 
 // API endpoint to get all items from MongoDB
 app.get("/api/Posts", async (req, res) => {
@@ -93,31 +88,30 @@ app.get("/api/Posts", async (req, res) => {
 });
 
 // API endpoint to get one specific post from MongoDB
-app.get('/api/Posts/:id', async (req, res) => {
+app.get("/api/Posts/:id", async (req, res) => {
   const itemId = req.params.id;
   console.log("looking");
-	try { 
-		const item = await Item.findOne({_id: itemId});
-		console.log("item acquired", item);
-		res.json(item);
-	} catch (error) {
-		res.status(500).json({ error: "Something went hi" });
-	}
+  try {
+    const item = await Item.findOne({ _id: itemId });
+    console.log("item acquired", item);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: "Something went hi" });
+  }
 });
 
-app.post('/api/Posts', async (req, res) => {
+app.post("/api/Posts", async (req, res) => {
   const post = req.body; // same as the posts schema
 
-    try {
-      
+  try {
     const savedItem = await Item.create(post);
-    res.json(savedItem)
+    res.json(savedItem);
   } catch (error) {
-    console.log("creating review document", error)
+    console.log("creating review document", error);
   }
-})
+});
 
-app.put('/api/Posts/:id', async (req, res) => {
+app.put("/api/Posts/:id", async (req, res) => {
   try {
     const itemId = req.params.id;
     const updatedData = req.body;
@@ -125,22 +119,24 @@ app.put('/api/Posts/:id', async (req, res) => {
     console.log("gets here");
 
     // Find the item by ID and update its properties
-    const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, { new: true });
+    const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, {
+      new: true,
+    });
 
     if (!updatedItem) {
       console.log("gets here");
-      return res.status(404).json({ message: 'Item not found' });
+      return res.status(404).json({ message: "Item not found" });
     }
 
     res.json(updatedItem);
   } catch (error) {
-    console.error('Error updating item IN BACKEND:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error updating item IN BACKEND:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
 // API endpoint for deleting data
-app.delete('/api/Posts/:id', async (req, res) => {
+app.delete("/api/Posts/:id", async (req, res) => {
   try {
     const itemId = req.params.id;
 
@@ -150,16 +146,28 @@ app.delete('/api/Posts/:id', async (req, res) => {
     const deletedItem = await Item.findByIdAndRemove(itemId);
 
     if (!deletedItem) {
-      return res.status(404).json({ message: 'Item not found' });
+      return res.status(404).json({ message: "Item not found" });
     }
 
-    res.json({ message: 'Item deleted successfully' });
+    res.json({ message: "Item deleted successfully" });
   } catch (error) {
-    console.error('Error deleting item:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error deleting item:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
+// API endpoint to get one specific user from MongoDB
+app.get("/api/Posts/:email", async (req, res) => {
+  const email = req.params.email;
+  console.log("looking");
+  try {
+    const item = await Item.findOne({ email: email });
+    console.log("item acquired", item);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
