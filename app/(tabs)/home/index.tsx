@@ -114,17 +114,7 @@ const Home = () => {
 				}
 			>
 				{AllPosts.map((eachPost: postType) => {
-					// {handleUpdate(eachPost)}
-					// console.log(eachPost)
 					return (
-						// <Link
-						// 	href = {{
-						// 		pathname: "/home/postPopUp",
-						// 		params: {eachPost}
-						// 	}} asChild
-						// 	key = {eachPost._id}
-
-						// >
 						<HomePost
 							style={styles.postCard}
 							key={eachPost._id}
@@ -136,7 +126,6 @@ const Home = () => {
 								})
 							}
 						/>
-						//<Text>{JSON.stringify(eachPost)}</Text>
 					);
 				})}
 			</ScrollView>

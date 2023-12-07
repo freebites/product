@@ -7,10 +7,6 @@ import { StyleSheetContext } from "styled-components";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { storage } from "../../config";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { getAllPosts, getOne } from "../../server/read";
-import create from "../../server/create";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref } from "firebase/storage";
 
 const dummyData: postType = {
@@ -53,7 +49,6 @@ export const HomePost = (props) => {
 
 		loadImageURL();
 	}, [props.post.imageURIs[0]]);
-	//const [imageURL, setImageURL] = useState();
 
 	return (
 		<Pressable style={styles.mainbox} onPress={props.onPress}>
@@ -72,9 +67,9 @@ export const HomePost = (props) => {
 						style={styles.bookmark}
 					/>
 				</Pressable>
-				<View style={styles.location}>
-					<Text>{props.post.location}</Text>
-				</View>
+				{/* <View style={styles.location}> */}
+					<Text style={styles.location}>{props.post.location}</Text>
+				{/* </View> */}
 				<Text style={styles.description}>{props.post.title}</Text>
 			</View>
 		</Pressable>
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
 		marginRight: 10,
 	},
 	image: {
-		flex: 1,
+		flex : 1,
 		borderRadius: 15,
 	},
 	sidebox: {
@@ -113,20 +108,27 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 	},
 	location: {
-		height: 25,
-		flexDirection: "row",
+		// height: 25,
+		fontSize: 18,
+		fontStyle: "normal",
+		lineHeight: 25,
+		fontWeight: "bold",
+		marginBottom: 10
 	},
 	bookmark: {
 		width: 20,
 		height: 25,
 		flexDirection: "row",
 		alignSelf: "flex-end",
-
 		// flex : 1,
 		// width : 10,
 	},
 	description: {
-		height: 40,
+		// height: 40,
+		fontSize: 12,
+		fontStyle: "normal", 
+		fontWeight: "normal",
+		lineHeight: 16,
 		flexDirection: "row",
 	},
 });

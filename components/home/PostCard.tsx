@@ -43,13 +43,9 @@ export const PostCard = (props) => {
 
 		fetchPost();
 	}, [props.id]);
-	// const fetchPost = async () => {
-	// 	singlePost = await getOne(props.id);
-	// 	// setSinglePost(postData)
-	// }
 
-	console.log(JSON.stringify(singlePost));
-	// console.log("location: " + singlePost.location)
+
+
 	return (
 		<View style={styles.mainbox}>
 			<Image
@@ -77,21 +73,24 @@ const styles = StyleSheet.create({
 		paddingVertical: 20,
 	},
 	image: {
+		// flex : 1,
 		height: 250,
 		borderRadius: 15,
 	},
 	description: {
-		height: 105,
+		// height: 105,
 		marginVertical: 20,
 	},
 	location: {
-		height: 30,
-		fontWeight: "bold",
+		// height: 30,
 		marginBottom: 10,
+		
 	},
+
 	innerDes: {
-		height: 50,
-		width: 200,
+		// height: 50,
+		// width: 200,
+		
 		marginBottom: 10,
 	},
 	tags: {
