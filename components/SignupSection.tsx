@@ -42,7 +42,7 @@ const SignupSection = () => {
 				}}
 			>
 				{/* LoginButton */}
-				<LoginButton onPress={() => signIn()} text="Login" />
+				<LoginButton onPress={() => signIn()} text="Sign Up" />
 				<Text>Forgot password?</Text>
 			</View>
 		</View>

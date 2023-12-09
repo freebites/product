@@ -33,18 +33,4 @@ const create = async (props) => {
 	}
 };
 
-//         const newPost ({
-//                 // _id: mongoose.Schema.Types.ObjectID,
-//                 title: props.title,
-//                 description: props.description,
-//                 imageURIs: [imageURI],
-//                 tag: tags,
-//                 location: String,
-//                 comments: [comment],
-//                 post_id: String,
-//                 room: String,
-//                 postTime: Date,
-
-// });
-
 export default create;

@@ -24,18 +24,6 @@ const Database = () => {
 	}, []);
 
 	return data;
-
-	// <View>
-	//   {/* <Text>Title: {data[0].title} </Text> */}
-
-	//   {data.map((item) => (
-	//     <View key={item._id}>
-	//       <Text>Title: {item.title}</Text>
-	//       <Text>Description: {item.description}</Text>
-	//     </View>
-	//   ))}
-
-	// </View>
 };
 
 export default Database;
