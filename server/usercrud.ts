@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
+import * as Crypto from "expo-crypto";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
-export const getAllPosts = async () => {
+export const getAllUsers = async () => {
 	try {
 		//console.log("env variable: ", apiURL);
 		const response = await axios.get(`${apiURL}:3001/api/Users`);
@@ -29,12 +30,18 @@ export const getOne = async (userID) => {
 
 export const create = async (props) => {
 	/* If props.itemId is null, assign it the next available ID
-        /* If there is already an ID, do not assign it a new one */
+		/* If there is already an ID, do not assign it a new one */
 	// const [itemName, setItemName] = useState('');
 
 	// const postNewItem = async () => {
 	// console.log("Gets here");
 
+	let userPassword = props.password;
+	const digest = await Crypto.digestStringAsync(
+		Crypto.CryptoDigestAlgorithm.SHA256,
+		"GitHub stars are neat 🌟"
+	);
+	console.log(digest);
 	try {
 		// Replace 'your-backend-api-url' with the actual URL of your backend API
 		// console.log("try");

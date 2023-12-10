@@ -12,7 +12,7 @@ const icon = require("../../assets/icons/freebites/logo.png");
 // TODO: convert to form and then probably turn it into its own component
 
 const signup = () => {
-	const [loginSelected, setLoginSelected] = useState(true);
+	const [loginSelected, setLoginSelected] = useState(false);
 
 	return (
 		<View
