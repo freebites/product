@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components/native";
+import { getUser } from "../../../server/read";
 
 const ProfileCardUI = styled.View`
 	width: 87%;
@@ -28,7 +29,34 @@ const CardText = styled.Text`
 
 const CardTextBox = styled.Text``;
 
+type userSchema = { 
+	firstName: String,
+  lastName: String,
+  pronouns: String,
+  email: String,
+  profilePic: String,
+};
+
+
+// Get user information from backend 
+// Display accoridingly for Profile header, cannot type user of userSchema 
+// and access properties of user {user.firstName}
 const ProfileCard = () => {
+	
+	const [user, setUser] = useState<userSchema>();
+  	const fetchUserData = async () => {
+		const johnnyUser = await getUser("johnny.tan@tufts.edu");
+		setUser(johnnyUser);
+		console.log(user);
+  	};
+
+	useEffect(() => {
+		// async function
+		fetchUserData();
+	}, []);
+
+	// const userId = user.email;
+
 	return (
 		<ProfileCardUI>
 			<ProfileImageUI></ProfileImageUI>

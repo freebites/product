@@ -29,11 +29,9 @@ export const getOne = async (itemID) => {
 
 export const getUser = async (email) => {
   try {
-    const response = await axios.get(`${apiURL}:3001/api/profiles/${email}`);
-    console.log("getting one");
+    const response = await axios.get(`${apiURL}:3001/api/Profiles/${email}`);
     return response.data;
   } catch (error) {
-    //console.log("error getting all items:", error);
     throw error;
   }
 };

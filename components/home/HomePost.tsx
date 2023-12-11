@@ -38,7 +38,7 @@ export const HomePost = (props) => {
 		props.post.imageURIs = [];
 	}
 
-	const [imageURL, setImageURL] = useState(placeholderImage);
+	const [imageURL, setImageURL] = useState(null);
 
 	useEffect(() => {
 		const loadImageURL = async () => {
@@ -56,16 +56,16 @@ export const HomePost = (props) => {
 
 		loadImageURL();
 	}, [props.post.imageURIs[0]]);
-	//const [imageURL, setImageURL] = useState();
+
 
 	return (
 		<Pressable style={styles.mainbox} onPress={props.onPress}>
 			<View style={styles.imagebox}>
 				<Image
 					source={{
-						uri: placeholderImage,
+						uri: imageURL,
 					}}
-					src={imageURL}
+
 					style={styles.image}
 				/>
 			</View>
@@ -92,10 +92,8 @@ const styles = StyleSheet.create({
 		height: 151,
 		// elevation: 5,
 
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.2,
-		shadowRadius: 4,
+		boxShadow: '0px 4px 2px #808080',
+
 		borderRadius: 20,
 		paddingHorizontal: 20,
 		paddingVertical: 15,

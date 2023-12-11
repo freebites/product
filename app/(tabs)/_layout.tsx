@@ -7,6 +7,7 @@ const postIcon = require("../../assets/icons/freebites/add-post.png");
 const profIcon = require("../../assets/icons/freebites/profile.png");
 
 export default () => {
+	const test = "1"
 	return (
 		<Tabs
 			screenOptions={{
@@ -41,6 +42,7 @@ export default () => {
 			<Tabs.Screen
 				name="profile"
 				options={{
+					href: `/profile/${test}`,
 					headerShown: false,
 					tabBarIcon: () => <Image source={profIcon} />,
 					tabBarShowLabel: false,

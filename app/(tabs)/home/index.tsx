@@ -27,7 +27,7 @@ library.add(fab, fas);
 
 const Home = () => {
   const [user, setUser] = useState();
-  const fetchData1 = async () => {
+  const fetchUserData = async () => {
     const johnnyUser = await getUser("johnny.tan@tufts.edu");
     setUser(johnnyUser);
     console.log(user);
@@ -35,10 +35,11 @@ const Home = () => {
 
   useEffect(() => {
     // async function
-    fetchData1();
+    fetchUserData();
   }, []);
-  const [AllPosts, setPosts] = useState([]);
 
+
+  const [AllPosts, setPosts] = useState([]);
   const fetchData = async () => {
     const postData = await getAllPosts();
     setPosts(postData);
@@ -51,16 +52,7 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const { postData, updatePostData } = useContext(PostContext);
   const [refreshing, setRefreshing] = useState(true);
-  const handleUpdate = (eachPostData: postType) => {
-    updatePostData(eachPostData);
-  };
-
-  // const fetchPost = async (props) => {
-  // 	const postData = await getOne(props._id);
-  // 	setSinglePost(postData);
-  // }
 
   const [favoriteSelected, setFavoriteSelected] = useState(true);
   return (
@@ -118,17 +110,7 @@ const Home = () => {
         }
       >
         {AllPosts.map((eachPost: postType) => {
-          // {handleUpdate(eachPost)}
-          // console.log(eachPost)
           return (
-            // <Link
-            // 	href = {{
-            // 		pathname: "/home/postPopUp",
-            // 		params: {eachPost}
-            // 	}} asChild
-            // 	key = {eachPost._id}
-
-            // >
             <HomePost
               style={styles.postCard}
               key={eachPost._id}
@@ -140,7 +122,6 @@ const Home = () => {
                 })
               }
             />
-            //<Text>{JSON.stringify(eachPost)}</Text>
           );
         })}
       </ScrollView>
