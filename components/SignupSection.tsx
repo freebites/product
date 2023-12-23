@@ -46,33 +46,36 @@ const SignupSection = () => {
 				<LoginInput title="Password" isPassword="true" />
 				
 				*/}
-
+				<Text style={styles.title}>First Name</Text>
 				<TextInput
 					style={styles.textInput}
-					placeholder="First Name"
+					placeholder=""
 					onChangeText={(text) => {
 						handleFirstName(text);
 					}}
 				/>
+				<Text style={styles.title}>Last Name</Text>
 				<TextInput
 					style={styles.textInput}
-					placeholder="Last Name"
+					placeholder=""
 					onChangeText={(text) => {
 						handleLastName(text);
 					}}
 				/>
+				<Text style={styles.title}>Email Address</Text>
 				<TextInput
 					style={styles.textInput}
-					placeholder="Email Address"
+					placeholder=""
 					keyboardType="email-address"
 					textContentType="emailAddress"
 					onChangeText={(text) => {
 						handleEmail(text);
 					}}
 				/>
+				<Text style={styles.title}>Password</Text>
 				<TextInput
 					style={styles.textInput}
-					placeholder="Password"
+					placeholder=""
 					secureTextEntry
 					autoComplete={
 						Platform.OS === "ios" ? "password-new" : "new-password"
@@ -110,9 +113,16 @@ const styles = StyleSheet.create({
 		marginBottom: "3%",
 	},
 	textInput: {
-		backgroundColor: "red",
+		// backgroundColor: "red",
 		minWidth: 150,
-		width: 100,
+		width: "70%",
+		borderBottomWidth: 1,
+		borderBottomColor: "#9e9797",
+	},
+	title: {
+		color: "#9e9797",
+		alignSelf: "flex-start",
+		paddingLeft: "15%"
 	},
 });
 
