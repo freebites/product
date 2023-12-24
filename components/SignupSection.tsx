@@ -4,6 +4,7 @@ import { useAuth } from "../context/auth";
 import LoginInput from "./login/LoginInput";
 import { create } from "../server/usercrud";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 const SignupSection = () => {
 	const { signIn } = useAuth();
@@ -25,10 +26,61 @@ const SignupSection = () => {
 	const handlePassword = (text) => {
 		setPassword(text);
 	};
-	const handleSubmit = () => {
+	const handleSubmitData = () => {
 		create({ firstName, lastName, emailAddress, password });
 		// send to server and shit
 	};
+
+	const {
+		control,
+		handleSubmit,
+		register,
+		formState: { errors },
+	} = useForm({
+		defaultValues: {
+			firstName: "",
+			lastName: "",
+			emailAddress: "",
+			password: "",
+		},
+	});
+
+	/*
+
+	random example of something I tested out [how to add the 'registered' 
+	property] 
+
+	<Controller
+		control={control}
+		rules={{
+			required: true,
+		}}
+		render={({ field: { onChange, onBlur, value } }) => (
+			<TextInput
+				placeholder="First name"
+				onBlur={onBlur}
+				onChangeText={onChange}
+				value={value}
+				{...register("firstName", {
+					required: true,
+					maxLength: 20,
+				})}
+			/>
+		)}
+		name="firstName"
+	/>
+	
+	
+	
+	*/
+
+	// this should be the function to handle the data submission to the backend
+	// (hint we already implemented something like it above)
+	// in this case, data is already a json object, so look at what type it is
+	// you may be able to pass it directly into the create function, or you
+	// need to grab each field
+	const onSubmit = (data) => console.log(data);
+
 	return (
 		<View
 			style={{
@@ -45,7 +97,9 @@ const SignupSection = () => {
 				<LoginInput title="Email Address" />
 				<LoginInput title="Password" isPassword="true" />
 				
+				
 				*/}
+
 				<Text style={styles.title}>First Name</Text>
 				<TextInput
 					style={styles.textInput}
@@ -122,7 +176,7 @@ const styles = StyleSheet.create({
 	title: {
 		color: "#9e9797",
 		alignSelf: "flex-start",
-		paddingLeft: "15%"
+		paddingLeft: "15%",
 	},
 });
 

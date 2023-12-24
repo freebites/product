@@ -39,6 +39,7 @@ export const create = async (props) => {
 	let userPassword = props.password;
 	const digest = await Crypto.digestStringAsync(
 		Crypto.CryptoDigestAlgorithm.SHA256,
+
 		"GitHub stars are neat 🌟"
 	);
 	console.log(digest);
