@@ -1,15 +1,53 @@
-import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { Image, View, Text, StyleSheet, SafeAreaView, Button } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { EmptyPost, postType } from "../../context/postContext";
+import { EmptyPost, postType, comment, PostContext } from "../../context/postContext";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../server/read";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config";
+import { CommentInput } from "../comments/CommentInput";
+import { CommentList } from "../comments/CommentList";
+import { TextInput } from "react-native-gesture-handler";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
 export const PostCard = (props) => {
 	// console.log(props.id);
+
+	// const handleSubmit = (body: string) => {
+	// 	const newComment = { id: 0, username: "", body, timestamp: new Date() };
+	// 	setComments([...comments, newComment]);
+	// };
+
+	const { postData, updatePostData } = useContext(PostContext);
+	const [newCommentText, setNewCommentText] = useState('');
+
+	const handleCommentChange = (text) => {
+		setNewCommentText(text);
+	};
+
+	const handleUpdateComments = (newComments) => {
+		updatePostData({
+			...postData,
+			comments: [...postData.comments, newComments],
+		})
+	}
+
+	const handleAddComment = () => {
+		// Create a new comment instance
+		const newComment: comment = {
+			id: 1, // You might want to use a more sophisticated way to generate IDs
+			username: 'user1', // Assuming a default username or you can get it from user authentication
+			body: newCommentText,
+			timestamp: new Date(),
+		};
+
+		handleUpdateComments(newComment);
+
+		// Clear the input field
+		setNewCommentText('');
+	};
+
 	const [singlePost, setSinglePost] = useState(EmptyPost);
 	const [imageURL, setImageURL] = useState(null);
 	useEffect(() => {
@@ -29,6 +67,7 @@ export const PostCard = (props) => {
 
 		fetchPost();
 	}, [props.id]);
+
 	// const fetchPost = async () => {
 	// 	singlePost = await getOne(props.id);
 	// 	// setSinglePost(postData)
@@ -49,6 +88,21 @@ export const PostCard = (props) => {
 				<Text style={styles.innerDes}>{singlePost.description}</Text>
 				<View style={styles.tags}></View>
 				<Divider orientation="horizontal" style={styles.divider} />
+				{/* <CommentList comments={comments} setComments={setComments}></CommentList> */}
+				{/* <CommentInput onSubmit={handleSubmit}></CommentInput> */}
+				{/* <CommentList></CommentList> */}
+				{singlePost.comments.map(comment => (
+					<View key={comment.id}>
+						<Text>{comment.username}</Text>
+						<Text>{comment.body}</Text>
+					</View>
+				))}
+				<TextInput
+					placeholder="Type your comment"
+					value={newCommentText}
+					onChangeText={handleCommentChange}
+				/>
+				<Button title="Add Comment" onPress={handleAddComment} />
 			</View>
 		</View>
 	);
