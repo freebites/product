@@ -8,6 +8,7 @@ import { storage } from "../../config";
 import { CommentInput } from "../comments/CommentInput";
 import { CommentList } from "../comments/CommentList";
 import { TextInput } from "react-native-gesture-handler";
+import update from "../../server/update"
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
@@ -26,12 +27,26 @@ export const PostCard = (props) => {
 		setNewCommentText(text);
 	};
 
-	const handleUpdateComments = (newComments) => {
-		updatePostData({
-			...postData,
-			comments: [...postData.comments, newComments],
-		})
-	}
+	const handleUpdateComments = async (newComment) => {
+		try {
+			const updatedComments = [...postData.comments, newComment];
+			await update(updatedComments, postData.post_id);
+			updatePostData({
+				...postData,
+				comments: updatedComments,
+			});
+		} catch (error) {
+			console.error("Error updating comments:", error);
+		}
+	};
+
+	// const handleUpdateComments = (newComments) => {
+	// 	updatePostData({
+	// 		...postData,
+	// 		comments: [...postData.comments, newComments],
+	// 	})
+	// 	update(comment)
+	// }
 
 	const handleAddComment = () => {
 		// Create a new comment instance
@@ -43,6 +58,7 @@ export const PostCard = (props) => {
 		};
 
 		handleUpdateComments(newComment);
+
 
 		// Clear the input field
 		setNewCommentText('');
