@@ -36,6 +36,7 @@ const SignupSection = () => {
 		createUserWithEmailAndPassword(auth, emailAddress, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
+				console.log("Created account with:", user.email);
 			})
 			.catch((error) => {
 				const errorCode = error.code;

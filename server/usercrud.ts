@@ -42,7 +42,6 @@ export const create = async (props) => {
 
 		"GitHub stars are neat 🌟"
 	);
-	console.log(digest);
 	try {
 		// Replace 'your-backend-api-url' with the actual URL of your backend API
 		// console.log("try");

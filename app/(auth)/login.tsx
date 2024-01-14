@@ -7,7 +7,7 @@ import { Welcome } from "../../components";
 import { globalStyles } from "../../components/global";
 
 export default function SignIn() {
-	const { signIn } = useAuth();
+	const { signIn, user } = useAuth();
 	return (
 		<SafeAreaView
 			style={[globalStyles.container, { alignItems: "center" }]}

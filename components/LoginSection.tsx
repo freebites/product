@@ -1,11 +1,25 @@
-import { View, Text } from "react-native";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
 import LoginButton from "./login/LoginButton";
 import { useAuth } from "../context/auth";
 import LoginInput from "./login/LoginInput";
+import { auth } from "../firebase";
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginSection = () => {
 	const { signIn } = useAuth();
 
+	const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("");
+
+	const handleEmail = (text) => {
+		setEmail(text);
+	};
+	const handlePassword = (text) => {
+		setPassword(text);
+	};
+
+	const handleLogin = () => {};
 	return (
 		<View
 			style={{
@@ -26,8 +40,28 @@ const LoginSection = () => {
 				}}
 			>
 				{/* Your other components */}
-				<LoginInput title="Username" />
-				<LoginInput title="Password" isPassword="true" />
+				<Text style={styles.title}>Email Address</Text>
+				<TextInput
+					style={styles.textInput}
+					placeholder=""
+					keyboardType="email-address"
+					textContentType="emailAddress"
+					onChangeText={(text) => {
+						handleEmail(text);
+					}}
+				/>
+				<Text style={styles.title}>Password</Text>
+				<TextInput
+					style={styles.textInput}
+					placeholder=""
+					secureTextEntry
+					autoComplete={
+						Platform.OS === "ios" ? "password-new" : "new-password"
+					}
+					onChangeText={(text) => {
+						handlePassword(text);
+					}}
+				/>
 			</View>
 
 			<View
@@ -39,11 +73,37 @@ const LoginSection = () => {
 				}}
 			>
 				{/* LoginButton */}
-				<LoginButton onPress={() => signIn()} text="Login" />
+				<LoginButton
+					onPress={() => {
+						signIn(email, password);
+					}}
+					text="Login"
+				/>
 				<Text>Forgot password?</Text>
 			</View>
 		</View>
 	);
 };
-
+const styles = StyleSheet.create({
+	form: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "space-around",
+		width: "100%",
+		maxHeight: "60%",
+		marginBottom: "3%",
+	},
+	textInput: {
+		// backgroundColor: "red",
+		minWidth: 150,
+		width: "70%",
+		borderBottomWidth: 1,
+		borderBottomColor: "#9e9797",
+	},
+	title: {
+		color: "#9e9797",
+		alignSelf: "flex-start",
+		paddingLeft: "15%",
+	},
+});
 export default LoginSection;
