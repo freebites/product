@@ -4,7 +4,7 @@ import { EmptyPost, postType } from "../../context/postContext";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../server/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../../config";
+import { storage } from "../../firebase";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 

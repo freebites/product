@@ -5,6 +5,8 @@ import LoginInput from "./login/LoginInput";
 import { create } from "../server/usercrud";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignupSection = () => {
 	const { signIn } = useAuth();
@@ -29,6 +31,21 @@ const SignupSection = () => {
 	const handleSubmitData = () => {
 		create({ firstName, lastName, emailAddress, password });
 		// send to server and shit
+
+		// firebase shit
+		createUserWithEmailAndPassword(auth, emailAddress, password)
+			.then((userCredential) => {
+				const user = userCredential.user;
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log(
+					"user creation failed with: ",
+					errorCode,
+					errorMessage
+				);
+			});
 	};
 
 	const {
@@ -150,7 +167,7 @@ const SignupSection = () => {
 				}}
 			>
 				{/* LoginButton */}
-				<LoginButton onPress={handleSubmit} text="Sign Up" />
+				<LoginButton onPress={handleSubmitData} text="Sign Up" />
 				<Text>Forgot password?</Text>
 			</View>
 		</View>

@@ -6,7 +6,7 @@ import BackButton from "../../../components/common/BackButton";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import ImageViewer from "../../../components/common/ImageViewer";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
-import { storage } from "../../../config";
+import { storage } from "../../../firebase";
 import {
 	getDownloadURL,
 	ref,

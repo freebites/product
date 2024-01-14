@@ -6,7 +6,7 @@ import { postType } from "../../context/postContext";
 import { StyleSheetContext } from "styled-components";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { storage } from "../../config";
+import { storage } from "../../firebase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { getAllPosts, getOne } from "../../server/read";
 import create from "../../server/create";
