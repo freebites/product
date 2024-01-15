@@ -1,28 +1,36 @@
-import { View, Text } from 'react-native'
-import React from 'react';
-import styled from 'styled-components/native';
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { forwardRef } from "react";
 
-const LoginButtonUI = styled.TouchableOpacity`
-    border-radius: 100px;
-    background: #EDA76E;
-    display: flex;
-    width: 80%;
-    padding: 16px 32px;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px; 
+const LoginButton = (props, ref) => {
+	return (
+		<Pressable
+			onPress={props.onPress}
+			ref={ref}
+			style={({ pressed }) => [
+				{
+					opacity: pressed ? 0.5 : 1,
+				},
+				styles.button,
+			]}
+		>
+			<Text>{props.text}</Text>
+		</Pressable>
+	);
+};
 
-`
-
-const ButtonText = styled.Text`
-    font-size: 13px;
-`
-
-const LoginButton = (props) => {
-    return(
-        <LoginButtonUI onPress={props.onPress}>
-            <ButtonText>{props.text}</ButtonText>
-        </LoginButtonUI>
-    )
-}
-export default LoginButton;
+const styles = StyleSheet.create({
+	button: {
+		width: "80%",
+		backgroundColor: "#EDA76E",
+		borderRadius: 100,
+		alignItems: "center",
+		justifyContent: "center",
+		flexDirection: "column",
+		paddingHorizontal: 32,
+		paddingVertical: 16,
+	},
+	text: {
+		fontSize: 13,
+	},
+});
+export default forwardRef(LoginButton);

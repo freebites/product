@@ -1,10 +1,12 @@
 import { View, Text, SafeAreaView, Image } from "react-native";
 import { useAuth } from "../../context/auth";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import React from "react";
 import LoginButton from "../../components/login/LoginButton";
 import { Welcome } from "../../components";
 import { globalStyles } from "../../components/global";
+
+import PlainButton2 from "../../components/common/PlainButton2";
 
 export default function SignIn() {
 	const { signIn, user } = useAuth();
@@ -21,13 +23,25 @@ export default function SignIn() {
 					alignItems: "center",
 				}}
 			>
-				<LoginButton onPress={() => signIn()} text="login" />
-				<LoginButton
-					onPress={() => {
-						router.push("/signup");
+				<Link
+					href={{
+						pathname: "/signup",
+						params: { login: true },
 					}}
-					text="sign up"
-				/>
+					asChild
+				>
+					<LoginButton text="login" />
+				</Link>
+
+				<Link
+					href={{
+						pathname: "/signup",
+						params: { login: false },
+					}}
+					asChild
+				>
+					<LoginButton text="sign up" />
+				</Link>
 			</View>
 		</SafeAreaView>
 	);

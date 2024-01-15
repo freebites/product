@@ -4,6 +4,7 @@ import { globalStyles } from "../../components/global";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import LoginSection from "../../components/LoginSection";
 import SignupSection from "../../components/SignupSection";
+import { useLocalSearchParams } from "expo-router";
 //import React from 'react'
 
 //import top image icon thingy
@@ -12,7 +13,13 @@ const icon = require("../../assets/icons/freebites/logo.png");
 // TODO: convert to form and then probably turn it into its own component
 
 const signup = () => {
-	const [loginSelected, setLoginSelected] = useState(false);
+	const params = useLocalSearchParams(); // converts to string for some reason
+
+	// selects section based on if "login" or "sign up" was use to navigate here,
+	// defaults to signup
+	const [loginSelected, setLoginSelected] = useState(
+		params.login === "true" ? true : false
+	);
 
 	return (
 		<View
