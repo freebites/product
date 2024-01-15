@@ -49,14 +49,13 @@ export const create = async (props) => {
 			firstName: props.firstName,
 			lastName: props.lastName,
 			emailAddress: props.emailAddress,
-			password: props.password,
 			profile: props.profile,
 			bio: props.bio,
 			pronouns: props.pronouns,
 		});
 
 		// Handle the response or any further actions
-		console.log("Item added successfully:", response);
+		//console.log("Item added successfully:", response);
 	} catch (error) {
 		console.error("Error adding item:", error);
 	}

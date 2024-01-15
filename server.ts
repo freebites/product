@@ -13,7 +13,7 @@ const port = 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connect to MongoDB
+// Connect to Posts database (default database)
 mongoose
 	.connect(
 		"mongodb+srv://freebites7:1234@freebites.w7sk83d.mongodb.net/Posts?retryWrites=true&w=majority",
@@ -25,6 +25,24 @@ mongoose
 	.catch((err) => {
 		console.log("error connecting to db", err);
 	});
+
+// Connect to Accounts database (profiles database)
+const accountConnection = mongoose.createConnection(
+	"mongodb+srv://freebites7:1234@freebites.w7sk83d.mongodb.net/Accounts?retryWrites=true&w=majority",
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}
+);
+
+// listeners for connection and errors
+accountConnection.on("connected", () => {
+	console.log("Account database connection successful!");
+});
+
+accountConnection.on("error", (error) => {
+	console.error("Error connecting to account database: ", error);
+});
 
 const allergen = new mongoose.Schema({
 	allergen: String,
@@ -175,8 +193,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Create a model for the "items" collection
-const User = mongoose.model("freebites_users", UserSchema, "Accounts");
-
+const User = accountConnection.model("freebites_users", UserSchema, "profiles");
 // TODO: get all users from a databse
 // gets all users from the collection
 app.get("/api/Users", async (req, res) => {
