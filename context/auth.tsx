@@ -1,5 +1,9 @@
 import { router, useSegments } from "expo-router";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	signOut,
+} from "firebase/auth";
 import React from "react";
 import { auth } from "../firebase";
 
@@ -32,10 +36,13 @@ export function Provider(props) {
 	/* login/logout/signup functions */
 
 	const login = async (email?: string, password?: string) => {
+		// firebase sign in function
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				console.log("Signed in with:", user.email);
+				if (user) {
+					console.log("Signed in with:", user.email);
+				}
 				setAuth(user);
 			})
 			.catch((error) => {
@@ -44,9 +51,23 @@ export function Provider(props) {
 			});
 	};
 
+	const logout = async () => {
+		signOut(auth)
+			.then(() => {
+				// sign out of firebase
+				console.log("user signed out");
+				// remove user from the app's local context
+				setAuth(null);
+			})
+			.catch((error) => {
+				console.log("error signing out: ", error);
+			});
+	};
+	// function that tracks whether a user is already signed in or not
+	// and signs in automatically if true.
 	React.useEffect(() => {
 		onAuthStateChanged(auth, (authUser) => {
-			console.log("Logged in with: ", authUser.email);
+			if (authUser) console.log("Logged in with: ", authUser.email);
 			setAuth(authUser);
 		});
 	}, []);
@@ -57,7 +78,7 @@ export function Provider(props) {
 		<AuthContext.Provider
 			value={{
 				signIn: login,
-				signOut: () => setAuth(null),
+				signOut: logout,
 				user,
 			}}
 		>
