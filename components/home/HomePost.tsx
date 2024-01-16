@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { storage } from "../../config";
 import { getDownloadURL, ref } from "firebase/storage";
 
+
+
 const dummyData: postType = {
 	_id: "",
 	title: "testtitle",
@@ -26,6 +28,10 @@ const dummyData: postType = {
 	postTime: new Date(),
 };
 
+
+const onBookmarkPress = (postId) => {
+	// User specific bookmarked per post. Possibliy a list of bookmarked postIds for each user. 
+}
 export const HomePost = (props) => {
 	// temp fix for null
 	if (!props.post.imageURIs) {
@@ -67,9 +73,7 @@ export const HomePost = (props) => {
 						style={styles.bookmark}
 					/>
 				</Pressable>
-				{/* <View style={styles.location}> */}
 					<Text style={styles.location}>{props.post.location}</Text>
-				{/* </View> */}
 				<Text style={styles.description}>{props.post.title}</Text>
 			</View>
 		</Pressable>
@@ -81,12 +85,9 @@ const styles = StyleSheet.create({
 		width: "100%",
 		backgroundColor: "white",
 		height: 151,
-		// elevation: 5,
 
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.2,
-		shadowRadius: 4,
+		boxShadow: '0px 4px 2px #BCAEAE',
+		
 		borderRadius: 20,
 		paddingHorizontal: 20,
 		paddingVertical: 15,
@@ -94,7 +95,6 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	imagebox: {
-		// flex : 1,
 		width: 135,
 		marginRight: 10,
 	},
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 	},
 	location: {
-		// height: 25,
 		fontSize: 18,
 		fontStyle: "normal",
 		lineHeight: 25,
@@ -120,11 +119,8 @@ const styles = StyleSheet.create({
 		height: 25,
 		flexDirection: "row",
 		alignSelf: "flex-end",
-		// flex : 1,
-		// width : 10,
 	},
 	description: {
-		// height: 40,
 		fontSize: 12,
 		fontStyle: "normal", 
 		fontWeight: "normal",
