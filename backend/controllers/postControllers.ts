@@ -1,9 +1,17 @@
+import { postType } from "../../context/postContext";
 import Item from "../models/postModel";
 
 /*
- * controller functions that define the CRUD operations for the Posts database
+ * postController.ts
+ * functions that define the CRUD operations for the Posts database
+ * authors: @jzhang43 @johnny-t06
+ * @LordofMankid just refactored this
  */
 
+/**
+ * @description Get all posts from the database.
+ * @route GET /api/Posts
+ */
 const getAllPosts = async (req, res) => {
 	try {
 		const items = await Item.find();
@@ -15,6 +23,11 @@ const getAllPosts = async (req, res) => {
 	}
 };
 
+/**
+ * @description Get all posts from the database.
+ * @route GET /api/Posts/:id
+ * @param {string} id - The mongoDB _id of the post
+ */
 const getOnePost = async (req, res) => {
 	const itemId = req.params.id;
 	console.log("looking");
@@ -27,6 +40,11 @@ const getOnePost = async (req, res) => {
 	}
 };
 
+/**
+ * @description Get all posts from the database.
+ * @route GET /api/Posts/:id
+ * @param { postType } post - should be of type postType, adhering to 'ItemSchema'
+ */
 const createPost = async (req, res) => {
 	const post = req.body; // should be the same as the posts schema
 
@@ -38,6 +56,13 @@ const createPost = async (req, res) => {
 	}
 };
 
+/**
+ * @description updates a post in the database.
+ * @route GET /api/Posts/:id
+ * @param { string } id - the mongoDB _id of the post
+ * @param { Object } updatedData - the data to update in the post
+ * @returns { Object }
+ */
 const updatePost = async (req, res) => {
 	try {
 		const itemId = req.params.id;
@@ -62,6 +87,11 @@ const updatePost = async (req, res) => {
 	}
 };
 
+/**
+ * @description delete post from the database
+ * @route GET /api/Posts/:id
+ * @param { string } id - the mongoDB _id of the post
+ */
 const deletePost = async (req, res) => {
 	try {
 		const itemId = req.params.id;

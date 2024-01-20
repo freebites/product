@@ -1,10 +1,15 @@
 /*
  * Controllers for User Database. These implement the functions that are
  * called for each route in the user database.
+ *
+ * authors: @vle04 @LordofMankid
  */
 import User from "../models/userModel";
 
-// gets all users from the database
+/**
+ * @description Get all user from the database.
+ * @route GET /api/Users
+ */
 const getAllUsers = async (req, res) => {
 	try {
 		const users = await User.find();
@@ -16,7 +21,11 @@ const getAllUsers = async (req, res) => {
 	}
 };
 
-// gets one user from the database. note: we user firebase uid instead of mongoDB _id
+/**
+ * @description Get a user from the database.
+ * @route GET /api/Users/:id
+ * @param { string } uid - The firebase UID (not the mongoDB _id).
+ */
 const getOneUser = async (req, res) => {
 	const userId = req.params.id;
 	console.log("looking");
@@ -29,6 +38,11 @@ const getOneUser = async (req, res) => {
 	}
 };
 
+/**
+ * @description Get a user from the database.
+ * @route GET /api/Users/
+ * @param { Object } - the user to create in the database.
+ */
 const createUser = async (req, res) => {
 	const user = req.body; // same as the posts schema
 
@@ -40,6 +54,12 @@ const createUser = async (req, res) => {
 	}
 };
 
+/**
+ * @description Edit user information in mongoDB database.
+ * @route GET /api/Users/:id
+ * @param { string } uid - the user's firebase uid
+ * @notes - TODO: update relevant info (email change, etc) in Firebase here
+ */
 const updateUser = async (req, res) => {
 	try {
 		const UserId = req.params.id;
@@ -68,6 +88,12 @@ const updateUser = async (req, res) => {
 	}
 };
 
+/**
+ * @description delete user from mongoDB
+ * @route GET /api/Users/
+ * @param { string } uid - the object to delete
+ * @notes - TODO: delete account in Firebase here
+ */
 const deleteUser = async (req, res) => {
 	try {
 		const UserId = req.params.id;
