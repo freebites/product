@@ -1,8 +1,8 @@
 import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
-import LoginButton from "./login/LoginButton";
-import { useAuth } from "../context/auth";
-import LoginInput from "./login/LoginInput";
-import { auth } from "../firebase";
+import LoginButton from "./LoginButton";
+import { useAuth } from "../../context/auth";
+import LoginInput from "./LoginInput";
+import { auth } from "../../firebase";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 

@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, TextInput, Platform } from "react-native";
-import LoginButton from "./login/LoginButton";
-import { useAuth } from "../context/auth";
-import LoginInput from "./login/LoginInput";
-import { create } from "../server/usercrud";
+import LoginButton from "./LoginButton";
+import { useAuth } from "../../context/auth";
+import LoginInput from "./LoginInput";
+import { create } from "../../server/usercrud";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignupSection = () => {
@@ -29,14 +29,14 @@ const SignupSection = () => {
 		setPassword(text);
 	};
 	const handleSubmitData = () => {
-		create({ firstName, lastName, emailAddress, password });
-		// send to server and shit
-
 		// firebase shit
 		createUserWithEmailAndPassword(auth, emailAddress, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
+				const uid = user.uid;
 				console.log("Created account with:", user.email);
+				// send to mongoDB server
+				create({ uid, firstName, lastName, emailAddress });
 			})
 			.catch((error) => {
 				const errorCode = error.code;

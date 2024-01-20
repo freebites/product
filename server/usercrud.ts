@@ -36,16 +36,11 @@ export const create = async (props) => {
 	// const postNewItem = async () => {
 	// console.log("Gets here");
 
-	let userPassword = props.password;
-	const digest = await Crypto.digestStringAsync(
-		Crypto.CryptoDigestAlgorithm.SHA256,
-
-		"GitHub stars are neat 🌟"
-	);
 	try {
 		// Replace 'your-backend-api-url' with the actual URL of your backend API
 		// console.log("try");
 		const response = await axios.post(`${apiURL}:3001/api/Users`, {
+			uid: props.uid,
 			firstName: props.firstName,
 			lastName: props.lastName,
 			emailAddress: props.emailAddress,
