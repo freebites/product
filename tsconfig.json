@@ -9,7 +9,7 @@
 		"lib": ["es7"],
 		"moduleResolution": "node",
 		"noEmit": true,
-		"target": "esnext",
+		"target": "ESNext",
 		"noImplicitAny": false,
 		"outDir": "./dist/",
 		"sourceMap": true,

@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+/*
+ * honestly i don't know what this file is but i'm gonna leave it here
+ * it looks like it's the same as the 'getAllPosts' function that i moved into
+ * api/posts but i'm not sure didn't want to delete it yet, but probably
+ * safe to delete at some point
+ */
+
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;

@@ -2,7 +2,7 @@ import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { EmptyPost, postType } from "../../context/postContext";
 import { Divider } from "react-native-elements";
-import { getOne } from "../../server/read";
+import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 
