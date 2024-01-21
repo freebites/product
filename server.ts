@@ -79,8 +79,6 @@ const profileModel = mongoose.model("Profile", profileSchema, "Profiles");
 app.get("/api/Posts", async (req, res) => {
   try {
     const items = await itemModel.find();
-    // console.log(Item);
-    // console.log("items acquired", items);
     res.json(items);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
@@ -90,15 +88,13 @@ app.get("/api/Posts", async (req, res) => {
 // API endpoint to get one specific post from MongoDB
 app.get("/api/Posts/:id", async (req, res) => {
   const itemId = req.params.id;
-  console.log("looking");
   try {
     const item = await itemModel.findOne({ _id: itemId });
-    console.log("item acquired", item);
     res.json(item);
   } catch (error) {
-    res.status(500).json({ error: "Something went hi" });
+    res.status(500).json({ error: "Something went wrong" });
   }
-});
+}); 
 
 app.post("/api/Posts", async (req, res) => {
   const post = req.body; // same as the posts schema
@@ -138,8 +134,6 @@ app.delete("/api/Posts/:id", async (req, res) => {
   try {
     const itemId = req.params.id;
 
-    console.log("gets here");
-
     // Find the item by ID and remove it
     const deletedItem = await itemModel.findByIdAndRemove(itemId);
 
@@ -169,7 +163,6 @@ app.get("/api/Profiles/:email", async (req, res) => {
 app.get("/api/Profiles/", async (req, res) => {
   try {
     const profiles = await profileModel.find();
-    console.log("profiles acquired", profiles);
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
