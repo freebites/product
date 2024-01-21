@@ -62,7 +62,7 @@ const itemSchema = new mongoose.Schema({
   postTime: Date,
 });
 
-const userSchema = new mongoose.Schema({
+const profileSchema = new mongoose.Schema({
   // _id: mongoose.Schema.Types.ObjectID,
   firstName: String,
   lastName: String,
@@ -72,13 +72,13 @@ const userSchema = new mongoose.Schema({
 });
 
 // Create a model for the "items" collection
-const Item = mongoose.model("Post", itemSchema, "Posts");
-const User = mongoose.model("Profile", userSchema, "Profiles");
+const itemModel = mongoose.model("Post", itemSchema, "Posts");
+const profileModel = mongoose.model("Profile", profileSchema, "Profiles");
 
 // API endpoint to get all items from MongoDB
 app.get("/api/Posts", async (req, res) => {
   try {
-    const items = await Item.find();
+    const items = await itemModel.find();
     // console.log(Item);
     // console.log("items acquired", items);
     res.json(items);
@@ -92,7 +92,7 @@ app.get("/api/Posts/:id", async (req, res) => {
   const itemId = req.params.id;
   console.log("looking");
   try {
-    const item = await Item.findOne({ _id: itemId });
+    const item = await itemModel.findOne({ _id: itemId });
     console.log("item acquired", item);
     res.json(item);
   } catch (error) {
@@ -104,7 +104,7 @@ app.post("/api/Posts", async (req, res) => {
   const post = req.body; // same as the posts schema
 
   try {
-    const savedItem = await Item.create(post);
+    const savedItem = await itemModel.create(post);
     res.json(savedItem);
   } catch (error) {
     console.log("creating review document", error);
@@ -116,15 +116,13 @@ app.put("/api/Posts/:id", async (req, res) => {
     const itemId = req.params.id;
     const updatedData = req.body;
 
-    console.log("gets here");
 
     // Find the item by ID and update its properties
-    const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, {
+    const updatedItem = await itemModel.findByIdAndUpdate(itemId, updatedData, {
       new: true,
     });
 
     if (!updatedItem) {
-      console.log("gets here");
       return res.status(404).json({ message: "Item not found" });
     }
 
@@ -143,7 +141,7 @@ app.delete("/api/Posts/:id", async (req, res) => {
     console.log("gets here");
 
     // Find the item by ID and remove it
-    const deletedItem = await Item.findByIdAndRemove(itemId);
+    const deletedItem = await itemModel.findByIdAndRemove(itemId);
 
     if (!deletedItem) {
       return res.status(404).json({ message: "Item not found" });
@@ -160,8 +158,19 @@ app.delete("/api/Posts/:id", async (req, res) => {
 app.get("/api/Profiles/:email", async (req, res) => {
   const email = req.params.email;
   try {
-    const user = await User.findOne({ email: email });
+    const user = await profileModel.findOne({ email: email });
     res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+
+app.get("/api/Profiles/", async (req, res) => {
+  try {
+    const profiles = await profileModel.find();
+    console.log("profiles acquired", profiles);
+    res.json(profiles);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
