@@ -54,7 +54,7 @@ type PostContextType = {
 
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
-	updatePostData: () => {},
+	updatePostData: () => { },
 });
 
 export const PostProvider = ({ children }) => {

@@ -39,6 +39,7 @@ const tags = new mongoose.Schema({
 });
 
 const comment = new mongoose.Schema({
+  id: Number,
   username: String,
   body: String,
   timestamp: Date, // may need to be changed to string
@@ -96,20 +97,20 @@ app.get("/api/Posts", async (req, res) => {
 app.get('/api/Posts/:id', async (req, res) => {
   const itemId = req.params.id;
   console.log("looking");
-	try { 
-		const item = await Item.findOne({_id: itemId});
-		console.log("item acquired", item);
-		res.json(item);
-	} catch (error) {
-		res.status(500).json({ error: "Something went hi" });
-	}
+  try {
+    const item = await Item.findOne({ _id: itemId });
+    console.log("item acquired", item);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: "Something went hi" });
+  }
 });
 
 app.post('/api/Posts', async (req, res) => {
   const post = req.body; // same as the posts schema
 
-    try {
-      
+  try {
+
     const savedItem = await Item.create(post);
     res.json(savedItem)
   } catch (error) {

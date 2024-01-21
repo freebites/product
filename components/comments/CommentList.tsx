@@ -19,6 +19,21 @@ export const CommentList = () => {
     })
   }
 
+  const handleUpdateComments = async (newComment) => {
+		try {
+			const updatedComments = [...postData.comments, newComment];
+			await update(updatedComments, postData.post_id);
+			updatePostData({
+				...postData,
+				comments: updatedComments,
+			});
+		} catch (error) {
+			console.error("Error updating comments:", error);
+		}
+	};
+
+
+
   const handleAddComment = () => {
     // Create a new comment instance
     const newComment: comment = {
