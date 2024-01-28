@@ -1,4 +1,4 @@
-import { Image, View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from "react-native";
+import { Image, View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, TouchableWithoutFeedback, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { EmptyPost, postType, comment, PostContext } from "../../context/postContext";
 import { Divider } from "react-native-elements";
@@ -7,18 +7,11 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config";
 import { TextInput } from "react-native-gesture-handler";
 import update from "../../server/update"
+import { color } from "react-native-elements/dist/helpers";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
 export const PostCard = (props) => {
-	// console.log(props.id);
-
-	// const handleSubmit = (body: string) => {
-	// 	const newComment = { id: 0, username: "", body, timestamp: new Date() };
-	// 	setComments([...comments, newComment]);
-	// };
-
-	// const { postData, updatePostData } = useContext(PostContext);
 	const [newCommentText, setNewCommentText] = useState('');
 
 	const handleCommentChange = (text) => {
@@ -48,61 +41,66 @@ export const PostCard = (props) => {
 	const handleUpdateComments = async (newComment) => {
 		try {
 			const updatedComments = [...singlePost.comments, newComment];
-			// let comments = updatedComments'
-			setSinglePost({
-				...singlePost,
-				comments: updatedComments,
-			});
-
-			// setSinglePost(prevSinglePost => ({
-			// 	...prevSinglePost,
-			// 	comments: updatedComments,
-			// }));
-			// console.log("THis is the comments in singlePost", { ...singlePost, comments: updatedComments });
-			console.log("Tis is the comments in singlePost", { ...singlePost.comments });
-
-			// await update({ ...singlePost, comments: updatedComments }, singlePost._id);
-			await update({ ...singlePost }, singlePost._id);
-
-
+			const updatedPost = { ...singlePost, comments: updatedComments }
+			setSinglePost(
+				updatedPost
+			);
+			await update(updatedPost, updatedPost._id);
 		} catch (error) {
 			console.error("Error updating comments:", error);
 		}
 	};
 
-	// const handleUpdateComments = (newComments) => {
-	// 	updatePostData({
-	// 		...postData,
-	// 		comments: [...postData.comments, newComments],
-	// 	})
-	// 	update(comment)
-	// }
-
 	const handleAddComment = () => {
-		// Create a new comment instance
 		const newComment: comment = {
-			id: singlePost.comments.length + 1, // You might want to use a more sophisticated way to generate IDs
-			username: 'user1', // Assuming a default username or you can get it from user authentication
+			id: singlePost.comments.length + 1,
+			username: 'user1',
 			body: newCommentText,
 			timestamp: new Date(),
 		};
 
 		handleUpdateComments(newComment);
 
-		// Clear the input field
 		setNewCommentText('');
 	};
 
+	const [modalVisible, setModalVisible] = useState(false);
 
-	// const fetchPost = async () => {
-	// 	singlePost = await getOne(props.id);
-	// 	// setSinglePost(postData)
-	// }
-
-	console.log(JSON.stringify(singlePost), "loooooooool");
-	// console.log("location: " + singlePost.location)
 	return (
 		<View style={styles.mainbox}>
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
+				}}>
+				<View style={{ flex: 1 }}>
+					<TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+						<View style={styles.modalBackground} >
+						</View>
+					</TouchableWithoutFeedback>
+					<View style={styles.modalComments}>
+						<View style={{ alignItems: "center", paddingTop: 10 }}>
+							<Text style={{ fontSize: 18 }}>Comments</Text>
+						</View>
+						<Divider orientation="horizontal" style={styles.divider} />
+						<View>
+							{singlePost.comments.map(comment => (
+								<View style={styles.comments} key={comment.id}>
+									<Text style={styles.comment}>{comment.username}</Text>
+									<Text style={styles.body}>{comment.body}</Text>
+								</View>
+							))}
+						</View>
+
+						<View style={styles.modalAddComment}>
+							Comment add
+						</View>
+					</View>
+				</View>
+
+			</Modal >
 			<Image
 				style={styles.image}
 				source={{
@@ -114,15 +112,14 @@ export const PostCard = (props) => {
 				<Text style={styles.innerDes}>{singlePost.description}</Text>
 				<View style={styles.tags}></View>
 				<Divider orientation="horizontal" style={styles.divider} />
-				{/* <CommentList comments={comments} setComments={setComments}></CommentList> */}
-				{/* <CommentInput onSubmit={handleSubmit}></CommentInput> */}
-				{/* <CommentList></CommentList> */}
 				<Text style={styles.thread}>Live Thread</Text>
-				{singlePost.comments.map(comment => (
-					<View style={styles.comments} key={comment.id}>
-						<Text style={styles.comment}>{comment.username}</Text>
-						<Text style={styles.body}>{comment.body}</Text>
-					</View>
+				{singlePost.comments.slice(0, 3).map(comment => (
+					<TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+						<View style={styles.comments} key={comment.id}>
+							<Text style={styles.comment}>{comment.username}</Text>
+							<Text style={styles.body}>{comment.body}</Text>
+						</View>
+					</TouchableWithoutFeedback>
 				))}
 			</View>
 			<View style={{ flexDirection: "row" }}>
@@ -133,9 +130,6 @@ export const PostCard = (props) => {
 					value={newCommentText}
 					onChangeText={handleCommentChange}
 				/>
-				{/* <Button title="Post" onPress={handleAddComment} /> */}
-
-				{/* <Pressable style={styles.post} onPress={handleAddComment} ></Pressable> */}
 				<TouchableOpacity style={styles.postButton}>
 					<Text
 						style={{ color: "lightgreen" }}
@@ -143,13 +137,15 @@ export const PostCard = (props) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</View >
+
 	);
 };
 
 const styles = StyleSheet.create({
 	mainbox: {
 		flex: 1,
+		zIndex: -1,
 		backgroundColor: "white",
 		borderRadius: 20,
 		paddingHorizontal: 20,
@@ -195,6 +191,30 @@ const styles = StyleSheet.create({
 	},
 	postButton: {
 		alignItems: "flex-end",
+	},
+	modalBackground: {
+		height: '40%',
+		width: '100%',
+		backgroundColor: "black",
+		opacity: 0.6,
+		zIndex: 50,
+	},
+	modalComments: {
+		height: '60%',
+		width: '100%',
+		zIndex: 100,
+		backgroundColor: "white",
+		flex: 1,
+		flexDirection: "column",
+		borderRadius: 40,
+	},
+	modalAddComment: {
+		height: 100,
+		width: '100%',
+		backgroundColor: 'white',
+		position: "absolute",
+		bottom: 0,
 	}
+
 });
 export default PostCard;
