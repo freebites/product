@@ -3,7 +3,16 @@ import React, { forwardRef } from "react";
 
 const PlainButton2 = (props, ref) => {
 	return (
-		<Pressable onPress={props.onPress} ref={ref} style={styles.button}>
+		<Pressable
+			onPress={props.onPress}
+			ref={ref}
+			style={({ pressed }) => [
+				{
+					opacity: pressed ? 0.5 : 1,
+				},
+				styles.button,
+			]}
+		>
 			<Text>{props.text}</Text>
 		</Pressable>
 	);

@@ -50,19 +50,19 @@ const Profile = () => {
 			</View>
 			<ProfileCard />
 			<Link href="/(tabs)/profile/history" asChild>
-				<PlainButton width="87%" height="60px" text="History" />
+				<PlainButton width="87%" height={60} text="History" />
 			</Link>
 
 			<Link href="/(tabs)/profile/drafts" asChild>
-				<PlainButton width="87%" height="60px" text="Drafts" />
+				<PlainButton width="87%" height={60} text="Drafts" />
 			</Link>
 
 			<Link href="/(tabs)/profile/settings" asChild>
-				<PlainButton width="87%" height="60px" text="Settings" />
+				<PlainButton width="87%" height={60} text="Settings" />
 			</Link>
 
 			<Link href="/(tabs)/profile/FAQ" asChild>
-				<PlainButton width="87%" height="60px" text="FAQ" />
+				<PlainButton width="87%" height={60} text="FAQ" />
 			</Link>
 		</SafeAreaView>
 	);

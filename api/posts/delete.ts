@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
-import { storage } from "../config";
+import { storage } from "../../firebase";
 import { ref, deleteObject } from "firebase/storage";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const deleteOne = async (itemID) => {

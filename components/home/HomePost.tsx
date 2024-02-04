@@ -6,10 +6,9 @@ import { postType } from "../../context/postContext";
 import { StyleSheetContext } from "styled-components";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { storage } from "../../config";
+import { storage } from "../../firebase";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getAllPosts, getOne } from "../../server/read";
-import create from "../../server/create";
+import create from "../../api/posts/create";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref } from "firebase/storage";
 
@@ -38,7 +37,7 @@ export const HomePost = (props) => {
 		props.post.imageURIs = [];
 	}
 
-	const [imageURL, setImageURL] = useState(placeholderImage);
+	const [imageURL, setImageURL] = useState(null);
 
 	useEffect(() => {
 		const loadImageURL = async () => {
@@ -61,13 +60,7 @@ export const HomePost = (props) => {
 	return (
 		<Pressable style={styles.mainbox} onPress={props.onPress}>
 			<View style={styles.imagebox}>
-				<Image
-					source={{
-						uri: placeholderImage,
-					}}
-					src={imageURL}
-					style={styles.image}
-				/>
+				<Image source={{ uri: imageURL }} style={styles.image} />
 			</View>
 			<View style={styles.sidebox}>
 				<Pressable>

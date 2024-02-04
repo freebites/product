@@ -11,7 +11,7 @@ import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/home/SearchBar";
 import HomePost from "../../../components/home/HomePost";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { getAllPosts, getOne } from "../../../server/read";
+import { getAllPosts } from "../../../api/posts/read";
 import {
 	PostContext,
 	PostProvider,
@@ -32,7 +32,7 @@ const Home = () => {
 		const postData = await getAllPosts();
 		setPosts(postData);
 		setRefreshing(false);
-		console.log(postData);
+		//console.log(postData);
 	};
 
 	useEffect(() => {
