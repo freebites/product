@@ -9,6 +9,7 @@ export type tags = {
 
 // types for comments
 export type comment = {
+	_id: string;
 	id: number;
 	username: string;
 	body: string;
@@ -54,7 +55,7 @@ type PostContextType = {
 
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
-	updatePostData: () => { },
+	updatePostData: () => {},
 });
 
 export const PostProvider = ({ children }) => {

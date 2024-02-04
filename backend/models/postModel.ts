@@ -14,11 +14,16 @@ const tags = new mongoose.Schema({
 	diet: [diet],
 });
 
-const comment = new mongoose.Schema({
-	username: String,
-	body: String,
-	timestamp: Date, // may need to be changed to string
-});
+const comment = new mongoose.Schema(
+	{
+		id: Number,
+		username: String,
+		body: String,
+		timestamp: Date, // may need to be changed to string
+	},
+	{ _id: false } // disables mongoDB id creation, we can re-enable if we
+	// run into issues w/ rendering comments (ensure unique keys)
+);
 
 // const imageURI = new mongoose.Schema({ URI: String });
 

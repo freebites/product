@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
-import { postType } from "../context/postContext";
+import { postType } from "../../context/postContext";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const update = async (props, itemID) => {
 	try {

@@ -20,17 +20,16 @@ import {
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../../config";
 import { TextInput } from "react-native-gesture-handler";
-import update from "../../server/update";
+import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
-
+import { useAuth } from "../../context/auth";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
 export const PostCard = (props) => {
+	const { user } = useAuth();
 	const [newCommentText, setNewCommentText] = useState("");
-
 	const handleCommentChange = (text) => {
 		setNewCommentText(text);
 	};
@@ -69,9 +68,10 @@ export const PostCard = (props) => {
 	const handleAddComment = () => {
 		const newComment: comment = {
 			id: singlePost.comments.length + 1,
-			username: "user1",
+			username: user.email,
 			body: newCommentText,
 			timestamp: new Date(),
+			_id: "",
 		};
 
 		handleUpdateComments(newComment);
@@ -118,7 +118,9 @@ export const PostCard = (props) => {
 							))}
 						</View>
 
-						<View style={styles.modalAddComment}>Comment add</View>
+						<View style={styles.modalAddComment}>
+							<Text>Comment add</Text>
+						</View>
 					</View>
 				</View>
 			</Modal>
