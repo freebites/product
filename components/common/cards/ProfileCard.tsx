@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { styled } from "styled-components/native";
+import { useGlobalSearchParams } from "expo-router";
 
 const ProfileCardUI = styled.View`
 	width: 87%;
@@ -28,19 +29,20 @@ const CardText = styled.Text`
 
 const CardTextBox = styled.Text``;
 
-const ProfileCard = () => {
+const ProfileCard = (props) => {
+
 	return (
 		<ProfileCardUI>
 			<ProfileImageUI></ProfileImageUI>
 			<ProfileCardTextUI>
 				<CardText style={{ fontSize: 18, fontWeight: "bold" }}>
-					<Text>Name</Text>
+					<Text>{props.name}</Text>
 				</CardText>
 
-				<CardText style={{ fontSize: 15 }}>email address</CardText>
+				<CardText style={{ fontSize: 15 }}>{props.email}</CardText>
 
 				<CardText style={{ fontSize: 15, height: "33%" }}>
-					<Text>Lorem ipsum dolor sit amet,</Text>
+					<Text>{props.bio}</Text>
 				</CardText>
 			</ProfileCardTextUI>
 		</ProfileCardUI>
