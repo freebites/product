@@ -9,16 +9,13 @@ import { useAuth } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud"
 
 
+
 const Profile = () => {
 	const { user } = useAuth();
 	console.log("userid:" + user.uid);
-	// const
-	// We can get parameters of the route
-		//See if it matches that of the userAuthContext
-	
 	const routeParams = useLocalSearchParams();
-	// const currUser2 = useGlobalSearchParams();
-	if (user.uid != routeParams.id) {
+
+	if (user == undefined || user.uid != routeParams.id) {
 		return <Redirect href = "/home"/> 
 	}
 	
@@ -26,14 +23,11 @@ const Profile = () => {
 	const fetchData = async () => {
 		const userData = await getOne(user.uid);
 		setCurrUser(userData);
-		// setRefreshing(false);
-		//console.log(postData);
 	};
 
 	useEffect(() => {
-		// async function
 		fetchData();
-		console.log("in useeffect");
+		// console.log("in useEffect");
 	}, []);
 
 	console.log(currUser);
