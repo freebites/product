@@ -106,16 +106,26 @@ export const PostCard = (props) => {
 							style={styles.divider}
 						/>
 						<View>
-							{singlePost.comments.map((comment) => (
-								<View style={styles.comments} key={comment.id}>
-									<Text style={styles.comment}>
-										{comment.username}
-									</Text>
-									<Text style={styles.body}>
-										{comment.body}
+							{singlePost.comments.length > 0 ? (
+								singlePost.comments.map((comment) => (
+									<View style={styles.comments} key={comment.id}>
+										<Text style={styles.comment}>
+											{comment.username}
+										</Text>
+										<Text style={styles.body}>
+											{comment.body}
+										</Text>
+									</View>
+								))
+							) : (
+								<View>
+									<Text>No comments yet.</Text>
+									<Text>
+										Commenting helps other users know <br />
+										more about the status of the food.
 									</Text>
 								</View>
-							))}
+							)}
 						</View>
 
 						<View style={styles.modalAddComment}>
@@ -136,18 +146,27 @@ export const PostCard = (props) => {
 				<View style={styles.tags}></View>
 				<Divider orientation="horizontal" style={styles.divider} />
 				<Text style={styles.thread}>Live Thread</Text>
-				{singlePost.comments.slice(0, 3).map((comment) => (
+
+				{singlePost.comments.length > 0 ? (
+					singlePost.comments.slice(0, 3).map((comment) => (
+						<TouchableWithoutFeedback
+							onPress={() => setModalVisible(true)}
+						>
+							<View style={styles.comments} key={comment.id}>
+								<Text style={styles.comment}>
+									{comment.username}
+								</Text>
+								<Text style={styles.body}>{comment.body}</Text>
+							</View>
+						</TouchableWithoutFeedback>
+					))
+				) : (
 					<TouchableWithoutFeedback
 						onPress={() => setModalVisible(true)}
 					>
-						<View style={styles.comments} key={comment.id}>
-							<Text style={styles.comment}>
-								{comment.username}
-							</Text>
-							<Text style={styles.body}>{comment.body}</Text>
-						</View>
+						<Text>No comments at all</Text>
 					</TouchableWithoutFeedback>
-				))}
+				)}
 			</View>
 			<View style={{ flexDirection: "row" }}>
 				<Divider orientation="horizontal" style={styles.divider} />
