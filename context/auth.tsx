@@ -1,4 +1,4 @@
-import { router, useSegments } from "expo-router";
+import { Redirect, router, useSegments } from "expo-router";
 import {
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
@@ -9,11 +9,17 @@ import { auth } from "../firebase";
 
 const AuthContext = React.createContext(null);
 
+export function validateRoutePerms (user, globalParams) {
+	if (user == undefined || user != globalParams.id) {
+		return <Redirect href = "login" />
+	}
+}
+
 export function useAuth() {
 	return React.useContext(AuthContext);
 }
 
-function useProtectedRoute(user) {
+export function useProtectedRoute(user) {
 	const segments = useSegments(); // useSegments returns the current in-file 'url'
 
 	React.useEffect(() => {
