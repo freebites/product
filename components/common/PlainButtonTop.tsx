@@ -3,21 +3,12 @@ import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 
 const leftArrow = require("../../assets/icons/chevron-right.png");
-const PlainButtonUI = styled.Pressable`
-	background: #fffbf9;
-	border: 0.5px solid #d3d3d3;
-	flex: 1;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	min-height: 60px;
-`;
 
-const PlainButtonUIBottom = styled.Pressable`
+const PlainButtonUITop = styled.Pressable`
 	background: #fffbf9;
 	border: 0.5px solid #d3d3d3;
-	
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
 	flex: 1;
 	flex-direction: row;
 	align-items: center;
@@ -33,9 +24,10 @@ const ButtonText = styled.Text`
 	margin-left: 30px;
 `;
 
-const PlainButton = (props, ref) => {
+
+const PlainButtonTop = (props, ref) => {
 	return (
-		<PlainButtonUI
+		<PlainButtonUITop
 			onPress={props.onPress}
 			style={({ pressed }) => [
 				{
@@ -49,14 +41,9 @@ const PlainButton = (props, ref) => {
 		>
 			<ButtonText>{props.text}</ButtonText>
 			<Image source={leftArrow} style={{ marginRight: 18 }}></Image>
-		</PlainButtonUI>
+		</PlainButtonUITop>
 	);
-	};
-
-interface Props {
-	onPress
-}
+};
 
 // need to add forward ref if you want to wrap button in <Link>
-export default forwardRef(PlainButton);
-
+export default forwardRef(PlainButtonTop);

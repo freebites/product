@@ -5,14 +5,16 @@ import { View, Text, SafeAreaView, Image } from "react-native"; // views are div
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
+import PlainButtonTop from "../../../components/common/PlainButtonTop";
 import { useAuth, validateRoutePerms } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud";
 import { emptyUser, userType } from "../../../context/userContext";
-
+// import PlainButtonTop from "../../../components/common/PlainButtonTop";
+import ButtonMenu from "../../../components/common/ButtonMenu";
+import PlainButtonBottom from "../../../components/common/PlainButtonBottom";
 
 const Profile = () => {
 	const { user } = useAuth();
-	// console.log("userid:" + user.uid);
 	const routeParams = useLocalSearchParams();
 	
 	validateRoutePerms(user, routeParams);
@@ -87,10 +89,12 @@ const Profile = () => {
 				name = {currUser.firstName} email = {currUser.emailAddress} 
 				bio = {currUser.bio}
 			/>
+			{/* <ButtonMenu user = {user}/> */}
+
 			<Link href = {{pathname: `/profile/history`,
 							params: { id: user.uid },
 		 					}} asChild>
-				<PlainButton width="87%" height={60} text="History" />
+				<PlainButtonTop width="87%" height={60} text="History" />
 			</Link>
 
 			<Link href = {{pathname: `/profile/drafts`,
@@ -106,7 +110,7 @@ const Profile = () => {
 			</Link>
 
 			<Link href="/(tabs)/profile/FAQ" asChild>
-				<PlainButton width="87%" height={60} text="FAQ" />
+				<PlainButtonBottom width="87%" height={60} text="FAQ" />
 			</Link>
 		</SafeAreaView>
 	);
