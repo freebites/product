@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
 	tabMenu: {
 		flex: 1,
 		marginBottom: 30,
-
 	},
 })
 export default Profile;
