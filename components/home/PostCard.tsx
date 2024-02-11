@@ -17,6 +17,7 @@ import {
 	comment,
 	PostContext,
 } from "../../context/postContext";
+import { CommentsModal } from "./CommentsModal";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -25,6 +26,7 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
+import DisplayComments from "./DisplayComments";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
 export const PostCard = (props) => {
@@ -83,57 +85,11 @@ export const PostCard = (props) => {
 
 	return (
 		<View style={styles.mainbox}>
-			<Modal
-				animationType="slide"
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible);
-				}}
-			>
-				<View style={{ flex: 1 }}>
-					<TouchableWithoutFeedback
-						onPress={() => setModalVisible(false)}
-					>
-						<View style={styles.modalBackground}></View>
-					</TouchableWithoutFeedback>
-					<View style={styles.modalComments}>
-						<View style={{ alignItems: "center", paddingTop: 10 }}>
-							<Text style={{ fontSize: 18 }}>Comments</Text>
-						</View>
-						<Divider
-							orientation="horizontal"
-							style={styles.divider}
-						/>
-						<View>
-							{singlePost.comments.length > 0 ? (
-								singlePost.comments.map((comment) => (
-									<View style={styles.comments} key={comment.id}>
-										<Text style={styles.comment}>
-											{comment.username}
-										</Text>
-										<Text style={styles.body}>
-											{comment.body}
-										</Text>
-									</View>
-								))
-							) : (
-								<View>
-									<Text>No comments yet.</Text>
-									<Text>
-										Commenting helps other users know <br />
-										more about the status of the food.
-									</Text>
-								</View>
-							)}
-						</View>
-
-						<View style={styles.modalAddComment}>
-							<Text>Comment add</Text>
-						</View>
-					</View>
-				</View>
-			</Modal>
+			<CommentsModal 
+				singlePost={singlePost} 
+				modalVisible={modalVisible} 
+				setModalVisible={setModalVisible}>
+			</CommentsModal>
 			<Image
 				style={styles.image}
 				source={{
@@ -143,30 +99,14 @@ export const PostCard = (props) => {
 			<View style={styles.description}>
 				<Text style={styles.location}>{singlePost.location}</Text>
 				<Text style={styles.innerDes}>{singlePost.description}</Text>
-				<View style={styles.tags}></View>
+				{/* <View style={styles.tags}></View> */}
 				<Divider orientation="horizontal" style={styles.divider} />
 				<Text style={styles.thread}>Live Thread</Text>
-
-				{singlePost.comments.length > 0 ? (
-					singlePost.comments.slice(0, 3).map((comment) => (
-						<TouchableWithoutFeedback
-							onPress={() => setModalVisible(true)}
-						>
-							<View style={styles.comments} key={comment.id}>
-								<Text style={styles.comment}>
-									{comment.username}
-								</Text>
-								<Text style={styles.body}>{comment.body}</Text>
-							</View>
-						</TouchableWithoutFeedback>
-					))
-				) : (
-					<TouchableWithoutFeedback
-						onPress={() => setModalVisible(true)}
-					>
-						<Text>No comments at all</Text>
-					</TouchableWithoutFeedback>
-				)}
+				<DisplayComments 
+					modalVisible={modalVisible} 
+					singlePost={singlePost} 
+					setModalVisible={setModalVisible}>
+				</DisplayComments>
 			</View>
 			<View style={{ flexDirection: "row" }}>
 				<Divider orientation="horizontal" style={styles.divider} />
@@ -208,13 +148,16 @@ const styles = StyleSheet.create({
 	},
 	location: {
 		height: 30,
-		fontWeight: "bold",
+		fontSize: 22,
 		marginBottom: 10,
+		color: "#485445",
 	},
 	innerDes: {
 		height: 50,
 		width: 200,
 		marginBottom: 10,
+		fontSize: 16,
+		color: "#717171",
 	},
 	tags: {
 		height: 25,
@@ -225,42 +168,10 @@ const styles = StyleSheet.create({
 	thread: {
 		fontSize: 16,
 		paddingBottom: 8,
-	},
-	comment: {
-		fontWeight: "bold",
-	},
-	body: {
-		paddingLeft: 10,
-	},
-	comments: {
-		flexDirection: "row",
-		paddingBottom: 10,
+		color: "#485445",
 	},
 	postButton: {
 		alignItems: "flex-end",
-	},
-	modalBackground: {
-		height: "40%",
-		width: "100%",
-		backgroundColor: "black",
-		opacity: 0.6,
-		zIndex: 50,
-	},
-	modalComments: {
-		height: "60%",
-		width: "100%",
-		zIndex: 100,
-		backgroundColor: "white",
-		flex: 1,
-		flexDirection: "column",
-		borderRadius: 40,
-	},
-	modalAddComment: {
-		height: 100,
-		width: "100%",
-		backgroundColor: "white",
-		position: "absolute",
-		bottom: 0,
 	},
 });
 export default PostCard;
