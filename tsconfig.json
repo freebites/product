@@ -6,7 +6,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"lib": ["es7"],
+		"lib": ["es7", "dom"],
 		"moduleResolution": "node",
 		"noEmit": true,
 		"target": "ESNext",
