@@ -1,7 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react"
+
+import React, {useState, useEffect} from "react"
 import { Link, Redirect, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { View, Text, SafeAreaView, Image } from "react-native"; // views are divs and text a p tags
+import { View, Text, SafeAreaView, Image, StyleSheet} from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
@@ -89,8 +89,7 @@ const Profile = () => {
 				name = {currUser.firstName} email = {currUser.emailAddress} 
 				bio = {currUser.bio}
 			/>
-			{/* <ButtonMenu user = {user}/> */}
-
+			<View style = {styles.tabMenu}>
 			<Link href = {{pathname: `/profile/history`,
 							params: { id: user.uid },
 		 					}} asChild>
@@ -112,8 +111,16 @@ const Profile = () => {
 			<Link href="/(tabs)/profile/FAQ" asChild>
 				<PlainButtonBottom width="87%" height={60} text="FAQ" />
 			</Link>
+			</View>
 		</SafeAreaView>
 	);
 };
 
+const styles = StyleSheet.create({
+	tabMenu: {
+		flex: 1,
+		marginBottom: 30,
+
+	},
+})
 export default Profile;
