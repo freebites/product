@@ -21,9 +21,9 @@ export const getOne = async (userID) => {
 	try {
 		const response = await axios.get(`${apiURL}:3001/api/Users/${userID}`);
 		console.log("getting one");
-		return response.data;
+		return response.data; 
 	} catch (error) {
-		//console.log("error getting all items:", error);
+		console.log("error getting all items:", error);
 		throw error;
 	}
 };
@@ -72,3 +72,5 @@ const update = async (props, userID) => {
 		console.error("Error updating item IN FRONTEND  :", error);
 	}
 };
+
+
