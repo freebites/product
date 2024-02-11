@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
 	pronouns: String,
 });
 
-// Create a model for the "items" collection
+// Create a model for the "users" collection
 const User = accountConnection.model("freebites_users", UserSchema, "profiles");
 
 export default User;
