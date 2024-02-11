@@ -17,6 +17,7 @@ import {
 	Text,
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
+import Description from "../../../components/post/Description";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
@@ -142,35 +143,11 @@ const gallery = () => {
 					<BackButton />
 
 					{/* inputs, modularize these? */}
-					<TextInput
-						placeholder="Add Food Name"
-						placeholderTextColor="#94A38F"
-						value={postData.title}
-						onChangeText={(text) => {
-							handleUpdateTitle(text);
-						}}
-					></TextInput>
 
-					<TextInput
-						placeholder="Add Location"
-						placeholderTextColor="#94A38F"
-						value={postData.location}
-						onChangeText={(text) => {
-							handleUpdateLocation(text);
-						}}
-					></TextInput>
+					<Text>What's in the post?</Text>
+					<Text>Give your post a concise description.</Text>
 
-					<TextInput
-						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-						placeholderTextColor="#94A38F"
-						multiline
-						numberOfLines={4}
-						maxLength={40}
-						onChangeText={(text) => {
-							handleUpdateDesc(text);
-						}}
-						value={postData.description}
-					></TextInput>
+					<Description></Description>
 
 					<Link href="/post/tags" asChild>
 						<NextButtonText
