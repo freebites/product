@@ -85,11 +85,11 @@ export const PostCard = (props) => {
 
 	return (
 		<View style={styles.mainbox}>
-			<CommentsModal 
-				singlePost={singlePost} 
-				modalVisible={modalVisible} 
-				setModalVisible={setModalVisible}>
-			</CommentsModal>
+			<CommentsModal
+				singlePost={singlePost}
+				modalVisible={modalVisible}
+				setModalVisible={setModalVisible}
+			></CommentsModal>
 			<Image
 				style={styles.image}
 				source={{
@@ -102,11 +102,11 @@ export const PostCard = (props) => {
 				{/* <View style={styles.tags}></View> */}
 				<Divider orientation="horizontal" style={styles.divider} />
 				<Text style={styles.thread}>Live Thread</Text>
-				<DisplayComments 
-					modalVisible={modalVisible} 
-					singlePost={singlePost} 
-					setModalVisible={setModalVisible}>
-				</DisplayComments>
+				<DisplayComments
+					modalVisible={modalVisible}
+					singlePost={singlePost}
+					setModalVisible={setModalVisible}
+				></DisplayComments>
 			</View>
 			<View style={{ flexDirection: "row" }}>
 				<Divider orientation="horizontal" style={styles.divider} />

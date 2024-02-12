@@ -1,4 +1,12 @@
-import { Tabs, Link, Stack, usePathname, router, useRouter, Redirect } from "expo-router";
+import {
+	Tabs,
+	Link,
+	Stack,
+	usePathname,
+	router,
+	useRouter,
+	Redirect,
+} from "expo-router";
 import { Image } from "react-native";
 import React from "react";
 import { useAuth, useProtectedRoute } from "../../context/auth";
@@ -9,10 +17,11 @@ const profIcon = require("../../assets/icons/freebites/profile.png");
 
 export default () => {
 	const { user } = useAuth();
-	if (user == undefined) {
-		<Redirect href = "/login" />
+
+	if (user == undefined || user.uid == null) {
+		console.log(user);
+		return <Redirect href="/login" />;
 	}
-	
 
 	return (
 		<Tabs
@@ -48,9 +57,7 @@ export default () => {
 			<Tabs.Screen
 				name="profile"
 				options={{
-					href: {pathname: `/profile`,
-						   params: { id: user.uid },
-						},
+					href: { pathname: `/profile`, params: { id: user.uid } },
 					headerShown: false,
 					tabBarIcon: () => <Image source={profIcon} />,
 					tabBarShowLabel: false,
