@@ -9,7 +9,8 @@ export default function ImageViewer({ placeholderImageSource, selectedImage }) {
 	return (
 		<Carousel
 			width={320}
-			height={420}
+			height={288}
+			style={{ borderRadius: 30, shadowRadius: 2 }}
 			loop={false}
 			data={selectedImage}
 			renderItem={({ index }) => (

@@ -20,7 +20,7 @@ const NextButtonText = (props, ref) => {
 
 const styles = StyleSheet.create({
 	button: {
-		width: 200,
+		width: "100%",
 		height: 42,
 		backgroundColor: "#EDA76E",
 		borderRadius: 20,

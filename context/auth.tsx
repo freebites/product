@@ -27,13 +27,13 @@ export function useProtectedRoute(user) {
 
 		// if user not signed in AND not looking at a login page,
 
-		// if (!user && !inAuthGroup) {
-		// 	console.log("not signed in, redirecting...");
-		// 	// redirect them to the login page
-		// 	router.replace("/login");
-		// } else if (user && inAuthGroup) {
-		// 	router.replace("/"); // stay on apge
-		// }
+		if (!user && !inAuthGroup) {
+			console.log("not signed in, redirecting...");
+			// redirect them to the login page
+			router.replace("/login");
+		} else if (user && inAuthGroup) {
+			router.replace("/"); // stay on apge
+		}
 	}, [user, segments]); // run function whenever user or segments change
 }
 

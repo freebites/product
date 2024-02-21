@@ -15,7 +15,7 @@ const NextButton = (
 				{ opacity: pressed || !props.validInput ? 0.5 : 1.0 },
 				props.style,
 			]}
-			disabled={!props.validInput}
+			// disabled={!props.validInput} (RE-ENABLE TO REQUIRE IMAGE)
 		>
 			<AntDesign name="arrowright" size={36} color="white" />
 		</Pressable>

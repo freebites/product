@@ -7,7 +7,10 @@ import TagButton from "../../../components/post/TagButton";
 import TagMultiSelect from "../../../components/post/TagMultiSelect";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import BinarySelect from "../../../components/common/BinarySelect";
+import ImageViewer from "../../../components/common/ImageViewer";
+import { postStyles } from "./add-title";
 
+const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
 const tags = () => {
 	const { postData, updatePostData } = useContext(PostContext);
@@ -32,10 +35,11 @@ const tags = () => {
 	};
 
 	return (
-		<SafeAreaView
-			style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-		>
-			<BackButton />
+		<SafeAreaView style={postStyles.container}>
+			<ImageViewer
+				placeholderImageSource={placeholder}
+				selectedImage={postData.imageURIs}
+			/>
 			<View style={{ justifyContent: "center", alignItems: "center" }}>
 				<Text>Perishable </Text>
 				<BinarySelect onPress={handleUpdatePerishable} />
