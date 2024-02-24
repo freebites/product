@@ -41,20 +41,21 @@ const gallery = () => {
 			imageURIs: [],
 		});
 	};
+
+	// Update multiple values
 	const handleUpdateTitle = (title) => {
-		updatePostData({ title: title }); // Update multiple values
+		updatePostData({ title: title });
 	};
 
+	// Update multiple values
 	const handleUpdateDesc = (descr) => {
-		updatePostData({ description: descr }); // Update multiple values
+		updatePostData({ description: descr });
 	};
 
 	// handler for updating location (room number)
 	const handleUpdateLocation = (locationName) => {
 		updatePostData({ ...postData, location: locationName });
 	};
-
-	// TODO: ADD GOOGLE PLACE ID HERE
 
 	// This is the function that lets opens the phone gallery and pick image
 	// Use async to load images first before doing anything
@@ -85,7 +86,6 @@ const gallery = () => {
 		const cameraPerms = await ImagePicker.requestCameraPermissionsAsync();
 
 		if (cameraPerms.granted === false) {
-			console.log("fuck u");
 			return;
 		}
 
