@@ -9,6 +9,7 @@ import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants/theme";
 import { Text, SafeAreaView, ScrollView, View } from "react-native";
 import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
+import GoogleMapView from "../../../components/common/GoogleMapView";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 /*
@@ -17,6 +18,10 @@ const placeholder = require("../../../assets/images/kemal.jpg");
 export default function location() {
 	const { postData, updatePostData } = useContext(PostContext);
 	const [mapSelected, setMapSelected] = useState(false);
+	// the prop GoogleMapView takes in is the opposite of locationSelected, just
+	// intuitively makes more sense to code this way
+	const [locationSelected, setLocationSelected] = useState(false);
+
 	return (
 		<SafeAreaView style={postStyles.container}>
 			<ImageViewer
@@ -30,11 +35,23 @@ export default function location() {
 					{ marginHorizontal: 0, marginTop: 25, width: "75%" },
 				]}
 			>
-				<Text style={postStyles.pageHeader}>Where is the food?</Text>
+				{!mapSelected && (
+					<Text style={postStyles.pageHeader}>
+						Where is the food?
+					</Text>
+				)}
 			</View>
+			<PlacesSearchBar
+				onSelected={() => {
+					setMapSelected(true);
+					console.log("HI");
+				}}
+				onLocationFound={() => {
+					setLocationSelected(true);
+				}}
+			/>
 
-			<PlacesSearchBar />
-
+			{/* <GoogleMapView disabled={!locationSelected} /> */}
 			<Link href="/post/reviewpost" asChild>
 				<PlainButton2 text="Review Post" />
 			</Link>
