@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 export default function ImageViewer({ placeholderImageSource, selectedImage }) {
@@ -23,13 +23,6 @@ export default function ImageViewer({ placeholderImageSource, selectedImage }) {
 	);
 }
 
-const styles = StyleSheet.create({
-	image: {
-		width: 320,
-		height: 440,
-		borderRadius: 18,
-	},
-});
 export function CardImageViewer({ placeholderImageSource, selectedImage }) {
 	const imageSource = selectedImage
 		? { uri: selectedImage }
@@ -50,3 +43,24 @@ export function CardImageViewer({ placeholderImageSource, selectedImage }) {
 		/>
 	);
 }
+
+const styles = StyleSheet.create({
+	image: {
+		width: 320,
+		height: 440,
+		borderRadius: 18,
+	},
+	shadows: {
+		...Platform.select({
+			ios: {
+				shadowColor: "rgba(0, 0, 0, 0.15)",
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 0.15,
+				shadowRadius: 6,
+			},
+			android: {
+				elevation: 2,
+			},
+		}),
+	},
+});

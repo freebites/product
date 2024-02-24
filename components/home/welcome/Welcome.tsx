@@ -11,8 +11,7 @@ const Welcome = () => {
 			<Image source={icon} />
 			<Image source={image} />
 			<Text style={{ color: "#96A391" }}>
-				{" "}
-				shit tastes better when it's free{" "}
+				food tastes better when it's free{" "}
 			</Text>
 		</View>
 	);
