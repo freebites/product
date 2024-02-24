@@ -8,6 +8,7 @@ import { PostContext } from "../../../context/postContext";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants/theme";
 import { Text, SafeAreaView, ScrollView, View } from "react-native";
+import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 /*
@@ -31,6 +32,8 @@ export default function location() {
 			>
 				<Text style={postStyles.pageHeader}>Where is the food?</Text>
 			</View>
+
+			<PlacesSearchBar />
 
 			<Link href="/post/reviewpost" asChild>
 				<PlainButton2 text="Review Post" />
