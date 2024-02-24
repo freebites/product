@@ -15,7 +15,7 @@ import TagMultiSelect from "../../../components/post/TagMultiSelect";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import BinarySelect from "../../../components/common/BinarySelect";
 import ImageViewer from "../../../components/common/ImageViewer";
-import { postStyles } from "./add-title";
+import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
 import HorizontalRule from "../../../components/common/HorizontalRule";
 
@@ -44,41 +44,41 @@ const tags = () => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView contentContainerStyle={styles.scrollContainer}>
+		<SafeAreaView style={postStyles.container}>
+			<ScrollView contentContainerStyle={postStyles.scrollContainer}>
 				<ImageViewer
 					placeholderImageSource={placeholder}
 					selectedImage={postData.imageURIs}
 				/>
 				<View
 					style={[
-						styles.sectionContainer,
+						postStyles.sectionContainer,
 						{ marginHorizontal: 0, width: "75%" },
 					]}
 				>
-					<Text style={styles.pageHeader}>
+					<Text style={postStyles.pageHeader}>
 						Food type? Diets? Allergies?
 					</Text>
-					<Text style={styles.pageH2}>
+					<Text style={postStyles.pageH2}>
 						Help your peers better navigate their options by
 						selecting the following filters!
 					</Text>
-					<Text style={styles.pageH3}>
+					<Text style={postStyles.pageH3}>
 						Eg. Select vegan if there are vegan options available.
 					</Text>
 				</View>
 
 				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
 
-				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionHeader}>Food type?</Text>
+				<View style={postStyles.sectionContainer}>
+					<Text style={postStyles.sectionHeader}>Food type?</Text>
 					<BinarySelect onPress={handleUpdatePerishable} />
 				</View>
 
 				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
 
-				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionHeader}>
+				<View style={postStyles.sectionContainer}>
+					<Text style={postStyles.sectionHeader}>
 						Perishable <Text style={{ color: "red" }}>*</Text>
 					</Text>
 					<BinarySelect onPress={handleUpdatePerishable} />
@@ -86,79 +86,36 @@ const tags = () => {
 
 				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
 
-				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionHeader}>Allergies </Text>
+				<View style={postStyles.sectionContainer}>
+					<Text style={postStyles.sectionHeader}>Allergies </Text>
 					<TagMultiSelect
 						changeHandler={handleUpdateAllergens}
 						tagOptions={["peanut", "tree nut", "dairy", "eggs"]}
 					/>
 				</View>
 
-				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionHeader}>
+				<View style={postStyles.sectionContainer}>
+					<Text style={postStyles.sectionHeader}>
 						Dietary Restrictions{" "}
 					</Text>
 					<TagMultiSelect
 						changeHandler={handleUpdateDiets}
 						tagOptions={[
-							"vegan",
-							"vegetarian",
-							"dairy-free",
-							"halal",
-							"gluten-free",
+							"Vegan",
+							"Vegetarian",
+							"Dairy-free",
+							"Halal",
+							"Gluten-free",
 						]}
 					/>
 				</View>
 
-				<Link href="/post/reviewpost" asChild>
-					<PlainButton2 text="Review Post" />
+				<Link href="/post/location" asChild>
+					<PlainButton2 text="Next Step" />
 				</Link>
 			</ScrollView>
 		</SafeAreaView>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	scrollContainer: {
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	sectionContainer: {
-		justifyContent: "center",
-		alignItems: "flex-start",
-		width: "80%",
-	},
-	sectionHeader: {
-		marginHorizontal: 5,
-		color: "black",
-		fontSize: 18,
-		fontStyle: "normal",
-		fontWeight: "500",
-		lineHeight: 50 /* 277.778% */,
-	},
-	pageHeader: {
-		color: "black",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "600",
-	},
-	pageH2: {
-		color: COLORS.neutral[90],
-		fontSize: 12,
-		fontStyle: "normal",
-		fontWeight: "400",
-	},
-	pageH3: {
-		color: COLORS.brown[30],
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "400",
-	},
-});
 
 export default tags;

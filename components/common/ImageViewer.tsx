@@ -1,25 +1,31 @@
 import { Image, Platform, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
-export default function ImageViewer({ placeholderImageSource, selectedImage }) {
-	const imageSource = selectedImage
-		? { uri: selectedImage }
-		: placeholderImageSource;
+export default function ImageViewer(props: {
+	placeholderImageSource;
+	selectedImage;
+	disabled?: boolean;
+}) {
+	const imageSource = props.selectedImage
+		? { uri: props.selectedImage }
+		: props.placeholderImageSource;
 	// TODO: add placeholder image, and also know number of items in carousel
 	return (
-		<Carousel
-			width={320}
-			height={288}
-			style={{ borderRadius: 30, shadowRadius: 2 }}
-			loop={false}
-			data={selectedImage}
-			renderItem={({ index }) => (
-				<Image
-					source={{ uri: selectedImage[index] }}
-					style={styles.image}
-				/>
-			)}
-		/>
+		!props.disabled && (
+			<Carousel
+				width={320}
+				height={288}
+				style={{ borderRadius: 30, shadowRadius: 2 }}
+				loop={false}
+				data={props.selectedImage}
+				renderItem={({ index }) => (
+					<Image
+						source={{ uri: props.selectedImage[index] }}
+						style={styles.image}
+					/>
+				)}
+			/>
+		)
 	);
 }
 

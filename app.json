@@ -1,14 +1,31 @@
 {
-  "expo": {
-    "scheme": "acme",
-    "web": {
-      "bundler": "metro"
-    },
-    "android":{"softwareKeyboardLayoutMode": "pan"},
-    "name": "product",
-    "slug": "product",
-    "plugins": [
-      "expo-router"
-    ]
-  }
+	"expo": {
+		"scheme": "acme",
+		"web": {
+			"bundler": "metro"
+		},
+		"android": {
+			"softwareKeyboardLayoutMode": "pan",
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff",
+				"googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
+			}
+		},
+		"name": "product",
+		"slug": "product",
+		"plugins": [
+			"expo-router",
+			[
+				"expo-location",
+				{
+					"locationAlwaysAndWhenInUsePermission": "Allow Maps to use your location."
+				}
+			]
+		],
+		"ios": {
+			"supportsTablet": true,
+			"googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
+		}
+	}
 }
