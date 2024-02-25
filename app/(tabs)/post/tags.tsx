@@ -71,13 +71,6 @@ const tags = () => {
 				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
 
 				<View style={postStyles.sectionContainer}>
-					<Text style={postStyles.sectionHeader}>Food type?</Text>
-					<BinarySelect onPress={handleUpdatePerishable} />
-				</View>
-
-				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
-
-				<View style={postStyles.sectionContainer}>
 					<Text style={postStyles.sectionHeader}>
 						Perishable <Text style={{ color: "red" }}>*</Text>
 					</Text>

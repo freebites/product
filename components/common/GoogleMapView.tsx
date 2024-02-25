@@ -1,12 +1,13 @@
 import { Dimensions, Platform } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
-export default function GoogleMapView(props: { disabled?: boolean }) {
+export default function GoogleMapView(props: { disabled?: boolean; ref }) {
 	const screenWidth = Dimensions.get("window").width;
 	const isWeb = Platform.OS === "web";
 	return (
 		!props.disabled && (
 			<MapView
+				ref={props.ref}
 				style={{ width: screenWidth, height: screenWidth * 1.15 }}
 				provider={PROVIDER_GOOGLE}
 				initialRegion={{

@@ -30,7 +30,7 @@ export function useProtectedRoute(user) {
 		if (!user && !inAuthGroup) {
 			console.log("not signed in, redirecting...");
 			// redirect them to the login page
-			router.replace("/login");
+			// router.replace("/login");
 		} else if (user && inAuthGroup) {
 			router.replace("/"); // stay on apge
 		}

@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { createRef, useContext, useState } from "react";
 import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
@@ -21,6 +21,8 @@ export default function location() {
 	// the prop GoogleMapView takes in is the opposite of locationSelected, just
 	// intuitively makes more sense to code this way
 	const [locationSelected, setLocationSelected] = useState(false);
+
+	const mapRef = createRef();
 
 	return (
 		<SafeAreaView style={postStyles.container}>
@@ -51,7 +53,7 @@ export default function location() {
 				}}
 			/>
 
-			<GoogleMapView disabled={!locationSelected} />
+			<GoogleMapView ref={mapRef} disabled={!locationSelected} />
 			<Link href="/post/reviewpost" asChild>
 				<PlainButton2 text="Review Post" />
 			</Link>

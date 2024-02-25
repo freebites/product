@@ -122,8 +122,10 @@ const gallery = () => {
 
 					{/* inputs, modularize these? */}
 
-					<Text>What's in the post?</Text>
-					<Text>Give your post a concise description.</Text>
+					<Text style={postStyles.title}>What's in the post?</Text>
+					<Text style={postStyles.caption}>
+						Give your post a concise description.
+					</Text>
 
 					<Description />
 
@@ -149,6 +151,22 @@ export const postStyles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		backgroundColor: COLORS.neutral[2],
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: "600",
+		width: 287,
+		height: 30,
+		textAlign: "left",
+		marginTop: 26,
+	},
+	caption: {
+		fontSize: 12,
+		fontWeight: "400",
+		color: "#535D50",
+		width: 287,
+		height: 21,
+		textAlign: "left",
 	},
 });
 
