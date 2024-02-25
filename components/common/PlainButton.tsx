@@ -3,25 +3,6 @@ import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 
 const leftArrow = require("../../assets/icons/chevron-right.png");
-
-// const PlainButtonUI = styled.Pressable`
-//   background: #fffbf9;
-//   border: 0.5px solid #d3d3d3;
-//   flex: 1;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: space-between;
-//   min-height: 60px;
-// `;
-
-// const ButtonText = styled.Text`
-//   font-size: 18px;
-//   font-weight: bold;
-//   color: #505a4e;
-//   margin-left: 30px;
-//   flex: 1;
-// `;
-
 const styles = StyleSheet.create({
   button: {
     border: 0.5,

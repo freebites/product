@@ -3,9 +3,9 @@ import React from "react";
 
 import { useGlobalSearchParams } from "expo-router";
 import { Image } from "react-native-elements";
-// import { placeholder } from "../../../assets/icons/freebites/placeholder";
 
 const placeholder = require("../../../assets/icons/placeholder.png");
+
 const style = StyleSheet.create({
   picture: {
     height: 161,
@@ -26,30 +26,6 @@ const style = StyleSheet.create({
     alignSelf: "center",
   },
 });
-
-// const ProfileCardUI = styled.View`
-// 	width: 87%;
-// 	height: 21.3%;
-// 	border-radius: 20px;
-// 	background: #fffbf9;
-// 	display: "flex";
-// 	flex-direction: row;
-// 	margin: 12px;
-// `;
-
-// const ProfileCardTextUI = styled.View`
-// 	justify-content: center;
-// 	display: flex;
-// 	width: 62%;
-// `;
-
-// const ProfileImageUI = styled.View`
-// 	width: 35%;
-// `;
-
-// const CardText = styled.Text`
-// 	color: #505a4e;
-// `;
 
 const ProfileCard = (props) => {
   return (

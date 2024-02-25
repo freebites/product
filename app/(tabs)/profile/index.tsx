@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Pressable } from "react-native";
 import {
   Link,
   Redirect,
@@ -9,13 +10,12 @@ import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // v
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
-import PlainButtonTop from "../../../components/common/PlainButtonTop";
 import { useAuth, validateRoutePerms } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud";
 import { emptyUser, userType } from "../../../context/userContext";
-// import PlainButtonTop from "../../../components/common/PlainButtonTop";
 import ButtonMenu from "../../../components/common/ButtonMenu";
-import PlainButtonBottom from "../../../components/common/PlainButtonBottom";
+
+const editbutton = require("../../../assets/icons/editbutton.png");
 
 const Profile = () => {
   const { user } = useAuth();
@@ -64,12 +64,28 @@ const Profile = () => {
       >
         <Link href="/profile/edit"></Link>
       </View>
-      <ProfileCard
-        name={currUser.firstName}
-        email={currUser.emailAddress}
-        bio={currUser.bio}
-      />
-      {/* <View style={styles.tabMenu}> */}
+      <View>
+        <ProfileCard
+          name={currUser.firstName}
+          email={currUser.emailAddress}
+          bio={currUser.bio}
+        />
+        <Pressable
+          style={{
+            height: 10,
+            width: 10,
+            alignSelf: "flex-end",
+            flex: 1,
+            paddingTop: 140,
+            paddingRight: 20,
+            position: "absolute",
+          }}
+        >
+          <Link href={{ pathname: `/profile/edit` }}>
+            <Image source={editbutton}></Image>{" "}
+          </Link>
+        </Pressable>
+      </View>
       <Link
         href={{ pathname: `/profile/history`, params: { id: user.uid } }}
         asChild
