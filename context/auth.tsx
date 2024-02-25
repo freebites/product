@@ -10,7 +10,7 @@ import { auth } from "../firebase";
 const AuthContext = React.createContext(null);
 
 export function validateRoutePerms(user, globalParams) {
-  if (user == undefined || user != globalParams.id) {
+  if (user == undefined || user.uid == null || user != globalParams.id) {
     return <Redirect href="login" />;
   }
 }
@@ -26,12 +26,12 @@ export function useProtectedRoute(user) {
     const inAuthGroup = segments[0] === "(auth)"; // checks if current url is in (auth)
 
     // if user not signed in AND not looking at a login page,
-    // if (!user && !inAuthGroup) {
-    // 	// redirect them to the login page
-    // 	router.replace("/login");
-    // } else if (user && inAuthGroup) {
-    // 	router.replace("/"); // stay on apge
-    // }
+    if (!user && !inAuthGroup) {
+      // redirect them to the login page
+      router.replace("/login");
+    } else if (user && inAuthGroup) {
+      router.replace("/"); // stay on apge
+    }
   }, [user, segments]); // run function whenever user or segments change
 }
 

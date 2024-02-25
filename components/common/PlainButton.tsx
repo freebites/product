@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "space-between",
-    minHeight: 100,
+    minHeight: 80,
   },
   buttonText: {
     fontSize: 18,

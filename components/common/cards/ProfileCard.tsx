@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 
-import { useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams, Link, router } from "expo-router";
 import { Image } from "react-native-elements";
 
 const placeholder = require("../../../assets/icons/placeholder.png");
+const editbutton = require("../../../assets/icons/editbutton.png");
 
 const style = StyleSheet.create({
   picture: {
@@ -30,13 +31,51 @@ const style = StyleSheet.create({
 const ProfileCard = (props) => {
   return (
     <View style={{ marginBottom: 15 }}>
-      <Pressable>
-        <Image source={placeholder} style={style.picture}></Image>
+      <Image source={placeholder} style={style.picture}></Image>
+      {/* <Link href={{ pathname: `/profile/edit` }}> */}
+      <Pressable
+        style={{
+          position: "absolute",
+          alignSelf: "flex-end",
+          paddingTop: 140,
+        }}
+        onPress={() => {
+          router.push({
+            pathname: "/profile/edit",
+            params: { id: "user.uid" },
+          });
+        }}
+      >
+        <Image
+          style={{
+            width: 30,
+            height: 30,
+          }}
+          source={editbutton}
+        ></Image>
       </Pressable>
+      {/* </Link> */}
       <View>
         <Text style={style.nameText}>{props.name}</Text>
         <Text style={style.emailText}>{props.email}</Text>
       </View>
+
+      {/* <Pressable */}
+      {/* style={
+            {
+              // height: 10,
+              // width: 10,
+              // alignSelf: "flex-end",
+              // flex: 1,
+              // paddingTop: 140,
+              // paddingRight: 20,
+              // position: "absolute",
+            }
+          }
+        > */}
+
+      {/* </Pressable> */}
+      {/* </Link> */}
     </View>
   );
 };

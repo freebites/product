@@ -21,11 +21,11 @@ const Profile = () => {
   const { user } = useAuth();
   const routeParams = useLocalSearchParams();
 
-  validateRoutePerms(user, routeParams);
+  // validateRoutePerms(user, routeParams);
 
-  if (user == undefined || user.uid != routeParams.id) {
-    return <Redirect href="/login" />;
-  }
+  // if (user == undefined || user.uid != routeParams.id) {
+  //   return <Redirect href="/login" />;
+  // }
 
   const [currUser, setCurrUser] = useState(emptyUser);
   const fetchData = async () => {
@@ -54,54 +54,45 @@ const Profile = () => {
         My Profile
       </Text>
 
-      <View
-        style={{
-          height: "7%",
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <Link href="/profile/edit"></Link>
-      </View>
       <View>
         <ProfileCard
           name={currUser.firstName}
           email={currUser.emailAddress}
           bio={currUser.bio}
         />
-        <Pressable
-          style={{
-            height: 10,
-            width: 10,
-            alignSelf: "flex-end",
-            flex: 1,
-            paddingTop: 140,
-            paddingRight: 20,
-            position: "absolute",
-          }}
-        >
-          <Link href={{ pathname: `/profile/edit` }}>
-            <Image source={editbutton}></Image>{" "}
-          </Link>
-        </Pressable>
+
+        {/* <Link href={{ pathname: `/profile/edit` }}>
+          <Pressable
+            style={{
+              height: 10,
+              width: 10,
+              alignSelf: "flex-end",
+              flex: 1,
+              paddingTop: 140,
+              paddingRight: 20,
+              position: "absolute",
+            }}
+          >
+            <Image source={editbutton}></Image>
+          </Pressable>
+        </Link> */}
       </View>
       <Link
-        href={{ pathname: `/profile/history`, params: { id: user.uid } }}
+        href={{ pathname: `/profile/history`, params: { id: "user.uid" } }}
         asChild
       >
         <PlainButton section="top" width="87%" height={60} text="History" />
       </Link>
 
       <Link
-        href={{ pathname: `/profile/drafts`, params: { id: user.uid } }}
+        href={{ pathname: `/profile/drafts`, params: { id: "user.uid" } }}
         asChild
       >
         <PlainButton section="middle" width="87%" height={60} text="Drafts" />
       </Link>
 
       <Link
-        href={{ pathname: `/profile/settings`, params: { id: user.uid } }}
+        href={{ pathname: `/profile/settings`, params: { id: "user.uid" } }}
         asChild
       >
         <PlainButton section="middle" width="87%" height={60} text="Settings" />
