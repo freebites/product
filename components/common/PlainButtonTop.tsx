@@ -1,48 +1,48 @@
-import { Image } from "react-native";
+import { Image, Pressable, StyleSheet, Text } from "react-native";
 import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 
 const leftArrow = require("../../assets/icons/chevron-right.png");
 
-const PlainButtonUITop = styled.Pressable`
-	background: #fffbf9;
-	border: 0.5px solid #d3d3d3;
-	border-top-right-radius: 20px;
-	border-top-left-radius: 20px;
-	flex: 1;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	min-height: 60px;
-`;
+const styles = StyleSheet.create({
+  button: {
+    border: 0.5,
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "space-between",
+    minHeight: 60,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
 
-const ButtonText = styled.Text`
-	font-size: 18px;
-	font-weight: bold;
-	color: #505a4e;
-	margin-left: 30px;
-`;
-
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 30,
+    flex: 1,
+  },
+  arrow: {
+    marginRight: 20,
+  },
+});
 
 const PlainButtonTop = (props, ref) => {
-	return (
-		<PlainButtonUITop
-			onPress={props.onPress}
-			style={({ pressed }) => [
-				{
-					backgroundColor: pressed
-						? "rgba(209, 204, 182, 0.3)"
-						: "white",
-				},
-				{ width: props.width, height: props.height },
-			]}
-			ref={ref}
-		>
-			<ButtonText>{props.text}</ButtonText>
-			<Image source={leftArrow} style={{ marginRight: 18 }}></Image>
-		</PlainButtonUITop>
-	);
+  return (
+    <Pressable
+      onPress={props.onPress}
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? "rgba(209, 204, 182, 0.3)" : "#FFFCFA",
+        },
+        { width: props.width, height: props.height },
+        styles.button,
+      ]}
+      ref={ref}
+    >
+      <Text style={styles.buttonText}>{props.text}</Text>
+      <Image source={leftArrow} style={{ marginRight: 18 }}></Image>
+    </Pressable>
+  );
 };
 
 // need to add forward ref if you want to wrap button in <Link>
