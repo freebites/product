@@ -51,7 +51,7 @@ export default function location() {
 				}}
 			/>
 
-			{/* <GoogleMapView disabled={!locationSelected} /> */}
+			<GoogleMapView disabled={!locationSelected} />
 			<Link href="/post/reviewpost" asChild>
 				<PlainButton2 text="Review Post" />
 			</Link>

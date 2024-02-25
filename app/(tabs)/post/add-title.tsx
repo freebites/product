@@ -85,7 +85,6 @@ const gallery = () => {
 		const cameraPerms = await ImagePicker.requestCameraPermissionsAsync();
 
 		if (cameraPerms.granted === false) {
-			console.log("fuck u");
 			return;
 		}
 
