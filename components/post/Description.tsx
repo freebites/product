@@ -20,11 +20,12 @@ const Description = () => {
 
 const styles = StyleSheet.create({
 	input: {
-		width: "85%",
+		width: "100%",
+		maxWidth: "100%",
 		height: 147,
 		backgroundColor: "white",
 		borderRadius: 20,
-		borderColor: "black",
+		borderColor: "rgba(0, 0, 0, 0.40)",
 		borderWidth: 1,
 		paddingHorizontal: 20,
 		paddingTop: 17,

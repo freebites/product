@@ -18,6 +18,7 @@ import ImageViewer from "../../../components/common/ImageViewer";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
 import HorizontalRule from "../../../components/common/HorizontalRule";
+import NextButtonText from "../../../components/post/NextButtonText";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
@@ -102,11 +103,11 @@ const tags = () => {
 						]}
 					/>
 				</View>
-
-				<Link href="/post/location" asChild>
-					<PlainButton2 text="Next Step" />
-				</Link>
 			</ScrollView>
+
+			<Link href="/post/location" asChild>
+				<NextButtonText validInput={false} />
+			</Link>
 		</SafeAreaView>
 	);
 };

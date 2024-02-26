@@ -19,6 +19,8 @@ import {
 import NextButtonText from "../../../components/post/NextButtonText";
 import Description from "../../../components/post/Description";
 import PostHeader from "../../../components/post/PostHeader";
+import { postStyles } from "./styles/postStyles";
+import NextButton from "../../../components/post/NextButton";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
@@ -47,11 +49,6 @@ const gallery = () => {
 
 	const handleUpdateDesc = (descr) => {
 		updatePostData({ description: descr }); // Update multiple values
-	};
-
-	// handler for updating location (room number)
-	const handleUpdateLocation = (locationName) => {
-		updatePostData({ ...postData, location: locationName });
 	};
 
 	// TODO: ADD GOOGLE PLACE ID HERE
@@ -98,19 +95,15 @@ const gallery = () => {
 			{/* keyboard and scrollview are for making the keyboard work 
 			    as it was blocking the stuff*/}
 			<KeyboardAvoidingView
-				style={{ flex: 1 }}
+				style={{ width: "100%", flex: 1 }}
 				keyboardVerticalOffset={100}
 				behavior={"position"}
 			>
 				<ScrollView
 					keyboardShouldPersistTaps="handled"
 					keyboardDismissMode="on-drag"
-					contentContainerStyle={{
-						alignItems: "center",
-						justifyContent: "center",
-					}}
+					contentContainerStyle={postStyles.scrollContainer}
 					alwaysBounceVertical={false}
-					style={{ flex: 1 }}
 				>
 					{/* carousel */}
 					<View>
@@ -122,36 +115,29 @@ const gallery = () => {
 
 					{/* inputs, modularize these? */}
 
-					<Text style={postStyles.title}>What's in the post?</Text>
-					<Text style={postStyles.caption}>
+					<Text style={styles.title}>What's in the post?</Text>
+					<Text style={styles.caption}>
 						Give your post a concise description.
 					</Text>
-
-					<Description />
-
-					<Link href="/post/tags" asChild>
-						<NextButtonText
-							text="Next Step"
-							validInput={
-								postData.description != "" &&
-								postData.title != "" &&
-								postData.location != ""
-							}
-						/>
-					</Link>
+					<View
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+							width: "80%",
+						}}
+					>
+						<Description />
+					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
+			<Link href="/post/tags" asChild>
+				<NextButtonText validInput={false} />
+			</Link>
 		</SafeAreaView>
 	);
 };
 
-export const postStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: COLORS.neutral[2],
-	},
+export const styles = StyleSheet.create({
 	title: {
 		fontSize: 20,
 		fontWeight: "600",

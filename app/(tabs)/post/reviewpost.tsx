@@ -14,6 +14,7 @@ import {
 	uploadBytesResumable,
 } from "firebase/storage";
 import create from "../../../api/posts/create";
+import NextButtonText from "../../../components/post/NextButtonText";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
@@ -78,11 +79,11 @@ export default function reviewpost() {
 			<Text> Perishable: {postData.tags.perishable ? "yes" : "no"}</Text>
 			<Text> Allergens: {postData.tags.allergens.join(", ")}</Text>
 			<Text>Diets: {postData.tags.diet.join(", ")}</Text>
-			<BackButton />
+			<Text>Location: {postData.location} </Text>
 			<Link href="/home" asChild>
-				<PlainButton2
+				<NextButtonText
 					onPress={() => uploadAllImages(postData.imageURIs)}
-					text="Submit Post"
+					text={"Post"}
 				/>
 			</Link>
 		</View>

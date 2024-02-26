@@ -1,23 +1,41 @@
+import { forwardRef } from "react";
 import { Dimensions, Platform } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
-export default function GoogleMapView(props: { disabled?: boolean; ref }) {
+function GoogleMapView(props: { disabled?: boolean; coordinates?: any }, ref) {
 	const screenWidth = Dimensions.get("window").width;
-	const isWeb = Platform.OS === "web";
+
 	return (
+		// issue with rendering initial so i have it wait to render until
+		// coordinates are set with setState
+		props.coordinates != null &&
 		!props.disabled && (
 			<MapView
-				ref={props.ref}
-				style={{ width: screenWidth, height: screenWidth * 1.15 }}
+				ref={ref}
+				style={{
+					width: screenWidth,
+					height: screenWidth * 1,
+					zIndex: 9,
+				}}
 				provider={PROVIDER_GOOGLE}
 				initialRegion={{
-					latitude: 42.40711,
-					longitude: -71.11355,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421,
+					latitude: props.coordinates.lat,
+					longitude: props.coordinates.lng,
+					latitudeDelta: 0.01,
+					longitudeDelta: 0.01,
 				}}
 				showsUserLocation={true}
-			></MapView>
+			>
+				{/* based off of coordinates */}
+				<Marker
+					coordinate={{
+						latitude: props.coordinates.lat,
+						longitude: props.coordinates.lng,
+					}}
+				></Marker>
+			</MapView>
 		)
 	);
 }
+
+export default forwardRef(GoogleMapView);

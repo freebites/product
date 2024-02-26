@@ -73,7 +73,7 @@ const COLORS = {
     50: "#AEA9B1",
     40: "#CAC5CD",
     30: "#E6E0E9",
-    20: "#F5EFF7",
+    20: "#FFFCFA",
     10: "#FFFBFE",
   }
 };

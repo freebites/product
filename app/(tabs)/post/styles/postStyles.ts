@@ -5,6 +5,7 @@ export const postStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: "center",
+		backgroundColor: COLORS.neutral[20],
 	},
 	scrollContainer: {
 		alignItems: "center",
