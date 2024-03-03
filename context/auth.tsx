@@ -9,12 +9,6 @@ import { auth } from "../firebase";
 
 const AuthContext = React.createContext(null);
 
-export function validateRoutePerms(user, globalParams) {
-  if (user == undefined || user.uid == null || user != globalParams.id) {
-    return <Redirect href="login" />;
-  }
-}
-
 export function useAuth() {
   return React.useContext(AuthContext);
 }

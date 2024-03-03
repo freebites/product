@@ -3,6 +3,7 @@ import { Pressable } from "react-native";
 import {
   Link,
   Redirect,
+  router,
   useGlobalSearchParams,
   useLocalSearchParams,
 } from "expo-router";
@@ -10,7 +11,7 @@ import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // v
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
-import { useAuth, validateRoutePerms } from "../../../context/auth";
+import { useAuth } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud";
 import { emptyUser, userType } from "../../../context/userContext";
 import ButtonMenu from "../../../components/common/ButtonMenu";
@@ -22,16 +23,20 @@ const Profile = () => {
   const routeParams = useLocalSearchParams();
 
   // validateRoutePerms(user, routeParams);
-
-  // if (user == undefined || user.uid != routeParams.id) {
-  //   return <Redirect href="/login" />;
-  // }
+  // React.useEffect(() => {
+  //   if (user == undefined || user.uid != routeParams.id) {
+  //     router.replace("/login");
+  //   }
+  // }, [user]);
 
   const [currUser, setCurrUser] = useState(emptyUser);
-  const fetchData = async () => {
-    const userData = await getOne(user.uid);
-    setCurrUser(userData);
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getOne(user.uid);
+      setCurrUser(userData);
+    };
+    fetchUser;
+  }, []);
 
   /*
 		TODO (Johnny and Jack): useEffect should change based on screen or 
@@ -41,12 +46,6 @@ const Profile = () => {
 			accessible in nested pages, 
 				router.push params
 	*/
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  console.log(currUser);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -77,24 +76,16 @@ const Profile = () => {
           </Pressable>
         </Link> */}
       </View>
-      <Link
-        href={{ pathname: `/profile/history`, params: { id: "user.uid" } }}
-        asChild
-      >
+      {/* Push user.uid params for all children, also in layout to profile!!!*/}
+      <Link asChild href={{ pathname: `/profile/history` }}>
         <PlainButton section="top" width="87%" height={60} text="History" />
       </Link>
 
-      <Link
-        href={{ pathname: `/profile/drafts`, params: { id: "user.uid" } }}
-        asChild
-      >
+      <Link href={{ pathname: `/profile/drafts` }} asChild>
         <PlainButton section="middle" width="87%" height={60} text="Drafts" />
       </Link>
 
-      <Link
-        href={{ pathname: `/profile/settings`, params: { id: "user.uid" } }}
-        asChild
-      >
+      <Link href={{ pathname: `/profile/settings` }} asChild>
         <PlainButton section="middle" width="87%" height={60} text="Settings" />
       </Link>
 
