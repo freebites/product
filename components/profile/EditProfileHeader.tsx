@@ -6,11 +6,8 @@ import { globalStyles } from "../global";
 const placeholder = require("../../assets/icons/freebites/placeholder.png");
 const HeaderUI = styled.View`
   width: 100%;
-  height: 45%;
   padding-top: 60px;
   background-color: #f0e1d2;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
   position: absolute;
 `;
 
@@ -27,7 +24,7 @@ function PrevPage() {
 
 const EditProfileHeader = () => {
   return (
-    <HeaderUI>
+    <HeaderUI style={{}}>
       <HeaderTextUI>
         <Text style={globalStyles.text} onPress={() => PrevPage()}>
           Cancel

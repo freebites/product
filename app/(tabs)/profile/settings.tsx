@@ -6,18 +6,18 @@ import NotificationSection from "../../../components/settings/NotificationSectio
 import ContactSection from "../../../components/settings/ContactSection";
 import LogoutSection from "../../../components/settings/LogoutSection";
 const settings = () => {
-	return (
-		<SafeAreaView style={globalStyles.container}>
-			<View style={{ width: "80%" }}>
-				<Header text="Settings" />
-				<View style={{ margin: "8%" }} />
-				<NotificationSection />
-				<View style={{ margin: "8%" }} />
-				<ContactSection />
-				<LogoutSection />
-			</View>
-		</SafeAreaView>
-	);
+  return (
+    <SafeAreaView style={globalStyles.container}>
+      <View style={{ width: "80%" }}>
+        <Header text="Settings" />
+        <View style={{ margin: "8%" }} />
+        <NotificationSection />
+        <View style={{ margin: "8%" }} />
+        <ContactSection />
+        <LogoutSection />
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export default settings;

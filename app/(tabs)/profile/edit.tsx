@@ -16,38 +16,45 @@ const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 const editProfile = () => {
   return (
     <SafeAreaView style={globalStyles.containerLight}>
-      {/* <View
-        style={{ backgroundColor: "white", flex: 1, width: 500, height: 1000 }}
-      > */}
       <EditProfileHeader />
-
-      <KeyboardAvoidingView behavior="position" style={{ paddingTop: 20 }}>
-        <View style={{ alignItems: "center" }}>
-          <Image
-            source={placeholder}
-            style={{ height: 161, width: 143, borderRadius: 10 }}
-          />
-          <Text style={{ marginTop: 15, color: "#F95D25" }}>
-            change profile photo
-          </Text>
-        </View>
-        <View
-          style={{
-            // backgroundColor: "white",
-
-            flex: 1,
-            margin: "5%",
-            marginTop: "20%",
-            gap: 15,
-            // width: 50,
-            // height: 50,
-          }}
-        >
-          <EditProfileInput title="Name" />
-          <EditProfileInput title="Username" />
-          <EditProfileInput title="Pronouns" />
-        </View>
-      </KeyboardAvoidingView>
+      <TouchableWithoutFeedback
+        onPress={() => Keyboard.dismiss()}
+        accessible={false}
+      >
+        <KeyboardAvoidingView behavior="position" style={{ marginTop: 20 }}>
+          <View
+            style={{
+              alignItems: "center",
+              width: 400,
+              backgroundColor: "#f0e1d2",
+              borderBottomRightRadius: 30,
+              borderBottomLeftRadius: 30,
+              paddingTop: 30,
+            }}
+          >
+            <Image
+              source={placeholder}
+              style={{ height: 161, width: 143, borderRadius: 10 }}
+            />
+            <Text style={{ marginTop: 15, color: "#F95D25" }}>
+              change profile photo
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              margin: "5%",
+              marginVertical: "20%",
+              marginBottom: 30,
+              gap: 15,
+            }}
+          >
+            <EditProfileInput title="Name" />
+            <EditProfileInput title="Username" />
+            <EditProfileInput title="Pronouns" />
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };

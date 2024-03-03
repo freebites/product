@@ -6,30 +6,31 @@ import { globalStyles } from "../global";
 const leftArrow = require("../../assets/icons/chevron-left.png");
 
 function goBack() {
-	router.back();
+  router.back();
 }
 
 const Header = (props) => {
-	return (
-		<View
-			style={{
-				width: "100%",
-				alignItems: "baseline",
-				flexDirection: "row",
-				justifyContent: "flex-start",
-				marginTop: "8.7%",
-			}}
-		>
-			<Pressable
-				onPress={() => goBack()}
-				style={{ marginLeft: "10%", width: "24%" }}
-			>
-				<Image source={leftArrow} />
-			</Pressable>
+  return (
+    <View
+      style={{
+        width: "100%",
+        alignContent: "center",
+        flexDirection: "row",
+        // flex: 1,
+        // justifyContent: "space-between",
+        marginBottom: "10%",
+      }}
+    >
+      <Pressable
+        onPress={() => goBack()}
+        style={{ marginLeft: "10%", width: "24%" }}
+      >
+        <Image source={leftArrow} style={{}} />
+      </Pressable>
 
-			<Text style={globalStyles.headerText}>{props.text}</Text>
-		</View>
-	);
+      <Text style={globalStyles.headerText}>{props.text}</Text>
+    </View>
+  );
 };
 
 export default Header;

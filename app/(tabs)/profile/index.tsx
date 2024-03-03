@@ -15,6 +15,7 @@ import { useAuth } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud";
 import { emptyUser, userType } from "../../../context/userContext";
 import ButtonMenu from "../../../components/common/ButtonMenu";
+import Header from "../../../components/common/Header";
 
 const editbutton = require("../../../assets/icons/editbutton.png");
 
@@ -35,23 +36,15 @@ const Profile = () => {
       const userData = await getOne(user.uid);
       setCurrUser(userData);
     };
-    fetchUser;
+    fetchUser();
   }, []);
-
-  /*
-		TODO (Johnny and Jack): useEffect should change based on screen or 
-		on editing screen. Variable to tell us when switching screens
-			- make dummy user data in Mongo
-			- Inner profile pages need validate check if globalparams is
-			accessible in nested pages, 
-				router.push params
-	*/
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
+      {/* <Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
         My Profile
-      </Text>
+      </Text> */}
+      <Header text="My Profile"></Header>
 
       <View>
         <ProfileCard
@@ -97,7 +90,4 @@ const Profile = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  tabMenu: {},
-});
 export default Profile;
