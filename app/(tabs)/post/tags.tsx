@@ -19,11 +19,13 @@ import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
 import HorizontalRule from "../../../components/common/HorizontalRule";
 import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
 const tags = () => {
-	const { postData, updatePostData } = useContext(PostContext);
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
 
 	// update handlers for each field
 	const handleUpdateAllergens = (newAllergens) => {
@@ -47,6 +49,7 @@ const tags = () => {
 	return (
 		<SafeAreaView style={postStyles.container}>
 			<ScrollView contentContainerStyle={postStyles.scrollContainer}>
+				<ProgressBar currentStep={1} />
 				<ImageViewer
 					placeholderImageSource={placeholder}
 					selectedImage={postData.imageURIs}

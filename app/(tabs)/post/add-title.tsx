@@ -21,10 +21,12 @@ import Description from "../../../components/post/Description";
 import PostHeader from "../../../components/post/PostHeader";
 import { postStyles } from "./styles/postStyles";
 import NextButton from "../../../components/post/NextButton";
+import ProgressBar from "../../../components/post/ProgressBar";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
-	const { postData, updatePostData } = useContext(PostContext);
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
 
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
@@ -105,6 +107,7 @@ const gallery = () => {
 					contentContainerStyle={postStyles.scrollContainer}
 					alwaysBounceVertical={false}
 				>
+					<ProgressBar currentStep={0} />
 					{/* carousel */}
 					<View>
 						<ImageViewer

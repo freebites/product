@@ -51,22 +51,34 @@ export const EmptyPost: postType = {
 type PostContextType = {
 	postData: postType;
 	updatePostData: (newData: Partial<postType>) => void;
+	progress: number;
+	updateProgress: (newScreen: number) => void;
 };
 
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
 	updatePostData: () => {},
+	progress: 0,
+	updateProgress: () => {},
 });
 
 export const PostProvider = ({ children }) => {
 	const [postData, setPostData] = useState<postType>(EmptyPost);
+	const [progress, setProgress] = useState<number>(0);
 
+	// update context states
 	const updatePostData = (newData: Partial<postType>) => {
 		setPostData({ ...postData, ...newData });
 	};
 
+	const updateProgress = (newScreen: number) => {
+		setProgress(newScreen);
+	};
+
 	return (
-		<PostContext.Provider value={{ postData, updatePostData }}>
+		<PostContext.Provider
+			value={{ postData, updatePostData, progress, updateProgress }}
+		>
 			{children}
 		</PostContext.Provider>
 	);

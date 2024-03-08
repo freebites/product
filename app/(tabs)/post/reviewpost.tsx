@@ -15,11 +15,13 @@ import {
 } from "firebase/storage";
 import create from "../../../api/posts/create";
 import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 export default function reviewpost() {
-	const { postData, updatePostData } = useContext(PostContext);
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
 
 	// function to upload one picture given a local URI
 	const uploadPicture = async (uri) => {
@@ -67,6 +69,7 @@ export default function reviewpost() {
 		<View
 			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
 		>
+			<ProgressBar currentStep={4} />
 			<Text>review post here</Text>
 			<View>
 				<ImageViewer

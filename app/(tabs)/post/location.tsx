@@ -19,6 +19,7 @@ import GoogleMapView from "../../../components/common/GoogleMapView";
 import MapView from "react-native-maps";
 import { getGeolocationWithPlaceID } from "../../../api/util/maps";
 import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 interface latlong {
@@ -39,7 +40,8 @@ export default function location() {
 	const mapRef = createRef<MapView>();
 
 	/* context specific functions */
-	const { postData, updatePostData } = useContext(PostContext);
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
 
 	// handler for updating location
 	const handleUpdateLocation = (place_id) => {
@@ -68,6 +70,7 @@ export default function location() {
 	};
 	return (
 		<SafeAreaView style={postStyles.container}>
+			<ProgressBar currentStep={2} />
 			<ImageViewer
 				placeholderImageSource={placeholder}
 				selectedImage={postData.imageURIs}
