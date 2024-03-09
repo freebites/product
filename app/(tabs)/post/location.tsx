@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import React, { createRef, useContext, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import React, { createRef, useContext, useEffect, useState } from "react";
 
 import ImageViewer from "../../../components/common/ImageViewer";
 
@@ -38,7 +38,9 @@ export default function location() {
 	const [coordinates, setCoordinates] = useState<latlong>(null);
 	// onPress --> grab the location input into a
 	const mapRef = createRef<MapView>();
-
+	useFocusEffect(() => {
+		updateProgress(2);
+	});
 	/* context specific functions */
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
@@ -68,9 +70,10 @@ export default function location() {
 
 		handleUpdateLocation(place_id);
 	};
+
 	return (
 		<SafeAreaView style={postStyles.container}>
-			<ProgressBar currentStep={2} />
+			<ProgressBar />
 			<ImageViewer
 				placeholderImageSource={placeholder}
 				selectedImage={postData.imageURIs}
@@ -109,11 +112,11 @@ export default function location() {
 				}}
 			></TextInput>
 
-			<GoogleMapView
+			{/* <GoogleMapView
 				ref={mapRef}
 				disabled={!locationSelected}
 				coordinates={coordinates}
-			/>
+			/> */}
 			<Link href="/post/reviewpost" asChild>
 				<NextButtonText validInput={false} />
 			</Link>

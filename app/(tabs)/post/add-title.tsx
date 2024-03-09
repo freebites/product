@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import React, { useContext } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import React, { useContext, useEffect } from "react";
 import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
@@ -18,16 +18,18 @@ import {
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
 import Description from "../../../components/post/Description";
-import PostHeader from "../../../components/post/PostHeader";
 import { postStyles } from "./styles/postStyles";
-import NextButton from "../../../components/post/NextButton";
 import ProgressBar from "../../../components/post/ProgressBar";
+
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
-
+	// update progress on focus instead of just when it rerenders to force refresh
+	useFocusEffect(() => {
+		updateProgress(0);
+	});
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
 		updatePostData({
@@ -107,7 +109,8 @@ const gallery = () => {
 					contentContainerStyle={postStyles.scrollContainer}
 					alwaysBounceVertical={false}
 				>
-					<ProgressBar currentStep={0} />
+					<ProgressBar />
+
 					{/* carousel */}
 					<View>
 						<ImageViewer

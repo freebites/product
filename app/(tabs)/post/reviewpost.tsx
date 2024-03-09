@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
-import React, { useContext, useState } from "react";
-import { Link, router } from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, router, useFocusEffect } from "expo-router";
 import { PostContext, EmptyPost } from "../../../context/postContext";
 import BackButton from "../../../components/common/BackButton";
 import PlainButton2 from "../../../components/common/PlainButton2";
@@ -23,6 +23,9 @@ export default function reviewpost() {
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
 
+	useFocusEffect(() => {
+		updateProgress(4);
+	});
 	// function to upload one picture given a local URI
 	const uploadPicture = async (uri) => {
 		//setUploading(true);
@@ -69,7 +72,7 @@ export default function reviewpost() {
 		<View
 			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
 		>
-			<ProgressBar currentStep={4} />
+			<ProgressBar />
 			<Text>review post here</Text>
 			<View>
 				<ImageViewer

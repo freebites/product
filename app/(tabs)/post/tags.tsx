@@ -6,8 +6,8 @@ import {
 	StyleSheet,
 	ScrollView,
 } from "react-native";
-import { Link } from "expo-router";
-import React, { useContext, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
 import BackButton from "../../../components/common/BackButton";
 import { PostContext } from "../../../context/postContext";
 import TagButton from "../../../components/post/TagButton";
@@ -26,7 +26,9 @@ const placeholder = require("../../../assets/images/kemal.jpg");
 const tags = () => {
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
-
+	useFocusEffect(() => {
+		updateProgress(1);
+	});
 	// update handlers for each field
 	const handleUpdateAllergens = (newAllergens) => {
 		updatePostData({
@@ -49,7 +51,8 @@ const tags = () => {
 	return (
 		<SafeAreaView style={postStyles.container}>
 			<ScrollView contentContainerStyle={postStyles.scrollContainer}>
-				<ProgressBar currentStep={1} />
+				<ProgressBar />
+
 				<ImageViewer
 					placeholderImageSource={placeholder}
 					selectedImage={postData.imageURIs}
