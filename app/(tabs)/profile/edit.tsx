@@ -21,7 +21,7 @@ const editProfile = () => {
         onPress={() => Keyboard.dismiss()}
         accessible={false}
       >
-        <KeyboardAvoidingView behavior="position" style={{ marginTop: 20 }}>
+        <KeyboardAvoidingView behavior="position" style={{ marginTop: 22 }}>
           <View
             style={{
               alignItems: "center",
@@ -46,7 +46,7 @@ const editProfile = () => {
               margin: "5%",
               marginVertical: "20%",
               marginBottom: 30,
-              gap: 15,
+              gap: 30,
             }}
           >
             <EditProfileInput title="Name" />

@@ -14,21 +14,23 @@ const Header = (props) => {
     <View
       style={{
         width: "100%",
-        alignContent: "center",
         flexDirection: "row",
         // flex: 1,
-        // justifyContent: "space-between",
+        justifyContent: "center",
         marginBottom: "10%",
+        // alignItems: "center",
       }}
     >
       <Pressable
         onPress={() => goBack()}
-        style={{ marginLeft: "10%", width: "24%" }}
+        style={{ position: "absolute", left: 30 }}
       >
         <Image source={leftArrow} style={{}} />
       </Pressable>
 
-      <Text style={globalStyles.headerText}>{props.text}</Text>
+      <View style={{}}>
+        <Text style={[globalStyles.headerText, {}]}>{props.text}</Text>
+      </View>
     </View>
   );
 };

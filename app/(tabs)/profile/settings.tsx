@@ -8,8 +8,8 @@ import LogoutSection from "../../../components/settings/LogoutSection";
 const settings = () => {
   return (
     <SafeAreaView style={globalStyles.container}>
+      <Header text="Settings" />
       <View style={{ width: "80%" }}>
-        <Header text="Settings" />
         <View style={{ margin: "8%" }} />
         <NotificationSection />
         <View style={{ margin: "8%" }} />

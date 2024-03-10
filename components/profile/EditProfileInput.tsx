@@ -15,6 +15,7 @@ const StyledInput = styled.TextInput`
   opacity: 0.5;
   padding: 3%;
   width: 300px;
+  font-size: 17;
 `;
 
 const EditProfileInput = (props) => {
