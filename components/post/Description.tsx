@@ -1,27 +1,54 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+
+// helper function for word counting
 
 const Description = () => {
+	const [value, setValue] = useState("");
+	const [wordCount, setWordCount] = useState(0);
 	return (
-		<TextInput
-			placeholder="Eg. Big macs, fries, and nuggets from TUSC event."
-			placeholderTextColor="#A8A7A6"
-			multiline
-			numberOfLines={4}
-			maxLength={40}
-			style={styles.input}
-			// onChangeText={(text) => {
-			// 	handleUpdateDesc(text);
-			// }}
-			// value={postData.description}
-		></TextInput>
+		<View style={styles.container}>
+			<TextInput
+				placeholder="Eg. Big macs, fries, and nuggets from TUSC event."
+				placeholderTextColor="#A8A7A6"
+				multiline
+				numberOfLines={4}
+				maxLength={250}
+				style={styles.input}
+				onChangeText={(text) => {
+					setValue(text);
+					setWordCount(text.length);
+				}} // add description update later
+				// onChangeText={(text) => {
+				// 	handleUpdateDesc(text);
+				// }}
+				// value={postData.description}
+			></TextInput>
+
+			<Text
+				style={{
+					fontSize: 10,
+					color: "lightgrey",
+					textAlign: "right",
+					position: "absolute",
+					right: 30,
+					bottom: 10,
+				}}
+			>
+				{wordCount}/250
+			</Text>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	input: {
+	container: {
 		width: "100%",
 		maxWidth: "100%",
+		marginTop: 9,
+		marginBottom: 64,
+	},
+	input: {
 		height: 147,
 		backgroundColor: "white",
 		borderRadius: 20,
@@ -30,8 +57,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		paddingTop: 17,
 		paddingBottom: 17,
-		marginTop: 9,
-		marginBottom: 64,
 	},
 });
 

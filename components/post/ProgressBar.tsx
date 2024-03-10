@@ -13,6 +13,7 @@ import Animated, {
 	interpolate,
 	interpolateColor,
 	withSpring,
+	runOnJS,
 } from "react-native-reanimated";
 const ProgressBar = () => {
 	const { progress, updateProgress } = useContext(PostContext);
@@ -115,6 +116,11 @@ const ProgressBar = () => {
 		});
 
 	const nestedViewStyle = (barProgress, circleProgress) => {
+		const toggleCircle = (finished) => {
+			if (finished && barProgress.value == 100) {
+				circleProgress(true);
+			}
+		};
 		return useAnimatedStyle(() => {
 			// const translateX = interpolate(
 			// 	barProgress.value,
@@ -128,11 +134,7 @@ const ProgressBar = () => {
 						translateX: withTiming(
 							interpolate(barProgress.value, [0, 100], [-26, 0]),
 							config,
-							(finished) => {
-								if (finished && barProgress.value == 100) {
-									circleProgress(true);
-								}
-							}
+							(finished) => runOnJS(toggleCircle)(finished)
 						),
 					},
 				],
