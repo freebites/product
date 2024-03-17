@@ -37,16 +37,14 @@ const PlainButton = (props, ref) => {
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? "rgba(209, 204, 182, 0.3)" : "#FFFCFA",
-        },
-        styles.button,
-        { width: props.width, height: props.height },
-        {
+          width: props.width,
+          height: props.height,
           borderBottomRightRadius: props.section == "bottom" ? 20 : 0,
           borderBottomLeftRadius: props.section == "bottom" ? 20 : 0,
           borderTopRightRadius: props.section == "top" ? 20 : 0,
           borderTopLeftRadius: props.section == "top" ? 20 : 0,
         },
-        ,
+        styles.button,
       ]}
       ref={ref}
     >

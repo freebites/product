@@ -8,35 +8,38 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
-import { globalStyles } from "../../../components/global";
-import EditProfileHeader from "../../../components/profile/EditProfileHeader";
-import EditProfileInput from "../../../components/profile/EditProfileInput";
-import EditModal from "../../../components/profile/editModal";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { globalStyles } from "../../../../components/global";
+import EditProfileHeader from "../../../../components/profile/EditProfileHeader";
+import EditProfileInput from "../../../../components/profile/EditProfileInput";
+import ModalBackdrop from "../../../../components/common/ModalBackdrop";
+
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const editProfile = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["15%", "35%"], []);
   const [isEditingPic, setIsEditingPic] = useState(false);
 
   const handleImagePress = () => {
     bottomSheetModalRef.current?.present();
     setIsEditingPic(true);
   };
+  const handleSheetChanges = useCallback((index: number) => {
+    if (index === -1) {
+      setIsEditingPic(false);
+    }
+  }, []);
+
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView
-        style={[
-          globalStyles.containerLight,
-          { backgroundColor: isEditingPic ? "rgba(0, 0, 0, 0.5)" : "None" },
-        ]}
-      >
+      <SafeAreaView style={globalStyles.containerLight}>
         <EditProfileHeader />
         <TouchableWithoutFeedback
           onPress={() => Keyboard.dismiss()}
@@ -54,9 +57,11 @@ const editProfile = () => {
               }}
             >
               <BottomSheetModal
+                backdropComponent={ModalBackdrop}
                 ref={bottomSheetModalRef}
                 index={1}
                 snapPoints={snapPoints}
+                onChange={handleSheetChanges}
               >
                 <BottomSheetView style={styles.contentContainer}>
                   <Text>Awesome 🎉</Text>

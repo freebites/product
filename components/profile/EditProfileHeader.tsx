@@ -22,9 +22,10 @@ function PrevPage() {
   router.back();
 }
 
-const EditProfileHeader = () => {
+const EditProfileHeader = (props) => {
+  const { isEditing } = props;
   return (
-    <HeaderUI style={{}}>
+    <HeaderUI>
       <HeaderTextUI>
         <Text style={globalStyles.text} onPress={() => PrevPage()}>
           Cancel
