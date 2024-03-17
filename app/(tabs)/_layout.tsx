@@ -7,7 +7,7 @@ import {
   useRouter,
   Redirect,
 } from "expo-router";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import React from "react";
 import { useAuth, useProtectedRoute } from "../../context/auth";
 
@@ -22,7 +22,10 @@ export default () => {
   //     router.replace("/login");
   //   }
   // }, [user]);
-
+  const pathname = usePathname();
+  if (pathname === "/profile/edit") {
+    return <></>;
+  }
   return (
     <Tabs
       screenOptions={{

@@ -13,8 +13,8 @@ const StyledInput = styled.TextInput`
   border-bottom-width: 1px;
   border-bottom-color: #505a4e;
   opacity: 0.5;
-  padding: 3%;
-  width: 300px;
+  padding: 5%;
+  width: 100%;
   font-size: 17px;
 `;
 

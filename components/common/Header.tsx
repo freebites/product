@@ -23,7 +23,7 @@ const Header = (props) => {
     >
       <Pressable
         onPress={() => goBack()}
-        style={{ position: "absolute", left: 30 }}
+        style={{ position: "absolute", left: 30, height: 30, width: 30 }}
       >
         <Image source={leftArrow} style={{}} />
       </Pressable>

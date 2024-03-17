@@ -54,44 +54,13 @@ const ProfileCard = (props) => {
           source={editbutton}
         ></Image>
       </Pressable>
-      {/* </Link> */}
+
       <View>
         <Text style={style.nameText}>{props.name}</Text>
         <Text style={style.emailText}>{props.email}</Text>
       </View>
-
-      {/* <Pressable */}
-      {/* style={
-            {
-              // height: 10,
-              // width: 10,
-              // alignSelf: "flex-end",
-              // flex: 1,
-              // paddingTop: 140,
-              // paddingRight: 20,
-              // position: "absolute",
-            }
-          }
-        > */}
-
-      {/* </Pressable> */}
-      {/* </Link> */}
     </View>
   );
 };
 
-// <ProfileCardUI>
-// 	<ProfileImageUI></ProfileImageUI>
-// 	<ProfileCardTextUI>
-// 		<CardText style={{ fontSize: 18, fontWeight: "bold" }}>
-// 			<Text>{props.name}</Text>
-// 		</CardText>
-
-// 		<CardText style={{ fontSize: 15 }}>{props.email}</CardText>
-
-// 		<CardText style={{ fontSize: 15, height: "33%" }}>
-// 			<Text>{props.bio}</Text>
-// 		</CardText>
-// 	</ProfileCardTextUI>
-// </ProfileCardUI>
 export default ProfileCard;

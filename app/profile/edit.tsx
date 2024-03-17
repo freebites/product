@@ -9,16 +9,17 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { globalStyles } from "../../../../components/global";
-import EditProfileHeader from "../../../../components/profile/EditProfileHeader";
-import EditProfileInput from "../../../../components/profile/EditProfileInput";
-import ModalBackdrop from "../../../../components/common/ModalBackdrop";
+import { globalStyles } from "../../components/global";
+import EditProfileHeader from "../../components/profile/EditProfileHeader";
+import EditProfileInput from "../../components/profile/EditProfileInput";
+import ModalBackdrop from "../../components/common/ModalBackdrop";
 
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import EditModal from "../../components/profile/EditModal";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
@@ -54,6 +55,7 @@ const editProfile = () => {
                 borderBottomRightRadius: 30,
                 borderBottomLeftRadius: 30,
                 paddingTop: 30,
+                flexDirection: "column",
               }}
             >
               <BottomSheetModal
@@ -64,7 +66,7 @@ const editProfile = () => {
                 onChange={handleSheetChanges}
               >
                 <BottomSheetView style={styles.contentContainer}>
-                  <Text>Awesome 🎉</Text>
+                  <EditModal />
                 </BottomSheetView>
               </BottomSheetModal>
 
@@ -73,7 +75,7 @@ const editProfile = () => {
                 style={{ height: 161, width: 143, borderRadius: 10 }}
               />
               <Text
-                style={{ marginTop: 15, color: "#F95D25" }}
+                style={{ marginTop: 15, color: "#F95D25", marginBottom: 15 }}
                 onPress={handleImagePress}
               >
                 change profile photo
@@ -82,10 +84,10 @@ const editProfile = () => {
             <View
               style={{
                 flex: 1,
-                margin: "5%",
                 marginVertical: "20%",
-                marginBottom: 30,
-                gap: 30,
+                gap: 50,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <EditProfileInput title="Name" />

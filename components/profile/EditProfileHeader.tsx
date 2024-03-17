@@ -1,9 +1,11 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { styled } from "styled-components/native";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
 
 const placeholder = require("../../assets/icons/freebites/placeholder.png");
+const left = require(" ../../../assets/icons/chevron-left.png");
+const check = require(" ../../../assets/icons/check.png");
 const HeaderUI = styled.View`
   width: 100%;
   padding-top: 60px;
@@ -27,15 +29,15 @@ const EditProfileHeader = (props) => {
   return (
     <HeaderUI>
       <HeaderTextUI>
-        <Text style={globalStyles.text} onPress={() => PrevPage()}>
-          Cancel
-        </Text>
+        <Pressable onPress={() => PrevPage()}>
+          <Image source={left} />
+        </Pressable>
 
         <Text style={[globalStyles.text, { fontSize: 20, fontWeight: "bold" }]}>
           Edit Profile
         </Text>
 
-        <Text style={globalStyles.text}>Done</Text>
+        <Image source={check} />
       </HeaderTextUI>
     </HeaderUI>
   );
