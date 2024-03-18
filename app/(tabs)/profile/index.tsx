@@ -16,8 +16,7 @@ import { getOne } from "../../../api/user/usercrud";
 import { emptyUser, userType } from "../../../context/userContext";
 import ButtonMenu from "../../../components/common/ButtonMenu";
 import Header from "../../../components/common/Header";
-
-const editbutton = require("../../../assets/icons/editbutton.png");
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -40,53 +39,41 @@ const Profile = () => {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.container}>
-      {/* <Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
-        My Profile
-      </Text> */}
-      <Header text="My Profile"></Header>
+    <BottomSheetModalProvider>
+      <SafeAreaView style={globalStyles.container}>
+        <Header text="My Profile"></Header>
 
-      <View>
-        <ProfileCard
-          name={currUser.firstName}
-          email={currUser.emailAddress}
-          bio={currUser.bio}
-        />
+        <View>
+          <ProfileCard
+            name={currUser.firstName}
+            email={currUser.emailAddress}
+            bio={currUser.bio}
+          />
+        </View>
 
-        {/* <Link href={{ pathname: `/profile/edit` }}>
-          <Pressable
-            style={{
-              height: 10,
-              width: 10,
-              alignSelf: "flex-end",
-              flex: 1,
-              paddingTop: 140,
-              paddingRight: 20,
-              position: "absolute",
-            }}
-          >
-            <Image source={editbutton}></Image>
-          </Pressable>
-        </Link> */}
-      </View>
-      {/* Push user.uid params for all children, also in layout to profile!!!*/}
-      <Link asChild href={{ pathname: `/profile/history` }}>
-        <PlainButton section="top" width="87%" height={60} text="History" />
-      </Link>
+        {/* Push user.uid params for all children, also in layout to profile!!!*/}
+        <Link asChild href={{ pathname: `/profile/history` }}>
+          <PlainButton section="top" width="87%" height={60} text="History" />
+        </Link>
 
-      <Link href={{ pathname: `/profile/drafts` }} asChild>
-        <PlainButton section="middle" width="87%" height={60} text="Drafts" />
-      </Link>
+        <Link href={{ pathname: `/profile/drafts` }} asChild>
+          <PlainButton section="middle" width="87%" height={60} text="Drafts" />
+        </Link>
 
-      <Link href={{ pathname: `/profile/settings` }} asChild>
-        <PlainButton section="middle" width="87%" height={60} text="Settings" />
-      </Link>
+        <Link href={{ pathname: `/profile/settings` }} asChild>
+          <PlainButton
+            section="middle"
+            width="87%"
+            height={60}
+            text="Settings"
+          />
+        </Link>
 
-      <Link href="/profile/FAQ" asChild>
-        <PlainButton section="bottom" width="87%" height={60} text="FAQ" />
-      </Link>
-      {/* </View> */}
-    </SafeAreaView>
+        <Link href="/profile/FAQ" asChild>
+          <PlainButton section="bottom" width="87%" height={60} text="FAQ" />
+        </Link>
+      </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 };
 

@@ -22,10 +22,10 @@ export default () => {
   //     router.replace("/login");
   //   }
   // }, [user]);
-  const pathname = usePathname();
-  if (pathname === "/profile/edit") {
-    return <></>;
-  }
+  // const pathname = usePathname();
+  // if (pathname === "/profile/edit") {
+  //   return <></>;
+  // }
   return (
     <Tabs
       screenOptions={{

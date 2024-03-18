@@ -7,14 +7,23 @@ import {
   TouchableWithoutFeedback,
   Image,
   StyleSheet,
+  Pressable,
+  Touchable,
 } from "react-native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { globalStyles } from "../../components/global";
 import EditProfileHeader from "../../components/profile/EditProfileHeader";
 import EditProfileInput from "../../components/profile/EditProfileInput";
-import ModalBackdrop from "../../components/common/ModalBackdrop";
 
 import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
@@ -26,27 +35,35 @@ const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 const editProfile = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["15%", "35%"], []);
-  const [isEditingPic, setIsEditingPic] = useState(false);
-
+  const [isEditing, setIsEditing] = React.useState(false);
   const handleImagePress = () => {
     bottomSheetModalRef.current?.present();
-    setIsEditingPic(true);
   };
-  const handleSheetChanges = useCallback((index: number) => {
-    if (index === -1) {
-      setIsEditingPic(false);
-    }
-  }, []);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props} pressBehavior={"close"} />
+    ),
+    []
+  );
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={globalStyles.containerLight}>
-        <EditProfileHeader />
+      <SafeAreaView
+        style={[globalStyles.containerLight, { position: "relative" }]}
+      >
+        <EditProfileHeader isEditing={isEditing} />
         <TouchableWithoutFeedback
-          onPress={() => Keyboard.dismiss()}
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
           accessible={false}
         >
-          <KeyboardAvoidingView behavior="position" style={{ marginTop: 22 }}>
+          <KeyboardAvoidingView
+            behavior="position"
+            keyboardVerticalOffset={0}
+            style={{ marginTop: 30 }}
+          >
             <View
               style={{
                 alignItems: "center",
@@ -56,14 +73,14 @@ const editProfile = () => {
                 borderBottomLeftRadius: 30,
                 paddingTop: 30,
                 flexDirection: "column",
+                zIndex: 1,
               }}
             >
               <BottomSheetModal
-                backdropComponent={ModalBackdrop}
+                backdropComponent={renderBackdrop}
                 ref={bottomSheetModalRef}
                 index={1}
                 snapPoints={snapPoints}
-                onChange={handleSheetChanges}
               >
                 <BottomSheetView style={styles.contentContainer}>
                   <EditModal />
@@ -84,7 +101,6 @@ const editProfile = () => {
             <View
               style={{
                 flex: 1,
-                marginVertical: "20%",
                 gap: 50,
                 alignItems: "center",
                 justifyContent: "center",
