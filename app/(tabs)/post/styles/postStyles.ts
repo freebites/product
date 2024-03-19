@@ -1,6 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { COLORS } from "../../../../constants";
 
+const { width, height } = Dimensions.get("window");
+
+const containerWidth = 0.8 * width;
 export const postStyles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -12,10 +15,15 @@ export const postStyles = StyleSheet.create({
 		justifyContent: "center",
 		width: "100%",
 	},
+	scrollContainer2: {
+		alignItems: "center",
+		justifyContent: "center",
+		width: "100%",
+	},
 	sectionContainer: {
 		justifyContent: "center",
 		alignItems: "flex-start",
-		width: "80%",
+		width: containerWidth,
 	},
 	sectionHeader: {
 		marginHorizontal: 5,
@@ -30,6 +38,8 @@ export const postStyles = StyleSheet.create({
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "600",
+		marginTop: 26,
+		marginBottom: 9,
 	},
 	pageH2: {
 		color: COLORS.neutral[90],

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, router, useFocusEffect } from "expo-router";
 import { PostContext, EmptyPost } from "../../../context/postContext";
@@ -16,6 +16,7 @@ import {
 import create from "../../../api/posts/create";
 import NextButtonText from "../../../components/post/NextButtonText";
 import ProgressBar from "../../../components/post/ProgressBar";
+import { postStyles } from "./styles/postStyles";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
@@ -69,9 +70,7 @@ export default function reviewpost() {
 	};
 
 	return (
-		<View
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
+		<SafeAreaView style={postStyles.container}>
 			<ProgressBar />
 			<Text>review post here</Text>
 			<View>
@@ -80,18 +79,19 @@ export default function reviewpost() {
 					selectedImage={postData.imageURIs}
 				></ImageViewer>
 			</View>
-			<Text>Title: {postData.title} </Text>
 			<Text>Description: {postData.description}</Text>
+			<Text> Filters: </Text>
+			<Text>Location: {postData.location} </Text>
 			<Text> Perishable: {postData.tags.perishable ? "yes" : "no"}</Text>
 			<Text> Allergens: {postData.tags.allergens.join(", ")}</Text>
 			<Text>Diets: {postData.tags.diet.join(", ")}</Text>
-			<Text>Location: {postData.location} </Text>
+
 			<Link href="/home" asChild>
 				<NextButtonText
 					onPress={() => uploadAllImages(postData.imageURIs)}
 					text={"Post"}
 				/>
 			</Link>
-		</View>
+		</SafeAreaView>
 	);
 }

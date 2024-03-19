@@ -112,12 +112,11 @@ const gallery = () => {
 					<ProgressBar />
 
 					{/* carousel */}
-					<View>
-						<ImageViewer
-							placeholderImageSource={placeholder}
-							selectedImage={postData.imageURIs}
-						></ImageViewer>
-					</View>
+
+					<ImageViewer
+						placeholderImageSource={placeholder}
+						selectedImage={postData.imageURIs}
+					></ImageViewer>
 
 					{/* inputs, modularize these? */}
 

@@ -23,7 +23,7 @@ export default function ProfileLayout() {
 	// OKAY SO UPDATE FOR THE FUTURE:
 	// IT IS POSSIBLE TO BUILD THE PROGRESS BAR INTO THE HEADER, BUT WE WOULD
 	// NEED TO BUILD THE HEADER COMPLETELY FROM SCRATCH. DON'T HAVE TIME FOR
-	// THAT RIGHT NOW
+	// THAT RIGHT NOW BUT USE header: () => <HeaderComponent>
 	return (
 		<PostProvider>
 			<Stack

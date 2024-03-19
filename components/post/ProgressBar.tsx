@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { PostContext } from "../../context/postContext";
 import { useFocusEffect } from "expo-router";
-
+import { COLORS } from "../../constants";
 import Animated, {
 	useSharedValue,
 	withTiming,
@@ -13,6 +13,7 @@ import Animated, {
 	interpolate,
 	interpolateColor,
 	withSpring,
+	runOnJS,
 } from "react-native-reanimated";
 const ProgressBar = () => {
 	const { progress, updateProgress } = useContext(PostContext);
@@ -68,7 +69,7 @@ const ProgressBar = () => {
 	}, [progress]);
 
 	const config = {
-		duration: 500,
+		duration: 750,
 		easing: Easing.bezier(0.5, 0.01, 0, 1),
 	};
 
@@ -115,6 +116,11 @@ const ProgressBar = () => {
 		});
 
 	const nestedViewStyle = (barProgress, circleProgress) => {
+		const onFinish = () => {
+			if (barProgress.value == 100) {
+				circleProgress(true);
+			}
+		};
 		return useAnimatedStyle(() => {
 			// const translateX = interpolate(
 			// 	barProgress.value,
@@ -128,10 +134,8 @@ const ProgressBar = () => {
 						translateX: withTiming(
 							interpolate(barProgress.value, [0, 100], [-26, 0]),
 							config,
-							(finished) => {
-								if (finished && barProgress.value == 100) {
-									circleProgress(true);
-								}
+							() => {
+								runOnJS(onFinish)();
 							}
 						),
 					},
@@ -144,7 +148,10 @@ const ProgressBar = () => {
 		<View style={styles.container}>
 			<Animated.View style={[styles.barContainer]}>
 				<Animated.View
-					style={[styles.circle, { backgroundColor: "orange" }]}
+					style={[
+						styles.circle,
+						{ backgroundColor: COLORS.orange[70] },
+					]}
 				></Animated.View>
 				<View style={styles.bar}>
 					<Animated.View
@@ -157,7 +164,11 @@ const ProgressBar = () => {
 				<View
 					style={[
 						styles.circle,
-						{ backgroundColor: circle1 ? "orange" : "green" },
+						{
+							backgroundColor: circle1
+								? COLORS.orange[70]
+								: COLORS.green[20],
+						},
 					]}
 				></View>
 				<View style={styles.bar}>
@@ -171,7 +182,11 @@ const ProgressBar = () => {
 				<View
 					style={[
 						styles.circle,
-						{ backgroundColor: circle2 ? "orange" : "green" },
+						{
+							backgroundColor: circle2
+								? COLORS.orange[70]
+								: COLORS.green[20],
+						},
 					]}
 				></View>
 				<View style={styles.bar}>
@@ -185,7 +200,11 @@ const ProgressBar = () => {
 				<View
 					style={[
 						styles.circle,
-						{ backgroundColor: circle3 ? "orange" : "green" },
+						{
+							backgroundColor: circle3
+								? COLORS.orange[70]
+								: COLORS.green[20],
+						},
 					]}
 				></View>
 			</Animated.View>
@@ -212,7 +231,7 @@ const ProgressBar = () => {
 const styles = StyleSheet.create({
 	container: {
 		width: "50%",
-		height: 80,
+		height: 70,
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
@@ -221,7 +240,7 @@ const styles = StyleSheet.create({
 	},
 	barContainer: {
 		width: 100,
-		height: 80,
+		height: 50,
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
@@ -238,20 +257,20 @@ const styles = StyleSheet.create({
 		width: 9,
 		height: 9,
 		borderRadius: 4.5,
-		backgroundColor: "green",
+		backgroundColor: COLORS.green[20],
 	},
 	bar: {
 		height: 4,
 		width: 26,
 		marginHorizontal: -2,
-		backgroundColor: "green",
+		backgroundColor: COLORS.green[20],
 		overflow: "hidden",
 	},
 	completeBar: {
 		height: 4,
 		width: 26,
 		marginHorizontal: -2,
-		backgroundColor: "orange",
+		backgroundColor: COLORS.orange[70],
 	},
 });
 export default ProgressBar;

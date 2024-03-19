@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	ScrollView,
+	KeyboardAvoidingView,
 } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
@@ -50,67 +51,80 @@ const tags = () => {
 
 	return (
 		<SafeAreaView style={postStyles.container}>
-			<ScrollView contentContainerStyle={postStyles.scrollContainer}>
-				<ProgressBar />
+			<KeyboardAvoidingView
+				style={{ width: "100%", flex: 1, alignItems: "center" }}
+				keyboardVerticalOffset={100}
+				behavior={"position"}
+			>
+				<ScrollView contentContainerStyle={postStyles.scrollContainer}>
+					<ProgressBar />
+					<View>
+						<ImageViewer
+							placeholderImageSource={placeholder}
+							selectedImage={postData.imageURIs}
+						/>
+					</View>
 
-				<ImageViewer
-					placeholderImageSource={placeholder}
-					selectedImage={postData.imageURIs}
-				/>
-				<View
-					style={[
-						postStyles.sectionContainer,
-						{ marginHorizontal: 0, width: "75%" },
-					]}
-				>
-					<Text style={postStyles.pageHeader}>
-						Food type? Diets? Allergies?
-					</Text>
-					<Text style={postStyles.pageH2}>
-						Help your peers better navigate their options by
-						selecting the following filters!
-					</Text>
-					<Text style={postStyles.pageH3}>
-						Eg. Select vegan if there are vegan options available.
-					</Text>
-				</View>
-
-				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
-
-				<View style={postStyles.sectionContainer}>
-					<Text style={postStyles.sectionHeader}>
-						Perishable <Text style={{ color: "red" }}>*</Text>
-					</Text>
-					<BinarySelect onPress={handleUpdatePerishable} />
-				</View>
-
-				<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
-
-				<View style={postStyles.sectionContainer}>
-					<Text style={postStyles.sectionHeader}>Allergies </Text>
-					<TagMultiSelect
-						changeHandler={handleUpdateAllergens}
-						tagOptions={["peanut", "tree nut", "dairy", "eggs"]}
-					/>
-				</View>
-
-				<View style={postStyles.sectionContainer}>
-					<Text style={postStyles.sectionHeader}>
-						Dietary Restrictions{" "}
-					</Text>
-					<TagMultiSelect
-						changeHandler={handleUpdateDiets}
-						tagOptions={[
-							"Vegan",
-							"Vegetarian",
-							"Dairy-free",
-							"Halal",
-							"Gluten-free",
+					<View
+						style={[
+							postStyles.sectionContainer,
+							{ marginHorizontal: 0 },
 						]}
-					/>
-				</View>
-			</ScrollView>
+					>
+						<Text style={postStyles.pageHeader}>
+							Food type? Diets? Allergies?
+						</Text>
+						<Text style={postStyles.pageH2}>
+							Help your peers better navigate their options by
+							selecting the following filters!
+						</Text>
+						<Text style={postStyles.pageH3}>
+							Eg. Select vegan if there are vegan options
+							available.
+						</Text>
+					</View>
 
+					<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
+
+					<View style={postStyles.sectionContainer}>
+						<Text style={postStyles.sectionHeader}>
+							Perishable <Text style={{ color: "red" }}>*</Text>
+						</Text>
+						<BinarySelect onPress={handleUpdatePerishable} />
+					</View>
+
+					<HorizontalRule color="rgba(147, 163, 143, 0.40)" />
+
+					<View style={postStyles.sectionContainer}>
+						<Text style={postStyles.sectionHeader}>Allergies </Text>
+						<TagMultiSelect
+							changeHandler={handleUpdateAllergens}
+							tagOptions={["peanut", "tree nut", "dairy", "eggs"]}
+						/>
+					</View>
+
+					<View
+						style={[
+							postStyles.sectionContainer,
+							{ marginBottom: "30%" },
+						]}
+					>
+						<Text style={postStyles.sectionHeader}>
+							Dietary Restrictions{" "}
+						</Text>
+						<TagMultiSelect
+							changeHandler={handleUpdateDiets}
+							tagOptions={[
+								"Vegan",
+								"Vegetarian",
+								"Dairy-free",
+								"Halal",
+								"Gluten-free",
+							]}
+						/>
+					</View>
+				</ScrollView>
+			</KeyboardAvoidingView>
 			<Link href="/post/location" asChild>
 				<NextButtonText validInput={false} />
 			</Link>
