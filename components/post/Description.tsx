@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 // helper function for word counting
 
-const Description = () => {
+const Description = (props) => {
 	const [value, setValue] = useState("");
 	const [wordCount, setWordCount] = useState(0);
 	return (
@@ -18,6 +18,7 @@ const Description = () => {
 				onChangeText={(text) => {
 					setValue(text);
 					setWordCount(text.length);
+					props.onTextChange(text);
 				}} // add description update later
 				// onChangeText={(text) => {
 				// 	handleUpdateDesc(text);

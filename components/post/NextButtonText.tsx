@@ -26,6 +26,7 @@ const NextButtonText = (props, ref) => {
 				},
 				props.style,
 			]}
+			disabled={!props.validInput} // disabled if there is NO valid input
 		>
 			<Text style={styles.text}>
 				{props.text ? props.text : "Next Step"}

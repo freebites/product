@@ -131,12 +131,14 @@ const gallery = () => {
 							width: "80%",
 						}}
 					>
-						<Description />
+						<Description
+							onTextChange={(text) => handleUpdateDesc(text)}
+						/>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
 			<Link href="/post/tags" asChild>
-				<NextButtonText validInput={false} />
+				<NextButtonText validInput={postData.description != ""} />
 			</Link>
 		</SafeAreaView>
 	);

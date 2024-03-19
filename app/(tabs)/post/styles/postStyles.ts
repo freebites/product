@@ -21,7 +21,7 @@ export const postStyles = StyleSheet.create({
 		width: "100%",
 	},
 	sectionContainer: {
-		justifyContent: "center",
+		justifyContent: "flex-start",
 		alignItems: "flex-start",
 		width: containerWidth,
 	},

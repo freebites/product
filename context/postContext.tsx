@@ -23,13 +23,20 @@ export type postType = {
 	description: string;
 	imageURIs: string[];
 	tags: tags;
-	location: string;
+	location: Location;
 	comments: comment[];
 	post_id: string;
 	room: string;
 	postTime: Date;
 };
 
+export type Location = {
+	place_id: string;
+	location: {
+		type: string;
+		coordinates: [number, number];
+	};
+};
 // default empty post
 export const EmptyPost: postType = {
 	_id: "",
@@ -41,7 +48,13 @@ export const EmptyPost: postType = {
 		allergens: [],
 		diet: [],
 	},
-	location: "",
+	location: {
+		place_id: "",
+		location: {
+			type: "Point",
+			coordinates: [0, 0],
+		},
+	},
 	comments: [],
 	post_id: "",
 	room: "",

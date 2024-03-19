@@ -99,7 +99,7 @@ const tags = () => {
 						<Text style={postStyles.sectionHeader}>Allergies </Text>
 						<TagMultiSelect
 							changeHandler={handleUpdateAllergens}
-							tagOptions={["peanut", "tree nut", "dairy", "eggs"]}
+							tagOptions={["Peanut", "Tree nut", "Dairy", "Eggs"]}
 						/>
 					</View>
 
@@ -126,7 +126,7 @@ const tags = () => {
 				</ScrollView>
 			</KeyboardAvoidingView>
 			<Link href="/post/location" asChild>
-				<NextButtonText validInput={false} />
+				<NextButtonText validInput={true} />
 			</Link>
 		</SafeAreaView>
 	);

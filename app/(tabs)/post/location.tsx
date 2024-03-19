@@ -39,15 +39,28 @@ export default function location() {
 	// onPress --> grab the location input into a
 	const mapRef = createRef<MapView>();
 	useFocusEffect(() => {
-		updateProgress(2);
+		mapSelected ? updateProgress(4) : updateProgress(2);
 	});
+
+	useEffect(() => {
+		mapSelected ? updateProgress(4) : updateProgress(2);
+	}, [mapSelected]);
 	/* context specific functions */
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
 
 	// handler for updating location
-	const handleUpdateLocation = (place_id) => {
-		updatePostData({ ...postData, location: place_id });
+	const handleUpdateLocation = (place_id, lat, lng) => {
+		updatePostData({
+			location: {
+				...postData.location,
+				place_id: place_id,
+				location: {
+					...postData.location.location,
+					coordinates: [lat, lng],
+				},
+			},
+		});
 	};
 
 	// handler to update room number
@@ -68,7 +81,11 @@ export default function location() {
 			lng: geolocation.location.lng,
 		});
 
-		handleUpdateLocation(place_id);
+		handleUpdateLocation(
+			place_id,
+			geolocation.location.lat,
+			geolocation.location.lng
+		);
 	};
 
 	return (
@@ -95,6 +112,7 @@ export default function location() {
 			<PlacesSearchBar
 				onSelected={() => {
 					setMapSelected(true);
+					updateProgress(4);
 				}}
 				onLocationFound={() => {
 					setLocationSelected(true);
@@ -103,22 +121,25 @@ export default function location() {
 					changeLocation(place_id);
 				}}
 			/>
+			{mapSelected && (
+				<>
+					<Text style={styles.text}>Room number/ Food location:</Text>
+					<TextInput
+						style={styles.input}
+						onChangeText={(room) => {
+							handleUpdateRoom(room);
+						}}
+					></TextInput>
+				</>
+			)}
 
-			<Text style={styles.text}>Room number/ Food location:</Text>
-			<TextInput
-				style={styles.input}
-				onChangeText={(room) => {
-					handleUpdateRoom(room);
-				}}
-			></TextInput>
-
-			{/* <GoogleMapView
+			<GoogleMapView
 				ref={mapRef}
 				disabled={!locationSelected}
 				coordinates={coordinates}
-			/> */}
+			/>
 			<Link href="/post/reviewpost" asChild>
-				<NextButtonText validInput={false} />
+				<NextButtonText validInput={true} />
 			</Link>
 		</SafeAreaView>
 	);
