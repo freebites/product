@@ -33,7 +33,7 @@ const EditProfileHeader = (props) => {
   return (
     <HeaderUI>
       <HeaderTextUI>
-        <Pressable onPress={() => PrevPage()}>
+        <Pressable onPress={() => PrevPage()} style={{ height: 30, width: 30 }}>
           <Image source={left} />
         </Pressable>
         <Text style={[globalStyles.headerText]}>My Profile</Text>

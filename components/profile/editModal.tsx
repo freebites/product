@@ -27,16 +27,16 @@ const EditModal = () => {
         }}
       ></View>
 
-      <View style={{ flexDirection: "row", gap: 50, flex: 1 }}>
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
+      <View style={styles.modalRow}>
+        <View style={styles.modalColumns}>
           <Image source={choosephoto} />
           <Text style={{ color: "#505A4E" }}>Photo Album</Text>
         </View>
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
+        <View style={styles.modalColumns}>
           <Image source={camera} />
           <Text style={{ color: "#505A4E" }}>Take a Photo</Text>
         </View>
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
+        <View style={styles.modalColumns}>
           <Image source={trash} style={{}} />
           <Text style={{ color: "#505A4E" }}>Remove Photo</Text>
         </View>
@@ -52,8 +52,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
   },
-  image: {},
-  editIcons: {},
+  modalColumns: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  modalRow: {
+    marginLeft: 10,
+    flexDirection: "row",
+    gap: 50,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 });
 export default EditModal;
 // import React, {

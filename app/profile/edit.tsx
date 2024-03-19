@@ -34,7 +34,7 @@ const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const editProfile = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["15%", "35%"], []);
+  const snapPoints = useMemo(() => ["35%"], []);
   const [isEditing, setIsEditing] = React.useState(false);
   const handleImagePress = () => {
     bottomSheetModalRef.current?.present();
@@ -42,7 +42,12 @@ const editProfile = () => {
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} pressBehavior={"close"} />
+      <BottomSheetBackdrop
+        {...props}
+        pressBehavior={"close"}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
     ),
     []
   );
@@ -79,8 +84,9 @@ const editProfile = () => {
               <BottomSheetModal
                 backdropComponent={renderBackdrop}
                 ref={bottomSheetModalRef}
-                index={1}
+                index={0}
                 snapPoints={snapPoints}
+                enablePanDownToClose={true}
               >
                 <BottomSheetView style={styles.contentContainer}>
                   <EditModal />
