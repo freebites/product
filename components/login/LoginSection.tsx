@@ -30,72 +30,70 @@ const LoginSection = () => {
 
   const handleLogin = () => {};
   return (
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}
-      accessible={false}
+    // <TouchableWithoutFeedback
+    //   onPress={() => Keyboard.dismiss()}
+    //   accessible={false}
+    // >
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        width: "100%",
+        paddingTop: "7%",
+      }}
     >
       <View
         style={{
           flex: 1,
           alignItems: "center",
+          justifyContent: "space-around",
           width: "100%",
-          paddingTop: "7%",
+          maxHeight: "60%",
+          paddingBottom: "3%",
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "space-around",
-            width: "100%",
-            maxHeight: "60%",
-            paddingBottom: "3%",
+        {/* Your other components */}
+        <Text style={styles.title}>Email Address</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder=""
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          onChangeText={(text) => {
+            handleEmail(text);
           }}
-        >
-          {/* Your other components */}
-          <Text style={styles.title}>Email Address</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder=""
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            onChangeText={(text) => {
-              handleEmail(text);
-            }}
-          />
-          <Text style={styles.title}>Password</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder=""
-            secureTextEntry
-            autoComplete={
-              Platform.OS === "ios" ? "password-new" : "new-password"
-            }
-            onChangeText={(text) => {
-              handlePassword(text);
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            justifyContent: "center",
-            marginBottom: 20,
-            width: "100%",
-            alignItems: "center",
+        />
+        <Text style={styles.title}>Password</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder=""
+          secureTextEntry
+          autoComplete={Platform.OS === "ios" ? "password-new" : "new-password"}
+          onChangeText={(text) => {
+            handlePassword(text);
           }}
-        >
-          {/* LoginButton */}
-          <LoginButton
-            onPress={() => {
-              signIn(email, password);
-            }}
-            text="Login"
-          />
-          <Text>Forgot password?</Text>
-        </View>
+        />
       </View>
-    </TouchableWithoutFeedback>
+
+      <View
+        style={{
+          justifyContent: "center",
+          marginBottom: 20,
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        {/* LoginButton */}
+        <LoginButton
+          onPress={() => {
+            signIn(email, password);
+          }}
+          text="Login"
+        />
+        <Text>Forgot password?</Text>
+      </View>
+    </View>
+    // </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
@@ -108,7 +106,6 @@ const styles = StyleSheet.create({
     marginBottom: "3%",
   },
   textInput: {
-    // backgroundColor: "red",
     minWidth: 150,
     width: "70%",
     borderBottomWidth: 1,

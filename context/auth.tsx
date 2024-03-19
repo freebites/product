@@ -1,4 +1,9 @@
-import { Redirect, router, useSegments } from "expo-router";
+import {
+  Redirect,
+  router,
+  useLocalSearchParams,
+  useSegments,
+} from "expo-router";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -13,6 +18,18 @@ export function useAuth() {
   return React.useContext(AuthContext);
 }
 
+export function validateRoutePerms() {
+  const { user } = useAuth();
+  const routeParams = useLocalSearchParams();
+  if (
+    user === undefined ||
+    user === null ||
+    user.uid === null ||
+    user.uid !== routeParams.id
+  ) {
+    return <Redirect href="/login" />;
+  }
+}
 export function useProtectedRoute(user) {
   const segments = useSegments(); // useSegments returns the current in-file 'url'
 

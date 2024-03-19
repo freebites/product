@@ -5,7 +5,10 @@ import Header from "../../../components/common/Header";
 import NotificationSection from "../../../components/settings/NotificationSection";
 import ContactSection from "../../../components/settings/ContactSection";
 import LogoutSection from "../../../components/settings/LogoutSection";
+import { validateRoutePerms } from "../../../context/auth";
 const settings = () => {
+  validateRoutePerms();
+
   return (
     <SafeAreaView style={globalStyles.container}>
       <Header text="Settings" />

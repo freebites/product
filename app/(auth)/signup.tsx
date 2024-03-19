@@ -28,71 +28,71 @@ const signup = () => {
   );
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}
-      accessible={false}
+    // <TouchableWithoutFeedback
+    //   onPress={() => Keyboard.dismiss()}
+    //   accessible={false}
+    // >
+    <View
+      style={[
+        globalStyles.container,
+        { flex: 1, alignItems: "center", width: "100%" },
+      ]}
     >
       <View
-        style={[
-          globalStyles.container,
-          { flex: 1, alignItems: "center", width: "100%" },
-        ]}
+        style={{
+          alignItems: "center",
+          width: "100%",
+          backgroundColor: "white",
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30,
+          aspectRatio: 1 / 1,
+          paddingTop: "11.7%",
+          justifyContent: "space-evenly",
+        }}
       >
+        <Image source={icon} style={{ width: 169, height: 191 }} />
+
         <View
           style={{
-            alignItems: "center",
-            width: "100%",
-            backgroundColor: "white",
-            borderBottomLeftRadius: 30,
-            borderBottomRightRadius: 30,
-            aspectRatio: 1 / 1,
-            paddingTop: "11.7%",
+            flexDirection: "row",
+            alignItems: "flex-end",
             justifyContent: "space-evenly",
+            width: "100%",
           }}
         >
-          <Image source={icon} style={{ width: 169, height: 191 }} />
+          <View style={{ width: "30%" }}>
+            <TouchableHighlight
+              style={{
+                borderBottomWidth: 1,
+                borderColor: loginSelected ? "#EDA76E" : "transparent",
+                alignItems: "center",
+              }}
+              underlayColor="transparent"
+              onPress={() => setLoginSelected(true)}
+            >
+              <Text>Login</Text>
+            </TouchableHighlight>
+          </View>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "flex-end",
-              justifyContent: "space-evenly",
-              width: "100%",
-            }}
-          >
-            <View style={{ width: "30%" }}>
-              <TouchableHighlight
-                style={{
-                  borderBottomWidth: 1,
-                  borderColor: loginSelected ? "#EDA76E" : "transparent",
-                  alignItems: "center",
-                }}
-                underlayColor="transparent"
-                onPress={() => setLoginSelected(true)}
-              >
-                <Text>Login</Text>
-              </TouchableHighlight>
-            </View>
-
-            <View style={{ width: "30%" }}>
-              <TouchableHighlight
-                style={{
-                  borderBottomWidth: 1,
-                  borderColor: !loginSelected ? "#EDA76E" : "transparent",
-                  alignItems: "center",
-                }}
-                underlayColor="transparent"
-                onPress={() => setLoginSelected(false)}
-              >
-                <Text>Sign Up</Text>
-              </TouchableHighlight>
-            </View>
+          <View style={{ width: "30%" }}>
+            <TouchableHighlight
+              style={{
+                borderBottomWidth: 1,
+                borderColor: !loginSelected ? "#EDA76E" : "transparent",
+                alignItems: "center",
+              }}
+              underlayColor="transparent"
+              onPress={() => setLoginSelected(false)}
+            >
+              <Text>Sign Up</Text>
+            </TouchableHighlight>
           </View>
         </View>
-
-        {loginSelected ? <LoginSection /> : <SignupSection />}
       </View>
-    </TouchableWithoutFeedback>
+
+      {loginSelected ? <LoginSection /> : <SignupSection />}
+    </View>
+    // </TouchableWithoutFeedback>
   );
 };
 

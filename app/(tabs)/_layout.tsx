@@ -6,10 +6,11 @@ import {
   router,
   useRouter,
   Redirect,
+  useLocalSearchParams,
 } from "expo-router";
 import { Image, View } from "react-native";
 import React from "react";
-import { useAuth, useProtectedRoute } from "../../context/auth";
+import { useAuth } from "../../context/auth";
 
 const homeIcon = require("../../assets/icons/freebites/home-icon.png");
 const postIcon = require("../../assets/icons/freebites/add-post.png");
@@ -17,15 +18,9 @@ const profIcon = require("../../assets/icons/freebites/profile.png");
 
 export default () => {
   const { user } = useAuth();
-  // React.useEffect(() => {
-  //   if (user == undefined || user == null || user.uid == null) {
-  //     router.replace("/login");
-  //   }
-  // }, [user]);
-  // const pathname = usePathname();
-  // if (pathname === "/profile/edit") {
-  //   return <></>;
-  // }
+  if (user === undefined || user === null || user.uid === null) {
+    return <Redirect href="/home" />;
+  }
   return (
     <Tabs
       screenOptions={{
@@ -60,7 +55,7 @@ export default () => {
       <Tabs.Screen
         name="profile"
         options={{
-          href: { pathname: `/profile` },
+          href: { pathname: `/profile`, params: { id: user.uid } },
           headerShown: false,
           tabBarIcon: () => <Image source={profIcon} />,
           tabBarShowLabel: false,

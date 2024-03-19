@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { View, Text, Image } from "react-native";
 
 const icon = require("../../../assets/icons/freebites/logo.png");
 const image = require("../../../assets/images/title.png");

@@ -7,16 +7,8 @@ import {
   TouchableWithoutFeedback,
   Image,
   StyleSheet,
-  Pressable,
-  Touchable,
 } from "react-native";
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-} from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { globalStyles } from "../../components/global";
 import EditProfileHeader from "../../components/profile/EditProfileHeader";
 import EditProfileInput from "../../components/profile/EditProfileInput";
@@ -29,10 +21,13 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import EditModal from "../../components/profile/EditModal";
+import { validateRoutePerms } from "../../context/auth";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const editProfile = () => {
+  validateRoutePerms();
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["35%"], []);
   const [isEditing, setIsEditing] = React.useState(false);

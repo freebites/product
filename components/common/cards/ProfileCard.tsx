@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 
-import { useGlobalSearchParams, Link, router } from "expo-router";
+import { router } from "expo-router";
 import { Image } from "react-native-elements";
+import { useAuth } from "../../../context/auth";
 
 const placeholder = require("../../../assets/icons/placeholder.png");
 const editbutton = require("../../../assets/icons/editbutton.png");
@@ -29,10 +30,10 @@ const style = StyleSheet.create({
 });
 
 const ProfileCard = (props) => {
+  const { user } = useAuth();
   return (
     <View style={{ marginBottom: 15 }}>
       <Image source={placeholder} style={style.picture}></Image>
-      {/* <Link href={{ pathname: `/profile/edit` }}> */}
       <Pressable
         style={{
           position: "absolute",
@@ -42,7 +43,7 @@ const ProfileCard = (props) => {
         onPress={() => {
           router.push({
             pathname: "/profile/edit",
-            params: { id: "user.uid" },
+            params: { id: user.uid },
           });
         }}
       >

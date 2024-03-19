@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 import { globalStyles } from "../../../components/global";
 import Header from "../../../components/common/Header";
-import { useAuth } from "../../../context/auth";
+import { useAuth, validateRoutePerms } from "../../../context/auth";
 import { useGlobalSearchParams } from "expo-router";
 
 /*
@@ -14,8 +14,7 @@ import { useGlobalSearchParams } from "expo-router";
 */
 
 const history = () => {
-  const { user } = useAuth();
-  const globalParams = useGlobalSearchParams();
+  validateRoutePerms();
 
   return (
     <SafeAreaView style={globalStyles.container}>
