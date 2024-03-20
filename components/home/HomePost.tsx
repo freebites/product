@@ -24,7 +24,13 @@ const dummyData: postType = {
 		allergens: ["peanuts"],
 		diet: ["none"],
 	},
-	location: "JCC 180",
+	location: {
+		place_id: "JCC 180",
+		location: {
+			type: "Point",
+			coordinates: [0, 0],
+		},
+	},
 	comments: [],
 	post_id: "",
 	room: "123",
