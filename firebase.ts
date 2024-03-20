@@ -22,7 +22,6 @@ const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
 export const db = getFirestore(app);
 // initialize auth with persitance?
-
 if (Platform.OS !== "web") {
 	initializeAuth(app, {
 		persistence: getReactNativePersistence(ReactNativeAsyncStorage),

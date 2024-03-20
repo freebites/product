@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import TagButton from "./TagButton";
 
 // takes in a changeHandler function for an array, (a setState function)
@@ -44,27 +44,32 @@ const TagMultiSelect = ({ changeHandler, tagOptions }) => {
 				tag={tag}
 				onPress={() => handleTagSelection(tag)}
 				isSelected={tags.includes(tag)}
+				color={undefined}
+				selectedColor={undefined}
 			/>
 		));
 	};
 
 	return (
-		<View
-			style={{
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
-			<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-				{renderTags()}
-				<TagButton
-					tag={other}
-					onPress={() => handleTagSelection(other)}
-					isSelected={tags.includes(other)}
-				></TagButton>
-			</View>
+		<View style={styles.container}>
+			{renderTags()}
+			<TagButton
+				tag={other}
+				onPress={() => handleTagSelection(other)}
+				isSelected={tags.includes(other)}
+				color={undefined}
+				selectedColor={undefined}
+			/>
 		</View>
 	);
 };
 
+const styles = StyleSheet.create({
+	container: {
+		justifyContent: "flex-start",
+		alignItems: "center",
+		flexDirection: "row",
+		flexWrap: "wrap",
+	},
+});
 export default TagMultiSelect;

@@ -6,7 +6,7 @@ import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
-
+import { COLORS } from "../../../constants/theme";
 import {
 	View,
 	SafeAreaView,
@@ -17,6 +17,8 @@ import {
 	Text,
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
+import Description from "../../../components/post/Description";
+import PostHeader from "../../../components/post/PostHeader";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
@@ -39,20 +41,21 @@ const gallery = () => {
 			imageURIs: [],
 		});
 	};
+
+	// Update multiple values
 	const handleUpdateTitle = (title) => {
-		updatePostData({ title: title }); // Update multiple values
+		updatePostData({ title: title });
 	};
 
+	// Update multiple values
 	const handleUpdateDesc = (descr) => {
-		updatePostData({ description: descr }); // Update multiple values
+		updatePostData({ description: descr });
 	};
 
 	// handler for updating location (room number)
 	const handleUpdateLocation = (locationName) => {
 		updatePostData({ ...postData, location: locationName });
 	};
-
-	// TODO: ADD GOOGLE PLACE ID HERE
 
 	// This is the function that lets opens the phone gallery and pick image
 	// Use async to load images first before doing anything
@@ -83,7 +86,6 @@ const gallery = () => {
 		const cameraPerms = await ImagePicker.requestCameraPermissionsAsync();
 
 		if (cameraPerms.granted === false) {
-			console.log("fuck u");
 			return;
 		}
 
@@ -93,9 +95,7 @@ const gallery = () => {
 	};
 
 	return (
-		<SafeAreaView
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
+		<SafeAreaView style={postStyles.container}>
 			{/* keyboard and scrollview are for making the keyboard work 
 			    as it was blocking the stuff*/}
 			<KeyboardAvoidingView
@@ -111,20 +111,8 @@ const gallery = () => {
 						justifyContent: "center",
 					}}
 					alwaysBounceVertical={false}
+					style={{ flex: 1 }}
 				>
-					<PlainButton2
-						onPress={() => {
-							pickImage(); // pick images here
-						}}
-						text="Choose from Gallery"
-					/>
-
-					<PlainButton2
-						onPress={() => {
-							openCamera(); // pick images here
-						}}
-						text="Take Picture	"
-					/>
 					{/* carousel */}
 					<View>
 						<ImageViewer
@@ -133,44 +121,12 @@ const gallery = () => {
 						></ImageViewer>
 					</View>
 
-					<Pressable
-						onPress={() => {
-							clearImages();
-						}}
-					></Pressable>
-
-					<BackButton />
-
 					{/* inputs, modularize these? */}
-					<TextInput
-						placeholder="Add Food Name"
-						placeholderTextColor="#94A38F"
-						value={postData.title}
-						onChangeText={(text) => {
-							handleUpdateTitle(text);
-						}}
-					></TextInput>
 
-					<TextInput
-						placeholder="Add Location"
-						placeholderTextColor="#94A38F"
-						value={postData.location}
-						onChangeText={(text) => {
-							handleUpdateLocation(text);
-						}}
-					></TextInput>
+					<Text>What's in the post?</Text>
+					<Text>Give your post a concise description.</Text>
 
-					<TextInput
-						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-						placeholderTextColor="#94A38F"
-						multiline
-						numberOfLines={4}
-						maxLength={40}
-						onChangeText={(text) => {
-							handleUpdateDesc(text);
-						}}
-						value={postData.description}
-					></TextInput>
+					<Description />
 
 					<Link href="/post/tags" asChild>
 						<NextButtonText
@@ -187,5 +143,14 @@ const gallery = () => {
 		</SafeAreaView>
 	);
 };
+
+export const postStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: COLORS.neutral[2],
+	},
+});
 
 export default gallery;

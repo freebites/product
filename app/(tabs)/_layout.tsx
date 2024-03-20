@@ -1,4 +1,5 @@
 import {
+
   Tabs,
   Link,
   Stack,
@@ -9,6 +10,7 @@ import {
   useLocalSearchParams,
 } from "expo-router";
 import { Image, View } from "react-native";
+
 import React from "react";
 import { useAuth } from "../../context/auth";
 
