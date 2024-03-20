@@ -57,8 +57,6 @@ export default function reviewpost() {
 		}
 	};
 
-	console.log(postData.location);
-
 	// function to upload all images
 	const uploadAllImages = async (uris: string[]) => {
 		try {
