@@ -6,6 +6,7 @@ const image = require("../../../assets/images/title.png");
 // import styles from './welcome-style'
 
 const Welcome = () => {
+
 	return (
 		<View style={{ alignItems: "center", paddingTop: "17.7%" }}>
 			<Image source={icon} />
@@ -15,6 +16,7 @@ const Welcome = () => {
 			</Text>
 		</View>
 	);
+
 };
 
 export default Welcome;
