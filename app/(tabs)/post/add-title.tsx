@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import React, { useContext } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import React, { useContext, useEffect } from "react";
 import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
@@ -18,12 +18,18 @@ import {
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
 import Description from "../../../components/post/Description";
-import PostHeader from "../../../components/post/PostHeader";
+import { postStyles } from "./styles/postStyles";
+import ProgressBar from "../../../components/post/ProgressBar";
+
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
-	const { postData, updatePostData } = useContext(PostContext);
-
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
+	// update progress on focus instead of just when it rerenders to force refresh
+	useFocusEffect(() => {
+		updateProgress(0);
+	});
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
 		updatePostData({
@@ -52,10 +58,7 @@ const gallery = () => {
 		updatePostData({ description: descr });
 	};
 
-	// handler for updating location (room number)
-	const handleUpdateLocation = (locationName) => {
-		updatePostData({ ...postData, location: locationName });
-	};
+	// TODO: ADD GOOGLE PLACE ID HERE
 
 	// This is the function that lets opens the phone gallery and pick image
 	// Use async to load images first before doing anything
@@ -99,57 +102,67 @@ const gallery = () => {
 			{/* keyboard and scrollview are for making the keyboard work 
 			    as it was blocking the stuff*/}
 			<KeyboardAvoidingView
-				style={{ flex: 1 }}
+				style={{ width: "100%", flex: 1 }}
 				keyboardVerticalOffset={100}
 				behavior={"position"}
 			>
 				<ScrollView
 					keyboardShouldPersistTaps="handled"
 					keyboardDismissMode="on-drag"
-					contentContainerStyle={{
-						alignItems: "center",
-						justifyContent: "center",
-					}}
+					contentContainerStyle={postStyles.scrollContainer}
 					alwaysBounceVertical={false}
-					style={{ flex: 1 }}
 				>
+					<ProgressBar />
+
 					{/* carousel */}
-					<View>
-						<ImageViewer
-							placeholderImageSource={placeholder}
-							selectedImage={postData.imageURIs}
-						></ImageViewer>
-					</View>
+
+					<ImageViewer
+						placeholderImageSource={placeholder}
+						selectedImage={postData.imageURIs}
+					></ImageViewer>
 
 					{/* inputs, modularize these? */}
 
-					<Text>What's in the post?</Text>
-					<Text>Give your post a concise description.</Text>
-
-					<Description />
-
-					<Link href="/post/tags" asChild>
-						<NextButtonText
-							text="Next Step"
-							validInput={
-								postData.description != "" &&
-								postData.title != "" &&
-								postData.location != ""
-							}
+					<Text style={styles.title}>What's in the post?</Text>
+					<Text style={styles.caption}>
+						Give your post a concise description.
+					</Text>
+					<View
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+							width: "80%",
+						}}
+					>
+						<Description
+							onTextChange={(text) => handleUpdateDesc(text)}
 						/>
-					</Link>
+					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
+			<Link href="/post/tags" asChild>
+				<NextButtonText validInput={postData.description != ""} />
+			</Link>
 		</SafeAreaView>
 	);
 };
 
-export const postStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: COLORS.neutral[2],
+export const styles = StyleSheet.create({
+	title: {
+		fontSize: 20,
+		fontWeight: "600",
+		width: 287,
+		height: 30,
+		textAlign: "left",
+		marginTop: 26,
+	},
+	caption: {
+		fontSize: 12,
+		fontWeight: "400",
+		color: "#535D50",
+		width: 287,
+		height: 21,
+		textAlign: "left",
 	},
 });
 

@@ -3,6 +3,7 @@ import { PostProvider } from "../../../context/postContext";
 import { Button, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BackButton from "../../../components/common/BackButton";
+import ProgressBar from "../../../components/post/ProgressBar";
 
 // don't really know why it's called profile, it's just post (breaks when i rename it)
 
@@ -19,6 +20,10 @@ const OpenOptions = () => {
 };
 export default function ProfileLayout() {
 	// includes the postProvider to use the PostContext
+	// OKAY SO UPDATE FOR THE FUTURE:
+	// IT IS POSSIBLE TO BUILD THE PROGRESS BAR INTO THE HEADER, BUT WE WOULD
+	// NEED TO BUILD THE HEADER COMPLETELY FROM SCRATCH. DON'T HAVE TIME FOR
+	// THAT RIGHT NOW BUT USE header: () => <HeaderComponent>
 	return (
 		<PostProvider>
 			<Stack

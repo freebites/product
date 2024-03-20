@@ -23,13 +23,20 @@ export type postType = {
 	description: string;
 	imageURIs: string[];
 	tags: tags;
-	location: string;
+	location: Location;
 	comments: comment[];
 	post_id: string;
 	room: string;
 	postTime: Date;
 };
 
+export type Location = {
+	place_id: string;
+	location: {
+		type: string;
+		coordinates: [number, number];
+	};
+};
 // default empty post
 export const EmptyPost: postType = {
 	_id: "",
@@ -41,7 +48,13 @@ export const EmptyPost: postType = {
 		allergens: [],
 		diet: [],
 	},
-	location: "",
+	location: {
+		place_id: "",
+		location: {
+			type: "Point",
+			coordinates: [0, 0],
+		},
+	},
 	comments: [],
 	post_id: "",
 	room: "",
@@ -51,22 +64,34 @@ export const EmptyPost: postType = {
 type PostContextType = {
 	postData: postType;
 	updatePostData: (newData: Partial<postType>) => void;
+	progress: number;
+	updateProgress: (newScreen: number) => void;
 };
 
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
 	updatePostData: () => {},
+	progress: 0,
+	updateProgress: () => {},
 });
 
 export const PostProvider = ({ children }) => {
 	const [postData, setPostData] = useState<postType>(EmptyPost);
+	const [progress, setProgress] = useState<number>(0);
 
+	// update context states
 	const updatePostData = (newData: Partial<postType>) => {
 		setPostData({ ...postData, ...newData });
 	};
 
+	const updateProgress = (newScreen: number) => {
+		setProgress(newScreen);
+	};
+
 	return (
-		<PostContext.Provider value={{ postData, updatePostData }}>
+		<PostContext.Provider
+			value={{ postData, updatePostData, progress, updateProgress }}
+		>
 			{children}
 		</PostContext.Provider>
 	);

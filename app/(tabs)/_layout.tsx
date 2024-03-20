@@ -12,7 +12,8 @@ import {
 import { Image, View } from "react-native";
 
 import React from "react";
-import { useAuth } from "../../context/auth";
+import { useAuth, useProtectedRoute } from "../../context/auth";
+import ProgressBar from "../../components/post/ProgressBar";
 
 const homeIcon = require("../../assets/icons/freebites/home-icon.png");
 const postIcon = require("../../assets/icons/freebites/add-post.png");

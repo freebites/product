@@ -12,19 +12,33 @@ export default function ImageViewer(props: {
 	// TODO: add placeholder image, and also know number of items in carousel
 	return (
 		!props.disabled && (
-			<Carousel
-				width={320}
-				height={288}
-				style={{ borderRadius: 30, shadowRadius: 2 }}
-				loop={false}
-				data={props.selectedImage}
-				renderItem={({ index }) => (
-					<Image
-						source={{ uri: props.selectedImage[index] }}
-						style={styles.image}
-					/>
-				)}
-			/>
+			<View
+				style={{
+					backgroundColor: "white",
+					borderRadius: 30,
+					shadowColor: "#000",
+					shadowOffset: { width: 0, height: 4 },
+					shadowOpacity: 0.25,
+					shadowRadius: 4,
+					elevation: 4,
+				}}
+			>
+				<Carousel
+					width={317}
+					height={288}
+					style={{
+						borderRadius: 30,
+					}}
+					loop={false}
+					data={props.selectedImage}
+					renderItem={({ index }) => (
+						<Image
+							source={{ uri: props.selectedImage[index] }}
+							style={styles.image}
+						/>
+					)}
+				/>
+			</View>
 		)
 	);
 }
