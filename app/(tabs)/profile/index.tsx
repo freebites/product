@@ -1,115 +1,69 @@
-import React from "react";
-import { useState, useEffect } from "react"
-import { Link, Redirect, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { View, Text, SafeAreaView, Image } from "react-native"; // views are divs and text a p tags
+import React, { useState, useEffect } from "react";
+import { Pressable } from "react-native";
+import { Link, Redirect } from "expo-router";
+import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
-import { useAuth, validateRoutePerms } from "../../../context/auth";
+import { useAuth } from "../../../context/auth";
 import { getOne } from "../../../api/user/usercrud";
-import { emptyUser, userType } from "../../../context/userContext";
+import { emptyUser } from "../../../context/userContext";
 
+import Header from "../../../components/common/Header";
 
 const Profile = () => {
-	const { user } = useAuth();
-	// console.log("userid:" + user.uid);
-	const routeParams = useLocalSearchParams();
-	
-	validateRoutePerms(user, routeParams);
+  const { user } = useAuth();
+  if (user == undefined || user == null || user.uid == null) {
+    return <Redirect href="/login" />;
+  }
 
-	if (user == undefined || user.uid != routeParams.id) {
-		return <Redirect href = "/login"/> 
-	}
-	
-	const [currUser, setCurrUser] = useState(emptyUser);
-	const fetchData = async () => {
-		const userData = await getOne(user.uid);
-		setCurrUser(userData);
-	};
+  const [currUser, setCurrUser] = useState(emptyUser);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getOne(user.uid);
+      setCurrUser(userData);
+    };
+    fetchUser();
+  }, []);
 
-	/*
-		TODO (Johnny and Jack): useEffect should change based on screen or 
-		on editing screen. Variable to tell us when switching screens
-			- make dummy user data in Mongo
-			- Inner profile pages need validate check if globalparams is
-			accessible in nested pages, 
-				router.push params
-	*/
-	
-	useEffect(() => {
-		fetchData();
-	}, []);
+  return (
+    <SafeAreaView style={globalStyles.container}>
+      <Header text="My Profile"></Header>
 
-	console.log(currUser);
-	
-	return (
-		<SafeAreaView style={globalStyles.container}>
-			<Text style={[globalStyles.headerText, { marginTop: "8.7%" }]}>
-				My Profile
-			</Text>
+      <View>
+        <ProfileCard
+          name={currUser.firstName}
+          email={currUser.emailAddress}
+          bio={currUser.bio}
+        />
+      </View>
 
-			<View
-				style={{
-					height: "7%",
-					flexDirection: "row",
-					alignItems: "center",
-					width: "100%",
-				}}
-			>
-				<Text
-					style={[
-						globalStyles.text,
-						{
-							height: 20,
-							fontWeight: "bold",
-							width: "45%",
-							margin: "15%",
-							textAlign: "right",
-						},
-					]}
-				>
-					Personal details
-				</Text>
-				<Link href="/profile/edit">
-					<Text
-						style={{
-							fontSize: 16,
-							color: "#FA4A0C",
-							height: 20,
-							width: "40%",
-						}}
-					>
-						Edit
-					</Text>
-				</Link>
-			</View>
-			<ProfileCard 
-				name = {currUser.firstName} email = {currUser.emailAddress} 
-				bio = {currUser.bio}
-			/>
-			<Link href = {{pathname: `/profile/history`,
-							params: { id: user.uid },
-		 					}} asChild>
-				<PlainButton width="87%" height={60} text="History" />
-			</Link>
+      <Link
+        asChild
+        href={{ pathname: `/profile/history`, params: { id: user.uid } }}
+      >
+        <PlainButton section="top" width="87%" height={60} text="History" />
+      </Link>
 
-			<Link href = {{pathname: `/profile/drafts`,
-							params: { id: user.uid },
-		 					}} asChild>
-				<PlainButton width="87%" height={60} text="Drafts" />
-			</Link>
+      <Link
+        href={{ pathname: `/profile/drafts`, params: { id: user.uid } }}
+        asChild
+      >
+        <PlainButton section="middle" width="87%" height={60} text="Drafts" />
+      </Link>
 
-			<Link href = {{pathname: `/profile/settings`,
-							params: { id: user.uid },
-		 					}} asChild>
-				<PlainButton width="87%" height={60} text="Settings" />
-			</Link>
+      <Link
+        href={{ pathname: `/profile/settings`, params: { id: user.uid } }}
+        asChild
+      >
+        <PlainButton section="middle" width="87%" height={60} text="Settings" />
+      </Link>
 
-			<Link href="/(tabs)/profile/FAQ" asChild>
-				<PlainButton width="87%" height={60} text="FAQ" />
-			</Link>
-		</SafeAreaView>
-	);
+      <Link href="/profile/FAQ" asChild>
+        <PlainButton section="bottom" width="87%" height={60} text="FAQ" />
+      </Link>
+    </SafeAreaView>
+  );
 };
 
 export default Profile;

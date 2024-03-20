@@ -47,12 +47,15 @@ const gallery = () => {
 			imageURIs: [],
 		});
 	};
+
+	// Update multiple values
 	const handleUpdateTitle = (title) => {
-		updatePostData({ title: title }); // Update multiple values
+		updatePostData({ title: title });
 	};
 
+	// Update multiple values
 	const handleUpdateDesc = (descr) => {
-		updatePostData({ description: descr }); // Update multiple values
+		updatePostData({ description: descr });
 	};
 
 	// TODO: ADD GOOGLE PLACE ID HERE

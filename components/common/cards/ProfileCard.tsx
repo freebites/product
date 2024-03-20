@@ -1,52 +1,67 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import { styled } from "styled-components/native";
-import { useGlobalSearchParams } from "expo-router";
 
-const ProfileCardUI = styled.View`
-	width: 87%;
-	height: 21.3%;
-	border-radius: 20px;
-	background: #fffbf9;
-	display: "flex";
-	flex-direction: row;
-	margin: 12px;
-`;
+import { router } from "expo-router";
+import { Image } from "react-native-elements";
+import { useAuth } from "../../../context/auth";
 
-const ProfileCardTextUI = styled.View`
-	justify-content: center;
-	display: flex;
-	width: 62%;
-`;
+const placeholder = require("../../../assets/icons/placeholder.png");
+const editbutton = require("../../../assets/icons/editbutton.png");
 
-const ProfileImageUI = styled.View`
-	width: 35%;
-`;
-
-const CardText = styled.Text`
-	color: #505a4e;
-`;
-
-const CardTextBox = styled.Text``;
+const style = StyleSheet.create({
+  picture: {
+    height: 161,
+    width: 143,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  nameText: {
+    color: "#58565D",
+    fontSize: 24,
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginBottom: 5,
+  },
+  emailText: {
+    color: "#58565D",
+    fontSize: 14,
+    alignSelf: "center",
+  },
+});
 
 const ProfileCard = (props) => {
+  const { user } = useAuth();
+  return (
+    <View style={{ marginBottom: 15 }}>
+      <Image source={placeholder} style={style.picture}></Image>
+      <Pressable
+        style={{
+          position: "absolute",
+          alignSelf: "flex-end",
+          paddingTop: 140,
+        }}
+        onPress={() => {
+          router.push({
+            pathname: "/profile/edit",
+            params: { id: user.uid },
+          });
+        }}
+      >
+        <Image
+          style={{
+            width: 30,
+            height: 30,
+          }}
+          source={editbutton}
+        ></Image>
+      </Pressable>
 
-	return (
-		<ProfileCardUI>
-			<ProfileImageUI></ProfileImageUI>
-			<ProfileCardTextUI>
-				<CardText style={{ fontSize: 18, fontWeight: "bold" }}>
-					<Text>{props.name}</Text>
-				</CardText>
-
-				<CardText style={{ fontSize: 15 }}>{props.email}</CardText>
-
-				<CardText style={{ fontSize: 15, height: "33%" }}>
-					<Text>{props.bio}</Text>
-				</CardText>
-			</ProfileCardTextUI>
-		</ProfileCardUI>
-	);
+      <View>
+        <Text style={style.nameText}>{props.name}</Text>
+        <Text style={style.emailText}>{props.email}</Text>
+      </View>
+    </View>
+  );
 };
 
 export default ProfileCard;
