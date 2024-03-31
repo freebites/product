@@ -9,6 +9,8 @@ import {
 	TouchableOpacity,
 	TouchableWithoutFeedback,
 	Modal,
+	ScrollView,
+	KeyboardAvoidingView,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -21,21 +23,26 @@ import { CommentsModal } from "./CommentsModal";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
+import { PanGestureHandlerGestureEvent, TextInput } from "react-native-gesture-handler";
+import { router } from "expo-router";
 import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
+import { PanGestureHandler } from "react-native-gesture-handler";
+import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withTiming, withSpring } from "react-native-reanimated";
 import DisplayComments from "./DisplayComments";
 const placeholderImage = require("../../assets/images/kemal.jpg");
+import styled from "styled-components/native";
+const modalHandle = require("../../assets/images/Drag_handle.png");
+const perishable = require('../../assets/images/perishable.png');
+const gluten = require('../../assets/images/gluten-free.png');
+const leftArrow = require('../../assets/icons/freebites/left-arrow.png');
+const elipsis = require('../../assets/icons/freebites/ellipsis-horizontal.png');
 
 export const PostCard = (props) => {
 	const { user } = useAuth();
-	const [newCommentText, setNewCommentText] = useState("");
-	const handleCommentChange = (text) => {
-		setNewCommentText(text);
-	};
-
+    const [newCommentText, setNewCommentText] = useState("");
 	const [singlePost, setSinglePost] = useState(EmptyPost);
 	const [imageURL, setImageURL] = useState(null);
 	useEffect(() => {
@@ -56,11 +63,15 @@ export const PostCard = (props) => {
 		fetchPost();
 	}, [props.id]);
 
-	const handleUpdateComments = async (newComment) => {
+	const handleCommentChange = (text) => {
+		setNewCommentText(text);
+	};
+
+    const handleUpdateComments = async (newComment) => {
 		try {
-			const updatedComments = [...singlePost.comments, newComment];
-			const updatedPost = { ...singlePost, comments: updatedComments };
-			setSinglePost(updatedPost);
+			const updatedComments = [...props.singlePost.comments, newComment];
+			const updatedPost = { ...props.singlePost, comments: updatedComments };
+			props.setSinglePost(updatedPost);
 			await update(updatedPost, updatedPost._id);
 		} catch (error) {
 			console.error("Error updating comments:", error);
@@ -69,8 +80,8 @@ export const PostCard = (props) => {
 
 	const handleAddComment = () => {
 		const newComment: comment = {
-			id: singlePost.comments.length + 1,
-			username: user.email,
+			id: props.singlePost.comments.length + 1,
+			username: "props.user.email",
 			body: newCommentText,
 			timestamp: new Date(),
 			_id: "",
@@ -81,58 +92,135 @@ export const PostCard = (props) => {
 		setNewCommentText("");
 	};
 
-	const [modalVisible, setModalVisible] = useState(false);
+	const translateY = useSharedValue(0);
+	const panGesture = useAnimatedGestureHandler({
+		onActive: (event) => {
+			translateY.value = event.translationY
+		},
+	})
+
+	const rStyle = useAnimatedStyle(() => {
+	return {
+		transform: [
+			{
+				translateY: translateY.value,
+			},
+		],
+	};
+	});
+
+	function goBack() {
+		router.back();
+	}
+
+//   const panGestureEvent = useAnimatedGestureHandler({
+//     onStart: (_, ctx) => {
+//       ctx.startY = translateY.value;
+//     },
+//     onActive: (event, ctx) => {
+//       translateY.value = ctx.startY + event.translationY;
+//     },
+//     onEnd: () => {
+//       // Perform any cleanup or final actions if needed
+//     },
+//   });
 
 	return (
-		<View style={styles.mainbox}>
-			<CommentsModal 
-				singlePost={singlePost} 
-				modalVisible={modalVisible} 
-				setModalVisible={setModalVisible}>
-			</CommentsModal>
-			<Image
-				style={styles.image}
-				source={{
-					uri: imageURL,
-				}}
-			/>
-			<View style={styles.description}>
-				<Text style={styles.location}>{singlePost.location}</Text>
-				<Text style={styles.innerDes}>{singlePost.description}</Text>
-				{/* <View style={styles.tags}></View> */}
-				<Divider orientation="horizontal" style={styles.divider} />
-				<Text style={styles.thread}>Live Thread</Text>
-				<DisplayComments 
-					modalVisible={modalVisible} 
-					singlePost={singlePost} 
-					setModalVisible={setModalVisible}>
-				</DisplayComments>
-			</View>
-			<View style={{ flexDirection: "row" }}>
-				<Divider orientation="horizontal" style={styles.divider} />
-				<TextInput
-					style={{ fontSize: 12, flex: 1 }}
-					placeholder="Add a comment..."
-					value={newCommentText}
-					onChangeText={handleCommentChange}
-				/>
-				<TouchableOpacity style={styles.postButton}>
-					<Text
-						style={{ color: "lightgreen" }}
-						onPress={handleAddComment}
-					>
-						Post
-					</Text>
-				</TouchableOpacity>
-			</View>
+		<KeyboardAvoidingView
+			style={{ flex: 1 }}
+			keyboardVerticalOffset={100}
+			behavior={"position"}
+		>
+		<View style={{flexDirection: "row", backgroundColor: "white", justifyContent: 'space-between', paddingHorizontal: 40}}>
+			<TouchableOpacity style={{ backgroundColor: "white", width: 20 }} onPress={() => goBack()}>
+				<Image source={leftArrow} />
+			</TouchableOpacity>
+			<Text style={styles.thread}>Post Description</Text>
+			<Image source={elipsis}/>
 		</View>
+		<View style={styles.mainbox}>
+
+		<Image
+			style={styles.image}
+			source={{
+				uri: imageURL,
+			}}
+		/>
+		<View style={styles.description}>
+			<Text style={styles.location}>{singlePost.location}</Text>
+			<Text style={styles.innerDes}>{singlePost.description}</Text>
+			<Text style={styles.thread}>Food Types & Diet</Text>
+			<View style={styles.tags}>
+				<Image
+					source={gluten}
+				/>
+				<Image
+					source={perishable}
+				/>
+			</View>
+			{/* <Divider orientation="horizontal" style={styles.divider} /> */}
+			{/* <Text style={styles.thread}>Live Thread</Text> */}
+
+		</View>
+		<PanGestureHandler onGestureEvent={panGesture}>
+			<Animated.View style={[styles.modalComments, rStyle]}>
+			<View style={{ alignItems: "center", paddingBottom: 10, paddingTop: 20 }}>
+			<Image source={modalHandle} style={{ marginBottom: 14 }}/>
+			<Text style={{ fontSize: 15, color: "black", fontWeight: "bold", }}>Live Thread</Text>
+			</View>
+			<Divider
+				orientation="horizontal"
+				style={styles.divider}
+			/>
+			<ScrollView style={{ flex: 1, paddingTop: 10, }}>
+				<DisplayComments
+					// modalVisible={modalVisible}
+					singlePost={singlePost}
+					// setModalVisible={setModalVisible}
+				/>
+			</ScrollView>
+			<View style={{
+				flexDirection: "row", marginBottom: 40, marginHorizontal: 30, marginTop: 10
+			}}>
+				<Image
+					source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+				/>
+				<View style={styles.textBox}>
+					<TextInput style={styles.textInput}
+						placeholder="Add a comment..."
+						value={newCommentText}
+						onChangeText={handleCommentChange}
+					/>
+
+					<TouchableOpacity style={styles.postButton}>
+						<Text
+							style={{ color: "lightgreen" }}
+						>
+						</Text>
+						<TouchableOpacity onPress={handleAddComment} >
+							<Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+						</TouchableOpacity>
+
+					</TouchableOpacity>
+				</View>
+
+			</View>
+
+
+			</Animated.View>
+		</PanGestureHandler>
+	</View >
+		</KeyboardAvoidingView>
+		
 	);
 };
 
 const styles = StyleSheet.create({
 	mainbox: {
-		flex: 1,
-		zIndex: -1,
+		// position: "relative",
+		zIndex: 20,
+		width: "100%",
+		height: "100%",
 		backgroundColor: "white",
 		borderRadius: 20,
 		paddingHorizontal: 20,
@@ -150,28 +238,190 @@ const styles = StyleSheet.create({
 		height: 30,
 		fontSize: 22,
 		marginBottom: 10,
-		color: "#485445",
+		color: "#1c1c1b",
+		fontWeight: "500",
 	},
 	innerDes: {
 		height: 50,
-		width: 200,
+		// width: 200,
 		marginBottom: 10,
 		fontSize: 16,
-		color: "#717171",
+		color: "#58565D",
 	},
 	tags: {
 		height: 25,
+		flexDirection: "row",
 	},
 	divider: {
-		marginVertical: 15,
+		width: "100%",
+		backgroundColor: "#F3F0F4",
+		color: "#F3F0F4",
 	},
 	thread: {
 		fontSize: 16,
 		paddingBottom: 8,
-		color: "#485445",
+		color: "#1c1c1b",
+		fontWeight: "400",
 	},
 	postButton: {
 		alignItems: "flex-end",
+		marginBottom: 10,
+		marginRight: 10,
 	},
+	modalComments: {
+		height: "65%",
+		width: "113%",
+		zIndex: 10000,
+		backgroundColor: "white",
+		borderColor: "#F3F0F4",
+		borderStyle: "solid",
+		borderWidth: 2,
+		position: "absolute",
+		top: 530,
+		flexDirection: "column",
+		borderRadius: 40,
+		justifyContent: 'center',
+	},
+	modalAddComment: {
+		height: 100,
+		width: "100%",
+		backgroundColor: "white",
+		position: "absolute",
+		bottom: 0,
+	},
+
+	textBox: {
+		borderStyle: "solid",
+		borderWidth: 1,
+		marginLeft: 20, 
+		flexDirection: "row",
+		borderRadius: 15,
+		borderColor: "#F3F0F4",
+	},
+
+    textInput: {
+		fontSize: 16,
+		marginRight: 75,
+		// fontColor: "black",
+	},
+	
 });
 export default PostCard;
+
+
+
+
+
+
+
+
+
+
+// const panGesture = useAnimatedGestureHandler({
+// 	onActive: (event) => {
+// 		translateY.value = event.translationY
+// 	},
+// })
+
+// const rStyle = useAnimatedStyle(() => {
+// 	return {
+// 		transform: [
+// 			{
+// 				translateY: translateY.value,
+// 			},
+// 		],
+// 	};
+// });
+
+
+// const [modalVisible, setModalVisible] = useState(false);
+
+// return (
+// 	<View style={styles.mainbox}>
+// 		<Image
+// 			style={styles.image}
+// 			source={{
+// 				uri: imageURL,
+// 			}}
+// 		/>
+// 		<View style={styles.description}>
+// 			<Text style={styles.location}>{singlePost.location}</Text>
+// 			<Text style={styles.innerDes}>{singlePost.description}</Text>
+// 			{/* <View style={styles.tags}></View> */}
+// 			<Divider orientation="horizontal" style={styles.divider} />
+// 			<Text style={styles.thread}>Live Thread</Text>
+
+// 		</View>
+// 		<PanGestureHandler onGestureEvent={panGesture}>
+// 			<Animated.View style={[styles.modalComments, rStyle]}>
+// 			<View style={{ alignItems: "center", paddingBottom: 10, paddingTop: 20 }}>
+// 				<Text style={{ fontSize: 18, color: "black" }}>Live Thread</Text>
+// 			</View>
+// 			<Divider
+// 				orientation="horizontal"
+// 				style={styles.divider}
+// 			/>
+// 			<ScrollView style={{ flex: 1, paddingTop: 10, }}>
+// 				<DisplayComments
+// 					modalVisible={modalVisible}
+// 					singlePost={singlePost}
+// 					setModalVisible={setModalVisible}
+// 				/>
+// 			</ScrollView>
+// 			<View style={{
+// 				flexDirection: "row", marginBottom: 40, marginHorizontal: 60, marginTop: 10
+// 			}}>
+// 				<Image
+// 					source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+// 				/>
+// 				<View style={{ borderStyle: "solid", borderWidth: 1, marginLeft: 20, flexDirection: "row" }}>
+// 					<TextInput
+// 						style={{ fontSize: 16, marginRight: 75, }}
+// 						placeholder="Add a comment..."
+// 						value={newCommentText}
+// 						onChangeText={handleCommentChange}
+						
+// 					/>
+
+// 					<TouchableOpacity style={styles.postButton}>
+// 						<Text
+// 							style={{ color: "lightgreen" }}
+// 						>
+// 						</Text>
+// 						<TouchableOpacity onPress={handleAddComment} >
+// 							<Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+// 						</TouchableOpacity>
+
+// 					</TouchableOpacity>
+// 				</View>
+
+// 			</View>
+
+
+// 			</Animated.View>
+// 		</PanGestureHandler>
+// 	</View >
+// );
+
+
+
+{/* <View style={styles.mainbox}>
+				<Image
+					style={styles.image}
+					source={{
+						uri: imageURL,
+					}}
+				/>
+				<View style={styles.description}>
+					<Text style={styles.location}>{singlePost.location}</Text>
+					<Text style={styles.innerDes}>{singlePost.description}</Text>
+					<View style={styles.tags}></View>
+					<Divider orientation="horizontal" style={styles.divider} />
+					<Text style={styles.thread}>Live Thread</Text>
+
+				</View>
+				<CommentsModal
+					singlePost={singlePost}
+					setSinglePost={setSinglePost}
+				/>
+			</View > */}
