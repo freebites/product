@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
 import TagButton from "./TagButton";
+import OtherButton from "./OtherButton";
+import FilterModal from "./FilterModal";
 
 // takes in a changeHandler function for an array, (a setState function)
 // and an array of strings, tagOptions, to denote the options
@@ -14,7 +16,7 @@ const TagMultiSelect = ({ changeHandler, tagOptions }) => {
 	// unimplmented for now... TODO: ask designers how 'other' tags should be
 	// implemented and how they should be displayed...should they be new buttons
 	// or should they be different
-	const [other, setOther] = useState("other");
+	const [other, setOther] = useState(false);
 
 	const handleTagSelection = (tag) => {
 		let newTags; // temp storage variable to ensure tags are synced between
@@ -53,12 +55,11 @@ const TagMultiSelect = ({ changeHandler, tagOptions }) => {
 	return (
 		<View style={styles.container}>
 			{renderTags()}
-			<TagButton
-				tag={other}
-				onPress={() => handleTagSelection(other)}
-				isSelected={tags.includes(other)}
-				color={undefined}
-				selectedColor={undefined}
+			<OtherButton onPress={() => setOther(true)} />
+			<FilterModal
+				isVisible={other}
+				children={undefined}
+				onClose={() => setOther(false)}
 			/>
 		</View>
 	);

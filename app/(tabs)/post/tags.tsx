@@ -21,15 +21,19 @@ import { COLORS } from "../../../constants";
 import HorizontalRule from "../../../components/common/HorizontalRule";
 import NextButtonText from "../../../components/post/NextButtonText";
 import ProgressBar from "../../../components/post/ProgressBar";
+import FilterPopUp from "../../../components/post/FilterPopUp";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
 const tags = () => {
 	const { progress, updateProgress, postData, updatePostData } =
 		useContext(PostContext);
+
+	// for animating progress bar
 	useFocusEffect(() => {
 		updateProgress(1);
 	});
+
 	// update handlers for each field
 	const handleUpdateAllergens = (newAllergens) => {
 		updatePostData({
@@ -123,6 +127,8 @@ const tags = () => {
 							]}
 						/>
 					</View>
+
+					<FilterPopUp />
 				</ScrollView>
 			</KeyboardAvoidingView>
 			<Link href="/post/location" asChild>

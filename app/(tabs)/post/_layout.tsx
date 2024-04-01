@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { PostProvider } from "../../../context/postContext";
 import { Button, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,7 +9,10 @@ import ProgressBar from "../../../components/post/ProgressBar";
 
 const OpenOptions = () => {
 	return (
-		<Pressable style={{ marginRight: "8.7%" }}>
+		<Pressable
+			style={{ marginRight: "8.7%" }}
+			onPress={() => router.push("./modal")}
+		>
 			<MaterialCommunityIcons
 				name="dots-horizontal"
 				size={24}
@@ -38,6 +41,14 @@ export default function ProfileLayout() {
 				}}
 			>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
+				<Stack.Screen
+					name="modal"
+					options={{
+						headerShown: false,
+						presentation: "transparentModal",
+						animation: "fade",
+					}}
+				/>
 			</Stack>
 		</PostProvider>
 	);
