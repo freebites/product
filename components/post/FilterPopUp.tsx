@@ -5,8 +5,8 @@ import SubmitButton from "./SubmitButton";
 
 const FilterPopUp = () => {
 	return (
-		<View>
-			<View style={styles.container}>
+		<View style={styles.container}>
+			<View style={styles.inputContainer}>
 				<Text style={styles.caption}>
 					What additional filter would you like to add?
 				</Text>
@@ -15,6 +15,7 @@ const FilterPopUp = () => {
 					placeholder="MSG"
 					placeholderTextColor={COLORS.neutral[90]}
 					multiline
+					autoFocus={true}
 				></TextInput>
 			</View>
 
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 		color: COLORS.neutral[90],
 		fontSize: 14,
 	},
-	container: {
+	inputContainer: {
 		width: 360,
 		backgroundColor: "white",
 		borderColor: "rgba(0, 0, 0, 0.40)",
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingTop: 30,
 		paddingBottom: 14,
-		marginBottom: 5,
 	},
 	input: {
 		backgroundColor: "white",
@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
 		paddingTop: 17,
 		paddingBottom: 17,
 		paddingHorizontal: 20,
+	},
+	container: {
+		paddingBottom: 5,
+		gap: 5,
 	},
 });
 

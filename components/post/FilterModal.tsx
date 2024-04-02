@@ -1,4 +1,11 @@
-import { Modal, View, Text, StyleSheet, Pressable } from "react-native";
+import {
+	Modal,
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	KeyboardAvoidingView,
+} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import FilterPopUp from "./FilterPopUp";
@@ -6,15 +13,16 @@ import FilterPopUp from "./FilterPopUp";
 const FilterModal = ({ isVisible, children, onClose }) => {
 	return (
 		<Modal animationType="fade" visible={isVisible} transparent={true}>
-			<View style={styles.modalContent}>
-				<View style={styles.titleContainer}>
-					<Text style={styles.title}>Choose a sticker</Text>
-					<Pressable onPress={onClose}>
-						<MaterialIcons name="close" color="#fff" size={22} />
+			<Pressable style={styles.modalContent} onPress={onClose}>
+				{/* wrap in pressable w/ no action to prevent onClose from firing while
+            tapping the actual content 
+          */}
+				<KeyboardAvoidingView behavior="position">
+					<Pressable>
+						<FilterPopUp />
 					</Pressable>
-				</View>
-				<FilterPopUp />
-			</View>
+				</KeyboardAvoidingView>
+			</Pressable>
 		</Modal>
 	);
 };
@@ -24,10 +32,10 @@ const styles = StyleSheet.create({
 		width: "100%",
 		height: "100%",
 		backgroundColor: "rgba(0, 0, 0, 0.7)",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	titleContainer: {
-		height: "16%",
-		backgroundColor: "#464C55",
 		borderTopRightRadius: 10,
 		borderTopLeftRadius: 10,
 		paddingHorizontal: 20,

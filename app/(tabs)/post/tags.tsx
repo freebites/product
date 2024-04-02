@@ -55,11 +55,7 @@ const tags = () => {
 
 	return (
 		<SafeAreaView style={postStyles.container}>
-			<KeyboardAvoidingView
-				style={{ width: "100%", flex: 1, alignItems: "center" }}
-				keyboardVerticalOffset={100}
-				behavior={"position"}
-			>
+			<View style={{ width: "100%", flex: 1, alignItems: "center" }}>
 				<ScrollView contentContainerStyle={postStyles.scrollContainer}>
 					<ProgressBar />
 					<View>
@@ -130,7 +126,7 @@ const tags = () => {
 
 					<FilterPopUp />
 				</ScrollView>
-			</KeyboardAvoidingView>
+			</View>
 			<Link href="/post/location" asChild>
 				<NextButtonText validInput={true} />
 			</Link>
