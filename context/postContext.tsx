@@ -37,6 +37,22 @@ export type Location = {
 		coordinates: [number, number];
 	};
 };
+
+export type TagOptionType = {
+	diet: string[];
+	allergies: string[];
+};
+
+type PostContextType = {
+	postData: postType;
+	updatePostData: (newData: Partial<postType>) => void;
+	progress: number;
+	updateProgress: (newScreen: number) => void;
+	tagOptions: TagOptionType;
+	updateTagOptions: (newTag: Partial<TagOptionType>) => void;
+	resetContext: () => void;
+};
+
 // default empty post
 export const EmptyPost: postType = {
 	_id: "",
@@ -61,24 +77,24 @@ export const EmptyPost: postType = {
 	postTime: undefined,
 };
 
-type PostContextType = {
-	postData: postType;
-	updatePostData: (newData: Partial<postType>) => void;
-	progress: number;
-	updateProgress: (newScreen: number) => void;
+export const defaultOptions: TagOptionType = {
+	diet: ["Vegan", "Vegetarian", "Dairy-free", "Halal", "Gluten-free"],
+	allergies: ["Peanut", "Tree nut", "Dairy", "Eggs"],
 };
-
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
 	updatePostData: () => {},
 	progress: 0,
 	updateProgress: () => {},
+	tagOptions: defaultOptions,
+	updateTagOptions: () => {},
+	resetContext: () => {},
 });
 
 export const PostProvider = ({ children }) => {
 	const [postData, setPostData] = useState<postType>(EmptyPost);
 	const [progress, setProgress] = useState<number>(0);
-
+	const [tagOptions, setTagOptions] = useState<TagOptionType>(defaultOptions);
 	// update context states
 	const updatePostData = (newData: Partial<postType>) => {
 		setPostData({ ...postData, ...newData });
@@ -88,9 +104,25 @@ export const PostProvider = ({ children }) => {
 		setProgress(newScreen);
 	};
 
+	const updateTagOptions = (newTag: Partial<TagOptionType>) => {
+		setTagOptions({ ...tagOptions, ...newTag });
+	};
+
+	const resetContext = () => {
+		setPostData(EmptyPost), setProgress(0), setTagOptions(defaultOptions);
+	};
+
 	return (
 		<PostContext.Provider
-			value={{ postData, updatePostData, progress, updateProgress }}
+			value={{
+				postData,
+				updatePostData,
+				progress,
+				updateProgress,
+				tagOptions,
+				updateTagOptions,
+				resetContext,
+			}}
 		>
 			{children}
 		</PostContext.Provider>

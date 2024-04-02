@@ -30,8 +30,7 @@ import { COLORS } from "../../../constants";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 export default function reviewpost() {
-	const { progress, updateProgress, postData, updatePostData } =
-		useContext(PostContext);
+	const { postData, updatePostData, resetContext } = useContext(PostContext);
 	// function to upload one picture given a local URI
 	const uploadPicture = async (uri) => {
 		//setUploading(true);
@@ -66,6 +65,7 @@ export default function reviewpost() {
 
 			create({ ...postData, imageURIs: imagePaths }); // upload to mongoDB!r
 			updatePostData(EmptyPost); // clear local post data
+			resetContext(); // reset all options to default
 
 			// Other code...
 		} catch (error) {

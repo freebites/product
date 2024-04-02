@@ -1,9 +1,42 @@
 import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import { COLORS } from "../../constants";
-import React from "react";
+import React, { useContext, useState } from "react";
 import SubmitButton from "./SubmitButton";
+import { PostContext } from "../../context/postContext";
 
-const FilterPopUp = () => {
+const FilterPopUp = (props) => {
+	const { postData, updatePostData, tagOptions, updateTagOptions } =
+		useContext(PostContext);
+	const [tag, setTag] = useState("");
+
+	const handleUpdateTags = (newTag: string) => {
+		if (props.type == "diet") {
+			// check for duplicates
+			// code cleanup: factor this out by passing in a changeHandler prop?
+			if (!tagOptions.diet.includes(tag)) {
+				let newDietOptions = [...tagOptions.diet, newTag];
+				updateTagOptions({ ...tagOptions, diet: newDietOptions });
+
+				// add to context automatically
+				let newDietTags = [...postData.tags.diet, newTag];
+				updatePostData({
+					tags: { ...postData.tags, diet: newDietTags },
+				});
+			}
+		} else {
+			if (!tagOptions.allergies.includes(tag)) {
+				let newDietOptions = [...tagOptions.allergies, newTag];
+				updateTagOptions({ ...tagOptions, allergies: newDietOptions });
+
+				// add to context automatically
+				let newAllergenTags = [...postData.tags.allergens, newTag];
+				updatePostData({
+					tags: { ...postData.tags, allergens: newAllergenTags },
+				});
+			}
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.inputContainer}>
@@ -16,10 +49,19 @@ const FilterPopUp = () => {
 					placeholderTextColor={COLORS.neutral[90]}
 					multiline
 					autoFocus={true}
-				></TextInput>
+					onChangeText={(text) => {
+						setTag(text);
+					}}
+				/>
 			</View>
 
-			<SubmitButton />
+			<SubmitButton
+				onPress={() => {
+					handleUpdateTags(tag);
+					props.close();
+				}}
+				validInput={tag !== ""}
+			/>
 		</View>
 	);
 };

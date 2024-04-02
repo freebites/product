@@ -17,10 +17,14 @@ const SubmitButton = (props) => {
 				styles.button,
 				// validInput is true so we need to take its opposite here
 				{
-					backgroundColor: pressed ? COLORS.neutral[50] : "white",
+					backgroundColor:
+						pressed || !props.validInput
+							? COLORS.neutral[50]
+							: "white",
 				},
 				props.style,
 			]}
+			disabled={!props.validInput}
 		>
 			<Text style={styles.text}>
 				{props.text ? props.text : "Submit"}

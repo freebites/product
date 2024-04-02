@@ -10,7 +10,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import FilterPopUp from "./FilterPopUp";
 
-const FilterModal = ({ isVisible, children, onClose }) => {
+const FilterModal = ({ isVisible, children, onClose, type }) => {
 	return (
 		<Modal animationType="fade" visible={isVisible} transparent={true}>
 			<Pressable style={styles.modalContent} onPress={onClose}>
@@ -19,7 +19,7 @@ const FilterModal = ({ isVisible, children, onClose }) => {
           */}
 				<KeyboardAvoidingView behavior="position">
 					<Pressable>
-						<FilterPopUp />
+						<FilterPopUp type={type} close={onClose} />
 					</Pressable>
 				</KeyboardAvoidingView>
 			</Pressable>

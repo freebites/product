@@ -26,7 +26,7 @@ import FilterPopUp from "../../../components/post/FilterPopUp";
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
 const tags = () => {
-	const { progress, updateProgress, postData, updatePostData } =
+	const { progress, updateProgress, postData, updatePostData, tagOptions } =
 		useContext(PostContext);
 
 	// for animating progress bar
@@ -99,7 +99,8 @@ const tags = () => {
 						<Text style={postStyles.sectionHeader}>Allergies </Text>
 						<TagMultiSelect
 							changeHandler={handleUpdateAllergens}
-							tagOptions={["Peanut", "Tree nut", "Dairy", "Eggs"]}
+							tagOptions={tagOptions.allergies}
+							type="allergy"
 						/>
 					</View>
 
@@ -114,17 +115,10 @@ const tags = () => {
 						</Text>
 						<TagMultiSelect
 							changeHandler={handleUpdateDiets}
-							tagOptions={[
-								"Vegan",
-								"Vegetarian",
-								"Dairy-free",
-								"Halal",
-								"Gluten-free",
-							]}
+							tagOptions={tagOptions.diet}
+							type="diet"
 						/>
 					</View>
-
-					<FilterPopUp />
 				</ScrollView>
 			</View>
 			<Link href="/post/location" asChild>
