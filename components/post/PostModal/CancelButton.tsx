@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { forwardRef } from "react";
 import { COLORS } from "../../../constants";
+import { Feather } from '@expo/vector-icons';
 
 const CancelButton = (props, ref) => {
 	const { height, width } = useWindowDimensions();
@@ -24,8 +25,10 @@ const CancelButton = (props, ref) => {
 			]}
 		>
 			<Text style={styles.text}>
-				{props.text ? props.text : "Next Step"}
+				{props.text ? props.text : "Cancel"}
 			</Text>
+
+			<Feather name="x" size={24} color="gray" />
 		</Pressable>
 	);
 };
@@ -36,10 +39,14 @@ const styles = StyleSheet.create({
 		height: 45,
 		borderRadius: 20,
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "space-evenly",
+		flexDirection: "row",
+		gap: 170,
 	},
 	text: {
 		color: COLORS.neutral[70],
+		fontSize: 16,
+		fontWeight: "bold",
 	},
 });
 export default forwardRef(CancelButton);
