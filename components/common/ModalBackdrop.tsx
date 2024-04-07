@@ -8,13 +8,9 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { TouchableWithoutFeedback } from "react-native";
-
 
 const ModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   // animated variables
-
-
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(

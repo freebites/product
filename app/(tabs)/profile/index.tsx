@@ -62,6 +62,15 @@ const Profile = () => {
       <Link href="/profile/FAQ" asChild>
         <PlainButton section="bottom" width="87%" height={60} text="FAQ" />
       </Link>
+
+      <Link href="/profile/NotificationsPage" asChild>
+        <PlainButton
+          section="bottom"
+          width="87%"
+          height={60}
+          text="Notifications"
+        />
+      </Link>
     </SafeAreaView>
   );
 };
