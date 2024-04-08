@@ -41,5 +41,7 @@ const styles = StyleSheet.create({
 	modalContent: {
 		width: "93%",
 		alignItems: "center",
+		justifyContent: "flex-end",
+		height: "75%",
 	},
 });

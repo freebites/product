@@ -8,8 +8,8 @@ import {
 import React, { forwardRef } from "react";
 import { COLORS } from "../../../constants";
 import HorizontalRule from "../../common/HorizontalRule";
-import { EvilIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { EvilIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const Options = (props) => {
 	const { height, width } = useWindowDimensions();
@@ -19,52 +19,57 @@ const Options = (props) => {
 				Would you like to draft or trash this post? If trashed, your
 				post will be discarded.
 			</Text>
+			<View style={styles.optionContainer}>
+				<HorizontalRule
+					color="rgba(147, 163, 143, 0.40)"
+					widthPercentage={93}
+					margin={0}
+				/>
 
-			<HorizontalRule 
-				color="rgba(147, 163, 143, 0.40)" 
-				widthPercentage={93} 
-			/>
-			
-			<Pressable
-				onPress={props.onPress}
-				style={({ pressed }) => [
-					styles.button,
-					// validInput is true so we need to take its opposite here
-					{
-						backgroundColor: pressed ? COLORS.neutral[50] : "white",
-					},
-					props.style,
-				]}
-			>
+				<Pressable
+					onPress={props.onPress}
+					style={({ pressed }) => [
+						styles.button,
+						// validInput is true so we need to take its opposite here
+						{
+							backgroundColor: pressed
+								? COLORS.neutral[50]
+								: "white",
+						},
+						props.style,
+					]}
+				>
 					<Text style={styles.optionsText}>
 						{props.text ? props.text : "Trash"}
 					</Text>
 
 					<EvilIcons name="trash" size={30} color="gray" />
-			</Pressable>
+				</Pressable>
 
-			<HorizontalRule 
-				color="rgba(147, 163, 143, 0.40)" 
-				widthPercentage={93} 
-			/>
+				<HorizontalRule
+					color="rgba(147, 163, 143, 0.40)"
+					widthPercentage={93}
+				/>
 
-			<Pressable
-				onPress={props.onPress}
-				style={({ pressed }) => [
-					styles.button,
-					// validInput is true so we need to take its opposite here
-					{
-						backgroundColor: pressed ? COLORS.neutral[50] : "white",
-					},
-					props.style,
-				]}
-			>
+				<Pressable
+					onPress={props.onPress}
+					style={({ pressed }) => [
+						styles.button,
+						// validInput is true so we need to take its opposite here
+						{
+							backgroundColor: pressed
+								? COLORS.neutral[50]
+								: "white",
+						},
+					]}
+				>
 					<Text style={styles.optionsText}>
 						{props.text ? props.text : "Draft"}
 					</Text>
 
 					<Ionicons name="archive-outline" size={22} color="gray" />
-			</Pressable>
+				</Pressable>
+			</View>
 		</View>
 	);
 };
@@ -72,8 +77,7 @@ const Options = (props) => {
 const styles = StyleSheet.create({
 	button: {
 		width: "100%",
-		height: 45,
-		borderRadius: 20,
+		height: 50,
 		alignItems: "center",
 		justifyContent: "space-evenly",
 		flex: 1,
@@ -88,12 +92,16 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		width: "100%",
-		height: "42%",
+		height: 180,
 		backgroundColor: "white",
 		borderRadius: 20,
 		paddingTop: 12,
-		paddingBottom: 12,
 		marginBottom: 5,
+		overflow: "hidden",
+	},
+	optionContainer: {
+		flex: 1,
+		marginTop: 11,
 	},
 	optionsText: {
 		color: COLORS.neutral[70],
