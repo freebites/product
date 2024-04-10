@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
 	cardView: {
 		height: "100%",
 		flex: 1,
-		overflow: "hidden",
-		backgroundColor: "white",
+		overflow: "hidden",	
 	}
 });
 

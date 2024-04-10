@@ -20,6 +20,7 @@ import {
 	PostContext,
 } from "../../context/postContext";
 import { CommentsModal } from "./CommentsModal";
+import { InfoModal } from "./InfoModal";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -39,6 +40,7 @@ const perishable = require('../../assets/images/perishable.png');
 const gluten = require('../../assets/images/gluten-free.png');
 const leftArrow = require('../../assets/icons/freebites/left-arrow.png');
 const elipsis = require('../../assets/icons/freebites/ellipsis-horizontal.png');
+const infoIcon = require('../../assets/icons/freebites/information-circle.png');
 
 export const PostCard = (props) => {
 	const { user } = useAuth();
@@ -93,25 +95,34 @@ export const PostCard = (props) => {
 	};
 
 	const translateY = useSharedValue(0);
+
+	const [modalVisible, setModalVisible] = useState(false);
+    
+    const changeModalVisible = () => {
+        setModalVisible(!modalVisible);
+    };
+
+	function goBack() {
+		router.back();
+	}
+
 	const panGesture = useAnimatedGestureHandler({
-		onActive: (event) => {
+	onActive: (event) => {
 			translateY.value = event.translationY
 		},
 	})
 
 	const rStyle = useAnimatedStyle(() => {
-	return {
-		transform: [
-			{
-				translateY: translateY.value,
-			},
-		],
-	};
+		return {
+			transform: [
+				{
+					translateY: translateY.value,
+				},
+			],
+		};
 	});
 
-	function goBack() {
-		router.back();
-	}
+
 
 //   const panGestureEvent = useAnimatedGestureHandler({
 //     onStart: (_, ctx) => {
@@ -131,6 +142,7 @@ export const PostCard = (props) => {
 			keyboardVerticalOffset={100}
 			behavior={"position"}
 		>
+		<InfoModal></InfoModal>
 		<View style={{flexDirection: "row", backgroundColor: "white", justifyContent: 'space-between', paddingHorizontal: 40}}>
 			<TouchableOpacity style={{ backgroundColor: "white", width: 20 }} onPress={() => goBack()}>
 				<Image source={leftArrow} />
@@ -149,7 +161,13 @@ export const PostCard = (props) => {
 		<View style={styles.description}>
 			<Text style={styles.location}>{singlePost.location}</Text>
 			<Text style={styles.innerDes}>{singlePost.description}</Text>
-			<Text style={styles.thread}>Food Types & Diet</Text>
+			<View style={styles.info}>
+				<Text style={styles.thread}>Food Types & Diet</Text>
+				<TouchableOpacity onPress={() => CommentsModal(props)}>
+					<Image source={infoIcon} style={styles.infoIcon}/>
+				</TouchableOpacity>
+				
+			</View>	
 			<View style={styles.tags}>
 				<Image
 					source={gluten}
@@ -162,7 +180,7 @@ export const PostCard = (props) => {
 			{/* <Text style={styles.thread}>Live Thread</Text> */}
 
 		</View>
-		<PanGestureHandler onGestureEvent={panGesture}>
+		{/* <PanGestureHandler onGestureEvent={panGesture}>
 			<Animated.View style={[styles.modalComments, rStyle]}>
 			<View style={{ alignItems: "center", paddingBottom: 10, paddingTop: 20 }}>
 			<Image source={modalHandle} style={{ marginBottom: 14 }}/>
@@ -208,7 +226,7 @@ export const PostCard = (props) => {
 
 
 			</Animated.View>
-		</PanGestureHandler>
+		</PanGestureHandler> */}
 	</View >
 		</KeyboardAvoidingView>
 		
@@ -248,6 +266,13 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: "#58565D",
 	},
+	info: {
+		flexDirection: "row",
+	},
+	infoIcon: {
+		paddingTop: 20,
+		marginTop: 2,
+	},
 	tags: {
 		height: 25,
 		flexDirection: "row",
@@ -258,10 +283,11 @@ const styles = StyleSheet.create({
 		color: "#F3F0F4",
 	},
 	thread: {
-		fontSize: 16,
+		fontSize: 20,
 		paddingBottom: 8,
 		color: "#1c1c1b",
-		fontWeight: "400",
+		fontWeight: "600",
+		paddingRight: 15,
 	},
 	postButton: {
 		alignItems: "flex-end",
