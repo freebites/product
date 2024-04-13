@@ -47,6 +47,10 @@ export const PostCard = (props) => {
     const [newCommentText, setNewCommentText] = useState("");
 	const [singlePost, setSinglePost] = useState(EmptyPost);
 	const [imageURL, setImageURL] = useState(null);
+	const [modalVisible, setModalVisible] = useState(false);
+    const [commentsVisible, setCommentsVisible] = useState(false);
+
+
 	useEffect(() => {
 		const fetchPost = async () => {
 			try {
@@ -93,12 +97,11 @@ export const PostCard = (props) => {
 
 		setNewCommentText("");
 	};
-
-	const translateY = useSharedValue(0);
-
-	const [modalVisible, setModalVisible] = useState(false);
     
-    const changeModalVisible = () => {
+    const changeCommentsVisible = () => {
+        setCommentsVisible(!commentsVisible);
+    };
+	const changeModalVisible = () => {
         setModalVisible(!modalVisible);
     };
 
@@ -106,43 +109,17 @@ export const PostCard = (props) => {
 		router.back();
 	}
 
-	const panGesture = useAnimatedGestureHandler({
-	onActive: (event) => {
-			translateY.value = event.translationY
-		},
-	})
-
-	const rStyle = useAnimatedStyle(() => {
-		return {
-			transform: [
-				{
-					translateY: translateY.value,
-				},
-			],
-		};
-	});
-
-
-
-//   const panGestureEvent = useAnimatedGestureHandler({
-//     onStart: (_, ctx) => {
-//       ctx.startY = translateY.value;
-//     },
-//     onActive: (event, ctx) => {
-//       translateY.value = ctx.startY + event.translationY;
-//     },
-//     onEnd: () => {
-//       // Perform any cleanup or final actions if needed
-//     },
-//   });
-
 	return (
 		<KeyboardAvoidingView
 			style={{ flex: 1 }}
 			keyboardVerticalOffset={100}
 			behavior={"position"}
 		>
-		<InfoModal></InfoModal>
+		<InfoModal 
+		modalVisible={modalVisible} 
+		setModalVisible={changeModalVisible}
+		>
+		</InfoModal>
 		<View style={{flexDirection: "row", backgroundColor: "white", justifyContent: 'space-between', paddingHorizontal: 40}}>
 			<TouchableOpacity style={{ backgroundColor: "white", width: 20 }} onPress={() => goBack()}>
 				<Image source={leftArrow} />
@@ -163,7 +140,7 @@ export const PostCard = (props) => {
 			<Text style={styles.innerDes}>{singlePost.description}</Text>
 			<View style={styles.info}>
 				<Text style={styles.thread}>Food Types & Diet</Text>
-				<TouchableOpacity onPress={() => CommentsModal(props)}>
+				<TouchableOpacity onPress={() => changeModalVisible()}>
 					<Image source={infoIcon} style={styles.infoIcon}/>
 				</TouchableOpacity>
 				
@@ -176,12 +153,8 @@ export const PostCard = (props) => {
 					source={perishable}
 				/>
 			</View>
-			{/* <Divider orientation="horizontal" style={styles.divider} /> */}
-			{/* <Text style={styles.thread}>Live Thread</Text> */}
-
 		</View>
-		{/* <PanGestureHandler onGestureEvent={panGesture}>
-			<Animated.View style={[styles.modalComments, rStyle]}>
+		<View style={styles.modalComments}>
 			<View style={{ alignItems: "center", paddingBottom: 10, paddingTop: 20 }}>
 			<Image source={modalHandle} style={{ marginBottom: 14 }}/>
 			<Text style={{ fontSize: 15, color: "black", fontWeight: "bold", }}>Live Thread</Text>
@@ -192,9 +165,9 @@ export const PostCard = (props) => {
 			/>
 			<ScrollView style={{ flex: 1, paddingTop: 10, }}>
 				<DisplayComments
-					// modalVisible={modalVisible}
+					modalVisible={commentsVisible}
 					singlePost={singlePost}
-					// setModalVisible={setModalVisible}
+					setModalVisible={setCommentsVisible}
 				/>
 			</ScrollView>
 			<View style={{
@@ -209,7 +182,6 @@ export const PostCard = (props) => {
 						value={newCommentText}
 						onChangeText={handleCommentChange}
 					/>
-
 					<TouchableOpacity style={styles.postButton}>
 						<Text
 							style={{ color: "lightgreen" }}
@@ -218,15 +190,10 @@ export const PostCard = (props) => {
 						<TouchableOpacity onPress={handleAddComment} >
 							<Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
 						</TouchableOpacity>
-
 					</TouchableOpacity>
 				</View>
-
 			</View>
-
-
-			</Animated.View>
-		</PanGestureHandler> */}
+		</View>
 	</View >
 		</KeyboardAvoidingView>
 		

@@ -41,18 +41,6 @@ import {
 const logo = require("../../assets/icons/freebites/FreeBitesLogoSmall.png")
 
 export const InfoModal = (props) => {
-
-    // const [modalVisible, setModalVisible] = useState(false);
-    // const snapPoints = useMemo(() => ['25%', '50%'], []);
-    // // ref
-    // const bottomSheetRef = useRef<BottomSheet>(null);
-
-    // // callbacks
-    // const handleSheetChanges = useCallback((index: number) => {
-    //     console.log('handleSheetChanges', index);
-    // }, []);
-
-     // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
@@ -87,23 +75,9 @@ export const InfoModal = (props) => {
         // >
             <Modal
                 style={styles.Modal}
-                visible={true}
+                visible={props.modalVisible}
                 transparent={true}
                 animationType="fade"
-
-                // ref={bottomSheetRef}
-                // ref={bottomSheetModalRef}
-                // index={1}
-                // snapPoints={snapPoints}
-                // onChange={handleSheetChanges}
-                // index={1}
-                // snapPoints={snapPoints}
-                // onChange={handleSheetChanges}
-                
-
-                // onRequestClose={() => {
-                //     setModalVisible(!modalVisible)
-                // }}
             >
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
@@ -157,7 +131,10 @@ export const InfoModal = (props) => {
                                 />
                             </View>
                         </View>
-                        <View style={styles.buttonContainer}></View>
+                        <TouchableOpacity
+                         style={styles.buttonContainer}
+                         onPress={() => props.setModalVisible()}
+                         ></TouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -175,11 +152,10 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
         paddingTop: "85%",
         backgroundColor: "black", 
-        opacity: 1,
+        opacity: 0.5,
     },
     innerContainer: {
         flex: 1,
-        // backgroundColor: "black",
         opacity: 1,
         width: '100%', // Full width
     },
@@ -263,12 +239,6 @@ const styles = StyleSheet.create({
 
 	},
     
-    modalAddComment: {
-        height: 100,
-        width: "100%",
-        backgroundColor: "white",
-        position: "absolute",
-        bottom: 0,
-    },
+
 });
 export default InfoModal;
