@@ -30,46 +30,11 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
+import UploadComment from "./UploadComment";
 const placeholderImage = require("../../assets/images/kemal.jpg")
 
 export const CommentsModal = (props) => {
     const { user } = useAuth();
-    const [newCommentText, setNewCommentText] = useState("");
-    const [modalStyle, setModalStyle] = useState(false);
-	const handleCommentChange = (text) => {
-		setNewCommentText(text);
-	};
-
-    const handleUpdateComments = async (newComment) => {
-		try {
-			const updatedComments = [...props.singlePost.comments, newComment];
-			const updatedPost = { ...props.singlePost, comments: updatedComments };
-			props.setSinglePost(updatedPost);
-			await update(updatedPost, updatedPost._id);
-		} catch (error) {
-			console.error("Error updating comments:", error);
-		}
-	};
-
-	const handleAddComment = () => {
-		const newComment: comment = {
-			id: props.singlePost.comments.length + 1,
-			username: "props.user.email",
-			body: newCommentText,
-			timestamp: new Date(),
-			_id: "",
-		};
-
-		handleUpdateComments(newComment);
-
-		setNewCommentText("");
-	};
-
-    const [modalVisible, setModalVisible] = useState(false);
-    
-    const changeModalStyle = () => {
-        setModalStyle(!modalStyle);
-    };
 
     return (
         <KeyboardAvoidingView
@@ -78,69 +43,31 @@ export const CommentsModal = (props) => {
 			behavior={"position"}
         >
             <Modal
-                style={styles.Modal}
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
-                visible={true}
-
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible)
-                }}
+                visible={props.commentsVisible}
             >
-                <View style={{ flex: 0.5, top: 400, height: 100 }}>
-                    <TouchableWithoutFeedback
-                    onPress={() => setModalStyle(false)}>
-                        <View style={[styles.modalBackground, modalStyle ? styles.modalBackgroundUP : styles.modalBackground]}></View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback 
-                    onPress={() => setModalStyle(true)}>
-                        <View  style={styles.modalComments}
-                    >
-                        <View style={{ alignItems: "center", paddingTop: 10,}}>
-                            <Text style={{ fontSize: 18, color: "black" }}>Live Thread</Text>
-                        </View>
-                        <Divider
-                            orientation="horizontal"
-                            style={styles.divider}
-                        />
-                        <ScrollView style={{ flex: 1, paddingTop: 10, }}>
-                            <DisplayComments
-                                modalVisible={props.modalVisible}
-                                singlePost={props.singlePost}
-                                setModalVisible={props.setModalVisible}
-                            />
-                        </ScrollView>
-                        <View style={{
-                            flexDirection: "row", marginBottom: 40, marginHorizontal: 60, marginTop: 10
-                            }}>
-                            <Image
-                                source={require('../../assets/icons/freebites/3d_avatar_25.png')}
-                            />
-                            <View style={{ borderStyle: "solid", borderWidth: 1, marginLeft: 20, flexDirection: "row" }}>
-                                <TextInput
-                                    style={{ fontSize: 16, marginRight: 75, }}
-                                    placeholder="Add a comment..."
-                                    value={newCommentText}
-                                    onChangeText={handleCommentChange}
-                                    
-                                />
 
-                                <TouchableOpacity style={styles.postButton}>
-                                    <Text
-                                        style={{ color: "lightgreen" }}
-                                    >
-                                    </Text>
-                                    <TouchableOpacity onPress={handleAddComment} >
-                                        <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
-                                    </TouchableOpacity>
-
-                                </TouchableOpacity>
+                <Pressable onPress={() => props.changeCommentsVisible()} style={styles.modalContent}>
+                    <Pressable>
+                        <View style={styles.modalComments}>
+                            <View style={{ alignItems: "center", paddingTop: 10,}}>
+                                <Text style={{ fontSize: 18, color: "black" }}>Live Thread</Text>
                             </View>
-                        </View> 
-                    </View>
-                    </TouchableWithoutFeedback>
-                    
-                </View>
+                            <Divider
+                                orientation="horizontal"
+                                style={styles.divider}
+                            />
+                            <ScrollView style={{ paddingTop: 10 }}>
+                                <DisplayComments
+                                    modalVisible={props.modalVisible}
+                                    singlePost={props.singlePost}
+                                    setModalVisible={props.setModalVisible}
+                                />
+                            </ScrollView>
+                        </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
         </KeyboardAvoidingView>
         
@@ -148,6 +75,13 @@ export const CommentsModal = (props) => {
 
 };
 const styles = StyleSheet.create({
+    modalContent: {
+        width: "100%",
+		height: "100%",
+		backgroundColor: "rgba(0, 0, 0, 0.7)",
+		// justifyContent: "flex-end",
+		alignItems: "center",
+    },
     divider: {
 		width: "100%",
 		backgroundColor: "#F3F0F4",
@@ -169,17 +103,18 @@ const styles = StyleSheet.create({
     },
 
     modalComments: {
-        height: "60%",
+        height: "50%",
         width: "100%",
-        zIndex: 100,
+        position: "relative",
+        // zIndex: 100,
         backgroundColor: "white",
-        // flex: 1,
+        // flex: 4,
         borderColor: "#F3F0F4",
 		borderStyle: "solid",
 		borderWidth: 2,
-        flexDirection: "column",
+        // flexDirection: "column",
         borderRadius: 40,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
     },
     thread: {
