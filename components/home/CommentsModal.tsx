@@ -48,7 +48,9 @@ export const CommentsModal = (props) => {
                 visible={props.commentsVisible}
             >
 
-                <Pressable onPress={() => props.changeCommentsVisible()} style={styles.modalContent}>
+                <Pressable 
+                    onPress={() => props.changeCommentsVisible()} 
+                    style={styles.modalContent}>
                     <Pressable>
                         <View style={styles.modalComments}>
                             <View style={{ alignItems: "center", paddingTop: 10,}}>
@@ -58,7 +60,7 @@ export const CommentsModal = (props) => {
                                 orientation="horizontal"
                                 style={styles.divider}
                             />
-                            <ScrollView style={{ paddingTop: 10 }}>
+                            <ScrollView style={{ height: 400, width: 400 }}>
                                 <DisplayComments
                                     modalVisible={props.modalVisible}
                                     singlePost={props.singlePost}
@@ -79,61 +81,25 @@ const styles = StyleSheet.create({
         width: "100%",
 		height: "100%",
 		backgroundColor: "rgba(0, 0, 0, 0.7)",
-		// justifyContent: "flex-end",
+		justifyContent: "flex-end",
 		alignItems: "center",
+        flex: 1,
     },
     divider: {
 		width: "100%",
 		backgroundColor: "#F3F0F4",
 		color: "#F3F0F4",
 	},
-    Modal: {
-        height: "50%",
-    },
-    modalBackground: {
-        height: "40%",
-        width: "100%",
-        backgroundColor: "black",
-        opacity: 0.6,
-        zIndex: 50,
-    }, 
-
-    modalBackgroundUP:  {
-        height: "50%",
-    },
-
     modalComments: {
-        height: "50%",
         width: "100%",
-        position: "relative",
-        // zIndex: 100,
         backgroundColor: "white",
-        // flex: 4,
         borderColor: "#F3F0F4",
 		borderStyle: "solid",
 		borderWidth: 2,
-        // flexDirection: "column",
-        borderRadius: 40,
-        // justifyContent: 'center',
+        borderTopLeftRadius: 40, 
+        borderTopRightRadius: 40, 
+        borderBottomWidth: 0, 
         alignItems: 'center',
-    },
-    thread: {
-		fontSize: 16,
-		paddingBottom: 8,
-		color: "#485445",
-	},
-    
-    postButton: {
-		alignItems: "flex-end",
-
-	},
-    
-    modalAddComment: {
-        height: 100,
-        width: "100%",
-        backgroundColor: "white",
-        position: "absolute",
-        bottom: 0,
     },
 });
 export default CommentsModal;

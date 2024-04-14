@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
         width: "100%",
 		height: "100%",
 		backgroundColor: "rgba(0, 0, 0, 0.7)",
-		justifyContent: "center",
 		alignItems: "center",
+        flex: 1,
+        justifyContent: "flex-end",
     },
 });
 export default InfoModal;

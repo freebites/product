@@ -97,7 +97,9 @@ export const InfoPopUp = (props) => {
             <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={() => props.setModalVisible()}
-            ></TouchableOpacity>
+            >
+                <Text style={styles.buttonText}>I got it!</Text>
+            </TouchableOpacity>
         </View>
 
     );
@@ -105,6 +107,7 @@ export const InfoPopUp = (props) => {
 };
 const styles = StyleSheet.create({
     container: {
+        // flex: 0.9,
         paddingBottom: 5,
 		gap: 5,
     },
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     infoContainer: {
-        flex: 6,
+        // flex: 0.7,
         backgroundColor: "white",
         width: '100%',
         paddingBottom: 10,
@@ -127,10 +130,12 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     buttonContainer: {
-        flex: 1,
+        height: 40,
         backgroundColor: "orange",
         marginTop: 20,
         borderRadius: 40,
+        marginBottom: 30,
+        justifyContent: 'center',
     },
     divider: {
 		width: "100%",
@@ -148,6 +153,12 @@ const styles = StyleSheet.create({
     foodTypeDescription: {
         padding: 10,
     },
+    buttonText: {
+        alignSelf: 'center',
+        color: "white",
+        fontSize: 14,
+        fontWeight: "500",
+    }
 
 });
 export default InfoPopUp;
