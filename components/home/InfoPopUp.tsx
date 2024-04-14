@@ -43,7 +43,7 @@ const logo = require("../../assets/icons/freebites/FreeBitesLogoSmall.png")
 export const InfoPopUp = (props) => {
 
     return (
-        <View style={styles.innerContainer}>
+        <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image source={logo}/> 
             </View>
@@ -104,11 +104,9 @@ export const InfoPopUp = (props) => {
 
 };
 const styles = StyleSheet.create({
-    innerContainer: {
-        // flex: 1,
-        opacity: 1,
-        height: '100%',
-        width: '80%', // Full width
+    container: {
+        paddingBottom: 5,
+		gap: 5,
     },
     imageContainer: {
         alignItems: 'center',
@@ -150,46 +148,6 @@ const styles = StyleSheet.create({
     foodTypeDescription: {
         padding: 10,
     },
-    Modal: {
-        height: "50%",
-    },
-    modalBackground: {
-        height: "40%",
-        width: "100%",
-        backgroundColor: "black",
-        opacity: 0.6,
-        zIndex: 50,
-    }, 
-
-    modalBackgroundUP:  {
-        height: "50%",
-    },
-
-    modalComments: {
-        height: "60%",
-        width: "100%",
-        zIndex: 100,
-        backgroundColor: "white",
-        // flex: 1,
-        borderColor: "#F3F0F4",
-		borderStyle: "solid",
-		borderWidth: 2,
-        flexDirection: "column",
-        borderRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    thread: {
-		fontSize: 16,
-		paddingBottom: 8,
-		color: "#485445",
-	},
-    
-    postButton: {
-		alignItems: "flex-end",
-
-	},
-    
 
 });
 export default InfoPopUp;
