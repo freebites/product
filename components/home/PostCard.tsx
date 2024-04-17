@@ -36,6 +36,7 @@ import DisplayComments from "./DisplayComments";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 import styled from "styled-components/native";
 import UploadComment from "./UploadComment";
+import PostDate from "./PostDate";
 const perishable = require('../../assets/images/perishable.png');
 const gluten = require('../../assets/images/gluten-free.png');
 const leftArrow = require('../../assets/icons/freebites/left-arrow.png');
@@ -48,7 +49,6 @@ export const PostCard = (props) => {
 	const [imageURL, setImageURL] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
     const [commentsVisible, setCommentsVisible] = useState(false);
-
 
 	useEffect(() => {
 		const fetchPost = async () => {
@@ -67,6 +67,7 @@ export const PostCard = (props) => {
 
 		fetchPost();
 	}, [props.id]);
+	
     
     const changeCommentsVisible = () => {
         setCommentsVisible(!commentsVisible);
@@ -97,6 +98,7 @@ export const PostCard = (props) => {
 				<Text style={styles.thread}>Post Description</Text>
 				<Image source={elipsis}/>
 			</View>
+			<Divider></Divider>
 			<View style={styles.mainbox}>
 				<Image
 					style={styles.image}
@@ -105,8 +107,12 @@ export const PostCard = (props) => {
 					}}
 				/>
 				<View style={styles.description}>
-					<Text style={styles.location}>{singlePost.location}</Text>
+					<View style={styles.locationContainer}>
+						<Text style={styles.location}>{singlePost.location}</Text>
+						{/* <PostDate></PostDate> */}
+					</View>
 					<Text style={styles.innerDes}>{singlePost.description}</Text>
+					<Divider></Divider>
 					<View style={styles.info}>
 						<Text style={styles.thread}>Food Types & Diet</Text>
 						<TouchableOpacity onPress={() => changeModalVisible()}>
@@ -123,6 +129,8 @@ export const PostCard = (props) => {
 						/>
 					</View>
 				</View>
+				<Divider></Divider>
+
 				<View>
 					{singlePost.comments.length > 0 ? (
 						<TouchableOpacity onPress={() => changeCommentsVisible()}>
@@ -135,7 +143,7 @@ export const PostCard = (props) => {
 										<Text style={styles.username}>
 											{comment.username}
 										</Text>
-										<Text style={styles.body}>
+										<Text>
 											{comment.body}
 										</Text>
 									</View>
@@ -144,7 +152,7 @@ export const PostCard = (props) => {
 							))}
 						</TouchableOpacity>
 						) : (
-							<View style={styles.noComments}>
+							<View>
 								<Text style={{ fontSize: 22, color: "#485445", fontWeight: "bold",  }}>No comments yet</Text>
 								<Text style={{ fontSize: 13, color: "#93A38F", marginTop: 20, textAlign: "center",}}>
 									Commenting helps other users know {"\n"}
@@ -154,14 +162,18 @@ export const PostCard = (props) => {
 						)
 					}
 				</View>
-				<UploadComment 
-					singlePost={singlePost} 
-					setSinglePost={setSinglePost}
-				>
-				</UploadComment>
+				<Pressable onPress={() => changeCommentsVisible()}>
+					<UploadComment 
+						singlePost={singlePost} 
+						setSinglePost={setSinglePost}
+					>
+					</UploadComment>
+				</Pressable>
+				
 				<CommentsModal 
 					changeCommentsVisible={changeCommentsVisible}
 					singlePost={singlePost}
+					setSinglePost={setSinglePost}
 					commentsVisible={commentsVisible} 
 				></CommentsModal>
 			</View >
@@ -204,6 +216,7 @@ const styles = StyleSheet.create({
 		color: "#58565D",
 	},
 	info: {
+		paddingTop: 10,
 		flexDirection: "row",
 	},
 	infoIcon: {
@@ -227,11 +240,12 @@ const styles = StyleSheet.create({
 	username: {
 		paddingRight: 10,
 	},
-	body: {
+	time: {
 		
 	},
-	noComments: {
-
+	locationContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between"
 	},
 	numComments: {
 		paddingBottom: 5,

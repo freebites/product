@@ -8,10 +8,10 @@ import {
 	Pressable,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
-	Modal,
     ScrollView,
     KeyboardAvoidingView,
 } from "react-native";
+import Modal from "react-native-modal";
 import React, { useContext, useEffect, useState } from "react";
 import {
 	EmptyPost,
@@ -35,7 +35,6 @@ const placeholderImage = require("../../assets/images/kemal.jpg")
 
 export const CommentsModal = (props) => {
     const { user } = useAuth();
-
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
@@ -43,9 +42,11 @@ export const CommentsModal = (props) => {
 			behavior={"position"}
         >
             <Modal
-                animationType="fade"
-                transparent={true}
-                visible={props.commentsVisible}
+                animationIn={"slideInUp"}
+                // animationOut={"slideInDown"}
+                onSwipeComplete={() => props.changeCommentsVisible()}
+                swipeDirection="down"
+                isVisible={props.commentsVisible}
             >
 
                 <Pressable 
@@ -67,6 +68,10 @@ export const CommentsModal = (props) => {
                                     setModalVisible={props.setModalVisible}
                                 />
                             </ScrollView>
+                            <UploadComment
+                                singlePost={props.singlePost} 
+                                setSinglePost={props.setSinglePost}
+                            ></UploadComment>
                         </View>
                     </Pressable>
                 </Pressable>
@@ -80,7 +85,6 @@ const styles = StyleSheet.create({
     modalContent: {
         width: "100%",
 		height: "100%",
-		backgroundColor: "rgba(0, 0, 0, 0.7)",
 		justifyContent: "flex-end",
 		alignItems: "center",
         flex: 1,
