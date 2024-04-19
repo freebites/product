@@ -55,43 +55,33 @@ export const InfoPopUp = (props) => {
                     orientation="horizontal"
                     style={styles.divider}
                 />
-                <View>
-                    <Text>Food Types:</Text>
-                    <FlatList
-                        data={[
+                <View style={styles.foodContainer}>
+                    <Text style={styles.dietTitle}>Food Types:</Text>
+                    <ul style={styles.ul}>
+                        {[
                             { id: 1, name: 'Perishable: ', description: 'spoiles quickly (cooked/fresh)' },
                             { id: 2, name: 'Non-perishable: ', description: 'lasts long (preserved)' },
-                        ]}
-                        renderItem={({ item }) => {
-                            return (
-                            <View style={styles.foodTypeItem}>
+                        ].map(item => (
+                            <li key={item.id.toString()}>
                                 <Text style={styles.foodTypeName}>{item.name}</Text>
                                 <Text style={styles.foodTypeDescription}>{item.description}</Text>
-                            </View>
-                            );
-                        }}
-                        keyExtractor={(item) => item.id.toString()}
-                    />
-                </View>
-                <View>
-                    <Text>Dietary Restrictions:</Text>
-                    <FlatList
-                        data={[
+                            </li>
+                        ))}
+                    </ul>
+                    <Text style={styles.dietTitle}>Dietary Restrictions:</Text>
+                    <ul style={styles.ul}>
+                        {[
                             { id: 1, name: 'Vegan: ', description: 'No animal products or meat' },
                             { id: 2, name: 'Vegetarian: ', description: 'Meatless' },
                             { id: 3, name: 'Kosher: ', description: 'Jewish dietary standard' },
                             { id: 4, name: 'Halal: ', description: 'Islamic dietary standard' }
-                        ]}
-                        renderItem={({ item }) => {
-                            return (
-                            <View style={styles.foodTypeItem}>
+                        ].map(item => (
+                            <li key={item.id.toString()}>
                                 <Text style={styles.foodTypeName}>{item.name}</Text>
                                 <Text style={styles.foodTypeDescription}>{item.description}</Text>
-                            </View>
-                            );
-                        }}
-                        keyExtractor={(item) => item.id.toString()}
-                    />
+                            </li>
+                        ))}
+                    </ul>
                 </View>
             </View>
             <TouchableOpacity
@@ -113,21 +103,22 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 5,
     },
     infoContainer: {
         // flex: 0.7,
         backgroundColor: "white",
         width: '100%',
-        paddingBottom: 10,
+        paddingBottom: 20,
         borderRadius: 20,
     },
     infoTitle: {
-        marginTop: 37,
-        marginBottom: 30,
+        marginTop: 30,
+        marginBottom: 20,
         textAlign: "center",
         fontSize: 16,
-        fontWeight: "500",
+        paddingHorizontal: 20,
+        // fontWeight: "500",
     },
     buttonContainer: {
         height: 40,
@@ -143,22 +134,37 @@ const styles = StyleSheet.create({
 		color: "#F3F0F4",
 	},
     foodTypeItem: {
-        paddingLeft: 5,
+        // paddingLeft: 5,
         flexDirection: 'row',
     },
     foodTypeName: {
-        padding: 10,
-        fontWeight: "300",
+        // paddingLeft: 10,
+        fontWeight: "600",
+        color: "black",
+        fontSize: 12,
+
     },
     foodTypeDescription: {
-        padding: 10,
+        fontSize: 12,
     },
     buttonText: {
         alignSelf: 'center',
         color: "white",
         fontSize: 14,
         fontWeight: "500",
-    }
+    },
+    dietTitle: {
+        fontWeight: "600",
+        fontSize: 14,
+    },
+    ul: {
+        marginLeft: 0,
+        paddingLeft: 15,
+    },
+    foodContainer: {
+        paddingLeft: 20,
+        paddingTop: 20,
+    },
 
 });
 export default InfoPopUp;
