@@ -43,7 +43,7 @@ const logo = require("../../assets/icons/freebites/FreeBitesLogoSmall.png")
 
 export const PostDate = (props) => {
     const getTimeDifference = () => {
-        const currentTime = new Date(); 
+        // const currentTime = new Date(); 
 
         // const timeDifference = props.postDateTime.getHours();
 
@@ -53,7 +53,7 @@ export const PostDate = (props) => {
         // const daysDifference = Math.floor(currentTime.getTime() - props.postDateTime.getTime() / (1000 * 60 * 60 * 24));
 
         // if (secondsDifference < 60) {
-            // return `seconds ago`;
+            return `seconds ago`;
             // return `${timeDifference} seconds ago`;
         // } 
         // else if (minutesDifference < 60) {
@@ -63,7 +63,6 @@ export const PostDate = (props) => {
         // } else {
         //     return `${daysDifference} days ago`;
         // }
-        return props.postDateTime.getHours()
     };
 
     return (
