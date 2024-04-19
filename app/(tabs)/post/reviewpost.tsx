@@ -1,6 +1,14 @@
-import { View, Text } from "react-native";
-import React, { useContext, useState } from "react";
-import { Link, router } from "expo-router";
+import {
+	View,
+	Text,
+	SafeAreaView,
+	StyleSheet,
+	ScrollView,
+	KeyboardAvoidingView,
+	Image,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, router, useFocusEffect } from "expo-router";
 import { PostContext, EmptyPost } from "../../../context/postContext";
 import BackButton from "../../../components/common/BackButton";
 import PlainButton2 from "../../../components/common/PlainButton2";
@@ -14,12 +22,15 @@ import {
 	uploadBytesResumable,
 } from "firebase/storage";
 import create from "../../../api/posts/create";
+import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
+import { postStyles } from "./styles/postStyles";
+import { COLORS } from "../../../constants";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 export default function reviewpost() {
-	const { postData, updatePostData } = useContext(PostContext);
-
+	const { postData, updatePostData, resetContext } = useContext(PostContext);
 	// function to upload one picture given a local URI
 	const uploadPicture = async (uri) => {
 		//setUploading(true);
@@ -54,6 +65,7 @@ export default function reviewpost() {
 
 			create({ ...postData, imageURIs: imagePaths }); // upload to mongoDB!r
 			updatePostData(EmptyPost); // clear local post data
+			resetContext(); // reset all options to default
 
 			// Other code...
 		} catch (error) {
@@ -63,28 +75,139 @@ export default function reviewpost() {
 	};
 
 	return (
-		<View
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
-			<Text>review post here</Text>
-			<View>
-				<ImageViewer
-					placeholderImageSource={placeholder}
-					selectedImage={postData.imageURIs}
-				></ImageViewer>
-			</View>
-			<Text>Title: {postData.title} </Text>
-			<Text>Description: {postData.description}</Text>
-			<Text> Perishable: {postData.tags.perishable ? "yes" : "no"}</Text>
-			<Text> Allergens: {postData.tags.allergens.join(", ")}</Text>
-			<Text>Diets: {postData.tags.diet.join(", ")}</Text>
-			<BackButton />
+		<SafeAreaView style={postStyles.container}>
+			<KeyboardAvoidingView
+				style={{ width: "100%", flex: 1, alignItems: "center" }}
+				keyboardVerticalOffset={100}
+				behavior={"position"}
+			>
+				<ScrollView contentContainerStyle={postStyles.scrollContainer}>
+					<View
+						style={{
+							height: 70,
+							alignItems: "center",
+							justifyContent: "center",
+							width: "100%",
+						}}
+					>
+						<Image
+							style={styles.image}
+							source={require("../../../assets/images/posting-freebites-logo-1.png")}
+							resizeMode="contain"
+						/>
+					</View>
+
+					<ImageViewer
+						placeholderImageSource={placeholder}
+						selectedImage={postData.imageURIs}
+					></ImageViewer>
+
+					<View style={styles.textContainer}>
+						<View style={styles.rowContainer}>
+							<View style={styles.labels}>
+								<Text style={styles.labelText}>
+									Description:
+								</Text>
+							</View>
+							<View style={styles.values}>
+								<Text style={styles.text}>
+									{postData.description}
+								</Text>
+							</View>
+						</View>
+
+						<View style={styles.rowContainer}>
+							<View style={styles.labels}>
+								<Text style={styles.labelText}>Location:</Text>
+							</View>
+							<View style={styles.values}>
+								<Text style={styles.text}>hello</Text>
+							</View>
+						</View>
+
+						<View style={styles.rowContainer}>
+							<View style={styles.labels}>
+								<Text style={styles.labelText}>Filters:</Text>
+							</View>
+							<View style={styles.values}>
+								{postData.tags.perishable ? (
+									<Tag text="Perishable" />
+								) : (
+									<Tag text="Non-Perishable" />
+								)}
+								{postData.tags.allergens.map(
+									(allergen, index) => (
+										<Tag key={index} text={allergen} />
+									)
+								)}
+								{postData.tags.diet.map((diet, index) => (
+									<Tag key={index} text={diet} />
+								))}
+							</View>
+						</View>
+					</View>
+				</ScrollView>
+			</KeyboardAvoidingView>
 			<Link href="/home" asChild>
-				<PlainButton2
+				<NextButtonText
+					validInput={postData.imageURIs.length != 0}
 					onPress={() => uploadAllImages(postData.imageURIs)}
-					text="Submit Post"
+					text={"Post"}
 				/>
 			</Link>
-		</View>
+		</SafeAreaView>
 	);
 }
+
+const styles = StyleSheet.create({
+	textContainer: {
+		width: "100%",
+		marginTop: 24,
+		marginBottom: "40%",
+	},
+	rowContainer: {
+		width: "100%",
+		minHeight: 50,
+		gap: 25,
+		flexDirection: "row",
+	},
+	labels: { flex: 1, justifyContent: "flex-start" },
+	labelText: {
+		textAlign: "right",
+		color: "#485445",
+		fontSize: 16,
+		fontWeight: "500",
+	},
+	values: { flex: 2, justifyContent: "flex-start", gap: 8 },
+	tagContainer: {
+		width: 110,
+		height: 30,
+		backgroundColor: COLORS.neutral[30],
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: COLORS.neutral[70],
+	},
+	tagText: {
+		color: COLORS.neutral[90],
+		fontSize: 13,
+	},
+	text: {
+		marginTop: 2,
+		color: "#485445",
+		fontSize: 14,
+	},
+	image: {
+		width: 31,
+		height: 35,
+	},
+});
+
+const Tag = (props) => {
+	return (
+		<View style={styles.tagContainer}>
+			<Text style={styles.tagText}>{props.text}</Text>
+		</View>
+	);
+};

@@ -25,6 +25,13 @@ const comment = new mongoose.Schema(
 	// run into issues w/ rendering comments (ensure unique keys)
 );
 
+const Location = new mongoose.Schema({
+	place_id: String,
+	location: {
+		type: { type: String },
+		coordinates: [Number],
+	},
+});
 // const imageURI = new mongoose.Schema({ URI: String });
 
 // Define a schema for the "items" collection
@@ -34,7 +41,7 @@ const itemSchema = new mongoose.Schema({
 	description: String,
 	imageURIs: [String],
 	tag: tags,
-	location: String,
+	location: Location,
 	comments: [comment],
 	post_id: String,
 	room: String,

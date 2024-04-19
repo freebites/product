@@ -1,66 +1,55 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { styled } from "styled-components/native";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
 
 const placeholder = require("../../assets/icons/freebites/placeholder.png");
+const left = require(" ../../../assets/icons/chevron-left.png");
+const check = require(" ../../../assets/icons/check.png");
 const HeaderUI = styled.View`
-	width: 100%;
-	height: 41%;
-	background-color: #f0e1d2;
-	border-bottom-left-radius: 30px;
-	border-bottom-right-radius: 30px;
+  width: 100%;
+  padding-top: 60px;
+  padding-bottom: 30px;
+  background-color: #f0e1d2;
+  position: absolute;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  z-index: 2;
 `;
 
 const HeaderTextUI = styled.View`
-	margin-top: 10%;
-	width: 100%;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
+  width: 100%;
+  padding-horizontal: 40px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 function PrevPage() {
-	router.back();
+  router.back();
 }
 
-const EditProfileHeader = () => {
-	return (
-		<HeaderUI>
-			<HeaderTextUI>
-				<Text style={globalStyles.text} onPress={() => PrevPage()}>
-					Cancel
-				</Text>
-
-				<Text
-					style={[
-						globalStyles.text,
-						{ fontSize: 20, fontWeight: "bold" },
-					]}
-				>
-					Edit Profile
-				</Text>
-
-				<Text style={globalStyles.text}>Done</Text>
-			</HeaderTextUI>
-			<View
-				style={{
-					flex: 1,
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<View style={{ alignItems: "center" }}>
-					<Image
-						source={placeholder}
-						style={{ height: 90, width: 90, borderRadius: 10 }}
-					/>
-					<Text style={{ marginTop: 15, color: "#F95D25" }}>
-						change profile photo
-					</Text>
-				</View>
-			</View>
-		</HeaderUI>
-	);
+const EditProfileHeader = (props) => {
+  const { isEditing } = props;
+  return (
+    <HeaderUI>
+      <HeaderTextUI>
+        <Pressable onPress={() => PrevPage()} style={{ height: 30, width: 30 }}>
+          <Image source={left} />
+        </Pressable>
+        <Text style={[globalStyles.headerText]}>My Profile</Text>
+        <Image source={check} />
+      </HeaderTextUI>
+    </HeaderUI>
+  );
 };
+
+const styles = StyleSheet.create({
+  HeaderUI: {
+    width: "100%",
+    paddingTop: 60,
+    backgroundColor: "#f0e1d2",
+    position: "absolute",
+  },
+});
 
 export default EditProfileHeader;

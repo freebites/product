@@ -24,7 +24,13 @@ const dummyData: postType = {
 		allergens: ["peanuts"],
 		diet: ["none"],
 	},
-	location: "JCC 180",
+	location: {
+		place_id: "JCC 180",
+		location: {
+			type: "Point",
+			coordinates: [0, 0],
+		},
+	},
 	comments: [],
 	post_id: "",
 	room: "123",
@@ -70,7 +76,11 @@ export const HomePost = (props) => {
 					/>
 				</Pressable>
 				<View style={styles.location}>
-					<Text>{props.post.location}</Text>
+					<Text>
+						{props.post.location
+							? props.post.location.place_id
+							: props.post.location}
+					</Text>
 				</View>
 				<Text style={styles.description}>{props.post.title}</Text>
 			</View>

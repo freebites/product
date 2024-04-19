@@ -1,12 +1,12 @@
-import { Link } from "expo-router";
-import React, { useContext } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import React, { useContext, useEffect } from "react";
 import BackButton from "../../../components/common/BackButton";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../../../components/common/ImageViewer";
 import PlainButton2 from "../../../components/common/PlainButton2";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
-
+import { COLORS } from "../../../constants/theme";
 import {
 	View,
 	SafeAreaView,
@@ -17,11 +17,19 @@ import {
 	Text,
 } from "react-native";
 import NextButtonText from "../../../components/post/NextButtonText";
+import Description from "../../../components/post/Description";
+import { postStyles } from "./styles/postStyles";
+import ProgressBar from "../../../components/post/ProgressBar";
+
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
 const gallery = () => {
-	const { postData, updatePostData } = useContext(PostContext);
-
+	const { progress, updateProgress, postData, updatePostData } =
+		useContext(PostContext);
+	// update progress on focus instead of just when it rerenders to force refresh
+	useFocusEffect(() => {
+		updateProgress(0);
+	});
 	// handler for storing image URIs
 	const handleUpdateImages = (imageLinks) => {
 		updatePostData({
@@ -39,17 +47,15 @@ const gallery = () => {
 			imageURIs: [],
 		});
 	};
+
+	// Update multiple values
 	const handleUpdateTitle = (title) => {
-		updatePostData({ title: title }); // Update multiple values
+		updatePostData({ title: title });
 	};
 
+	// Update multiple values
 	const handleUpdateDesc = (descr) => {
-		updatePostData({ description: descr }); // Update multiple values
-	};
-
-	// handler for updating location (room number)
-	const handleUpdateLocation = (locationName) => {
-		updatePostData({ ...postData, location: locationName });
+		updatePostData({ description: descr });
 	};
 
 	// TODO: ADD GOOGLE PLACE ID HERE
@@ -83,7 +89,6 @@ const gallery = () => {
 		const cameraPerms = await ImagePicker.requestCameraPermissionsAsync();
 
 		if (cameraPerms.granted === false) {
-			console.log("fuck u");
 			return;
 		}
 
@@ -93,99 +98,72 @@ const gallery = () => {
 	};
 
 	return (
-		<SafeAreaView
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
+		<SafeAreaView style={postStyles.container}>
 			{/* keyboard and scrollview are for making the keyboard work 
 			    as it was blocking the stuff*/}
 			<KeyboardAvoidingView
-				style={{ flex: 1 }}
+				style={{ width: "100%", flex: 1 }}
 				keyboardVerticalOffset={100}
 				behavior={"position"}
 			>
 				<ScrollView
 					keyboardShouldPersistTaps="handled"
 					keyboardDismissMode="on-drag"
-					contentContainerStyle={{
-						alignItems: "center",
-						justifyContent: "center",
-					}}
+					contentContainerStyle={postStyles.scrollContainer}
 					alwaysBounceVertical={false}
 				>
-					<PlainButton2
-						onPress={() => {
-							pickImage(); // pick images here
-						}}
-						text="Choose from Gallery"
-					/>
+					<ProgressBar />
 
-					<PlainButton2
-						onPress={() => {
-							openCamera(); // pick images here
-						}}
-						text="Take Picture	"
-					/>
 					{/* carousel */}
-					<View>
-						<ImageViewer
-							placeholderImageSource={placeholder}
-							selectedImage={postData.imageURIs}
-						></ImageViewer>
-					</View>
 
-					<Pressable
-						onPress={() => {
-							clearImages();
-						}}
-					></Pressable>
-
-					<BackButton />
+					<ImageViewer
+						placeholderImageSource={placeholder}
+						selectedImage={postData.imageURIs}
+					></ImageViewer>
 
 					{/* inputs, modularize these? */}
-					<TextInput
-						placeholder="Add Food Name"
-						placeholderTextColor="#94A38F"
-						value={postData.title}
-						onChangeText={(text) => {
-							handleUpdateTitle(text);
-						}}
-					></TextInput>
 
-					<TextInput
-						placeholder="Add Location"
-						placeholderTextColor="#94A38F"
-						value={postData.location}
-						onChangeText={(text) => {
-							handleUpdateLocation(text);
+					<Text style={styles.title}>What's in the post?</Text>
+					<Text style={styles.caption}>
+						Give your post a concise description.
+					</Text>
+					<View
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+							width: "80%",
 						}}
-					></TextInput>
-
-					<TextInput
-						placeholder="Write a description for each food item. Please include the name of the restaurant its from if you can！"
-						placeholderTextColor="#94A38F"
-						multiline
-						numberOfLines={4}
-						maxLength={40}
-						onChangeText={(text) => {
-							handleUpdateDesc(text);
-						}}
-						value={postData.description}
-					></TextInput>
-
-					<Link href="/post/tags" asChild>
-						<NextButtonText
-							text="Next Step"
-							validInput={
-								postData.description != "" &&
-								postData.title != "" &&
-								postData.location != ""
-							}
+					>
+						<Description
+							onTextChange={(text) => handleUpdateDesc(text)}
 						/>
-					</Link>
+					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
+			<Link href="/post/tags" asChild>
+				<NextButtonText validInput={postData.description != ""} />
+			</Link>
 		</SafeAreaView>
 	);
 };
+
+export const styles = StyleSheet.create({
+	title: {
+		fontSize: 20,
+		fontWeight: "600",
+		width: 287,
+		height: 30,
+		textAlign: "left",
+		marginTop: 26,
+	},
+	caption: {
+		fontSize: 12,
+		fontWeight: "400",
+		color: "#535D50",
+		width: 287,
+		height: 21,
+		textAlign: "left",
+	},
+});
 
 export default gallery;

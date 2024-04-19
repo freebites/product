@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import TagButton from "../post/TagButton";
 
 // a simple binary select consisting of two buttons that takes in a setState
 // for a boolean and is used to set that boolean
@@ -8,51 +9,36 @@ const BinarySelect = (props: { onPress?: any }) => {
 	const [leftIsSelected, setLeftSelected] = useState<boolean>(true);
 
 	return (
-		<View
-			style={{
-				flexDirection: "row",
-				flexWrap: "wrap",
-			}}
-		>
-			<TouchableOpacity
+		<View style={styles.container}>
+			<TagButton
 				onPress={() => {
 					setLeftSelected(true);
 					props.onPress(true);
 				}}
-				style={[
-					styles.tagButton,
-					{ backgroundColor: leftIsSelected ? "lightblue" : "white" },
-				]}
-			>
-				<Text>Perishable</Text>
-			</TouchableOpacity>
+				color={undefined}
+				tag="Perishable"
+				isSelected={leftIsSelected}
+			/>
 
-			<TouchableOpacity
+			<TagButton
 				onPress={() => {
 					setLeftSelected(false);
 					props.onPress(false);
 				}}
-				style={[
-					styles.tagButton,
-					{ backgroundColor: leftIsSelected ? "white" : "lightblue" },
-				]}
-			>
-				<Text>Non-Perishable</Text>
-			</TouchableOpacity>
+				color={undefined}
+				tag="Non-Perishable"
+				isSelected={!leftIsSelected}
+			/>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	tagButton: {
-		padding: 10,
-		margin: 5,
-		borderWidth: 1,
-		borderColor: "black",
-		borderRadius: 5,
-	},
-	tagText: {
-		color: "black",
+	container: {
+		flexDirection: "row",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
+		width: "100%",
 	},
 });
 export default BinarySelect;

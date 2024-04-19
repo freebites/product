@@ -1,31 +1,53 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-
-// takes in a string take, an onPress function and an isSelected boolean
-// that determines whether it is selected or not.
-const TagButton = ({ tag, onPress, isSelected }) => {
+import { COLORS } from "../../constants";
+/*
+ * props:
+ * 	tag 		  - the label of the tag.
+ *  onPress 	  - the callback function for onPress
+ *  isSelected    - state function tracking whether it's selected or not
+ *  defaultColor  - background color when not selected. default light blue
+ *  selectedColor - color when not selected. default white.
+ */
+const TagButton = (props: {
+	tag;
+	onPress;
+	isSelected;
+	color?;
+	selectedColor?;
+}) => {
+	const deselectedColor =
+		props.color != null ? props.color : COLORS.neutral[30];
+	const activeColor =
+		props.selectedColor != null ? props.selectedColor : COLORS.neutral[70];
 	return (
 		<TouchableOpacity
-			onPress={onPress}
+			onPress={props.onPress}
 			style={[
 				styles.tagButton,
-				{ backgroundColor: isSelected ? "lightblue" : "white" },
+				{
+					backgroundColor: props.isSelected
+						? activeColor
+						: deselectedColor,
+				},
 			]}
 		>
-			<Text style={styles.tagText}>{tag}</Text>
+			<Text style={styles.tagText}>{props.tag}</Text>
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	tagButton: {
-		padding: 10,
+		paddingHorizontal: 16,
+		paddingVertical: 6,
 		margin: 5,
 		borderWidth: 1,
-		borderColor: "black",
-		borderRadius: 5,
+		borderColor: `${COLORS.neutral[70]}`,
+		borderRadius: 10,
 	},
 	tagText: {
-		color: "black",
+		color: COLORS.neutral[90],
+		margin: 0,
 	},
 });
 

@@ -109,8 +109,7 @@ export const PostCard = (props) => {
 				<View style={styles.description}>
 					<View style={styles.locationContainer}>
 						<Text style={styles.location}>{singlePost.location}</Text>
-						{/* <PostDate postDateTime={singlePost.postTime}></PostDate> */}
-						<Text>{singlePost.postTime}</Text>
+						{/* <PostDate></PostDate> */}
 					</View>
 					<Text style={styles.innerDes}>{singlePost.description}</Text>
 					<Divider></Divider>
