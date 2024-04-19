@@ -32,6 +32,7 @@ import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
 import UploadComment from "./UploadComment";
 const placeholderImage = require("../../assets/images/kemal.jpg")
+const dragHandle = require("../../assets/images/Drag_handle.png")
 
 export const CommentsModal = (props) => {
     const { user } = useAuth();
@@ -54,25 +55,28 @@ export const CommentsModal = (props) => {
                     style={styles.modalContent}>
                     <Pressable>
                         <View style={styles.modalComments}>
-                            <View style={{ alignItems: "center", paddingTop: 10,}}>
-                                <Text style={{ fontSize: 18, color: "black" }}>Live Thread</Text>
+                            <View style={styles.titleContainer}>
+                                <Image source={dragHandle}></Image>
+                                <Text style={styles.titleText}>Live Thread</Text>
                             </View>
                             <Divider
                                 orientation="horizontal"
                                 style={styles.divider}
                             />
-                            <ScrollView style={{ height: 400, width: 400 }}>
+                            <ScrollView style={styles.commentThread}>
                                 <DisplayComments
                                     modalVisible={props.modalVisible}
                                     singlePost={props.singlePost}
                                     setModalVisible={props.setModalVisible}
                                 />
                             </ScrollView>
-                            <UploadComment
+                            <View style={{paddingHorizontal: 30}}>
+                               <UploadComment
                                 singlePost={props.singlePost} 
                                 setSinglePost={props.setSinglePost}
                                 functionality={true}
-                            ></UploadComment>
+                                ></UploadComment> 
+                            </View>
                         </View>
                     </Pressable>
                 </Pressable>
@@ -105,6 +109,23 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 40, 
         borderBottomWidth: 0, 
         alignItems: 'center',
+    },
+    titleContainer: {
+        alignItems: "center", 
+        paddingTop: 10, 
+        paddingBottom: 15,
+    },
+    titleText: {
+        paddingTop: 10,
+        fontWeight: "500",
+        fontSize: 18, 
+        color: "black",
+    },
+    commentThread: {
+        height: 340,
+        width: 400, 
+        paddingTop: 15,
+        paddingHorizontal: 35,
     },
 });
 export default CommentsModal;

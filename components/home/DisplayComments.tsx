@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         flex: 1,
         paddingLeft: 0,
-        marginHorizontal: 30
 
     },
     modalNoComments: {

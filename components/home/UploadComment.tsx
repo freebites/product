@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		borderRadius: 15,
 		borderColor: "#F3F0F4",
+		// width: "100%",
 	},
 	textBoxCard: {
 		flex: 1,
@@ -152,15 +153,17 @@ const styles = StyleSheet.create({
 	},
     textInput: {
 		fontSize: 14,
-		width: 250,
+		// width: "100%",
+		width: 200,
 		marginRight: 10,
-		marginLeft: 5,
+		marginLeft: 10,
 		fontWeight: "400",
-		color: '#9fa1a0',
 	},
 	textInputCard: {
-		paddingLeft: 15,
+		paddingLeft: 10,
 		width: 235,
+		color: "#AEA9B1",
+		fontSize: 12,
 	},
     postButton: {
 		alignItems: "flex-end",
