@@ -37,11 +37,15 @@ const placeholderImage = require("../../assets/images/kemal.jpg");
 import styled from "styled-components/native";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
-const perishable = require('../../assets/images/perishable.png');
-const gluten = require('../../assets/images/gluten-free.png');
+import DisplayTags from "./DisplayTags";
 const leftArrow = require('../../assets/icons/freebites/left-arrow.png');
 const elipsis = require('../../assets/icons/freebites/ellipsis-horizontal.png');
 const infoIcon = require('../../assets/icons/freebites/information-circle.png');
+const vegetarian = require('../../assets/icons/freebites/vegetarian.png');
+const perishable = require('../../assets/icons/freebites/perishable.png');
+const nonperishable = require('../../assets/icons/freebites/nonperishable.png');
+const msg = require('../../assets/icons/freebites/msg.png');
+const lactose = require('../../assets/icons/freebites/lactose.png');
 
 export const PostCard = (props) => {
 	const { user } = useAuth();
@@ -107,7 +111,7 @@ export const PostCard = (props) => {
 					}}
 				/>
 				<View style={styles.description}>
-					<View>
+					<View style={styles.titleContainer}>
 						<View style={styles.locationContainer}>
 							<Text style={styles.location}>{singlePost.title}</Text>
 							{/* <PostDate></PostDate> */}
@@ -124,40 +128,44 @@ export const PostCard = (props) => {
 						
 					</View>	
 					<View style={styles.tags}>
-						<Image
-							source={gluten}
-						/>
-						<Image
-							source={perishable}
-						/>
+						<DisplayTags tags={singlePost.tags}></DisplayTags>
+						<Image style={styles.tagImage} source={msg} />
+						<Image style={styles.tagImage} source={lactose} />
+						<Image style={styles.tagImage} source={vegetarian} />
+						<Image style={styles.tagImage} source={vegetarian} />
+						<Image style={styles.tagImage} source={vegetarian} />
 					</View>
 				</View>
 				<Divider></Divider>
 
 				<View>
+					<View style={styles.info}>
+						<Text style={styles.thread}>Live Thread</Text>
+					</View>
 					{singlePost.comments.length > 0 ? (
 						<TouchableOpacity onPress={() => changeCommentsVisible()}>
-							<View style={styles.numComments}>
-								<Text>View all {singlePost.comments.length} comments</Text>
-							</View>
+							<Text style={styles.numComments}>View all {singlePost.comments.length} comments</Text>
 							{singlePost.comments.slice(0, 2).map((comment) => (
 								<View style={styles.comments} key={comment.id}>
-									<View style={{ flexDirection: "row"}}>
+									<View style={{display: "flex", width: 80, flexDirection: "row"}}>
 										<Text style={styles.username}>
 											{comment.username}
 										</Text>
-										<Text>
+									</View>
+									<View style={{display: "flex", flexDirection: "row"}}>
+										<Text style={styles.commentBody}>
 											{comment.body}
 										</Text>
 									</View>
-
+									
+									
 								</View>
 							))}
 						</TouchableOpacity>
 						) : (
 							<View>
-								<Text style={{ fontSize: 22, color: "#485445", fontWeight: "bold",  }}>No comments yet</Text>
-								<Text style={{ fontSize: 13, color: "#93A38F", marginTop: 20, textAlign: "center",}}>
+								<Text style={{ fontSize: 16, color: "#485445", fontWeight: "bold", textAlign: "center",  }}>No comments yet</Text>
+								<Text style={{ fontSize: 13, color: "#93A38F", marginTop: 10, textAlign: "center",}}>
 									Commenting helps other users know {"\n"}
 									more about the status of the food!
 								</Text>
@@ -169,16 +177,17 @@ export const PostCard = (props) => {
 					<UploadComment 
 						singlePost={singlePost} 
 						setSinglePost={setSinglePost}
+						functionality={false}
 					>
 					</UploadComment>
+					<CommentsModal 
+						changeCommentsVisible={changeCommentsVisible}
+						singlePost={singlePost}
+						setSinglePost={setSinglePost}
+						commentsVisible={commentsVisible} 
+					>
+					</CommentsModal>
 				</Pressable>
-				
-				<CommentsModal 
-					changeCommentsVisible={changeCommentsVisible}
-					singlePost={singlePost}
-					setSinglePost={setSinglePost}
-					commentsVisible={commentsVisible} 
-				></CommentsModal>
 			</View >
 		</KeyboardAvoidingView>
 		
@@ -193,8 +202,9 @@ const styles = StyleSheet.create({
 		height: "100%",
 		backgroundColor: "white",
 		borderRadius: 20,
-		paddingHorizontal: 20,
-		paddingVertical: 20,
+		paddingHorizontal: 30,
+		paddingBottom: 30,
+		paddingTop: 20,
 	},
 	image: {
 		height: 300,
@@ -221,7 +231,7 @@ const styles = StyleSheet.create({
 		color: "#58565D",
 	},
 	info: {
-		paddingTop: 10,
+		paddingTop: 15,
 		flexDirection: "row",
 	},
 	infoIcon: {
@@ -231,6 +241,7 @@ const styles = StyleSheet.create({
 	tags: {
 		height: 25,
 		flexDirection: "row",
+		flexWrap: 'wrap',
 	},
 	thread: {
 		fontSize: 20,
@@ -240,10 +251,18 @@ const styles = StyleSheet.create({
 		paddingRight: 15,
 	},
 	comments: {
+		display: "flex",
 		flexDirection: "row",
+		// alignContent: "center",
+		// justifyContent: "center",
 	},
 	username: {
-		paddingRight: 10,
+		color: "#58565D",
+		fontSize: 16,
+	},
+	commentBody: {
+		flex: 1, 
+		// justifyContent: "center",
 	},
 	time: {
 		
@@ -253,7 +272,16 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between"
 	},
 	numComments: {
-		paddingBottom: 5,
+		paddingBottom: 10,
+		color: "#A8A7A6",
+		fontSize: 11,
 	},
+	tagImage: {
+		margin: 5,
+	},
+	titleContainer: {
+		display: "flex",
+		height: 140,
+	}
 });
 export default PostCard;

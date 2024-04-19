@@ -71,6 +71,7 @@ export const CommentsModal = (props) => {
                             <UploadComment
                                 singlePost={props.singlePost} 
                                 setSinglePost={props.setSinglePost}
+                                functionality={true}
                             ></UploadComment>
                         </View>
                     </Pressable>

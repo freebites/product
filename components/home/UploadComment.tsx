@@ -65,31 +65,70 @@ export const UploadComment = (props) => {
 
 		setNewCommentText("");
 	};
-    return (
-        <View style={{
-            flexDirection: "row", marginBottom: 20, marginTop: 30
+    
+	if (props.functionality) {
+        return (
+            <View style={{
+                flexDirection: "row", 
+				marginBottom: 20, 
+				marginTop: 10,
             }}>
-            <Image
-                source={require('../../assets/icons/freebites/3d_avatar_25.png')}
-            />
-            <View style={styles.textBox}>
-                <TextInput style={styles.textInput}
-                    placeholder="Add a comment..."
-                    value={newCommentText}
-                    onChangeText={handleCommentChange}
+                <Image
+                    source={require('../../assets/icons/freebites/3d_avatar_25.png')}
                 />
-                <TouchableOpacity style={styles.postButton}>
-                    <Text
-                        style={{ color: "lightgreen" }}
-                    >
-                    </Text>
-                    <TouchableOpacity onPress={handleAddComment} >
-                        <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+                <View style={styles.textBox}>
+                    <TextInput style={styles.textInput}
+                        placeholder="Add a comment for this post..."
+						placeholderTextColor={"#AEA9B1"}
+						selectionColor="transparent"
+                        value={newCommentText}
+						selectTextOnFocus={false}
+						underlineColorAndroid="transparent"
+                        onChangeText={handleCommentChange}
+                    />
+					<View style={styles.rectangle}>
+                        <Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
+                    </View>
+                    <TouchableOpacity style={styles.postButton}>
+                        <Text
+                            style={{ color: "lightgreen" }}
+                        >
+                        </Text>
+                        <TouchableOpacity onPress={handleAddComment} >
+                            <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+                        </TouchableOpacity>
                     </TouchableOpacity>
-                </TouchableOpacity>
+                </View>
             </View>
-        </View>
-    );
+        );
+    } else {
+        return (
+            <View style={{
+                flexDirection: "row", marginBottom: 10, marginTop: 10
+            }}>
+                <Image
+                    source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+                />
+                <View style={[styles.textBox, styles.textBoxCard]}>
+					<View style={{justifyContent: "center"}}>
+						<Text style={[styles.textInput, styles.textInputCard]}>Add a comment for this post...</Text>
+					</View>
+					<View style={styles.rectangle}>
+                        <Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
+                    </View>
+                    <View style={styles.postButton}>
+                        <Text
+                            style={{ color: "lightgreen" }}
+                        >
+                        </Text>
+                        <View>
+                            <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+                        </View>
+                    </View>
+                </View>
+            </View>
+        );
+    }
 
 };
 const styles = StyleSheet.create({
@@ -101,20 +140,37 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		borderColor: "#F3F0F4",
 	},
+	textBoxCard: {
+		flex: 1,
+		justifyContent: "center",
+
+	},
     divider: {
 		width: "100%",
 		backgroundColor: "#F3F0F4",
 		color: "#F3F0F4",
 	},
     textInput: {
-		fontSize: 16,
-		marginRight: 75,
-		// fontColor: "black",
+		fontSize: 14,
+		width: 250,
+		marginRight: 10,
+		marginLeft: 5,
+		fontWeight: "400",
+		color: '#9fa1a0',
+	},
+	textInputCard: {
+		paddingLeft: 15,
+		width: 235,
 	},
     postButton: {
 		alignItems: "flex-end",
-		marginBottom: 10,
 		marginRight: 10,
+		justifyContent: "center",
 	},
+	rectangle: {
+		display: "flex",
+		paddingRight: 5,
+		justifyContent: "center",
+	}
 });
 export default UploadComment;
