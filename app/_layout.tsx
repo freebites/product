@@ -3,6 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { Stack, router } from "expo-router";
 import { Provider } from "../context/auth";
 import { StatusBar } from "expo-status-bar";
+import { Button, Pressable } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import BackButton from "../components/common/BackButton";
+
 
 // can style statusbar for light/dark mode some time
 const Layout = () => {

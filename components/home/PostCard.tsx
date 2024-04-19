@@ -107,11 +107,14 @@ export const PostCard = (props) => {
 					}}
 				/>
 				<View style={styles.description}>
-					<View style={styles.locationContainer}>
-						<Text style={styles.location}>{singlePost.location}</Text>
-						{/* <PostDate></PostDate> */}
+					<View>
+						<View style={styles.locationContainer}>
+							<Text style={styles.location}>{singlePost.title}</Text>
+							{/* <PostDate></PostDate> */}
+							{/* <Text style={styles.location}>{singlePost.postTime.getHours()}</Text> */}
+						</View>
+						<Text style={styles.innerDes}>{singlePost.description}</Text>
 					</View>
-					<Text style={styles.innerDes}>{singlePost.description}</Text>
 					<Divider></Divider>
 					<View style={styles.info}>
 						<Text style={styles.thread}>Food Types & Diet</Text>
@@ -194,11 +197,13 @@ const styles = StyleSheet.create({
 		paddingVertical: 20,
 	},
 	image: {
-		height: 250,
+		height: 300,
 		borderRadius: 15,
 	},
 	description: {
-		height: 300,
+		// height: 300,
+		display: "flex",
+		flex: 2,
 		marginVertical: 20,
 	},
 	location: {
