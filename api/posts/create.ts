@@ -14,11 +14,12 @@ const create = async (props) => {
 	try {
 		// Replace 'your-backend-api-url' with the actual URL of your backend API
 		// console.log("try");
+		console.log(props);
 		const response = await axios.post(`${apiURL}:3001/api/Posts`, {
 			title: props.title,
 			description: props.description,
 			imageURIs: props.imageURIs,
-			tag: props.tag,
+			tag: props.tags,
 			location: props.location,
 			comments: props.comments,
 			post_id: props.post_id,
