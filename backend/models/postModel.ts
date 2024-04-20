@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
-const allergen = new mongoose.Schema({
-	allergen: String,
-});
+// const allergen = new mongoose.Schema({
+// 	allergen: String,
+// });
 
-const diet = new mongoose.Schema({
-	diet: String,
-});
+// const diet = new mongoose.Schema({
+// 	diet: String,
+// });
 
 const tags = new mongoose.Schema({
 	perishable: Boolean,
-	allergens: [allergen],
-	diet: [diet],
+	allergens: [String],
+	diet: [String],
 });
 
 const comment = new mongoose.Schema(

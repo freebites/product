@@ -63,6 +63,7 @@ export default function reviewpost() {
 				uris.map((uri) => uploadPicture(uri))
 			);
 
+			postData.postTime = new Date();
 			create({ ...postData, imageURIs: imagePaths }); // upload to mongoDB!r
 			updatePostData(EmptyPost); // clear local post data
 			resetContext(); // reset all options to default
