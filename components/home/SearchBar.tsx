@@ -1,13 +1,13 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import styled from "styled-components/native";
 
 const searchIcon = require("../../assets/icons/freebites/search.png");
 const SearchBarStyle = styled.View`
 	background: #fffbf9;
-	border-radius: 30px;
+	border-radius: 15px;
 	width: 83%;
-	height: 4.8%;
+	height: 7%;
 	display: flex;
 	flex-shrink: 0;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -21,13 +21,14 @@ const SearchBarInput = styled.TextInput`
 	color: black;
 	flex: 1;
 	max-width: 90%;
+	height: 100%;
 `;
 
 const imageStyle = StyleSheet.create({
 	stretch: {
-		height: "43%",
 		resizeMode: "contain",
 	},
+	filterIcon: {},
 });
 
 const SearchBar = () => {
@@ -52,10 +53,12 @@ const SearchBar = () => {
 					alignItems: "flex-end",
 				}}
 			>
-				<Image
-					style={[imageStyle.stretch]}
-					source={require("../../assets/icons/freebites/filter.png")}
-				/>
+				<Pressable style={imageStyle.filterIcon}>
+					<Image
+						style={[imageStyle.stretch]}
+						source={require("../../assets/icons/freebites/filter.png")}
+					/>
+				</Pressable>
 			</View>
 		</SearchBarStyle>
 	);
