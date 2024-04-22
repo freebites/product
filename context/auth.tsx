@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import React from "react";
 import { auth } from "../firebase";
-import { registerForPushNotificationsAsync } from "../components/notifications/useNotifications";
+import { useNotifications } from "../components/notifications/useNotifications";
 import { getOneUser, updateUser } from "../api/user/usercrud";
 
 const AuthContext = React.createContext(null);
@@ -60,7 +60,7 @@ export function Provider(props) {
         setAuth(user);
 
         //Get Device Speicific Token and update the user's tokens
-        const newExpoToken = await registerForPushNotificationsAsync();
+        const newExpoToken = await useNotifications();
         const mongoUser = await getOneUser(user.uid);
         const { expoToken, ...other } = mongoUser;
         if (mongoUser.expoToken !== newExpoToken.data) {

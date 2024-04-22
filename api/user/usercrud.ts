@@ -1,5 +1,6 @@
 import axios from "axios";
 import { UserType } from "../../context/userContext";
+import { useNotifications } from "../../components/notifications/useNotifications";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
@@ -30,6 +31,7 @@ interface CreateProps {
 }
 export const create = async (props: CreateProps) => {
   const { uid, firstName, lastName, emailAddress } = props;
+  const token = await useNotifications();
   const user = {
     uid,
     firstName,
@@ -38,7 +40,7 @@ export const create = async (props: CreateProps) => {
     profile: "",
     bio: "",
     pronouns: "",
-    expoToken: "",
+    expoToken: token.data,
   };
 
   try {
