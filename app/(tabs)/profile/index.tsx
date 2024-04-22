@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Pressable } from "react-native";
-import { Link, Redirect } from "expo-router";
-import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // views are divs and text a p tags
+import { Link } from "expo-router";
+import { View, SafeAreaView } from "react-native";
 import { globalStyles } from "../../../components/global";
 import ProfileCard from "../../../components/common/cards/ProfileCard";
 import PlainButton from "../../../components/common/PlainButton";
 import { useAuth } from "../../../context/auth";
-import { getOne } from "../../../api/user/usercrud";
-import { emptyUser } from "../../../context/userContext";
+import { getOneUser } from "../../../api/user/usercrud";
+import { EmptyUser } from "../../../context/userContext";
 
 import Header from "../../../components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();
-  if (user == undefined || user == null || user.uid == null) {
-    return <Redirect href="/login" />;
-  }
-
-  const [currUser, setCurrUser] = useState(emptyUser);
+  const [currUser, setCurrUser] = useState(EmptyUser);
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getOne(user.uid);
+      const userData = await getOneUser(user.uid);
       setCurrUser(userData);
     };
     fetchUser();
@@ -61,15 +56,6 @@ const Profile = () => {
 
       <Link href="/profile/FAQ" asChild>
         <PlainButton section="bottom" width="87%" height={60} text="FAQ" />
-      </Link>
-
-      <Link href="/profile/NotificationsPage" asChild>
-        <PlainButton
-          section="bottom"
-          width="87%"
-          height={60}
-          text="Notifications"
-        />
       </Link>
     </SafeAreaView>
   );

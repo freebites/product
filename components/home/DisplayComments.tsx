@@ -11,22 +11,7 @@ import {
 	Modal,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import {
-	EmptyPost,
-	postType,
-	comment,
-	PostContext,
-} from "../../context/postContext";
-import { PostCard } from "./PostCard";
-import { Divider } from "react-native-elements";
-import { getOne } from "../../api/posts/read";
-import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
-import update from "../../api/posts/update";
-import { color } from "react-native-elements/dist/helpers";
-import { storage } from "../../firebase";
-import { useAuth } from "../../context/auth";
-const placeholderImage = require("../../assets/images/kemal.jpg")
+
 
 export const DisplayComments = (props) => {
     return (

@@ -1,24 +1,23 @@
+export type UserType = {
+  uid: string; // firebase UID. we use this instead of the mongoDB _id
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  password: string;
+  profile: string;
+  bio: string;
+  pronouns: string;
+  expoToken: string;
+};
 
-
-
-export type userType = {
-    uid: String, // firebase UID. we use this instead of the mongoDB _id
-	firstName: String,
-	lastName: String,
-	emailAddress: String,
-	password: String,
-	profile: String,
-	bio: String,
-	pronouns: String,
-}
-
-export const emptyUser: userType = {
-	uid: "", 
-	firstName: "",
-	lastName: "",
-	emailAddress: "",
-	password: "",
-	profile: "",
-	bio: "",
-	pronouns: "",
-}
+export const EmptyUser: UserType = {
+  uid: "",
+  firstName: "",
+  lastName: "",
+  emailAddress: "",
+  password: "",
+  profile: "",
+  bio: "",
+  pronouns: "",
+  expoToken: "",
+};

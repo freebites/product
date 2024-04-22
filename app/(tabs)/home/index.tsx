@@ -32,24 +32,14 @@ const Home = () => {
 		const postData = await getAllPosts();
 		setPosts(postData);
 		setRefreshing(false);
-		//console.log(postData);
 	};
 
 	useEffect(() => {
-		// async function
 		fetchData();
 	}, []);
 
-	const { postData, updatePostData } = useContext(PostContext);
 	const [refreshing, setRefreshing] = useState(true);
-	const handleUpdate = (eachPostData: postType) => {
-		updatePostData(eachPostData);
-	};
 
-	// const fetchPost = async (props) => {
-	// 	const postData = await getOne(props._id);
-	// 	setSinglePost(postData);
-	// }
 
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
@@ -114,17 +104,7 @@ const Home = () => {
 				}
 			>
 				{AllPosts.map((eachPost: postType) => {
-					// {handleUpdate(eachPost)}
-					// console.log(eachPost)
 					return (
-						// <Link
-						// 	href = {{
-						// 		pathname: "/home/postPopUp",
-						// 		params: {eachPost}
-						// 	}} asChild
-						// 	key = {eachPost._id}
-
-						// >
 						<HomePost
 							style={styles.postCard}
 							key={eachPost._id}

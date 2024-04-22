@@ -1,41 +1,13 @@
 import { Image, View, Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef, useEffect } from "react";
 import { useState } from "react";
-import styled from "styled-components/native";
-import { postType } from "../../context/postContext";
-import { StyleSheetContext } from "styled-components";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { storage } from "../../firebase";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import create from "../../api/posts/create";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref } from "firebase/storage";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
-const dummyData: postType = {
-	_id: "",
-	title: "testtitle",
-	description: "Pizzas, burritos, tacos",
-	imageURIs: ["../../assets/images/the-pizza-box.jpeg"],
-	tags: {
-		perishable: true,
-		allergens: ["peanuts"],
-		diet: ["none"],
-	},
-	location: {
-		place_id: "JCC 180",
-		location: {
-			type: "Point",
-			coordinates: [0, 0],
-		},
-	},
-	comments: [],
-	post_id: "",
-	room: "123",
-	postTime: new Date(),
-};
 
 export const HomePost = (props) => {
 	// temp fix for null
@@ -93,7 +65,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 		backgroundColor: "white",
 		height: 151,
-		// elevation: 5,
 
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 4 },
@@ -106,7 +77,6 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	imagebox: {
-		// flex : 1,
 		width: 135,
 		marginRight: 10,
 	},
@@ -128,9 +98,6 @@ const styles = StyleSheet.create({
 		height: 25,
 		flexDirection: "row",
 		alignSelf: "flex-end",
-
-		// flex : 1,
-		// width : 10,
 	},
 	description: {
 		height: 40,

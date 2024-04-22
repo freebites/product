@@ -13,14 +13,12 @@ import Item from "../models/postModel";
  * @route GET /api/Posts
  */
 const getAllPosts = async (req, res) => {
-	try {
-		const items = await Item.find();
-		// console.log(Item);
-		console.log("items acquired", items);
-		res.json(items);
-	} catch (error) {
-		res.status(500).json({ error: "Something went wrong" });
-	}
+  try {
+    const items = await Item.find();
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
 };
 
 /**
@@ -29,15 +27,14 @@ const getAllPosts = async (req, res) => {
  * @param {string} id - The mongoDB _id of the post
  */
 const getOnePost = async (req, res) => {
-	const itemId = req.params.id;
-	console.log("looking");
-	try {
-		const item = await Item.findOne({ _id: itemId });
-		console.log("item acquired", item);
-		res.json(item);
-	} catch (error) {
-		res.status(500).json({ error: "Something went hi" });
-	}
+  const itemId = req.params.id;
+
+  try {
+    const item = await Item.findOne({ _id: itemId });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: "Something went hi" });
+  }
 };
 
 /**
@@ -46,14 +43,14 @@ const getOnePost = async (req, res) => {
  * @param { postType } post - should be of type postType, adhering to 'ItemSchema'
  */
 const createPost = async (req, res) => {
-	const post = req.body; // should be the same as the posts schema
+  const post = req.body; // should be the same as the posts schema
 
-	try {
-		const savedItem = await Item.create(post);
-		res.json(savedItem);
-	} catch (error) {
-		console.log("creating review document", error);
-	}
+  try {
+    const savedItem = await Item.create(post);
+    res.json(savedItem);
+  } catch (error) {
+    console.log("Error creating review document", error);
+  }
 };
 
 /**
@@ -64,27 +61,23 @@ const createPost = async (req, res) => {
  * @returns { Object }
  */
 const updatePost = async (req, res) => {
-	try {
-		const itemId = req.params.id;
-		const updatedData = req.body;
+  try {
+    const itemId = req.params.id;
+    const updatedData = req.body;
 
-		console.log("gets here");
+    // Find the item by ID and update its properties
+    const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, {
+      new: true,
+    });
 
-		// Find the item by ID and update its properties
-		const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, {
-			new: true,
-		});
+    if (!updatedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
 
-		if (!updatedItem) {
-			console.log("gets here");
-			return res.status(404).json({ message: "Item not found" });
-		}
-
-		res.json(updatedItem);
-	} catch (error) {
-		console.error("Error updating item IN BACKEND:", error);
-		res.status(500).send("Internal Server Error");
-	}
+    res.json(updatedItem);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 /**
@@ -93,23 +86,21 @@ const updatePost = async (req, res) => {
  * @param { string } id - the mongoDB _id of the post
  */
 const deletePost = async (req, res) => {
-	try {
-		const itemId = req.params.id;
+  try {
+    const itemId = req.params.id;
 
-		console.log("gets here");
+    // Find the item by ID and remove it
+    const deletedItem = await Item.findByIdAndRemove(itemId);
 
-		// Find the item by ID and remove it
-		const deletedItem = await Item.findByIdAndRemove(itemId);
+    if (!deletedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
 
-		if (!deletedItem) {
-			return res.status(404).json({ message: "Item not found" });
-		}
-
-		res.json({ message: "Item deleted successfully" });
-	} catch (error) {
-		console.error("Error deleting item:", error);
-		res.status(500).send("Internal Server Error");
-	}
+    res.json({ message: "Item deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 // export these functions and put them into the routes
