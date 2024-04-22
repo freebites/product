@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components/native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 const searchIcon = require("../../assets/icons/freebites/search.png");
 const SearchBarStyle = styled.View`
@@ -30,6 +31,8 @@ const imageStyle = StyleSheet.create({
 	},
 	filterIcon: {},
 });
+
+const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 const SearchBar = () => {
 	return (

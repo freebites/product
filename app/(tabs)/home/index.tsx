@@ -1,4 +1,10 @@
-import React, { useState, forwardRef, useEffect, useContext } from "react";
+import React, {
+	useState,
+	forwardRef,
+	useEffect,
+	useContext,
+	useRef,
+} from "react";
 import {
 	View,
 	Text,
@@ -22,6 +28,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RefreshControl } from "react-native-gesture-handler";
+import SearchModal from "../../../components/home/SearchModal";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 library.add(fab, fas);
 
@@ -139,6 +147,7 @@ const Home = () => {
 						//<Text>{JSON.stringify(eachPost)}</Text>
 					);
 				})}
+				<SearchModal />
 			</ScrollView>
 		</SafeAreaView>
 	);
