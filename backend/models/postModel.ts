@@ -29,6 +29,7 @@ const Location = new mongoose.Schema({
 	place_id: String,
 	location: {
 		type: { type: String },
+		enum: ["Point"],
 		coordinates: [Number],
 	},
 });
