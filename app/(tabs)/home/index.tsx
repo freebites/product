@@ -17,7 +17,7 @@ import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/home/SearchBar";
 import HomePost from "../../../components/home/HomePost";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { getAllPosts } from "../../../api/posts/read";
+import { getWithFilter } from "../../../api/posts/read";
 import {
 	PostContext,
 	PostProvider,
@@ -37,7 +37,7 @@ const Home = () => {
 	const [AllPosts, setPosts] = useState([]);
 
 	const fetchData = async () => {
-		const postData = await getAllPosts();
+		const postData = await getWithFilter({}); // get with empty
 		setPosts(postData);
 		setRefreshing(false);
 		//console.log(postData);
