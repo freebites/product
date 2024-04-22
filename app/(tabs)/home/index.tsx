@@ -22,6 +22,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RefreshControl } from "react-native-gesture-handler";
+import FilterList from "../../../components/home/FilterList";
 
 library.add(fab, fas);
 
@@ -139,6 +140,8 @@ const Home = () => {
 						//<Text>{JSON.stringify(eachPost)}</Text>
 					);
 				})}
+
+				<FilterList></FilterList>
 			</ScrollView>
 		</SafeAreaView>
 	);
