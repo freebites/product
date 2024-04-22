@@ -1,6 +1,8 @@
 import { View, Image, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components/native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import SearchModal from "./SearchModal";
 
 const searchIcon = require("../../assets/icons/freebites/search.png");
 const SearchBarStyle = styled.View`
@@ -32,6 +34,13 @@ const imageStyle = StyleSheet.create({
 });
 
 const SearchBar = () => {
+	// ref
+	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+	const handlePresentModalPress = useCallback(() => {
+		bottomSheetModalRef.current?.present();
+	}, []);
+
 	return (
 		<SearchBarStyle>
 			<View
@@ -53,12 +62,16 @@ const SearchBar = () => {
 					alignItems: "flex-end",
 				}}
 			>
-				<Pressable style={imageStyle.filterIcon}>
+				<Pressable
+					style={imageStyle.filterIcon}
+					onPress={handlePresentModalPress}
+				>
 					<Image
 						style={[imageStyle.stretch]}
 						source={require("../../assets/icons/freebites/filter.png")}
 					/>
 				</Pressable>
+				<SearchModal ref={bottomSheetModalRef} />
 			</View>
 		</SearchBarStyle>
 	);

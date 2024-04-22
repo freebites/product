@@ -29,6 +29,7 @@ const Location = new mongoose.Schema({
 	place_id: String,
 	location: {
 		type: { type: String },
+		enum: ["Point"],
 		coordinates: [Number],
 	},
 });
@@ -48,6 +49,16 @@ const itemSchema = new mongoose.Schema({
 	postTime: Date,
 });
 
+// index the parameters that you want to be able to search in
+itemSchema.index({
+	"tag.allergens": "text",
+	"tag.diet": "text",
+	"tag.perishable": 1, // boolean
+	title: "text",
+	description: "text", // can take title/description out tbh
+	"location.location.coordinates": "2dsphere", // enables geospatial search
+	postTime: -1, // descending order (most recent first i think)
+});
 // Create a model for the "items" collection
 const Item = mongoose.model("freebites", itemSchema, "Posts");
 

@@ -24,3 +24,19 @@ export const getOne = async (itemID) => {
 		throw error;
 	}
 };
+
+// gets with the filter
+export const getWithFilter = async (params) => {
+	try {
+		// add the params to the URL as needed
+		const response = await axios.get(`${apiURL}:3001/api/Posts`, {
+			params,
+		});
+
+		console.log("getting with params: ", params);
+		return response.data;
+	} catch (error) {
+		console.error("Error retrieving posts:", error.message);
+		throw error;
+	}
+};
