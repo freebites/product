@@ -7,6 +7,7 @@ import BottomSheet, {
 	BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import FilterList from "./FilterList";
 
 const SearchModal = forwardRef<BottomSheetModalMethods, any>((props, ref) => {
 	// // ref
@@ -44,7 +45,7 @@ const SearchModal = forwardRef<BottomSheetModalMethods, any>((props, ref) => {
 			backdropComponent={renderBackdrop}
 		>
 			<BottomSheetView style={styles.contentContainer}>
-				<Text>Awesome 🎉</Text>
+				<FilterList />
 			</BottomSheetView>
 		</BottomSheetModal>
 	);
