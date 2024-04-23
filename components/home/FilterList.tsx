@@ -1,13 +1,18 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { AppContext } from "../../context/appContext";
 
 const FilterList = () => {
+	const { filters, sort, setFilters, setSort } = useContext(AppContext);
+
+	// just refactor this into an array that's stored in the context haha.
+	// eventually we're gonna want to store this asynchronously.
 	const [vegan, setVegan] = useState("");
 	const [vegetarian, setVegetarian] = useState("");
 	const [gluten, setGluten] = useState("");
@@ -15,10 +20,27 @@ const FilterList = () => {
 	const [kosher, setKosher] = useState("");
 	const [halal, setHalal] = useState("");
 
-	const [filters, setFilters] = useState([]);
 	const [setting, setSetting] = useState("closest");
+	useEffect(() => {
+		let parts = [];
 
-	const adjustFilter = async () => {};
+		// turn this into one array please
+		if (vegan) parts.push(vegan);
+		if (vegetarian) parts.push(vegetarian);
+		if (gluten) parts.push(gluten);
+		if (lactose) parts.push(lactose);
+		if (kosher) parts.push(kosher);
+		if (halal) parts.push(halal);
+		let query = parts.join(" ");
+		setFilters(query);
+		console.log(query);
+	}, [vegan, vegetarian, gluten, lactose, kosher, halal]); // update on change of any filter
+
+	useEffect(() => {
+		setSort(setting);
+		console.log(setting);
+	}, [setting]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.topBar}>

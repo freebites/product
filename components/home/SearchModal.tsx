@@ -1,15 +1,16 @@
 import { View, Text, Button, StyleSheet } from "react-native";
-import React, { forwardRef, useCallback, useMemo, useRef } from "react";
+import React, { forwardRef, useCallback, useContext, useMemo } from "react";
 import BottomSheet, {
 	BottomSheetBackdrop,
 	BottomSheetModal,
-	BottomSheetModalProvider,
 	BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import FilterList from "./FilterList";
 
 const SearchModal = forwardRef<BottomSheetModalMethods, any>((props, ref) => {
+	// create references to filters/sort state from the app's context
+
 	// // ref
 	// const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 

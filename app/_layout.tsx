@@ -4,15 +4,18 @@ import { Stack, router } from "expo-router";
 import { Provider } from "../context/auth";
 import { StatusBar } from "expo-status-bar";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { AppContext, AppContextProvider } from "../context/appContext";
 
 // can style statusbar for light/dark mode some time
 const Layout = () => {
 	return (
 		<Provider>
-			<BottomSheetModalProvider>
-				<StatusBar style="dark" />
-				<Stack screenOptions={{ headerShown: false }} />
-			</BottomSheetModalProvider>
+			<AppContextProvider>
+				<BottomSheetModalProvider>
+					<StatusBar style="dark" />
+					<Stack screenOptions={{ headerShown: false }} />
+				</BottomSheetModalProvider>
+			</AppContextProvider>
 		</Provider>
 	);
 };
