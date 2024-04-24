@@ -11,18 +11,33 @@ type AppContextType = {
 	setFilters: (string) => void;
 	sort: string;
 	setSort: (string) => void;
+	location: locationInfo;
+	setLocation: (locationInfo) => void;
 };
-
+const noLocation: locationInfo = {
+	latitude: "",
+	longitude: "",
+};
 // define the app's context here
 export const AppContext = React.createContext<AppContextType>({
 	filters: "",
 	setFilters: () => {},
 	sort: "",
 	setSort: () => {},
+	location: noLocation,
+	setLocation: () => {},
 });
 
+interface locationInfo {
+	latitude: string;
+	longitude: string;
+}
 export const AppContextProvider = ({ children }) => {
 	const [filters, setFilters] = useState<string>("");
+	const [location, setLocation] = useState<locationInfo>({
+		latitude: "",
+		longitude: "",
+	});
 	const [sort, setSort] = useState<string>("");
 
 	// note: we can put set functions in wrapper functions if there's some
@@ -35,6 +50,8 @@ export const AppContextProvider = ({ children }) => {
 				setFilters,
 				sort,
 				setSort,
+				location,
+				setLocation,
 			}}
 		>
 			{children}

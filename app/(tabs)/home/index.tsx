@@ -31,9 +31,14 @@ library.add(fab, fas);
 
 const Home = () => {
 	const [AllPosts, setPosts] = useState([]);
-	const { filters } = useContext(AppContext);
+	const { filters, location, setLocation } = useContext(AppContext);
+
 	const fetchData = async () => {
-		const postData = await getWithFilter({ keyword: filters });
+		const postData = await getWithFilter({
+			keyword: filters,
+			latitude: location.latitude,
+			longitude: location.longitude,
+		});
 		console.log(filters);
 		setPosts(postData);
 		setRefreshing(false);
@@ -59,7 +64,15 @@ const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-			<HomeSearchBar />
+			<HomeSearchBar
+				onPress={(details) => {
+					setLocation({
+						latitude: details.lat,
+						longitude: details.lng,
+					});
+					console.log(location);
+				}}
+			/>
 			<View
 				style={{
 					flexDirection: "row",
@@ -143,8 +156,6 @@ const Home = () => {
 						//<Text>{JSON.stringify(eachPost)}</Text>
 					);
 				})}
-
-				<FilterList></FilterList>
 			</ScrollView>
 		</SafeAreaView>
 	);

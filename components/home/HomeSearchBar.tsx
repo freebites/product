@@ -1,7 +1,15 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useCallback, useRef } from "react";
-import { Image, View, StyleSheet, Pressable } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import {
+	Image,
+	View,
+	StyleSheet,
+	Pressable,
+	TouchableOpacity,
+} from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import SearchModal from "./SearchModal";
+import { getGeolocationWithPlaceID } from "../../api/util/maps";
 
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
 /*
@@ -14,24 +22,37 @@ const SearchFilterIcon = () => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
+	const [isPressed, setIsPressed] = useState(false);
+
 	return (
-		<Pressable style={styles.filterIcon} onPress={handlePresentModalPress}>
+		<Pressable
+			style={styles.RightComponent}
+			onPress={handlePresentModalPress}
+			onPressIn={() => setIsPressed(true)} // Set isPressed to true when press starts
+			onPressOut={() => setIsPressed(false)} // Reset isPressed when press ends
+		>
 			<Image
-				style={styles.stretch}
+				style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}
 				source={require("../../assets/icons/freebites/filter.png")}
 			/>
+			<SearchModal ref={bottomSheetModalRef} />
 		</Pressable>
 	);
 };
 
-const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress? }) => {
+const SearchIcon = () => {
+	const searchIcon = require("../../assets/icons/freebites/search.png");
+	return <Image source={searchIcon} style={styles.searchIcon} />;
+};
+const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress }) => {
 	return (
 		<GooglePlacesAutocomplete
 			placeholder="Search"
-			onPress={(data, details = null) => {
+			onPress={async (data, details) => {
 				// 'details' is provided when fetchDetails = true
-				props.onPress(data.place_id);
-				props.onLocationFound();
+
+				props.onPress(details.geometry.location);
+				// props.onLocationFound();
 			}}
 			query={{
 				key: `${apiKey}`,
@@ -50,6 +71,8 @@ const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress? }) => {
 			}}
 			enablePoweredByContainer={false}
 			renderRightButton={() => <SearchFilterIcon />}
+			renderLeftButton={() => <SearchIcon />}
+			fetchDetails={true}
 		/>
 	);
 };
@@ -68,15 +91,19 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(0,0,0,0)",
 		borderTopWidth: 0,
 		borderBottomWidth: 0,
+
 		zIndex: 999,
 		width: "92%",
 	},
 	textInput: {
 		height: 42,
-		borderRadius: 15,
+		paddingLeft: 50,
+		borderRadius: 0,
 		color: "#5d5d5d",
 		fontSize: 16,
 		borderWidth: 0,
+		borderTopLeftRadius: 15,
+		borderBottomLeftRadius: 15,
 	},
 	predefinedPlacesDescription: {
 		color: "#1faadb",
@@ -103,8 +130,26 @@ const styles = StyleSheet.create({
 	},
 	stretch: {
 		resizeMode: "contain",
+		height: 20,
+		width: 20,
 	},
-	filterIcon: {},
+	searchIcon: {
+		resizeMode: "contain",
+		height: 20,
+		width: 20,
+		left: 16,
+		top: 9,
+		position: "absolute",
+		zIndex: 10,
+	},
+	RightComponent: {
+		backgroundColor: "white",
+		height: 42,
+		width: 42,
+		borderTopRightRadius: 15,
+		borderBottomRightRadius: 15,
+		justifyContent: "center",
+	},
 });
 
 export default HomeSearchBar;

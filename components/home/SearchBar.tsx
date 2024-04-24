@@ -54,7 +54,7 @@ const SearchBar = () => {
 			>
 				<Image source={searchIcon} style={imageStyle.stretch} />
 			</View>
-			<HomeSearchBar />
+			{/* <HomeSearchBar /> */}
 			<View
 				style={{
 					height: "100%",
