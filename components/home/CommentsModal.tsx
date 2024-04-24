@@ -37,11 +37,6 @@ const dragHandle = require("../../assets/images/Drag_handle.png")
 export const CommentsModal = (props) => {
     const { user } = useAuth();
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-			keyboardVerticalOffset={100}
-			behavior={"position"}
-        >
             <Modal
                 animationIn={"slideInUp"}
                 // animationOut={"slideInDown"}
@@ -49,40 +44,39 @@ export const CommentsModal = (props) => {
                 swipeDirection="down"
                 isVisible={props.commentsVisible}
             >
-
-                <Pressable 
-                    onPress={() => props.changeCommentsVisible()} 
-                    style={styles.modalContent}>
-                    <Pressable>
-                        <View style={styles.modalComments}>
-                            <View style={styles.titleContainer}>
-                                <Image source={dragHandle}></Image>
-                                <Text style={styles.titleText}>Live Thread</Text>
-                            </View>
-                            <Divider
-                                orientation="horizontal"
-                                style={styles.divider}
-                            />
-                            <ScrollView style={styles.commentThread}>
-                                <DisplayComments
-                                    modalVisible={props.modalVisible}
-                                    singlePost={props.singlePost}
-                                    setModalVisible={props.setModalVisible}
-                                />
-                            </ScrollView>
-                            <View style={{paddingHorizontal: 30}}>
-                               <UploadComment
-                                singlePost={props.singlePost} 
-                                setSinglePost={props.setSinglePost}
-                                functionality={true}
-                                ></UploadComment> 
-                            </View>
-                        </View>
+                    <Pressable 
+                        onPress={() => props.changeCommentsVisible()} 
+                        style={styles.modalContent}>
+                        <KeyboardAvoidingView behavior="position">
+                            <Pressable>
+                                <View style={styles.modalComments}>
+                                    <View style={styles.titleContainer}>
+                                        <Image source={dragHandle}></Image>
+                                        <Text style={styles.titleText}>Live Thread</Text>
+                                    </View>
+                                    <Divider
+                                        orientation="horizontal"
+                                        style={styles.divider}
+                                    />
+                                    <ScrollView style={styles.commentThread}>
+                                        <DisplayComments
+                                            modalVisible={props.modalVisible}
+                                            singlePost={props.singlePost}
+                                            setModalVisible={props.setModalVisible}
+                                        />
+                                    </ScrollView>
+                                    <View style={{paddingHorizontal: 30}}>
+                                    <UploadComment
+                                        singlePost={props.singlePost} 
+                                        setSinglePost={props.setSinglePost}
+                                        functionality={true}
+                                        ></UploadComment> 
+                                    </View>
+                                </View>
+                            </Pressable>
+                        </KeyboardAvoidingView>
                     </Pressable>
-                </Pressable>
             </Modal>
-        </KeyboardAvoidingView>
-        
     );
 
 };

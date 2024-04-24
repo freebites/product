@@ -110,7 +110,7 @@ export const PostCard = (props) => {
 						uri: imageURL,
 					}}
 				/>
-				<View style={styles.description}>
+				{/* <View style={styles.description}> */}
 					<View style={styles.titleContainer}>
 						<View style={styles.locationContainer}>
 							<Text style={styles.location}>{singlePost.title}</Text>
@@ -135,7 +135,6 @@ export const PostCard = (props) => {
 						<Image style={styles.tagImage} source={vegetarian} />
 						<Image style={styles.tagImage} source={vegetarian} />
 					</View>
-				</View>
 				<Divider></Divider>
 
 				<View>
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
 		marginVertical: 20,
 	},
 	location: {
-		height: 30,
+		// height: 30,
 		fontSize: 22,
 		marginBottom: 10,
 		color: "#1c1c1b",
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		display: "flex",
-		height: 140,
+		// height: 140,
 	}
 });
 export default PostCard;
