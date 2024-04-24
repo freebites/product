@@ -3,6 +3,7 @@ import React, { useCallback, useRef } from "react";
 import styled from "styled-components/native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import SearchModal from "./SearchModal";
+import HomeSearchBar from "./HomeSearchBar";
 
 const searchIcon = require("../../assets/icons/freebites/search.png");
 const SearchBarStyle = styled.View`
@@ -53,7 +54,7 @@ const SearchBar = () => {
 			>
 				<Image source={searchIcon} style={imageStyle.stretch} />
 			</View>
-			<SearchBarInput />
+			{/* <HomeSearchBar /> */}
 			<View
 				style={{
 					height: "100%",

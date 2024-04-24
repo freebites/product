@@ -58,13 +58,13 @@ const getPostsWithFilter = async (req, res) => {
 		console.log(items);
 		res.json(items);
 	} catch (error) {
-		res.status(500).json({ error: "Internal server error" });
 		const simpleError = {
 			message: error.message,
 			stack: error.stack,
 			// You can manually copy other properties if necessary and safe
 		};
 		console.log(simpleError);
+		res.status(500).json({ error: "Internal server error" });
 	}
 };
 
@@ -74,7 +74,7 @@ interface PostQueryConditions {
 	$text?: {
 		$search: string;
 	};
-	location?: {
+	"location.location.coordinates"?: {
 		// weird shit
 		$near: {
 			$geometry: {
@@ -98,13 +98,14 @@ function buildPostQueryConditions(filters) {
 
 	// turns the lat/long coordinate [x, y] into mongoDB geospatial query params
 	if (filters.latitude && filters.longitude) {
+		console.log(filters.latitude, filters.longitude);
 		// default to 5km radius if maxDistance isn't applied
 		const longitude = filters.longitude;
 		const latitude = filters.latitude;
 		const maxDistance = filters.maxDistance
 			? parseInt(filters.maxDistance)
 			: 5000;
-		conditions.location = {
+		conditions["location.location.coordinates"] = {
 			$near: {
 				$geometry: {
 					type: "Point",

@@ -53,13 +53,35 @@ const itemSchema = new mongoose.Schema({
 itemSchema.index({
 	"tag.allergens": "text",
 	"tag.diet": "text",
-	"tag.perishable": 1, // boolean
+
 	title: "text",
 	description: "text", // can take title/description out tbh
-	"location.location.coordinates": "2dsphere", // enables geospatial search
+});
+
+itemSchema.index({
+	"tag.perishable": 1, // boolean
 	postTime: -1, // descending order (most recent first i think)
 });
+
+itemSchema.index({
+	"location.location.coordinates": "2dsphere", // enables geospatial search
+});
 // Create a model for the "items" collection
+
 const Item = mongoose.model("freebites", itemSchema, "Posts");
 
+// print statements to check if indexing functioned properly
+Item.on("index", function (error) {
+	if (error) {
+		console.log("Indexing error:", error);
+	}
+});
+
+Item.listIndexes()
+	.then((indexes) => {
+		console.log("Indexes:", indexes);
+	})
+	.catch((err) => {
+		console.error("Error listing indexes:", err);
+	});
 export default Item;

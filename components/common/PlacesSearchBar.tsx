@@ -31,7 +31,7 @@ const PlacesSearchBar = (props: {
 			}}
 			styles={styles}
 			textInputProps={{
-				onFocus: () => props.onSelected(),
+				onFocus: props.onSelected ? () => props.onSelected() : () => {}, // do nothing if it doesn't exist lol
 			}}
 		/>
 	);

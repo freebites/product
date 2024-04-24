@@ -24,14 +24,21 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
 import { AppContext } from "../../../context/appContext";
+import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
+import HomeSearchBar from "../../../components/home/HomeSearchBar";
 
 library.add(fab, fas);
 
 const Home = () => {
 	const [AllPosts, setPosts] = useState([]);
-	const { filters } = useContext(AppContext);
+	const { filters, location, setLocation } = useContext(AppContext);
+
 	const fetchData = async () => {
-		const postData = await getWithFilter({ keyword: filters });
+		const postData = await getWithFilter({
+			keyword: filters,
+			latitude: location.latitude,
+			longitude: location.longitude,
+		});
 		console.log(filters);
 		setPosts(postData);
 		setRefreshing(false);
@@ -57,8 +64,15 @@ const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-			<SearchBar />
-
+			<HomeSearchBar
+				onPress={(details) => {
+					setLocation({
+						latitude: details.lat,
+						longitude: details.lng,
+					});
+					console.log(location);
+				}}
+			/>
 			<View
 				style={{
 					flexDirection: "row",
