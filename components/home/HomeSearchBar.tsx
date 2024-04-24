@@ -1,15 +1,30 @@
-import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import React, { useCallback, useRef } from "react";
+import { Image, View, StyleSheet, Pressable } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
 /*
  */
-const PlacesSearchBar = (props: {
-	onSelected?;
-	onLocationFound?;
-	onPress?;
-}) => {
+
+const SearchFilterIcon = () => {
+	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+	const handlePresentModalPress = useCallback(() => {
+		bottomSheetModalRef.current?.present();
+	}, []);
+
+	return (
+		<Pressable style={styles.filterIcon} onPress={handlePresentModalPress}>
+			<Image
+				style={styles.stretch}
+				source={require("../../assets/icons/freebites/filter.png")}
+			/>
+		</Pressable>
+	);
+};
+
+const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress? }) => {
 	return (
 		<GooglePlacesAutocomplete
 			placeholder="Search"
@@ -33,15 +48,18 @@ const PlacesSearchBar = (props: {
 			textInputProps={{
 				onFocus: props.onSelected ? () => props.onSelected() : () => {}, // do nothing if it doesn't exist lol
 			}}
+			enablePoweredByContainer={false}
+			renderRightButton={() => <SearchFilterIcon />}
 		/>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
+		marginTop: 21,
 		zIndex: 10,
 		overflow: "visible",
-		height: 50,
+		height: 42,
 		flexGrow: 0,
 		flexShrink: 0,
 		marginBottom: 60,
@@ -51,27 +69,26 @@ const styles = StyleSheet.create({
 		borderTopWidth: 0,
 		borderBottomWidth: 0,
 		zIndex: 999,
-		width: "66.7%",
+		width: "92%",
 	},
 	textInput: {
-		marginLeft: 0,
-		marginRight: 0,
-		height: 35,
+		height: 42,
+		borderRadius: 15,
 		color: "#5d5d5d",
 		fontSize: 16,
-		borderWidth: 1,
-		zIndex: 999,
+		borderWidth: 0,
 	},
 	predefinedPlacesDescription: {
 		color: "#1faadb",
 	},
 	listView: {
-		top: 45.5,
+		top: 60,
 		zIndex: 100,
+		borderRadius: 10,
 		position: "absolute",
 		color: "black",
 		backgroundColor: "white",
-		width: "65%",
+		width: "92%",
 	},
 
 	separator: {
@@ -84,6 +101,10 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		maxWidth: "89%",
 	},
+	stretch: {
+		resizeMode: "contain",
+	},
+	filterIcon: {},
 });
 
-export default PlacesSearchBar;
+export default HomeSearchBar;

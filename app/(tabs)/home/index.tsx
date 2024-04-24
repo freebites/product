@@ -24,6 +24,8 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
 import { AppContext } from "../../../context/appContext";
+import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
+import HomeSearchBar from "../../../components/home/HomeSearchBar";
 
 library.add(fab, fas);
 
@@ -57,8 +59,7 @@ const Home = () => {
 	const [favoriteSelected, setFavoriteSelected] = useState(true);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
-			<SearchBar />
-
+			<HomeSearchBar />
 			<View
 				style={{
 					flexDirection: "row",
