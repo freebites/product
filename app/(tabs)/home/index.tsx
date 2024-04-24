@@ -34,8 +34,16 @@ const Home = () => {
 	const { filters, location, setLocation } = useContext(AppContext);
 
 	const fetchData = async () => {
+		let parts = [];
+		Object.keys(filters).forEach((option) => {
+			if (filters[option]) {
+				parts.push(filters[option]);
+			}
+		});
+
+		let query = parts.join(" ");
 		const postData = await getWithFilter({
-			keyword: filters,
+			keyword: query,
 			latitude: location.latitude,
 			longitude: location.longitude,
 		});

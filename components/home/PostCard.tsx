@@ -98,9 +98,9 @@ export const PostCard = (props) => {
 			/>
 			<View style={styles.description}>
 				<Text style={styles.location}>
-					{singlePost.location // tempfix for now cuz place IDs are diff
+					{/* {singlePost.location // tempfix for now cuz place IDs are diff
 						? singlePost.location.place_id
-						: singlePost.location}
+						: singlePost.location} */}
 				</Text>
 				<Text style={styles.innerDes}>{singlePost.description}</Text>
 				{/* <View style={styles.tags}></View> */}

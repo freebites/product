@@ -4,10 +4,13 @@ import React, { Children, createContext, useState } from "react";
  * Update as needed.
  */
 
+type filterTypes = {
+	[key: string]: string;
+};
 // define types for the provider
 type AppContextType = {
 	// so we can edit filters directly from the filter modal
-	filters: string; // string so we can use directly as a query parameter
+	filters: filterTypes; // string so we can use directly as a query parameter
 	setFilters: (string) => void;
 	sort: string;
 	setSort: (string) => void;
@@ -20,7 +23,7 @@ const noLocation: locationInfo = {
 };
 // define the app's context here
 export const AppContext = React.createContext<AppContextType>({
-	filters: "",
+	filters: {},
 	setFilters: () => {},
 	sort: "",
 	setSort: () => {},
@@ -32,8 +35,16 @@ interface locationInfo {
 	latitude: string;
 	longitude: string;
 }
+
 export const AppContextProvider = ({ children }) => {
-	const [filters, setFilters] = useState<string>("");
+	const [filters, setFilters] = useState<filterTypes>({
+		vegan: "",
+		vegetarian: "",
+		gluten: "",
+		lactose: "",
+		kosher: "",
+		halal: "",
+	});
 	const [location, setLocation] = useState<locationInfo>({
 		latitude: "",
 		longitude: "",
