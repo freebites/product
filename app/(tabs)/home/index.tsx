@@ -142,8 +142,6 @@ const Home = () => {
 						//<Text>{JSON.stringify(eachPost)}</Text>
 					);
 				})}
-
-				<FilterList></FilterList>
 			</ScrollView>
 		</SafeAreaView>
 	);

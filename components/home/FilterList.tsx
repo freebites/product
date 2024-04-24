@@ -13,28 +13,40 @@ const FilterList = () => {
 
 	// just refactor this into an array that's stored in the context haha.
 	// eventually we're gonna want to store this asynchronously.
-	const [vegan, setVegan] = useState("");
-	const [vegetarian, setVegetarian] = useState("");
-	const [gluten, setGluten] = useState("");
-	const [lactose, setLactose] = useState("");
-	const [kosher, setKosher] = useState("");
-	const [halal, setHalal] = useState("");
+	// const [vegan, setVegan] = useState("");
+	// const [vegetarian, setVegetarian] = useState("");
+	// const [gluten, setGluten] = useState("");
+	// const [lactose, setLactose] = useState("");
+	// const [kosher, setKosher] = useState("");
+	// const [halal, setHalal] = useState("");
+
+	const [options, setOptions] = useState ({
+		vegan: "", vegetarian: "", gluten: "", lactose: "", kosher: "", halal: ""
+	});
 
 	const [setting, setSetting] = useState("closest");
 	useEffect(() => {
 		let parts = [];
 
 		// turn this into one array please
-		if (vegan) parts.push(vegan);
-		if (vegetarian) parts.push(vegetarian);
-		if (gluten) parts.push(gluten);
-		if (lactose) parts.push(lactose);
-		if (kosher) parts.push(kosher);
-		if (halal) parts.push(halal);
+		// if (vegan) parts.push(vegan);
+		// if (vegetarian) parts.push(vegetarian);
+		// if (gluten) parts.push(gluten);
+		// if (lactose) parts.push(lactose);
+		// if (kosher) parts.push(kosher);
+		// if (halal) parts.push(halal);
+
+		// get array of options' keys, iterate over each key (option)
+		Object.keys(options).forEach(option => {
+			if (options[option]) {
+				parts.push(options[option]);
+			}
+		});
+
 		let query = parts.join(" ");
 		setFilters(query);
 		console.log(query);
-	}, [vegan, vegetarian, gluten, lactose, kosher, halal]); // update on change of any filter
+	}, [options]); // update on change of any filter
 
 	useEffect(() => {
 		setSort(setting);
@@ -181,9 +193,18 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						vegetarian == ""
-							? setVegetarian("vegetarian")
-							: setVegetarian("");
+						// vegetarian == ""
+						// 	? setVegetarian("vegetarian")
+						// 	: setVegetarian("");
+
+						// update options. setOptions takes in function prev. 
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							vegetarian: prev.vegetarian == "" 
+								? prev.vegetarian = "vegetarian" 
+								: prev.vegetarian = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -192,7 +213,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{vegetarian != "" ? (
+						{options.vegetarian != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -208,7 +229,14 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						vegan == "" ? setVegan("vegan") : setVegan("");
+						// vegan == "" ? setVegan("vegan") : setVegan("");
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							vegan: prev.vegan == "" 
+								? prev.vegan = "vegan" 
+								: prev.vegan = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -217,7 +245,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{vegan != "" ? (
+						{options.vegan != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -233,7 +261,14 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						gluten == "" ? setGluten("gluten") : setGluten("");
+						// gluten == "" ? setGluten("gluten") : setGluten("");
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							gluten: prev.gluten == "" 
+								? prev.gluten = "gluten" 
+								: prev.gluten = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -242,7 +277,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{gluten != "" ? (
+						{options.gluten != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -258,7 +293,14 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						lactose == "" ? setLactose("lactose") : setLactose("");
+						// lactose == "" ? setLactose("lactose") : setLactose("");
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							lactose: prev.lactose == "" 
+								? prev.lactose = "lactose" 
+								: prev.lactose = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -273,7 +315,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{lactose != "" ? (
+						{options.lactose != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -289,7 +331,14 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						kosher == "" ? setKosher("kosher") : setKosher("");
+						// kosher == "" ? setKosher("kosher") : setKosher("");
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							kosher: prev.kosher == "" 
+								? prev.kosher = "kosher" 
+								: prev.kosher = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -302,7 +351,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{kosher != "" ? (
+						{options.kosher != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -318,7 +367,14 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						halal == "" ? setHalal("halal") : setHalal("");
+						// halal == "" ? setHalal("halal") : setHalal("");
+						setOptions(prev => ({
+							...prev, // spread operator
+							// update specific option
+							halal: prev.halal == "" 
+								? prev.halal = "halal" 
+								: prev.halal = "" 
+						}))
 					}}
 				>
 					<View style={styles.option}>
@@ -331,7 +387,7 @@ const FilterList = () => {
 					</View>
 
 					<View style={styles.checkmark}>
-						{halal != "" ? (
+						{options.halal != "" ? (
 							<Feather name="check" size={24} color="green" />
 						) : (
 							<></>
@@ -350,12 +406,13 @@ const styles = StyleSheet.create({
 		height: 810,
 		borderRadius: 20,
 		paddingTop: 24,
-		paddingHorizontal: 33,
+		// paddingHorizontal: 33,
 	},
 	topBar: {
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 55,
+		gap: 80,
+		paddingHorizontal: 33,
 	},
 	title: {
 		fontSize: 20,
@@ -365,14 +422,13 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "bold",
 		marginTop: 24,
+		paddingHorizontal: 33,
 	},
 	optionContainer: {
-		marginLeft: 14,
 		marginTop: 21,
 	},
 	button: {
 		flexDirection: "row",
-		gap: 24,
 		alignItems: "center",
 		height: 50,
 		width: "100%",
@@ -382,12 +438,23 @@ const styles = StyleSheet.create({
 	},
 	option: {
 		flexDirection: "row",
-		width: 250,
+		width: "100%",
+		height: "100%",
+		flex: 3,
 		gap: 24,
 		// backgroundColor: "red",
+		paddingLeft: 48,
+		alignItems: "center",
 	},
 	checkmark: {
 		// backgroundColor: "blue",
+		width: "100%",
+		height: "100%",
+		alignItems: "center",
+		flex: 1,
+		flexDirection: "row",
+		justifyContent: "center",
+		paddingRight: 20,
 	},
 });
 
