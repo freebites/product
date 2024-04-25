@@ -51,10 +51,17 @@ const getPostsWithFilter = async (req, res) => {
 
 	try {
 		const query = req.query;
-		console.log("Applying Filters: ", query);
-		const filters = buildPostQueryConditions(query);
-		console.log(filters);
-		const items = await Item.find(filters);
+		let filters;
+		let items;
+		if (query.userID) {
+			items = await Item.find({ postedBy: query.userID });
+		} else {
+			console.log("Applying Filters: ", query);
+			filters = buildPostQueryConditions(query);
+			console.log(filters);
+			items = await Item.find(filters);
+		}
+
 		console.log(items);
 		res.json(items);
 	} catch (error) {
@@ -71,8 +78,11 @@ const getPostsWithFilter = async (req, res) => {
 // interface defining type for query (for building the filter query)
 interface PostQueryConditions {
 	// all fields are optional to account for no filter applied
-	$text?: {
-		$search: string;
+	"tags.diet"?: {
+		$all: string[]; // array of dietary restrictions
+	};
+	"tags.perishable"?: {
+		$in: string; // perishable
 	};
 	"location.location.coordinates"?: {
 		// weird shit
@@ -91,11 +101,14 @@ function buildPostQueryConditions(filters) {
 	// empty conditions by default
 	const conditions: PostQueryConditions = {};
 	// checks for tag filter
-	if (filters.keyword) {
+	if (filters.diet) {
 		// can further optimize by only searching in tags field, but would need sep
-		conditions.$text = { $search: filters.keyword };
+		conditions["tag.diet"] = { $all: filters.diet };
 	}
 
+	if (filters.perishable) {
+		conditions["tag.perishable"] = { $in: filters.perishable };
+	}
 	// turns the lat/long coordinate [x, y] into mongoDB geospatial query params
 	if (filters.latitude && filters.longitude) {
 		console.log(filters.latitude, filters.longitude);

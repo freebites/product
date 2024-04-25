@@ -16,6 +16,8 @@ type AppContextType = {
 	setSort: (string) => void;
 	location: locationInfo;
 	setLocation: (locationInfo) => void;
+	userToFilter: string; // firebase UID of currently authenticated/searched user
+	setUserToFilter: (string) => void;
 };
 const noLocation: locationInfo = {
 	latitude: "",
@@ -29,6 +31,8 @@ export const AppContext = React.createContext<AppContextType>({
 	setSort: () => {},
 	location: noLocation,
 	setLocation: () => {},
+	userToFilter: "",
+	setUserToFilter: () => {},
 });
 
 interface locationInfo {
@@ -51,6 +55,8 @@ export const AppContextProvider = ({ children }) => {
 	});
 	const [sort, setSort] = useState<string>("");
 
+	const [userToFilter, setUserToFilter] = useState<string>("");
+
 	// note: we can put set functions in wrapper functions if there's some
 	// additional logic required
 
@@ -63,6 +69,8 @@ export const AppContextProvider = ({ children }) => {
 				setSort,
 				location,
 				setLocation,
+				userToFilter,
+				setUserToFilter,
 			}}
 		>
 			{children}

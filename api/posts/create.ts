@@ -25,6 +25,7 @@ const create = async (props) => {
 			post_id: props.post_id,
 			room: props.room,
 			postTime: props.postTime,
+			postedBy: props.postedBy,
 		});
 
 		// Handle the response or any further actions

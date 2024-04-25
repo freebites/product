@@ -6,28 +6,28 @@ import TagButton from "../post/TagButton";
 // for a boolean and is used to set that boolean
 const BinarySelect = (props: { onPress?: any }) => {
 	// useState, to toggle selection maybe factor out into just the prop later?
-	const [leftIsSelected, setLeftSelected] = useState<boolean>(true);
+	const [perishable, setPerishable] = useState<string>("perishable");
 
 	return (
 		<View style={styles.container}>
 			<TagButton
 				onPress={() => {
-					setLeftSelected(true);
-					props.onPress(true);
+					setPerishable("perishable");
+					props.onPress("perishable");
 				}}
 				color={undefined}
 				tag="Perishable"
-				isSelected={leftIsSelected}
+				isSelected={perishable == "perishable"}
 			/>
 
 			<TagButton
 				onPress={() => {
-					setLeftSelected(false);
-					props.onPress(false);
+					setPerishable("non-perishable");
+					props.onPress("non-perishable");
 				}}
 				color={undefined}
 				tag="Non-Perishable"
-				isSelected={!leftIsSelected}
+				isSelected={perishable == "non-perishable"}
 			/>
 		</View>
 	);

@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 // });
 
 const tags = new mongoose.Schema({
-	perishable: Boolean,
+	perishable: String,
 	allergens: [String],
 	diet: [String],
 });
@@ -47,13 +47,11 @@ const itemSchema = new mongoose.Schema({
 	post_id: String,
 	room: String,
 	postTime: Date,
+	postedBy: { type: String, required: true }, // firebase UID
 });
 
 // index the parameters that you want to be able to search in
 itemSchema.index({
-	"tag.allergens": "text",
-	"tag.diet": "text",
-
 	title: "text",
 	description: "text", // can take title/description out tbh
 });
@@ -61,6 +59,8 @@ itemSchema.index({
 itemSchema.index({
 	"tag.perishable": 1, // boolean
 	postTime: -1, // descending order (most recent first i think)
+	postedBy: 1, // ascending order? idk
+	"tag.diet": 1,
 });
 
 itemSchema.index({

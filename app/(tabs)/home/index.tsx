@@ -26,37 +26,39 @@ import FilterList from "../../../components/home/FilterList";
 import { AppContext } from "../../../context/appContext";
 import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
 import HomeSearchBar from "../../../components/home/HomeSearchBar";
+import { useAuth } from "../../../context/auth";
 
 library.add(fab, fas);
 
 const Home = () => {
 	const [AllPosts, setPosts] = useState([]);
-	const { filters, location, setLocation } = useContext(AppContext);
-
+	const { filters, location, setLocation, userToFilter, setUserToFilter } =
+		useContext(AppContext);
+	const { user } = useAuth();
 	const fetchData = async () => {
-		let parts = [];
+		// convert dictionary of strings to an array
+		let dietArray = [];
+
 		Object.keys(filters).forEach((option) => {
 			if (filters[option]) {
-				parts.push(filters[option]);
+				dietArray.push(filters[option]);
 			}
 		});
 
-		let query = parts.join(" ");
-		const postData = await getWithFilter({
-			keyword: query,
+		// let query = dietArray.join(" ");
+		let postData;
+
+		postData = await getWithFilter({
+			diet: dietArray,
 			latitude: location.latitude,
 			longitude: location.longitude,
+			userID: userToFilter,
 		});
 		console.log(filters);
 		setPosts(postData);
 		setRefreshing(false);
 		//console.log(postData);
 	};
-
-	useEffect(() => {
-		// async function
-		fetchData();
-	}, []);
 
 	const { postData, updatePostData } = useContext(PostContext);
 	const [refreshing, setRefreshing] = useState(true);
@@ -69,7 +71,15 @@ const Home = () => {
 	// 	setSinglePost(postData);
 	// }
 
-	const [favoriteSelected, setFavoriteSelected] = useState(true);
+	const [yourPostsFilter, setYourPostsFilter] = useState(false);
+
+	useEffect(() => {
+		// async function
+
+		setUserToFilter(yourPostsFilter ? "" : user.uid);
+		fetchData();
+		setRefreshing(true);
+	}, [yourPostsFilter]);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
 			<HomeSearchBar
@@ -95,13 +105,13 @@ const Home = () => {
 					<TouchableHighlight
 						style={{
 							borderBottomWidth: 1,
-							borderColor: favoriteSelected
+							borderColor: !yourPostsFilter
 								? "#EDA76E"
 								: "transparent",
 							alignItems: "center",
 						}}
 						underlayColor="transparent"
-						onPress={() => setFavoriteSelected(true)}
+						onPress={() => setYourPostsFilter(false)}
 					>
 						<Text> All </Text>
 					</TouchableHighlight>
@@ -116,13 +126,13 @@ const Home = () => {
 					<TouchableHighlight
 						style={{
 							borderBottomWidth: 1,
-							borderColor: !favoriteSelected
+							borderColor: yourPostsFilter
 								? "#EDA76E"
 								: "transparent",
 							alignItems: "center",
 						}}
 						underlayColor="transparent"
-						onPress={() => setFavoriteSelected(false)}
+						onPress={() => setYourPostsFilter(true)}
 					>
 						<Text> Bookmark </Text>
 					</TouchableHighlight>
