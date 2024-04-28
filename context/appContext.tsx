@@ -19,7 +19,7 @@ type AppContextType = {
 	userToFilter: string; // firebase UID of currently authenticated/searched user
 	setUserToFilter: (string) => void;
 };
-const noLocation: locationInfo = {
+export const noLocation: locationInfo = {
 	latitude: "",
 	longitude: "",
 };
@@ -35,7 +35,7 @@ export const AppContext = React.createContext<AppContextType>({
 	setUserToFilter: () => {},
 });
 
-interface locationInfo {
+export interface locationInfo {
 	latitude: string;
 	longitude: string;
 }

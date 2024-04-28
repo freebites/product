@@ -45,13 +45,26 @@ const SearchIcon = () => {
 	return <Image source={searchIcon} style={styles.searchIcon} />;
 };
 const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress }) => {
+	const [searchQuery, setSearchQuery] = useState("");
+	const [checked, setChecked] = useState(false);
+	const handleChangeText = (text) => {
+		// Update local state on text change
+		setSearchQuery(text);
+		if (text === "" && checked == false) {
+			console.log("yo");
+			props.onPress(null); // Send an "empty" parameter if text is cleared
+			setChecked(true);
+		} else if (text != "" && checked == true) {
+			setChecked(false);
+		}
+	};
 	return (
 		<GooglePlacesAutocomplete
 			placeholder="Search"
 			onPress={async (data, details) => {
 				// 'details' is provided when fetchDetails = true
-
-				props.onPress(details.geometry.location);
+				const coords = data == null ? null : details.geometry.location;
+				props.onPress(coords);
 				// props.onLocationFound();
 			}}
 			query={{
@@ -67,7 +80,15 @@ const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress }) => {
 			}}
 			styles={styles}
 			textInputProps={{
+				onSubmitEditing: () => {
+					if (searchQuery === "") {
+						props.onPress(null); // Send an "empty" parameter if "return" is hit with an empty query
+					}
+				},
 				onFocus: props.onSelected ? () => props.onSelected() : () => {}, // do nothing if it doesn't exist lol
+				onChangeText: (text) => {
+					handleChangeText(text);
+				},
 			}}
 			enablePoweredByContainer={false}
 			renderRightButton={() => <SearchFilterIcon />}

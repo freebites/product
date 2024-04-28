@@ -23,7 +23,11 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
-import { AppContext } from "../../../context/appContext";
+import {
+	AppContext,
+	locationInfo,
+	noLocation,
+} from "../../../context/appContext";
 import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
 import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
@@ -35,7 +39,7 @@ const Home = () => {
 	const { filters, location, setLocation, userToFilter, setUserToFilter } =
 		useContext(AppContext);
 	const { user } = useAuth();
-	const fetchData = async () => {
+	const fetchData = async (query?) => {
 		// convert dictionary of strings to an array
 		let dietArray = [];
 
@@ -48,12 +52,23 @@ const Home = () => {
 		// let query = dietArray.join(" ");
 		let postData;
 
-		postData = await getWithFilter({
-			diet: dietArray,
-			latitude: location.latitude,
-			longitude: location.longitude,
-			userID: userToFilter,
-		});
+		if (query) {
+			postData = await getWithFilter({
+				diet: query.diet ? query.diet : dietArray,
+				latitude: query.latitude ? query.latitude : location.latitude,
+				longitude: query.longitude
+					? query.longitude
+					: location.longitude,
+				userID: userToFilter,
+			});
+		} else {
+			postData = await getWithFilter({
+				diet: dietArray,
+				latitude: location.latitude,
+				longitude: location.longitude,
+				userID: userToFilter,
+			});
+		}
 		console.log(filters);
 		setPosts(postData);
 		setRefreshing(false);
@@ -75,19 +90,24 @@ const Home = () => {
 
 	useEffect(() => {
 		// async function
-
-		setUserToFilter(yourPostsFilter ? "" : user.uid);
 		fetchData();
 		setRefreshing(true);
-	}, [yourPostsFilter]);
+	}, [userToFilter]);
 	return (
 		<SafeAreaView style={[globalStyles.container]}>
 			<HomeSearchBar
+				// if nothing is in the search bar, then clear location
 				onPress={(details) => {
-					setLocation({
-						latitude: details.lat,
-						longitude: details.lng,
-					});
+					const newCoords =
+						details != null
+							? {
+									latitude: details.lat,
+									longitude: details.lng,
+							  }
+							: noLocation;
+					setLocation(newCoords);
+					fetchData(newCoords);
+					setRefreshing(true);
 					console.log(location);
 				}}
 			/>
@@ -105,13 +125,12 @@ const Home = () => {
 					<TouchableHighlight
 						style={{
 							borderBottomWidth: 1,
-							borderColor: !yourPostsFilter
-								? "#EDA76E"
-								: "transparent",
+							borderColor:
+								userToFilter == "" ? "#EDA76E" : "transparent",
 							alignItems: "center",
 						}}
 						underlayColor="transparent"
-						onPress={() => setYourPostsFilter(false)}
+						onPress={() => setUserToFilter("")}
 					>
 						<Text> All </Text>
 					</TouchableHighlight>
@@ -126,13 +145,12 @@ const Home = () => {
 					<TouchableHighlight
 						style={{
 							borderBottomWidth: 1,
-							borderColor: yourPostsFilter
-								? "#EDA76E"
-								: "transparent",
+							borderColor:
+								userToFilter != "" ? "#EDA76E" : "transparent",
 							alignItems: "center",
 						}}
 						underlayColor="transparent"
-						onPress={() => setYourPostsFilter(true)}
+						onPress={() => setUserToFilter(user.uid)}
 					>
 						<Text> Bookmark </Text>
 					</TouchableHighlight>

@@ -80,8 +80,9 @@ export const EmptyPost: postType = {
 };
 
 export const defaultOptions: TagOptionType = {
-	diet: ["Vegan", "Vegetarian", "Dairy-free", "Halal", "Gluten-free"],
-	allergies: ["Peanut", "Tree nut", "Dairy", "Eggs"],
+	// these should be set to lower case
+	diet: ["vegan", "vegetarian", "dairy-free", "halal", "gluten-free"],
+	allergies: ["peanut", "tree nut", "dairy", "eggs"],
 };
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,
