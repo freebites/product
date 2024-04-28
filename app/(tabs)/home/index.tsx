@@ -36,8 +36,14 @@ library.add(fab, fas);
 
 const Home = () => {
 	const [AllPosts, setPosts] = useState([]);
-	const { filters, location, setLocation, userToFilter, setUserToFilter } =
-		useContext(AppContext);
+	const {
+		filters,
+		location,
+		setLocation,
+		userToFilter,
+		setUserToFilter,
+		sort,
+	} = useContext(AppContext);
 	const { user } = useAuth();
 	const fetchData = async (query?) => {
 		// convert dictionary of strings to an array
@@ -52,6 +58,7 @@ const Home = () => {
 		// let query = dietArray.join(" ");
 		let postData;
 
+		// include custom query to deal with state update changes
 		if (query) {
 			postData = await getWithFilter({
 				diet: query.diet ? query.diet : dietArray,
@@ -60,13 +67,16 @@ const Home = () => {
 					? query.longitude
 					: location.longitude,
 				userID: userToFilter,
+				sort: query.sort ? query.sort : sort,
 			});
 		} else {
+			// usually just do this
 			postData = await getWithFilter({
 				diet: dietArray,
 				latitude: location.latitude,
 				longitude: location.longitude,
 				userID: userToFilter,
+				sort: sort,
 			});
 		}
 		console.log(filters);
@@ -85,8 +95,6 @@ const Home = () => {
 	// 	const postData = await getOne(props._id);
 	// 	setSinglePost(postData);
 	// }
-
-	const [yourPostsFilter, setYourPostsFilter] = useState(false);
 
 	useEffect(() => {
 		// async function

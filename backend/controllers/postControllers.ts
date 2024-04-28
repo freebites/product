@@ -51,6 +51,11 @@ const getPostsWithFilter = async (req, res) => {
 
 	try {
 		const query = req.query;
+		const sortBy = query.sort;
+
+		const sortParams = {
+			[sortBy]: 1,
+		}; // add .sort(sortParams)
 		let filters;
 		let items;
 		if (query.userID) {
