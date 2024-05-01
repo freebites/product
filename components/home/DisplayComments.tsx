@@ -3,6 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
+    FlatList,
     SafeAreaView,
     Button,
     Pressable,
@@ -26,6 +27,7 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
+import { height } from "@fortawesome/free-solid-svg-icons/faBookmark";
 const placeholderImage = require("../../assets/images/kemal.jpg")
 
 export const DisplayComments = (props) => {
@@ -62,6 +64,7 @@ export const DisplayComments = (props) => {
             )
             }
         </View>
+        
     );
 
 };
@@ -104,3 +107,71 @@ const styles = StyleSheet.create({
     },
 });
 export default DisplayComments;
+
+
+// <ScrollView style={{}}>
+//             {props.singlePost.comments.length > 0 ? (
+//                 props.singlePost.comments.map((comment) => (
+//                     <View style={styles.comments} key={comment.id}>
+//                         <Image
+//                             source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+//                         />
+//                         <View style={{ paddingLeft: 20 }}>
+//                             <Text style={styles.username}>
+//                                 {comment.username}
+//                             </Text>
+//                             <Text style={styles.body}>
+//                                 {comment.body}
+//                             </Text>
+//                             <Text style={styles.reply}>
+//                                 Reply
+//                             </Text>
+//                         </View>
+
+//                     </View>
+//                 ))
+//             ) : (
+//                 <View style={styles.modalNoComments}>
+//                     <Text style={{ fontSize: 22, color: "#485445", fontWeight: "bold", marginTop: 100,  }}>No comments yet</Text>
+//                     <Text style={{ fontSize: 13, color: "#93A38F", marginTop: 20, textAlign: "center",}}>
+//                         Commenting helps other users know {"\n"}
+//                         more about the status of the food!
+//                     </Text>
+//                 </View>
+//             )
+//             }
+//         </ScrollView>
+
+
+{/* <FlatList
+        style={{height: 400}}
+        data={props.singlePost.comments}
+        renderItem={({ item }) => (
+            <View style={styles.comments} key={item.id}>
+                <Image
+                    source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+                />
+                <View style={{ paddingLeft: 20 }}>
+                    <Text style={styles.username}>
+                        {item.username}
+                    </Text>
+                    <Text style={styles.body}>
+                        {item.body}
+                    </Text>
+                    <Text style={styles.reply}>
+                        Reply
+                    </Text>
+                </View>
+            </View>
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={() => (
+            <View style={styles.modalNoComments}>
+                <Text style={{ fontSize: 22, color: "#485445", fontWeight: "bold", marginTop: 100 }}>No comments yet</Text>
+                <Text style={{ fontSize: 13, color: "#93A38F", marginTop: 20, textAlign: "center" }}>
+                    Commenting helps other users know {"\n"}
+                    more about the status of the food!
+                </Text>
+            </View>
+        )}
+    /> */}

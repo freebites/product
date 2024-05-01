@@ -55,7 +55,7 @@ export const UploadComment = (props) => {
 	const handleAddComment = () => {
 		const newComment: comment = {
 			id: props.singlePost.comments.length + 1,
-			username: "props.user.email",
+			username: "user1",
 			body: newCommentText,
 			timestamp: new Date(),
 			_id: "",

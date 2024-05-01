@@ -77,7 +77,7 @@ export const CommentsModal = (props) => {
                 animationInTiming={400}
                 animationOut={"slideOutDown"}
                 animationOutTiming={300}
-                backdropTransitionOutTiming={200}
+                backdropTransitionOutTiming={10000}
                 swipeThreshold={50}
                 onSwipeComplete={() => props.changeCommentsVisible()}
                 swipeDirection={['down']}
@@ -93,16 +93,20 @@ export const CommentsModal = (props) => {
                     style={{width: "100%"}}
                     keyboardVerticalOffset={-20}
                 >
+                    
                         <View style={styles.modalComments}>
                             <View style={styles.titleContainer}>
                                 <Image source={dragHandle}></Image>
                                 <Text style={styles.titleText}>Live Thread</Text>
                             </View>
                             <ScrollView style={styles.commentThread}>
+                            <TouchableOpacity activeOpacity={1}
+                             >
                                 <DisplayComments
                                     modalVisible={props.modalVisible}
                                     singlePost={props.singlePost}
                                 />
+                            </TouchableOpacity>
                             </ScrollView>
                             <UploadComment
                                 singlePost={props.singlePost} 
@@ -153,6 +157,7 @@ const styles = StyleSheet.create({
         color: "black",
     },
     commentThread: {
+        // flex: 1,
         height: 340,
         width: "100%",
         paddingHorizontal: 35,
