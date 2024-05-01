@@ -21,7 +21,7 @@ import { PostCard } from "./PostCard";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "400",
         paddingBottom: 5,
-        // color: 'gray',
     },
     comments: {
         flexDirection: "row",
-        paddingBottom: 20,
+        paddingBottom: 10,
+        paddingTop: 10,
         flex: 1,
         paddingLeft: 0,
 

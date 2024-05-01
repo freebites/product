@@ -10,9 +10,10 @@ import {
 	TouchableWithoutFeedback,
     ScrollView,
     KeyboardAvoidingView,
+    Keyboard
 } from "react-native";
 import Modal from "react-native-modal";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useMemo, useContext, useEffect, useRef, useState } from "react";
 import {
 	EmptyPost,
 	postType,
@@ -36,57 +37,93 @@ const dragHandle = require("../../assets/images/Drag_handle.png")
 
 export const CommentsModal = (props) => {
     const { user } = useAuth();
+    const isKeyboardVisible = useRef(false);
+
+	const keyboardDidShowListener = useRef();
+	const keyboardDidHideListener = useRef();
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+          'keyboardDidShow',
+          () => {
+            // Handle keyboard show event
+            // console.log('Keyboard did show');
+            isKeyboardVisible.current = true;
+          }
+        );
+    
+        const keyboardDidHideListener = Keyboard.addListener(
+          'keyboardDidHide',
+          () => {
+            // Handle keyboard hide event
+            // console.log('Keyboard did hide');
+            isKeyboardVisible.current = false;
+          }
+        );
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+        // Clean up listeners
+
+      }, []);
+
+      // Make sures that the backdrop does not rerender onBackdrop press
+      const isBackdrop = useMemo(() => {
+        // Compute the value of isBackdrop based on some condition
+        // For example, you can check if props.commentsVisible is true
+        return props.commentsVisible;
+    }, [props.commentsVisible]);
     return (
             <Modal
                 animationIn={"slideInUp"}
-                // animationOut={"slideInDown"}
+                animationInTiming={400}
+                animationOut={"slideOutDown"}
+                animationOutTiming={300}
+                backdropTransitionOutTiming={200}
+                swipeThreshold={50}
                 onSwipeComplete={() => props.changeCommentsVisible()}
-                swipeDirection="down"
-                isVisible={props.commentsVisible}
+                swipeDirection={['down']}
+                isVisible={props.commentsVisible}  
+                propagateSwipe={true}
+                coverScreen={true}
+                hasBackdrop={isBackdrop}
+                onBackdropPress={() => props.changeCommentsVisible()}
+                style={styles.modalContent}
             >
-                    <Pressable 
-                        onPress={() => props.changeCommentsVisible()} 
-                        style={styles.modalContent}>
-                        <KeyboardAvoidingView behavior="position">
-                            <Pressable>
-                                <View style={styles.modalComments}>
-                                    <View style={styles.titleContainer}>
-                                        <Image source={dragHandle}></Image>
-                                        <Text style={styles.titleText}>Live Thread</Text>
-                                    </View>
-                                    <Divider
-                                        orientation="horizontal"
-                                        style={styles.divider}
-                                    />
-                                    <ScrollView style={styles.commentThread}>
-                                        <DisplayComments
-                                            modalVisible={props.modalVisible}
-                                            singlePost={props.singlePost}
-                                            setModalVisible={props.setModalVisible}
-                                        />
-                                    </ScrollView>
-                                    <View style={{paddingHorizontal: 30}}>
-                                    <UploadComment
-                                        singlePost={props.singlePost} 
-                                        setSinglePost={props.setSinglePost}
-                                        functionality={true}
-                                        ></UploadComment> 
-                                    </View>
-                                </View>
-                            </Pressable>
-                        </KeyboardAvoidingView>
-                    </Pressable>
+                <KeyboardAvoidingView 
+                    behavior="position" 
+                    style={{width: "100%"}}
+                    keyboardVerticalOffset={-20}
+                >
+                        <View style={styles.modalComments}>
+                            <View style={styles.titleContainer}>
+                                <Image source={dragHandle}></Image>
+                                <Text style={styles.titleText}>Live Thread</Text>
+                            </View>
+                            <ScrollView style={styles.commentThread}>
+                                <DisplayComments
+                                    modalVisible={props.modalVisible}
+                                    singlePost={props.singlePost}
+                                />
+                            </ScrollView>
+                            <UploadComment
+                                singlePost={props.singlePost} 
+                                setSinglePost={props.setSinglePost}
+                                functionality={true}
+                            ></UploadComment> 
+                        </View>
+                </KeyboardAvoidingView>
             </Modal>
     );
+
 
 };
 const styles = StyleSheet.create({
     modalContent: {
         width: "100%",
 		height: "100%",
+        display: "flex",
 		justifyContent: "flex-end",
 		alignItems: "center",
-        flex: 1,
+        margin: 0,
     },
     divider: {
 		width: "100%",
@@ -94,20 +131,20 @@ const styles = StyleSheet.create({
 		color: "#F3F0F4",
 	},
     modalComments: {
-        width: "100%",
         backgroundColor: "white",
         borderColor: "#F3F0F4",
 		borderStyle: "solid",
 		borderWidth: 2,
-        borderTopLeftRadius: 40, 
-        borderTopRightRadius: 40, 
+        width: "100%",
+        borderTopLeftRadius: 30, 
+        borderTopRightRadius: 30, 
         borderBottomWidth: 0, 
         alignItems: 'center',
     },
     titleContainer: {
         alignItems: "center", 
-        paddingTop: 10, 
-        paddingBottom: 15,
+        paddingTop: 5, 
+        paddingBottom: 5,
     },
     titleText: {
         paddingTop: 10,
@@ -117,9 +154,14 @@ const styles = StyleSheet.create({
     },
     commentThread: {
         height: 340,
-        width: 400, 
-        paddingTop: 15,
+        width: "100%",
         paddingHorizontal: 35,
+        borderTopColor: "#F3F0F4",
+        borderTopStyle: "solid",
+        borderTopWidth: 1,
+        borderBottomColor: "#F3F0F4",
+        borderBottomStyle: "solid",
+        borderBottomWidth: 1,
     },
 });
 export default CommentsModal;

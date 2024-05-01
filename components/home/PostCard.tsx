@@ -72,10 +72,11 @@ export const PostCard = (props) => {
 		fetchPost();
 	}, [props.id]);
 	
-    
     const changeCommentsVisible = () => {
+		console.log("called changecomments")
         setCommentsVisible(!commentsVisible);
     };
+	
 	const changeModalVisible = () => {
         setModalVisible(!modalVisible);
     };
@@ -85,11 +86,7 @@ export const PostCard = (props) => {
 	}
 
 	return (
-		<KeyboardAvoidingView
-			style={{ flex: 1 }}
-			keyboardVerticalOffset={100}
-			behavior={"position"}
-		>
+		<View>
 			<InfoModal 
 				modalVisible={modalVisible} 
 				setModalVisible={changeModalVisible}
@@ -110,12 +107,9 @@ export const PostCard = (props) => {
 						uri: imageURL,
 					}}
 				/>
-				{/* <View style={styles.description}> */}
 					<View style={styles.titleContainer}>
 						<View style={styles.locationContainer}>
 							<Text style={styles.location}>{singlePost.title}</Text>
-							{/* <PostDate></PostDate> */}
-							{/* <Text style={styles.location}>{singlePost.postTime.getHours()}</Text> */}
 						</View>
 						<Text style={styles.innerDes}>{singlePost.description}</Text>
 					</View>
@@ -124,8 +118,7 @@ export const PostCard = (props) => {
 						<Text style={styles.thread}>Food Types & Diet</Text>
 						<TouchableOpacity onPress={() => changeModalVisible()}>
 							<Image source={infoIcon} style={styles.infoIcon}/>
-						</TouchableOpacity>
-						
+						</TouchableOpacity>	
 					</View>	
 					<View style={styles.tags}>
 						<DisplayTags tags={singlePost.tags}></DisplayTags>
@@ -146,7 +139,7 @@ export const PostCard = (props) => {
 							<Text style={styles.numComments}>View all {singlePost.comments.length} comments</Text>
 							{singlePost.comments.slice(0, 2).map((comment) => (
 								<View style={styles.comments} key={comment.id}>
-									<View style={{display: "flex", width: 80, flexDirection: "row"}}>
+									<View style={{display: "flex", flexDirection: "row"}}>
 										<Text style={styles.username}>
 											{comment.username}
 										</Text>
@@ -188,7 +181,7 @@ export const PostCard = (props) => {
 					</CommentsModal>
 				</Pressable>
 			</View >
-		</KeyboardAvoidingView>
+		</View>
 		
 	);
 };
@@ -238,7 +231,7 @@ const styles = StyleSheet.create({
 		marginTop: 2,
 	},
 	tags: {
-		height: 25,
+		height: 85,
 		flexDirection: "row",
 		flexWrap: 'wrap',
 	},

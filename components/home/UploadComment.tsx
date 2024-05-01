@@ -70,7 +70,7 @@ export const UploadComment = (props) => {
         return (
             <View style={{
                 flexDirection: "row", 
-				marginBottom: 20, 
+				marginBottom: 40, 
 				marginTop: 10,
             }}>
                 <Image
@@ -80,20 +80,13 @@ export const UploadComment = (props) => {
                     <TextInput style={styles.textInput}
                         placeholder="Add a comment for this post..."
 						placeholderTextColor={"#AEA9B1"}
-						selectionColor="transparent"
                         value={newCommentText}
-						selectTextOnFocus={false}
-						underlineColorAndroid="transparent"
                         onChangeText={handleCommentChange}
                     />
 					<View style={styles.rectangle}>
                         <Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
                     </View>
                     <TouchableOpacity style={styles.postButton}>
-                        <Text
-                            style={{ color: "lightgreen" }}
-                        >
-                        </Text>
                         <TouchableOpacity onPress={handleAddComment} >
                             <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
                         </TouchableOpacity>
@@ -117,10 +110,6 @@ export const UploadComment = (props) => {
                         <Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
                     </View>
                     <View style={styles.postButton}>
-                        <Text
-                            style={{ color: "lightgreen" }}
-                        >
-                        </Text>
                         <View>
                             <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
                         </View>
@@ -152,27 +141,30 @@ const styles = StyleSheet.create({
 		color: "#F3F0F4",
 	},
     textInput: {
-		fontSize: 14,
-		// width: "100%",
-		width: 200,
-		marginRight: 10,
+		fontSize: 13,
+		width: 225,
+		// marginRight: 5,
 		marginLeft: 10,
 		fontWeight: "400",
 	},
 	textInputCard: {
 		paddingLeft: 10,
-		width: 235,
+		width: 225,
 		color: "#AEA9B1",
 		fontSize: 12,
 	},
     postButton: {
+		display: "flex",
+		flexDirection: "column",
 		alignItems: "flex-end",
-		marginRight: 10,
+		marginRight: 7,
+		// marginBottom: 10,
 		justifyContent: "center",
 	},
 	rectangle: {
 		display: "flex",
-		paddingRight: 5,
+		paddingLeft: 2,
+		marginRight: 3,
 		justifyContent: "center",
 	}
 });
