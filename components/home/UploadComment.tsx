@@ -73,6 +73,7 @@ export const UploadComment = (props) => {
 				timestamp: new Date(),
 				_id: "",
 			};
+		
 
 			handleUpdateComments(newComment);
 

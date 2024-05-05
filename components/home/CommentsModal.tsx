@@ -115,7 +115,7 @@ export const CommentsModal = (props) => {
                 animationInTiming={400}
                 animationOut={"slideOutDown"}
                 animationOutTiming={300}
-                backdropTransitionOutTiming={10000}
+                backdropTransitionOutTiming={200}
                 swipeThreshold={50}
                 onSwipeComplete={handleModalSwipe}
                 swipeDirection={['down']}
@@ -125,31 +125,30 @@ export const CommentsModal = (props) => {
                 hasBackdrop={isBackdrop}
                 onBackdropPress={() => props.changeCommentsVisible()}
                 style={styles.modalContent}
-            >       
-                <View style={styles.modalComments}>
-                    <View style={styles.titleContainer} onTouchStart={() => dismissKeyboard()}>
-                        <Image source={dragHandle}></Image>
-                        <Text style={styles.titleText}>Live Thread</Text>
-                    </View>
-                    <ScrollView style={[styles.commentThread]}>
-                        <TouchableOpacity activeOpacity={1}
-                        >
-                            <DisplayComments
-                                modalVisible={props.modalVisible}
-                                singlePost={props.singlePost}
-                            />
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
-                {/* <TouchableOpacity onPress={handleTextBoxClick}> */}
-                    <UploadComment
-                        handleThread={handleTextBoxClick}
-                        singlePost={props.singlePost} 
-                        setSinglePost={props.setSinglePost}
-                        functionality={true}
-                    ></UploadComment> 
-                {/* </TouchableOpacity> */}
-                
+            >
+                <KeyboardAvoidingView 
+                    behavior="position" 
+                    style={{width: "100%"}}
+                    keyboardVerticalOffset={-20}
+                >
+                        <View style={styles.modalComments}>
+                            <View style={styles.titleContainer}>
+                                <Image source={dragHandle}></Image>
+                                <Text style={styles.titleText}>Live Thread</Text>
+                            </View>
+                            <ScrollView style={styles.commentThread}>
+                                <DisplayComments
+                                    modalVisible={props.modalVisible}
+                                    singlePost={props.singlePost}
+                                />
+                            </ScrollView>
+                            <UploadComment
+                                singlePost={props.singlePost} 
+                                setSinglePost={props.setSinglePost}
+                                functionality={true}
+                            ></UploadComment> 
+                        </View>
+                </KeyboardAvoidingView>
             </Modal>
     );
 
@@ -192,7 +191,6 @@ const styles = StyleSheet.create({
         color: "black",
     },
     commentThread: {
-        // flex: 1,
         height: 340,
         width: "100%",
         paddingHorizontal: 35,

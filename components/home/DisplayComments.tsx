@@ -3,7 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    FlatList,
     SafeAreaView,
     Button,
     Pressable,
@@ -27,7 +26,6 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
-import { height } from "@fortawesome/free-solid-svg-icons/faBookmark";
 const placeholderImage = require("../../assets/images/kemal.jpg")
 
 export const DisplayComments = (props) => {
@@ -64,7 +62,6 @@ export const DisplayComments = (props) => {
             )
             }
         </View>
-        
     );
 
 };
