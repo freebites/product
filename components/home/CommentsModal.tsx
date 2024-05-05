@@ -10,7 +10,8 @@ import {
 	TouchableWithoutFeedback,
     ScrollView,
     KeyboardAvoidingView,
-    Keyboard
+    Keyboard,
+    Animated,
 } from "react-native";
 import Modal from "react-native-modal";
 import React, { useMemo, useContext, useEffect, useRef, useState } from "react";
@@ -38,39 +39,76 @@ const dragHandle = require("../../assets/images/Drag_handle.png")
 export const CommentsModal = (props) => {
     const { user } = useAuth();
     const isKeyboardVisible = useRef(false);
+    const [commentThreadHeight, setCommentThreadHeight] = useState(100); // Initial height
+    const animatedHeight = useRef(new Animated.Value(commentThreadHeight)).current;
+    console.log(animatedHeight);
+    const [textBoxClicked, setTextBoxClicked] = useState(false); // Track whether text box is clicked
 
-	const keyboardDidShowListener = useRef();
-	const keyboardDidHideListener = useRef();
+
+    const dismissKeyboard = () => {
+        if (isKeyboardVisible.current) {
+            Keyboard.dismiss();
+        }
+    };
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
-          'keyboardDidShow',
-          () => {
-            // Handle keyboard show event
-            // console.log('Keyboard did show');
-            isKeyboardVisible.current = true;
-          }
+            'keyboardDidShow',
+            () => {
+                isKeyboardVisible.current = true;
+            }
         );
-    
+
         const keyboardDidHideListener = Keyboard.addListener(
-          'keyboardDidHide',
-          () => {
-            // Handle keyboard hide event
-            // console.log('Keyboard did hide');
-            isKeyboardVisible.current = false;
-          }
+            'keyboardDidHide',
+            () => {
+                isKeyboardVisible.current = false;
+            }
         );
-        keyboardDidShowListener.remove();
-        keyboardDidHideListener.remove();
-        // Clean up listeners
 
-      }, []);
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
 
-      // Make sures that the backdrop does not rerender onBackdrop press
-      const isBackdrop = useMemo(() => {
-        // Compute the value of isBackdrop based on some condition
-        // For example, you can check if props.commentsVisible is true
+    }, []);
+
+    useEffect(() => {
+        if (!isKeyboardVisible.current) {
+            setCommentThreadHeight(340); // Set it back to the original height
+        }
+    }, [isKeyboardVisible.current]);
+
+
+    useEffect(() => {
+        if (textBoxClicked) {
+            console.log("Animating...");
+            Animated.timing(animatedHeight, {
+                toValue: commentThreadHeight,
+                duration: 300, 
+                useNativeDriver: false, 
+            }).start(() => console.log("getting big"));
+        }
+    }, [commentThreadHeight, textBoxClicked]); // Re-run the effect whenever commentThreadHeight changes
+
+    const handleTextBoxClick = () => {
+        setTextBoxClicked(true); 
+        setCommentThreadHeight(300);
+    };
+
+    // Make sures that the backdrop does not rerender onBackdrop press
+    const isBackdrop = useMemo(() => {
         return props.commentsVisible;
     }, [props.commentsVisible]);
+
+    const handleModalSwipe = () => {
+        if (isKeyboardVisible.current) {
+            dismissKeyboard();
+        } else {
+            props.changeCommentsVisible();
+        }
+    };
+
     return (
             <Modal
                 animationIn={"slideInUp"}
@@ -79,7 +117,7 @@ export const CommentsModal = (props) => {
                 animationOutTiming={300}
                 backdropTransitionOutTiming={10000}
                 swipeThreshold={50}
-                onSwipeComplete={() => props.changeCommentsVisible()}
+                onSwipeComplete={handleModalSwipe}
                 swipeDirection={['down']}
                 isVisible={props.commentsVisible}  
                 propagateSwipe={true}
@@ -87,34 +125,31 @@ export const CommentsModal = (props) => {
                 hasBackdrop={isBackdrop}
                 onBackdropPress={() => props.changeCommentsVisible()}
                 style={styles.modalContent}
-            >
-                <KeyboardAvoidingView 
-                    behavior="position" 
-                    style={{width: "100%"}}
-                    keyboardVerticalOffset={-20}
-                >
-                    
-                        <View style={styles.modalComments}>
-                            <View style={styles.titleContainer}>
-                                <Image source={dragHandle}></Image>
-                                <Text style={styles.titleText}>Live Thread</Text>
-                            </View>
-                            <ScrollView style={styles.commentThread}>
-                            <TouchableOpacity activeOpacity={1}
-                             >
-                                <DisplayComments
-                                    modalVisible={props.modalVisible}
-                                    singlePost={props.singlePost}
-                                />
-                            </TouchableOpacity>
-                            </ScrollView>
-                            <UploadComment
-                                singlePost={props.singlePost} 
-                                setSinglePost={props.setSinglePost}
-                                functionality={true}
-                            ></UploadComment> 
-                        </View>
-                </KeyboardAvoidingView>
+            >       
+                <View style={styles.modalComments}>
+                    <View style={styles.titleContainer} onTouchStart={() => dismissKeyboard()}>
+                        <Image source={dragHandle}></Image>
+                        <Text style={styles.titleText}>Live Thread</Text>
+                    </View>
+                    <ScrollView style={[styles.commentThread]}>
+                        <TouchableOpacity activeOpacity={1}
+                        >
+                            <DisplayComments
+                                modalVisible={props.modalVisible}
+                                singlePost={props.singlePost}
+                            />
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+                {/* <TouchableOpacity onPress={handleTextBoxClick}> */}
+                    <UploadComment
+                        handleThread={handleTextBoxClick}
+                        singlePost={props.singlePost} 
+                        setSinglePost={props.setSinglePost}
+                        functionality={true}
+                    ></UploadComment> 
+                {/* </TouchableOpacity> */}
+                
             </Modal>
     );
 

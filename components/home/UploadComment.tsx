@@ -12,7 +12,8 @@ import {
 	Modal,
     ScrollView,
     KeyboardAvoidingView,
-    FlatList
+    FlatList,
+	Animated
 } from "react-native";
 import React, { useMemo, useRef, useCallback, useContext, useEffect, useState } from "react";
 import {
@@ -32,10 +33,20 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const modalHandle = require("../../assets/images/Drag_handle.png");
 
 export const UploadComment = (props) => {
 	const [newCommentText, setNewCommentText] = useState("");
+	const [buttonOpacity] = useState(new Animated.Value(0)); // Initial opacity is 0
+
+    useEffect(() => {
+        Animated.timing(buttonOpacity, {
+            toValue: newCommentText.trim().length > 0 ? 1 : 0, // If there's text, opacity becomes 1; otherwise, it's 0
+            duration: 200, // Duration of the animation in milliseconds
+            useNativeDriver: true,
+        }).start(); // Start the animation
+    }, [newCommentText]); // Re-run the effect whenever newCommentText changes
 
 	const handleCommentChange = (text) => {
 		setNewCommentText(text);
@@ -52,47 +63,64 @@ export const UploadComment = (props) => {
 		}
 	};
 
+	
 	const handleAddComment = () => {
-		const newComment: comment = {
-			id: props.singlePost.comments.length + 1,
-			username: "user1",
-			body: newCommentText,
-			timestamp: new Date(),
-			_id: "",
-		};
+		if (newCommentText.trim().length > 0) {
+			const newComment: comment = {
+				id: props.singlePost.comments.length + 1,
+				username: "user1",
+				body: newCommentText,
+				timestamp: new Date(),
+				_id: "",
+			};
 
-		handleUpdateComments(newComment);
+			handleUpdateComments(newComment);
 
-		setNewCommentText("");
+			setNewCommentText("");
+		} else {
+			console.log("empty comment")
+		}
 	};
     
 	if (props.functionality) {
         return (
-            <View style={{
-                flexDirection: "row", 
-				marginBottom: 40, 
-				marginTop: 10,
-            }}>
-                <Image
-                    source={require('../../assets/icons/freebites/3d_avatar_25.png')}
-                />
-                <View style={styles.textBox}>
-                    <TextInput style={styles.textInput}
-                        placeholder="Add a comment for this post..."
-						placeholderTextColor={"#AEA9B1"}
-                        value={newCommentText}
-                        onChangeText={handleCommentChange}
-                    />
-					<View style={styles.rectangle}>
-                        <Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
-                    </View>
-                    <TouchableOpacity style={styles.postButton}>
-                        <TouchableOpacity onPress={handleAddComment} >
-                            <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
-                        </TouchableOpacity>
-                    </TouchableOpacity>
-                </View>
-            </View>
+			<KeyboardAvoidingView behavior="position">
+				<View style={{
+					flexDirection: "row", 
+					paddingBottom: 40, 
+					paddingTop: 10,
+					paddingHorizontal: 20,
+					backgroundColor: "white",
+					position: "relative"
+				}}>
+					<Image
+						source={require('../../assets/icons/freebites/3d_avatar_25.png')}
+					/>
+					<View style={styles.textBox}>
+					{/* <TouchableOpacity onPress={props.handleThread}> */}
+						<TextInput
+							style={styles.textInput}
+							placeholder="Add a comment for this post..."
+							placeholderTextColor="#AEA9B1"
+							value={newCommentText}
+							onChangeText={handleCommentChange}
+						/>
+					{/* </TouchableOpacity> */}
+						<View style={styles.rectangle}>
+							<Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
+						</View>
+						<Animated.View style={[styles.postButton, { opacity: buttonOpacity }]}>
+							<TouchableOpacity style={styles.postButton} onPress={handleAddComment} >
+								<Image 
+									source={require('../../assets/icons/freebites/arrow-up-circle.png')}
+									style={{ width: 30, height: 30 }} 
+								/>
+                        	</TouchableOpacity>
+						</Animated.View>
+                	</View>
+            	</View>
+			</KeyboardAvoidingView>
+            
         );
     } else {
         return (
