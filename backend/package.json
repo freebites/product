@@ -1,0 +1,21 @@
+{
+
+  "dependencies": {
+
+    "axios": "^1.6.8",
+
+    "cors": "^2.8.5",
+
+    "expo-server-sdk": "^3.9.0",
+
+    "express": "^4.19.2",
+
+    "mongoose": "^8.3.3",
+
+    "ts-node": "^10.9.2",
+
+    "typescript": "^5.4.5"
+
+  }
+}
+

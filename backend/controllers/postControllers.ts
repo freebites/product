@@ -90,7 +90,7 @@ const deletePost = async (req, res) => {
     const itemId = req.params.id;
 
     // Find the item by ID and remove it
-    const deletedItem = await Item.findByIdAndRemove(itemId);
+    const deletedItem = await Item.findByIdAndDelete(itemId);
 
     if (!deletedItem) {
       return res.status(404).json({ message: "Item not found" });

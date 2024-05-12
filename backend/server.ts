@@ -1,18 +1,15 @@
-// import postContext from "./context/postContext";
-
 import accountConnection from "./config/userDatabase";
 import userRouter from "./routes/userRoutes";
 
 import express from "express";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import postRouter from "./routes/postRoutes";
 import { UserType } from "../context/userContext";
-import Expo, { ExpoPushMessage } from "expo-server-sdk";
+import Expo, { ExpoPushMessage, ExpoPushTicket } from "expo-server-sdk";
 import notifyRouter from "./routes/notifyRoutes";
 import { updateUser } from "../api/user/usercrud";
-// const mongodb = require("")
 
 const app = express();
 const port = 3001;
@@ -26,23 +23,16 @@ app.use(bodyParser.json());
 mongoose
   .connect(
     "mongodb+srv://freebites7:1234@freebites.w7sk83d.mongodb.net/Posts?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as ConnectOptions
   )
   .catch((err) => {
     console.log("error connecting to db", err);
   });
 
 // listeners for account connection and errors
-accountConnection.on("connected", () => {
+accountConnection.asPromise().then(() => {
   console.log("Account database connection successful!");
-});
+}).catch(() => {console.log("Error connecitng to account database")});
 
-accountConnection.on("error", (error) => {
-  console.error("Error connecting to account database: ", error);
-});
 
 // use routes from post database
 app.use(postRouter);
@@ -73,7 +63,7 @@ export const sendPushNotification = async (props: SendNotificationProps) => {
   const messages: ExpoPushMessage[] = expoPushToken.map((token) => {
     if (!Expo.isExpoPushToken(token)) {
       console.error(`Push token ${token} is not a valid Expo push token`);
-      return;
+      return null;
     }
     return {
       to: token,
@@ -81,13 +71,14 @@ export const sendPushNotification = async (props: SendNotificationProps) => {
       title: title,
       body: body,
       data: { someData: "goes here" },
-    };
-  });
+    } as ExpoPushMessage;
+  }).filter((message): message is ExpoPushMessage => message !== null);;
 
   const chunks = expo.chunkPushNotifications(messages);
   let tickets = [];
   await Promise.all(
     chunks.map(async (chunk) => {
+      const tickets: ExpoPushTicket[] = [];
       try {
         const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
         ticketChunk.forEach((ticket, index) => {

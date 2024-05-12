@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	Text,
@@ -10,14 +10,11 @@ import {
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/home/SearchBar";
 import HomePost from "../../../components/home/HomePost";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { getAllPosts } from "../../../api/posts/read";
 import {
-	PostContext,
-	PostProvider,
-	postType,
+	postType
 } from "../../../context/postContext";
-import Post from "../post";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";

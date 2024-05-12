@@ -1,4 +1,7 @@
-{
+{	
+	// "ts-node": {
+	// 	"compilerOptions": {"module": "CommonJS"}
+	// },	
 	"compilerOptions": {
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
@@ -18,7 +21,7 @@
 			"@firebase/auth": [
 				"./node_modules/@firebase/auth/dist/index.rn.d.ts"
 			]
-		}
+		},
 	},
 	"exclude": [
 		"node_modules",
