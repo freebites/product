@@ -42,7 +42,7 @@ const logo = require("../../assets/icons/freebites/FreeBitesLogoSmall.png")
 
 export const InfoPopUp = (props) => {
     const dataPerishable = [
-        { id: 1, name: 'Perishable: ', description: 'spoiles quickly (cooked/fresh)' },
+        { id: 1, name: 'Perishable: ', description: 'spoils quickly (cooked/fresh)' },
         { id: 2, name: 'Non-perishable: ', description: 'lasts long (preserved)' },
     ];
     

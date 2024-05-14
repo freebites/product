@@ -33,7 +33,6 @@ import update from "../../api/posts/update";
 import { color } from "react-native-elements/dist/helpers";
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const modalHandle = require("../../assets/images/Drag_handle.png");
 
 export const UploadComment = (props) => {
@@ -98,7 +97,6 @@ export const UploadComment = (props) => {
 						source={require('../../assets/icons/freebites/3d_avatar_25.png')}
 					/>
 					<View style={styles.textBox}>
-					{/* <TouchableOpacity onPress={props.handleThread}> */}
 						<TextInput
 							style={styles.textInput}
 							placeholder="Add a comment for this post..."
@@ -106,7 +104,6 @@ export const UploadComment = (props) => {
 							value={newCommentText}
 							onChangeText={handleCommentChange}
 						/>
-					{/* </TouchableOpacity> */}
 						<View style={styles.rectangle}>
 							<Image source={require('../../assets/icons/freebites/rectangle-comments.png')} />
 						</View>

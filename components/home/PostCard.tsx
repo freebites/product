@@ -108,10 +108,11 @@ export const PostCard = (props) => {
 					}}
 				/>
 					<View style={styles.titleContainer}>
-						<View style={styles.locationContainer}>
+						{/* <View style={styles.locationContainer}>
 							<Text style={styles.location}>{singlePost.title}</Text>
-						</View>
+						</View> */}
 						<Text style={styles.innerDes}>{singlePost.description}</Text>
+						<PostDate postDateTime={singlePost.postTime}></PostDate>
 					</View>
 					<Divider></Divider>
 					<View style={styles.info}>
@@ -227,7 +228,9 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	infoIcon: {
-		paddingTop: 20,
+		width: 10,
+		height: 10,
+		padding: 10,
 		marginTop: 2,
 	},
 	tags: {
@@ -272,7 +275,10 @@ const styles = StyleSheet.create({
 		margin: 5,
 	},
 	titleContainer: {
+		paddingTop: 10,
 		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
 		// height: 140,
 	}
 });

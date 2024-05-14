@@ -43,26 +43,23 @@ const logo = require("../../assets/icons/freebites/FreeBitesLogoSmall.png")
 
 export const PostDate = (props) => {
     const getTimeDifference = () => {
-        // const currentTime = new Date(); 
-
-        // const timeDifference = props.postDateTime.getHours();
-
-        // const secondsDifference = Math.floor(currentTime.getTime() - props.postDateTime.getTime() / 1000);
-        // const minutesDifference = Math.floor(currentTime.getTime() - props.postDateTime.getTime() / (1000 * 60));
-        // const hoursDifference = Math.floor(currentTime.getTime() - props.postDateTime.getTime() / (1000 * 60 * 60));
-        // const daysDifference = Math.floor(currentTime.getTime() - props.postDateTime.getTime() / (1000 * 60 * 60 * 24));
-
-        // if (secondsDifference < 60) {
-            return `seconds ago`;
-            // return `${timeDifference} seconds ago`;
-        // } 
-        // else if (minutesDifference < 60) {
-        //     return `${minutesDifference} min ago`;
-        // } else if (hoursDifference < 24) {
-        //     return `${hoursDifference} hours ago`;
-        // } else {
-        //     return `${daysDifference} days ago`;
-        // }
+        const now = new Date();
+        const postTime = new Date(props.postDateTime);
+      
+        const timeSincePost = Math.abs(now.getTime() - postTime.getTime());
+      
+        const seconds = Math.floor(timeSincePost / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+      
+        return days 
+          ? `${days} days ago`
+          : hours 
+            ? `${hours} hours ago`
+            : minutes 
+              ? `${minutes} min ago`
+              : `${seconds} sec ago`;
     };
 
     return (

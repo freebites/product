@@ -3,29 +3,9 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
-    Button,
-    Pressable,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Modal,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import {
-    EmptyPost,
-    postType,
-    comment,
-    PostContext,
-} from "../../context/postContext";
-import { PostCard } from "./PostCard";
-import { Divider } from "react-native-elements";
-import { getOne } from "../../api/posts/read";
-import { getDownloadURL, ref } from "firebase/storage";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
-import update from "../../api/posts/update";
-import { color } from "react-native-elements/dist/helpers";
-import { storage } from "../../firebase";
-import { useAuth } from "../../context/auth";
+import PostDate from "./PostDate"
 const placeholderImage = require("../../assets/images/kemal.jpg")
 
 export const DisplayComments = (props) => {
@@ -37,18 +17,19 @@ export const DisplayComments = (props) => {
                         <Image
                             source={require('../../assets/icons/freebites/3d_avatar_25.png')}
                         />
-                        <View style={{ paddingLeft: 20 }}>
-                            <Text style={styles.username}>
-                                {comment.username}
-                            </Text>
-                            <Text style={styles.body}>
-                                {comment.body}
-                            </Text>
-                            {/* <Text style={styles.reply}>
-                                Reply
-                            </Text> */}
+                        <View style={styles.commentContent}>
+                            <View>
+                                <Text style={styles.username}>
+                                    {comment.username}
+                                </Text>
+                                <Text style={styles.body}>
+                                    {comment.body}
+                                </Text>
+                            </View>
+                            <View style={styles.postTimeWrapper}>
+                                <PostDate postDateTime={comment.timestamp} />
+                            </View>
                         </View>
-
                     </View>
                 ))
             ) : (
@@ -96,11 +77,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "400",
     },
-
     reply: {
         fontSize: 9,
         color: "rgba(174, 169, 177, 1)",
         fontWeight: "bold",
     },
+    commentContent: {
+        paddingLeft: 20, 
+        justifyContent: "space-between", 
+        flexDirection: "row",
+        flex: 1, 
+    },
+    postTimeWrapper: {
+        alignItems: "flex-end", 
+    }
 });
 export default DisplayComments;
