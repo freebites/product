@@ -137,10 +137,13 @@ export const CommentsModal = (props) => {
                                 <Text style={styles.titleText}>Live Thread</Text>
                             </View>
                             <ScrollView style={styles.commentThread}>
-                                <DisplayComments
-                                    modalVisible={props.modalVisible}
-                                    singlePost={props.singlePost}
-                                />
+                                <TouchableOpacity activeOpacity={1}
+                                >
+                                    <DisplayComments
+                                        modalVisible={props.modalVisible}
+                                        singlePost={props.singlePost}
+                                    />
+                                </TouchableOpacity>
                             </ScrollView>
                             <UploadComment
                                 singlePost={props.singlePost} 
@@ -195,10 +198,10 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingHorizontal: 35,
         borderTopColor: "#F3F0F4",
-        borderTopStyle: "solid",
+        // borderTopStyle: "solid",
         borderTopWidth: 1,
         borderBottomColor: "#F3F0F4",
-        borderBottomStyle: "solid",
+        // borderBottomStyle: "solid",
         borderBottomWidth: 1,
     },
 });
