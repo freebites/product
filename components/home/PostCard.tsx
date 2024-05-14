@@ -150,8 +150,6 @@ export const PostCard = (props) => {
 											{comment.body}
 										</Text>
 									</View>
-									
-									
 								</View>
 							))}
 						</TouchableOpacity>

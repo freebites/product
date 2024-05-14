@@ -137,13 +137,10 @@ export const CommentsModal = (props) => {
                                 <Text style={styles.titleText}>Live Thread</Text>
                             </View>
                             <ScrollView style={styles.commentThread}>
-                                <TouchableOpacity activeOpacity={1}
-                                >
-                                    <DisplayComments
-                                        modalVisible={props.modalVisible}
-                                        singlePost={props.singlePost}
-                                    />
-                                </TouchableOpacity>
+                                <DisplayComments
+                                    modalVisible={props.modalVisible}
+                                    singlePost={props.singlePost}
+                                />
                             </ScrollView>
                             <UploadComment
                                 singlePost={props.singlePost} 
