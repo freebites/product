@@ -16,13 +16,10 @@ const tags = new mongoose.Schema({
 
 const comment = new mongoose.Schema(
 	{
-		id: Number,
 		username: String,
 		body: String,
 		timestamp: Date, // may need to be changed to string
 	},
-	{ _id: false } // disables mongoDB id creation, we can re-enable if we
-	// run into issues w/ rendering comments (ensure unique keys)
 );
 
 const Location = new mongoose.Schema({

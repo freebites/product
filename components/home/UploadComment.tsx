@@ -37,14 +37,14 @@ const modalHandle = require("../../assets/images/Drag_handle.png");
 
 export const UploadComment = (props) => {
 	const [newCommentText, setNewCommentText] = useState("");
-	const [buttonOpacity] = useState(new Animated.Value(0)); // Initial opacity is 0
+	const [buttonOpacity] = useState(new Animated.Value(0));
 
     useEffect(() => {
         Animated.timing(buttonOpacity, {
-            toValue: newCommentText.trim().length > 0 ? 1 : 0, // If there's text, opacity becomes 1; otherwise, it's 0
-            duration: 200, // Duration of the animation in milliseconds
+            toValue: newCommentText.trim().length > 0 ? 1 : 0, 
+            duration: 200, 
             useNativeDriver: true,
-        }).start(); // Start the animation
+        }).start(); 
     }, [newCommentText]); // Re-run the effect whenever newCommentText changes
 
 	const handleCommentChange = (text) => {
@@ -66,11 +66,9 @@ export const UploadComment = (props) => {
 	const handleAddComment = () => {
 		if (newCommentText.trim().length > 0) {
 			const newComment: comment = {
-				id: props.singlePost.comments.length + 1,
 				username: "user1",
 				body: newCommentText,
 				timestamp: new Date(),
-				_id: "",
 			};
 		
 
@@ -137,7 +135,10 @@ export const UploadComment = (props) => {
                     </View>
                     <View style={styles.postButton}>
                         <View>
-                            <Image source={require('../../assets/icons/freebites/arrow-up-circle.png')} />
+                            <Image 
+								source={require('../../assets/icons/freebites/arrow-up-circle.png')} 
+								style={{ width: 25, height: 25 }} 
+							/>
                         </View>
                     </View>
                 </View>

@@ -53,13 +53,13 @@ export const PostDate = (props) => {
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
       
-        return days 
-          ? `${days} days ago`
-          : hours 
-            ? `${hours} hours ago`
-            : minutes 
-              ? `${minutes} min ago`
-              : `${seconds} sec ago`;
+        return days
+            ? `${days} day${days === 1 ? '' : 's'} ago`
+            : hours
+                ? `${hours} hour${hours === 1 ? '' : 's'} ago`
+                : minutes
+                    ? `${minutes} min ago`
+                    : `${seconds} sec ago`;
     };
 
     return (
