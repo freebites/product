@@ -39,18 +39,7 @@ const dragHandle = require("../../assets/images/Drag_handle.png")
 export const CommentsModal = (props) => {
     const { user } = useAuth();
     const isKeyboardVisible = useRef(false);
-    const [commentThreadHeight, setCommentThreadHeight] = useState(100); // Initial height
-    const animatedHeight = useRef(new Animated.Value(commentThreadHeight)).current;
-    console.log(animatedHeight);
-    const [textBoxClicked, setTextBoxClicked] = useState(false); // Track whether text box is clicked
-
-
-    const dismissKeyboard = () => {
-        if (isKeyboardVisible.current) {
-            Keyboard.dismiss();
-        }
-    };
-
+ 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
@@ -70,42 +59,25 @@ export const CommentsModal = (props) => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
-
     }, []);
 
-    useEffect(() => {
-        if (!isKeyboardVisible.current) {
-            setCommentThreadHeight(340); // Set it back to the original height
+    const dismissKeyboard = () => {
+        if (isKeyboardVisible.current) {
+            Keyboard.dismiss();
         }
-    }, [isKeyboardVisible.current]);
-
-
-    useEffect(() => {
-        if (textBoxClicked) {
-            console.log("Animating...");
-            Animated.timing(animatedHeight, {
-                toValue: commentThreadHeight,
-                duration: 300, 
-                useNativeDriver: false, 
-            }).start(() => console.log("getting big"));
-        }
-    }, [commentThreadHeight, textBoxClicked]); // Re-run the effect whenever commentThreadHeight changes
-
-    const handleTextBoxClick = () => {
-        setTextBoxClicked(true); 
-        setCommentThreadHeight(300);
     };
 
-    // Make sures that the backdrop does not rerender onBackdrop press
     const isBackdrop = useMemo(() => {
         return props.commentsVisible;
     }, [props.commentsVisible]);
 
     const handleModalSwipe = () => {
-        if (isKeyboardVisible.current) {
+        props.changeCommentsVisible();
+    };
+
+    const handleModalSwipeMove = (percent) => {
+        if (percent > 0 && isKeyboardVisible.current) {
             dismissKeyboard();
-        } else {
-            props.changeCommentsVisible();
         }
     };
 
@@ -116,7 +88,8 @@ export const CommentsModal = (props) => {
                 animationOut={"slideOutDown"}
                 animationOutTiming={300}
                 backdropTransitionOutTiming={200}
-                swipeThreshold={50}
+                swipeThreshold={100}
+                onSwipeMove={handleModalSwipeMove}
                 onSwipeComplete={handleModalSwipe}
                 swipeDirection={['down']}
                 isVisible={props.commentsVisible}  
