@@ -122,12 +122,11 @@ export const PostCard = (props) => {
 						</TouchableOpacity>	
 					</View>	
 					<View style={styles.tags}>
-						<DisplayTags tags={singlePost.tags}></DisplayTags>
+						{/* <DisplayTags tags={singlePost.tags}></DisplayTags> */}
 						<Image style={styles.tagImage} source={msg} />
 						<Image style={styles.tagImage} source={lactose} />
 						<Image style={styles.tagImage} source={vegetarian} />
-						<Image style={styles.tagImage} source={vegetarian} />
-						<Image style={styles.tagImage} source={vegetarian} />
+						{/* <Image style={styles.tagImage} source={vegetarian} /> */}
 					</View>
 				<Divider></Divider>
 
@@ -139,13 +138,13 @@ export const PostCard = (props) => {
 						<TouchableOpacity onPress={() => changeCommentsVisible()}>
 							<Text style={styles.numComments}>View all {singlePost.comments.length} comments</Text>
 							{singlePost.comments.slice(0, 2).map((comment) => (
-								<View style={styles.comments} key={comment.id}>
+								<View style={styles.comments}>
 									<View style={{display: "flex", flexDirection: "row"}}>
 										<Text style={styles.username}>
 											{comment.username}
 										</Text>
 									</View>
-									<View style={{display: "flex", flexDirection: "row"}}>
+									<View style={{display: "flex", paddingLeft: 15, paddingTop: 2}}>
 										<Text style={styles.commentBody}>
 											{comment.body}
 										</Text>
