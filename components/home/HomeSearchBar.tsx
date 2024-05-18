@@ -2,23 +2,36 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef, useState } from "react";
 import {
 	Image,
-	View,
 	StyleSheet,
 	Pressable,
-	TouchableOpacity,
+	Keyboard,
+	TouchableWithoutFeedback,
+	View,
+	Dimensions,
+	SafeAreaView,
 } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import {
+	GooglePlacesAutocomplete,
+	GooglePlacesAutocompleteRef,
+} from "react-native-google-places-autocomplete";
 import SearchModal from "./SearchModal";
 import { getGeolocationWithPlaceID } from "../../api/util/maps";
+import { StatusBar } from "expo-status-bar";
 
+// constants
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
-/*
- */
+
+// get screen dimensions for the overlay
+const overlayStyle = {
+	width: Dimensions.get("window").width, // Set overlay width to screen width
+	height: Dimensions.get("window").height, // Set overlay height to screen height
+};
 
 const SearchFilterIcon = () => {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 	const handlePresentModalPress = useCallback(() => {
+		Keyboard.dismiss();
 		bottomSheetModalRef.current?.present();
 	}, []);
 
@@ -45,8 +58,11 @@ const SearchIcon = () => {
 	return <Image source={searchIcon} style={styles.searchIcon} />;
 };
 const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress }) => {
-	const [searchQuery, setSearchQuery] = useState("");
-	const [checked, setChecked] = useState(false);
+	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [checked, setChecked] = useState<boolean>(false);
+	const [isFocused, setIsFocused] = useState<boolean>(false);
+
+	const ref = useRef<GooglePlacesAutocompleteRef>();
 	const handleChangeText = (text) => {
 		// Update local state on text change
 		setSearchQuery(text);
@@ -58,43 +74,68 @@ const HomeSearchBar = (props: { onSelected?; onLocationFound?; onPress }) => {
 			setChecked(false);
 		}
 	};
+
 	return (
-		<GooglePlacesAutocomplete
-			placeholder="Search"
-			onPress={async (data, details) => {
-				// 'details' is provided when fetchDetails = true
-				const coords = data == null ? null : details.geometry.location;
-				props.onPress(coords);
-				// props.onLocationFound();
-			}}
-			query={{
-				key: `${apiKey}`,
-				language: "en",
-			}}
-			onFail={(error) => {
-				console.log(error);
-			}}
-			requestUrl={{
-				useOnPlatform: "web",
-				url: "https://maps.googleapis.com/maps/api",
-			}}
-			styles={styles}
-			textInputProps={{
-				onSubmitEditing: () => {
-					if (searchQuery === "") {
-						props.onPress(null); // Send an "empty" parameter if "return" is hit with an empty query
-					}
-				},
-				onFocus: props.onSelected ? () => props.onSelected() : () => {}, // do nothing if it doesn't exist lol
-				onChangeText: (text) => {
-					handleChangeText(text);
-				},
-			}}
-			enablePoweredByContainer={false}
-			renderRightButton={() => <SearchFilterIcon />}
-			renderLeftButton={() => <SearchIcon />}
-			fetchDetails={true}
-		/>
+		<View style={styles.searchBarContainer}>
+			<SafeAreaView style={styles.searchBarContainer}>
+				<GooglePlacesAutocomplete
+					ref={ref}
+					placeholder="Search"
+					onPress={async (data, details) => {
+						// 'details' is provided when fetchDetails = true
+						const coords =
+							data == null ? null : details.geometry.location;
+						props.onPress(coords);
+						// props.onLocationFound();
+					}}
+					query={{
+						key: `${apiKey}`,
+						language: "en",
+					}}
+					onFail={(error) => {
+						console.log(error);
+					}}
+					requestUrl={{
+						useOnPlatform: "web",
+						url: "https://maps.googleapis.com/maps/api",
+					}}
+					styles={styles}
+					textInputProps={{
+						onSubmitEditing: () => {
+							if (searchQuery === "") {
+								props.onPress(null); // Send an "empty" parameter if "return" is hit with an empty query
+							}
+						},
+						onFocus: props.onSelected
+							? () => props.onSelected()
+							: () => {
+									setIsFocused(true);
+							  }, // do nothing if it doesn't exist lol
+
+						onBlur: () => {
+							setIsFocused(false);
+						},
+						onChangeText: (text) => {
+							handleChangeText(text);
+						},
+					}}
+					enablePoweredByContainer={false}
+					renderRightButton={() => <SearchFilterIcon />}
+					renderLeftButton={() => <SearchIcon />}
+					fetchDetails={true}
+				/>
+			</SafeAreaView>
+			{isFocused && (
+				<TouchableWithoutFeedback
+					onPress={() => {
+						setIsFocused(false);
+						ref.current?.blur();
+					}}
+				>
+					<View style={[styles.overlay, overlayStyle]} />
+				</TouchableWithoutFeedback>
+			)}
+		</View>
 	);
 };
 
@@ -106,13 +147,17 @@ const styles = StyleSheet.create({
 		height: 42,
 		flexGrow: 0,
 		flexShrink: 0,
-		marginBottom: 60,
+		marginBottom: 50,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		zIndex: -1, // Ensure the overlay is behind the autocomplete options
 	},
 	textInputContainer: {
 		backgroundColor: "rgba(0,0,0,0)",
 		borderTopWidth: 0,
 		borderBottomWidth: 0,
-
 		zIndex: 999,
 		width: "92%",
 	},
@@ -138,7 +183,6 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		width: "92%",
 	},
-
 	separator: {
 		flex: 1,
 		backgroundColor: "blue",
@@ -170,6 +214,12 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 15,
 		borderBottomRightRadius: 15,
 		justifyContent: "center",
+	},
+	searchBarContainer: {
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 10,
 	},
 });
 

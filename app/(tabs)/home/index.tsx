@@ -6,9 +6,10 @@ import {
 	TouchableHighlight,
 	StyleSheet,
 	ScrollView,
+	Keyboard,
+	Pressable,
 } from "react-native"; // views are divs and text a p tags
 import { globalStyles } from "../../../components/global";
-import SearchBar from "../../../components/home/SearchBar";
 import HomePost from "../../../components/home/HomePost";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { getAllPosts, getWithFilter } from "../../../api/posts/read";
@@ -28,9 +29,10 @@ import {
 	locationInfo,
 	noLocation,
 } from "../../../context/appContext";
-import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
 import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import GrowToggle from "../../../components/home/GrowToggle";
 
 library.add(fab, fas);
 
@@ -87,6 +89,7 @@ const Home = () => {
 
 	const { postData, updatePostData } = useContext(PostContext);
 	const [refreshing, setRefreshing] = useState(true);
+
 	const handleUpdate = (eachPostData: postType) => {
 		updatePostData(eachPostData);
 	};
@@ -100,9 +103,9 @@ const Home = () => {
 		// async function
 		fetchData();
 		setRefreshing(true);
-	}, [userToFilter]);
+	}, [userToFilter, filters]);
 	return (
-		<SafeAreaView style={[globalStyles.container]}>
+		<View style={[globalStyles.container]}>
 			<HomeSearchBar
 				// if nothing is in the search bar, then clear location
 				onPress={(details) => {
@@ -119,54 +122,38 @@ const Home = () => {
 					console.log(location);
 				}}
 			/>
+
 			<View
 				style={{
 					flexDirection: "row",
-					alignItems: "flex-end",
-					justifyContent: "space-evenly",
-					width: "100%",
-					paddingTop: "3%",
-					paddingBottom: "3%",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: 8,
+					width: "60%",
+					marginTop: "2%",
+					marginBottom: "3%",
 				}}
 			>
-				<View style={{ width: "30%" }}>
-					<TouchableHighlight
-						style={{
-							borderBottomWidth: 1,
-							borderColor:
-								userToFilter == "" ? "#EDA76E" : "transparent",
-							alignItems: "center",
-						}}
-						underlayColor="transparent"
-						onPress={() => setUserToFilter("")}
-					>
-						<Text> All </Text>
-					</TouchableHighlight>
-				</View>
-
+				<GrowToggle
+					selected={userToFilter == ""}
+					text={"All Posts"}
+					onPress={() => setUserToFilter("")}
+				/>
+				<GrowToggle
+					selected={userToFilter != ""}
+					text={"Your Posts"}
+					onPress={() => setUserToFilter(user.uid)}
+				/>
 				{/* sets a border width that's normally transparent, 
 						and then is tied to the 'loginSelected' boolean 
 						TODO: figure out how to animate it, might need 
 						a different component for this. Also make more 
 						readable  */}
-				<View style={{ width: "30%" }}>
-					<TouchableHighlight
-						style={{
-							borderBottomWidth: 1,
-							borderColor:
-								userToFilter != "" ? "#EDA76E" : "transparent",
-							alignItems: "center",
-						}}
-						underlayColor="transparent"
-						onPress={() => setUserToFilter(user.uid)}
-					>
-						<Text> Bookmark </Text>
-					</TouchableHighlight>
-				</View>
 			</View>
 
 			<ScrollView
 				contentContainerStyle={styles.postContainer}
+				showsVerticalScrollIndicator={false}
 				refreshControl={
 					<RefreshControl
 						refreshing={refreshing}
@@ -201,7 +188,7 @@ const Home = () => {
 					);
 				})}
 			</ScrollView>
-		</SafeAreaView>
+		</View>
 	);
 };
 
