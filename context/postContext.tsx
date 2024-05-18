@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 
 /// types for tags
 export type tags = {
-	perishable: boolean;
+	perishable: string;
 	allergens: string[];
 	diet: string[];
 };
@@ -28,6 +28,7 @@ export type postType = {
 	post_id: string;
 	room: string;
 	postTime: Date;
+	postedBy: string; // firebase UID
 };
 
 export type Location = {
@@ -60,7 +61,7 @@ export const EmptyPost: postType = {
 	description: "",
 	imageURIs: [],
 	tags: {
-		perishable: true,
+		perishable: "perishable",
 		allergens: [],
 		diet: [],
 	},
@@ -75,11 +76,13 @@ export const EmptyPost: postType = {
 	post_id: "",
 	room: "",
 	postTime: undefined,
+	postedBy: "",
 };
 
 export const defaultOptions: TagOptionType = {
-	diet: ["Vegan", "Vegetarian", "Dairy-free", "Halal", "Gluten-free"],
-	allergies: ["Peanut", "Tree nut", "Dairy", "Eggs"],
+	// these should be set to lower case
+	diet: ["vegan", "vegetarian", "dairy-free", "halal", "gluten-free"],
+	allergies: ["peanut", "tree nut", "dairy", "eggs"],
 };
 export const PostContext = createContext<PostContextType>({
 	postData: EmptyPost,

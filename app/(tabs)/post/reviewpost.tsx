@@ -26,11 +26,13 @@ import NextButtonText from "../../../components/post/NextButtonText";
 import ProgressBar from "../../../components/post/ProgressBar";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
+import { useAuth } from "../../../context/auth";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 export default function reviewpost() {
 	const { postData, updatePostData, resetContext } = useContext(PostContext);
+	const { user } = useAuth();
 	// function to upload one picture given a local URI
 	const uploadPicture = async (uri) => {
 		//setUploading(true);
@@ -64,6 +66,7 @@ export default function reviewpost() {
 			);
 
 			postData.postTime = new Date();
+			postData.postedBy = user.uid;
 			create({ ...postData, imageURIs: imagePaths }); // upload to mongoDB!r
 			updatePostData(EmptyPost); // clear local post data
 			resetContext(); // reset all options to default

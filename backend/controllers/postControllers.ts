@@ -41,10 +41,102 @@ const getOnePost = async (req, res) => {
 };
 
 /**
- * @description Get all posts from the database.
- * @route GET /api/Posts/:id
- * @param { postType } post - should be of type postType, adhering to 'ItemSchema'
+ * @description Gets posts with filter from the database.
+ * @route GET /api/Posts/ {query parameters}
+ * @param { coordinates?, maxDistance?, filter?, } params - should be { string, string, distance in meters, string }
  */
+const getPostsWithFilter = async (req, res) => {
+	// yoinks the query params like .../Posts?keyword=apple&location=store
+	// it'll get keyword = apple, location = store
+
+	try {
+		const query = req.query;
+		const sortBy = query.sort;
+
+		const sortParams = {
+			[sortBy]: 1,
+		}; // add .sort(sortParams)
+		let filters;
+		let items;
+		if (query.userID) {
+			items = await Item.find({ postedBy: query.userID });
+		} else {
+			console.log("Applying Filters: ", query);
+			filters = buildPostQueryConditions(query);
+			console.log(filters);
+			items = await Item.find(filters);
+		}
+
+		console.log(items);
+		res.json(items);
+	} catch (error) {
+		const simpleError = {
+			message: error.message,
+			stack: error.stack,
+			// You can manually copy other properties if necessary and safe
+		};
+		console.log(simpleError);
+		res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+// interface defining type for query (for building the filter query)
+interface PostQueryConditions {
+	// all fields are optional to account for no filter applied
+	"tags.diet"?: {
+		$all: string[]; // array of dietary restrictions
+	};
+	"tags.perishable"?: {
+		$in: string; // perishable
+	};
+	"location.location.coordinates"?: {
+		// weird shit
+		$near: {
+			$geometry: {
+				type: "Point";
+				coordinates: [number, number];
+			};
+			$maxDistance: number;
+		};
+	};
+}
+
+// Function to build post query based on provided filters into mongoDB query
+function buildPostQueryConditions(filters) {
+	// empty conditions by default
+	const conditions: PostQueryConditions = {};
+	// checks for tag filter
+	if (filters.diet) {
+		// can further optimize by only searching in tags field, but would need sep
+		conditions["tag.diet"] = { $all: filters.diet };
+	}
+
+	if (filters.perishable) {
+		conditions["tag.perishable"] = { $in: filters.perishable };
+	}
+	// turns the lat/long coordinate [x, y] into mongoDB geospatial query params
+	if (filters.latitude && filters.longitude) {
+		console.log(filters.latitude, filters.longitude);
+		// default to 5km radius if maxDistance isn't applied
+		const longitude = filters.longitude;
+		const latitude = filters.latitude;
+		const maxDistance = filters.maxDistance
+			? parseInt(filters.maxDistance)
+			: 5000;
+		conditions["location.location.coordinates"] = {
+			$near: {
+				$geometry: {
+					type: "Point",
+					coordinates: [parseFloat(longitude), parseFloat(latitude)],
+				},
+				$maxDistance: maxDistance,
+			},
+		};
+	}
+
+	return conditions;
+}
+
 const createPost = async (req, res) => {
 	const post = req.body; // should be the same as the posts schema
 
@@ -113,4 +205,11 @@ const deletePost = async (req, res) => {
 };
 
 // export these functions and put them into the routes
-export { getAllPosts, getOnePost, updatePost, createPost, deletePost };
+export {
+	getAllPosts,
+	getOnePost,
+	getPostsWithFilter,
+	updatePost,
+	createPost,
+	deletePost,
+};

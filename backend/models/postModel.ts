@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 // });
 
 const tags = new mongoose.Schema({
-	perishable: Boolean,
+	perishable: String,
 	allergens: [String],
 	diet: [String],
 });
@@ -29,6 +29,7 @@ const Location = new mongoose.Schema({
 	place_id: String,
 	location: {
 		type: { type: String },
+		enum: ["Point"],
 		coordinates: [Number],
 	},
 });
@@ -46,9 +47,41 @@ const itemSchema = new mongoose.Schema({
 	post_id: String,
 	room: String,
 	postTime: Date,
+	postedBy: { type: String, required: true }, // firebase UID
 });
 
+// index the parameters that you want to be able to search in
+itemSchema.index({
+	title: "text",
+	description: "text", // can take title/description out tbh
+});
+
+itemSchema.index({
+	"tag.perishable": 1, // boolean
+	postTime: -1, // descending order (most recent first i think)
+	postedBy: 1, // ascending order? idk
+	"tag.diet": 1,
+});
+
+itemSchema.index({
+	"location.location.coordinates": "2dsphere", // enables geospatial search
+});
 // Create a model for the "items" collection
+
 const Item = mongoose.model("freebites", itemSchema, "Posts");
 
+// print statements to check if indexing functioned properly
+Item.on("index", function (error) {
+	if (error) {
+		console.log("Indexing error:", error);
+	}
+});
+
+Item.listIndexes()
+	.then((indexes) => {
+		console.log("Indexes:", indexes);
+	})
+	.catch((err) => {
+		console.error("Error listing indexes:", err);
+	});
 export default Item;
