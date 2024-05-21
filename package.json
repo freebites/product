@@ -62,7 +62,8 @@
     "react-router-dom": "^6.19.0",
     "styled-components": "^6.0.7",
     "ts-node": "^10.9.2",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-dev-client": "~4.0.14"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
