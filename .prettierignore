@@ -1,0 +1,34 @@
+# Node modules
+node_modules
+
+# Build output
+dist
+build
+out
+
+# Environment files
+.env
+.env*.local
+# Lock files
+package-lock.json
+yarn.lock
+
+# Coverage
+coverage
+
+# Generated files
+*.generated.*
+
+# Logs
+*.log
+
+# other stuff
+.expo
+
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
