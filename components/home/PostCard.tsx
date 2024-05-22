@@ -21,6 +21,7 @@ const placeholderImage = require("../../assets/images/kemal.jpg");
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
+import Header from "../common/Header";
 const leftArrow = require("../../assets/icons/freebites/left-arrow.png");
 const elipsis = require("../../assets/icons/freebites/ellipsis-horizontal.png");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
@@ -62,33 +63,17 @@ export const PostCard = (props) => {
     setModalVisible(!modalVisible);
   };
 
-  function goBack() {
-    router.back();
-  }
-
   return (
     <View>
       <InfoModal
         modalVisible={modalVisible}
         setModalVisible={changeModalVisible}
       ></InfoModal>
-      <View
-        style={{
-          flexDirection: "row",
-          backgroundColor: "white",
-          justifyContent: "space-between",
-          paddingHorizontal: 40,
-        }}
-      >
-        <TouchableOpacity
-          style={{ backgroundColor: "white", width: 20 }}
-          onPress={() => goBack()}
-        >
-          <Image source={leftArrow} />
-        </TouchableOpacity>
-        <Text style={styles.thread}>Post Description</Text>
+
+      <Header text="Post Description">
         <Image source={elipsis} />
-      </View>
+      </Header>
+
       <Divider></Divider>
       <View style={styles.mainbox}>
         <Image
