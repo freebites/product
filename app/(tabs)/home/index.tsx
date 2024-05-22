@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -10,20 +10,10 @@ import {
 import { globalStyles } from "../../../components/global";
 import SearchBar from "../../../components/home/SearchBar";
 import HomePost from "../../../components/home/HomePost";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { getAllPosts } from "../../../api/posts/read";
-import {
-  PostContext,
-  PostProvider,
-  postType,
-} from "../../../context/postContext";
-import Post from "../post";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import { PostContext, postType } from "../../../context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
-
-library.add(fab, fas);
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -32,7 +22,7 @@ const Home = () => {
     const postData = await getAllPosts();
     setPosts(postData);
     setRefreshing(false);
-    //console.log(postData);
+    console.log(postData);
   };
 
   useEffect(() => {
@@ -45,11 +35,6 @@ const Home = () => {
   const handleUpdate = (eachPostData: postType) => {
     updatePostData(eachPostData);
   };
-
-  // const fetchPost = async (props) => {
-  // 	const postData = await getOne(props._id);
-  // 	setSinglePost(postData);
-  // }
 
   const [favoriteSelected, setFavoriteSelected] = useState(true);
   return (
@@ -107,17 +92,7 @@ const Home = () => {
         }
       >
         {AllPosts.map((eachPost: postType) => {
-          // {handleUpdate(eachPost)}
-          // console.log(eachPost)
           return (
-            // <Link
-            // 	href = {{
-            // 		pathname: "/home/postPopUp",
-            // 		params: {eachPost}
-            // 	}} asChild
-            // 	key = {eachPost._id}
-
-            // >
             <HomePost
               style={styles.postCard}
               key={eachPost._id}
