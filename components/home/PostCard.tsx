@@ -13,7 +13,6 @@ import { InfoModal } from "./InfoModal";
 import { Divider } from "react-native-elements";
 import { getOne } from "../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { router } from "expo-router";
 
 import { storage } from "../../firebase";
 import { useAuth } from "../../context/auth";
@@ -22,12 +21,9 @@ import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
 import Header from "../common/Header";
-const leftArrow = require("../../assets/icons/freebites/left-arrow.png");
 const elipsis = require("../../assets/icons/freebites/ellipsis-horizontal.png");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
-const perishable = require("../../assets/icons/freebites/perishable.png");
-const nonperishable = require("../../assets/icons/freebites/nonperishable.png");
 const msg = require("../../assets/icons/freebites/msg.png");
 const lactose = require("../../assets/icons/freebites/lactose.png");
 
@@ -101,7 +97,6 @@ export const PostCard = (props) => {
           <Image style={styles.tagImage} source={msg} />
           <Image style={styles.tagImage} source={lactose} />
           <Image style={styles.tagImage} source={vegetarian} />
-          {/* <Image style={styles.tagImage} source={vegetarian} /> */}
         </View>
         <Divider></Divider>
 
@@ -191,13 +186,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   description: {
-    // height: 300,
     display: "flex",
     flex: 2,
     marginVertical: 20,
   },
   location: {
-    // height: 30,
     fontSize: 22,
     marginBottom: 10,
     color: "#1c1c1b",
@@ -205,7 +198,6 @@ const styles = StyleSheet.create({
   },
   innerDes: {
     height: 50,
-    // width: 200,
     marginBottom: 10,
     fontSize: 16,
     color: "#58565D",
@@ -221,7 +213,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tags: {
-    height: 85,
+    marginVertical: 10,
     flexDirection: "row",
     flexWrap: "wrap",
   },
@@ -235,8 +227,6 @@ const styles = StyleSheet.create({
   comments: {
     display: "flex",
     flexDirection: "row",
-    // alignContent: "center",
-    // justifyContent: "center",
   },
   username: {
     color: "#58565D",
@@ -244,7 +234,6 @@ const styles = StyleSheet.create({
   },
   commentBody: {
     flex: 1,
-    // justifyContent: "center",
   },
   time: {},
   locationContainer: {
