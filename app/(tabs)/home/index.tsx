@@ -22,7 +22,6 @@ const Home = () => {
     const postData = await getAllPosts();
     setPosts(postData);
     setRefreshing(false);
-    console.log(postData);
   };
 
   useEffect(() => {

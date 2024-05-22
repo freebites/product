@@ -130,7 +130,10 @@ export const PostCard = (props) => {
                 View all {singlePost.comments.length} comments
               </Text>
               {singlePost.comments.slice(0, 2).map((comment) => (
-                <View style={styles.comments}>
+                <View
+                  style={styles.comments}
+                  key={comment.body + comment.username}
+                >
                   <View style={{ display: "flex", flexDirection: "row" }}>
                     <Text style={styles.username}>{comment.username}</Text>
                   </View>
