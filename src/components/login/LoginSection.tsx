@@ -10,10 +10,8 @@ import {
 } from "react-native";
 import LoginButton from "./LoginButton";
 import { useAuth } from "../../context/auth";
-import LoginInput from "./LoginInput";
-import { auth } from "../../firebase";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import React from "react";
 
 const LoginSection = () => {
   const { signIn } = useAuth();
@@ -21,10 +19,10 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleEmail = (text) => {
+  const handleEmail = (text: string) => {
     setEmail(text);
   };
-  const handlePassword = (text) => {
+  const handlePassword = (text: string) => {
     setPassword(text);
   };
 

@@ -1,20 +1,13 @@
 import React, { useMemo } from "react";
-import {
-  BottomSheetBackdropProps,
-  useBottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { TouchableWithoutFeedback } from "react-native";
-
 
 const ModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   // animated variables
-
-
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(

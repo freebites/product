@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import {
   View,
   Text,
@@ -7,22 +8,23 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../../../components/global";
-import HomePost from "../../../../components/home/HomePost";
+import { globalStyles } from "../../../components/global";
+import HomePost from "../../../components/home/HomePost";
 import { router } from "expo-router";
 import { getAllPosts, getWithFilter } from "../../../../api/posts/read";
-import { PostContext, postType } from "../../../context/postContext";
+import { PostContext } from "../../../context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
-import FilterList from "../../../../components/home/FilterList";
+import FilterList from "../../../components/home/FilterList";
 import {
   AppContext,
   locationInfo,
   noLocation,
 } from "../../../context/appContext";
-import HomeSearchBar from "../../../../components/home/HomeSearchBar";
+import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import GrowToggle from "../../../../components/home/GrowToggle";
+import GrowToggle from "../../../components/home/GrowToggle";
+import { postType } from "types/PostTypes";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -35,9 +37,18 @@ const Home = () => {
     sort,
   } = useContext(AppContext);
   const { user } = useAuth();
-  const fetchData = async (query?) => {
+  const fetchData = async (
+    query?:
+      | {
+          latitude: string | number;
+          longitude: string | number;
+          diet?: string[];
+          sort?: string;
+        }
+      | undefined
+  ) => {
     // convert dictionary of strings to an array
-    let dietArray = [];
+    let dietArray: string[] = [];
 
     Object.keys(filters).forEach((option) => {
       if (filters[option]) {
@@ -92,7 +103,9 @@ const Home = () => {
     <View style={[globalStyles.container]}>
       <HomeSearchBar
         // if nothing is in the search bar, then clear location
-        onPress={(details) => {
+        onPress={(
+          details: { lat: string | number; lng: string | number } | null
+        ) => {
           const newCoords =
             details != null
               ? {
@@ -128,6 +141,7 @@ const Home = () => {
           text={"Your Posts"}
           onPress={() => setUserToFilter(user.uid)}
         />
+
         {/* sets a border width that's normally transparent, 
 						and then is tied to the 'loginSelected' boolean 
 						TODO: figure out how to animate it, might need 
@@ -163,6 +177,7 @@ const Home = () => {
               onPress={() =>
                 router.push({
                   pathname: "/postPopUp",
+
                   params: { id: eachPost._id },
                 })
               }

@@ -1,31 +1,37 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, Switch } from "react-native";
 import React, { useState } from "react";
-import { SettingsText } from "./styles";
-import { styled } from "styled-components/native";
-const SwitchStyle = styled.Switch`
-  display: flex;
-  width: 66px;
-  height: 29px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-`;
 
-const ToggleUI = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 4% 0%;
-`;
-const ToggleOption = (props) => {
-  const [isEnabled, setIsEnabled] = useState(false);
+const ToggleOption = (props: { text: string }) => {
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   return (
-    <ToggleUI>
-      <SettingsText>{props.text}</SettingsText>
-      <SwitchStyle value={isEnabled} onValueChange={toggleSwitch} />
-    </ToggleUI>
+    <View style={styles.container}>
+      <Text>{props.text}</Text>
+      <Switch
+        style={styles.switchStyle}
+        value={isEnabled}
+        onValueChange={toggleSwitch}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  switchStyle: {
+    display: "flex",
+    width: 66,
+    height: 29,
+    justifyContent: "center",
+    alignItems: "center",
+    flexShrink: 0,
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: "4%",
+    marginBottom: "0%",
+  },
+});
 
 export default ToggleOption;

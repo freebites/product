@@ -2,9 +2,9 @@ import { Tabs, Redirect } from "expo-router";
 import { Image, View } from "react-native";
 
 import React from "react";
-import { useAuth, useProtectedRoute } from "../../context/auth";
-import ProgressBar from "../../../components/post/ProgressBar";
+import { useAuth } from "../../context/auth";
 import { AppContextProvider } from "../../context/appContext";
+import ProgressBar from "../../components/post/ProgressBar";
 
 const homeIcon = require("../../assets/icons/freebites/home-icon.png");
 const postIcon = require("../../assets/icons/freebites/add-post.png");
@@ -49,10 +49,7 @@ export default () => {
       <Tabs.Screen
         name="profile"
         options={{
-          href: {
-            pathname: `/profile`,
-            params: { id: user.uid },
-          },
+          href: { pathname: `/profile`, params: { id: user.uid } },
           headerShown: false,
           tabBarIcon: () => <Image source={profIcon} />,
           tabBarShowLabel: false,

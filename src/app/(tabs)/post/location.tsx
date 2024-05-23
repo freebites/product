@@ -1,25 +1,17 @@
 import { Link, useFocusEffect } from "expo-router";
-import React, { createRef, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
-import ImageViewer from "../../../../components/common/ImageViewer";
+import ImageViewer from "../../../components/common/ImageViewer";
 
 import { PostContext } from "../../../context/postContext";
 import { postStyles } from "./styles/postStyles";
-import { COLORS } from "../../../constants/theme";
-import {
-  Text,
-  SafeAreaView,
-  ScrollView,
-  View,
-  TextInput,
-  StyleSheet,
-} from "react-native";
-import PlacesSearchBar from "../../../../components/common/PlacesSearchBar";
-import GoogleMapView from "../../../../components/common/GoogleMapView";
+import { Text, SafeAreaView, View, TextInput, StyleSheet } from "react-native";
+import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
+import GoogleMapView from "../../../components/common/GoogleMapView";
 import MapView from "react-native-maps";
 import { getGeolocationWithPlaceID } from "../../../../api/util/maps";
-import NextButtonText from "../../../../components/post/NextButtonText";
-import ProgressBar from "../../../../components/post/ProgressBar";
+import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 interface latlong {
@@ -35,9 +27,9 @@ export default function location() {
   // the prop GoogleMapView takes in is the opposite of locationSelected, just
   // intuitively makes more sense to code this way
   const [locationSelected, setLocationSelected] = useState(false);
-  const [coordinates, setCoordinates] = useState<latlong>(null);
+  const [coordinates, setCoordinates] = useState<latlong>({ lat: 0, lng: 0 });
   // onPress --> grab the location input into a
-  const mapRef = createRef<MapView>();
+  const mapRef = useRef<MapView | null>(null);
   useFocusEffect(() => {
     mapSelected ? updateProgress(4) : updateProgress(2);
   });
@@ -50,24 +42,24 @@ export default function location() {
     useContext(PostContext);
 
   // handler for updating location
-  const handleUpdateLocation = (place_id, lat, lng) => {
+  const handleUpdateLocation = (place_id: string, lat: number, lng: number) => {
     updatePostData({
       location: {
         ...postData.location,
         place_id: place_id,
         location: {
           ...postData.location.location,
-          coordinates: [lng, lat],
+          coordinates: [lat, lng],
         },
       },
     });
   };
 
   // handler to update room number
-  const handleUpdateRoom = (room) => {
+  const handleUpdateRoom = (room: string) => {
     updatePostData({ ...postData, room: room });
   };
-  const changeLocation = async (place_id) => {
+  const changeLocation = async (place_id: string) => {
     const geolocation = await getGeolocationWithPlaceID(place_id);
     mapRef.current?.animateToRegion({
       latitude: geolocation.location.lat,
@@ -115,7 +107,7 @@ export default function location() {
         onLocationFound={() => {
           setLocationSelected(true);
         }}
-        onPress={(place_id) => {
+        onPress={(place_id: string) => {
           changeLocation(place_id);
         }}
       />

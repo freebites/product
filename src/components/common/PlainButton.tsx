@@ -1,11 +1,18 @@
-import { Image, View, StyleSheet, Pressable, Text } from "react-native";
+import {
+  Image,
+  View,
+  StyleSheet,
+  Pressable,
+  Text,
+  PressableProps,
+  DimensionValue,
+} from "react-native";
 import React, { forwardRef } from "react";
-import styled from "styled-components/native";
 
 const leftArrow = require("../../assets/icons/chevron-right.png");
 const styles = StyleSheet.create({
   button: {
-    border: 0.5,
+    borderWidth: 0.5,
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "space-between",
@@ -30,31 +37,39 @@ const styles = StyleSheet.create({
   },
 });
 
-const PlainButton = (props, ref) => {
+interface PlainButtonProps {
+  text: string;
+  onPress?: () => void;
+  width: DimensionValue;
+  height: number;
+  section: "top" | "bottom" | "middle";
+}
+const PlainButton = React.forwardRef<View, PlainButtonProps>((props, ref) => {
+  const { text, onPress, width, height, section } = props;
   return (
     <Pressable
-      onPress={props.onPress}
+      onPress={onPress}
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? "rgba(209, 204, 182, 0.3)" : "#FFFCFA",
-          width: props.width,
-          height: props.height,
-          borderBottomRightRadius: props.section == "bottom" ? 20 : 0,
-          borderBottomLeftRadius: props.section == "bottom" ? 20 : 0,
-          borderTopRightRadius: props.section == "top" ? 20 : 0,
-          borderTopLeftRadius: props.section == "top" ? 20 : 0,
+          width: width,
+          height: height,
+          borderBottomRightRadius: section == "bottom" ? 20 : 0,
+          borderBottomLeftRadius: section == "bottom" ? 20 : 0,
+          borderTopRightRadius: section == "top" ? 20 : 0,
+          borderTopLeftRadius: section == "top" ? 20 : 0,
         },
         styles.button,
       ]}
       ref={ref}
     >
       <View style={styles.textArrowView}>
-        <Text style={styles.buttonText}>{props.text}</Text>
+        <Text style={styles.buttonText}>{text}</Text>
         <Image source={leftArrow} style={{ marginRight: 18 }}></Image>
       </View>
     </Pressable>
   );
-};
+});
 
 // need to add forward ref if you want to wrap button in <Link>
-export default forwardRef(PlainButton);
+export default PlainButton;

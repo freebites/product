@@ -1,25 +1,19 @@
 import { Link, useFocusEffect } from "expo-router";
-import React, { useContext, useEffect } from "react";
-import BackButton from "../../../../components/common/BackButton";
-import * as ImagePicker from "expo-image-picker";
-import ImageViewer from "../../../../components/common/ImageViewer";
-import PlainButton2 from "../../../../components/common/PlainButton2";
+import React, { useContext } from "react";
+import ImageViewer from "../../../components/common/ImageViewer";
 import { PostContext } from "../../../context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
-import { COLORS } from "../../../constants/theme";
 import {
   View,
   SafeAreaView,
-  TextInput,
   StyleSheet,
   KeyboardAvoidingView,
-  Pressable,
   Text,
 } from "react-native";
-import NextButtonText from "../../../../components/post/NextButtonText";
-import Description from "../../../../components/post/Description";
+import NextButtonText from "../../../components/post/NextButtonText";
+import Description from "../../../components/post/Description";
 import { postStyles } from "./styles/postStyles";
-import ProgressBar from "../../../../components/post/ProgressBar";
+import ProgressBar from "../../../components/post/ProgressBar";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
@@ -31,7 +25,7 @@ const gallery = () => {
     updateProgress(0);
   });
   // handler for storing image URIs
-  const handleUpdateImages = (imageLinks) => {
+  const handleUpdateImages = (imageLinks: string[]) => {
     updatePostData({
       ...postData,
       imageURIs: imageLinks,
@@ -49,52 +43,13 @@ const gallery = () => {
   };
 
   // Update multiple values
-  const handleUpdateTitle = (title) => {
+  const handleUpdateTitle = (title: string) => {
     updatePostData({ title: title });
   };
 
   // Update multiple values
-  const handleUpdateDesc = (descr) => {
+  const handleUpdateDesc = (descr: string) => {
     updatePostData({ description: descr });
-  };
-
-  // TODO: ADD GOOGLE PLACE ID HERE
-
-  // This is the function that lets opens the phone gallery and pick image
-  // Use async to load images first before doing anything
-  // https://docs.expo.dev/tutorial/image-picker/
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsMultipleSelection: true,
-      aspect: [4, 3],
-      quality: 0,
-      selectionLimit: 5,
-    });
-
-    if (!result.canceled) {
-      // Loops through all of the images and sets strings of the uri
-      let linkArray = [];
-      for (let i = 0; i < result.assets.length; i++) {
-        // create update array
-        linkArray = [...linkArray, result.assets[i].uri];
-      }
-      handleUpdateImages(linkArray);
-    }
-  };
-
-  // function for opening up the camera
-
-  const openCamera = async () => {
-    const cameraPerms = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (cameraPerms.granted === false) {
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync();
-
-    console.log(result);
   };
 
   return (
@@ -119,7 +74,7 @@ const gallery = () => {
           <ImageViewer
             placeholderImageSource={placeholder}
             selectedImage={postData.imageURIs}
-          ></ImageViewer>
+          />
 
           {/* inputs, modularize these? */}
 
@@ -134,7 +89,9 @@ const gallery = () => {
               width: "80%",
             }}
           >
-            <Description onTextChange={(text) => handleUpdateDesc(text)} />
+            <Description
+              onTextChange={(text: string) => handleUpdateDesc(text)}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

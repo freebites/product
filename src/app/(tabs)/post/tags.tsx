@@ -8,46 +8,38 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
-import React, { useContext, useEffect, useState } from "react";
-import BackButton from "../../../../components/common/BackButton";
+import React, { useContext } from "react";
 import { PostContext } from "../../../context/postContext";
-import TagButton from "../../../../components/post/TagButton";
-import TagMultiSelect from "../../../../components/post/TagMultiSelect";
-import PlainButton2 from "../../../../components/common/PlainButton2";
-import BinarySelect from "../../../../components/common/BinarySelect";
-import ImageViewer from "../../../../components/common/ImageViewer";
+import TagMultiSelect from "../../../components/post/TagMultiSelect";
+import BinarySelect from "../../../components/common/BinarySelect";
+import ImageViewer from "../../../components/common/ImageViewer";
 import { postStyles } from "./styles/postStyles";
-import { COLORS } from "../../../constants";
-import HorizontalRule from "../../../../components/common/HorizontalRule";
-import NextButtonText from "../../../../components/post/NextButtonText";
-import ProgressBar from "../../../../components/post/ProgressBar";
-import FilterPopUp from "../../../../components/post/FilterPopUp";
+import HorizontalRule from "../../../components/common/HorizontalRule";
+import NextButtonText from "../../../components/post/NextButtonText";
+import ProgressBar from "../../../components/post/ProgressBar";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
 const tags = () => {
   const { progress, updateProgress, postData, updatePostData, tagOptions } =
     useContext(PostContext);
-
-  // for animating progress bar
   useFocusEffect(() => {
     updateProgress(1);
   });
-
   // update handlers for each field
-  const handleUpdateAllergens = (newAllergens) => {
+  const handleUpdateAllergens = (newAllergens: string[]) => {
     updatePostData({
       tags: { ...postData.tags, allergens: newAllergens },
     });
   };
 
-  const handleUpdateDiets = (newDiets) => {
+  const handleUpdateDiets = (newDiets: string[]) => {
     updatePostData({
       tags: { ...postData.tags, diet: newDiets },
     });
   };
 
-  const handleUpdatePerishable = (perishability) => {
+  const handleUpdatePerishable = (perishability: string) => {
     updatePostData({
       tags: { ...postData.tags, perishable: perishability },
     });
@@ -55,8 +47,15 @@ const tags = () => {
 
   return (
     <SafeAreaView style={postStyles.container}>
-      <View style={{ width: "100%", flex: 1, alignItems: "center" }}>
-        <ScrollView contentContainerStyle={postStyles.scrollContainer}>
+      <KeyboardAvoidingView
+        style={{ width: "100%", flex: 1, alignItems: "center" }}
+        keyboardVerticalOffset={100}
+        behavior={"position"}
+      >
+        <ScrollView
+          contentContainerStyle={postStyles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <ProgressBar />
           <View>
             <ImageViewer
@@ -107,7 +106,7 @@ const tags = () => {
             />
           </View>
         </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
       <Link href="/post/location" asChild>
         <NextButtonText validInput={true} />
       </Link>

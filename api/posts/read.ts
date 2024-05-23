@@ -1,41 +1,44 @@
 import axios from "axios";
+import { postType } from "types/PostTypes";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (): Promise<postType[]> => {
   try {
-    //console.log("env variable: ", apiURL);
     const response = await axios.get(`${apiURL}:3001/api/Posts`);
     return response.data;
   } catch (error) {
-    console.log("error getting all items:", error);
     throw error;
   }
 };
 
-export const getOne = async (itemID) => {
+export const getOne = async (itemID: string): Promise<postType> => {
   try {
     const response = await axios.get(`${apiURL}:3001/api/Posts/${itemID}`);
-    console.log("getting one");
     return response.data;
   } catch (error) {
-    //console.log("error getting all items:", error);
     throw error;
   }
 };
 
 // gets with the filter
-export const getWithFilter = async (params) => {
-	try {
-		// add the params to the URL as needed
-		const response = await axios.get(`${apiURL}:3001/api/Posts`, {
-			params,
-		});
+export const getWithFilter = async (params: {
+  diet: string[];
+  latitude: string | number;
+  longitude: string | number;
+  userID: string;
+  sort: any;
+}) => {
+  try {
+    // add the params to the URL as needed
+    const response = await axios.get(`${apiURL}:3001/api/Posts`, {
+      params,
+    });
 
-		console.log("getting with params: ", params);
-		return response.data;
-	} catch (error) {
-		console.error("Error retrieving posts:", error.message);
-		throw error;
-	}
+    console.log("getting with params: ", params);
+    return response.data;
+  } catch (error) {
+    console.error("Error retrieving posts:", error);
+    throw error;
+  }
 };

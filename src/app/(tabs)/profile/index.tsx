@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Pressable } from "react-native";
-import { Link, Redirect } from "expo-router";
-import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../../../components/global";
-import ProfileCard from "../../../../components/common/cards/ProfileCard";
-import PlainButton from "../../../../components/common/PlainButton";
+import { Link } from "expo-router";
+import { View, SafeAreaView } from "react-native";
+import { globalStyles } from "../../../components/global";
+import ProfileCard from "../../../components/common/cards/ProfileCard";
+import PlainButton from "../../../components/common/PlainButton";
 import { useAuth } from "../../../context/auth";
-import { getOne } from "../../../../api/user/usercrud";
-import { emptyUser } from "../../../context/userContext";
+import { getOneUser } from "../../../../api/user/usercrud";
+import { EmptyUser, UserType } from "../../../context/userContext";
 
 import Header from "../../../../components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();
-  if (user == undefined || user == null || user.uid == null) {
-    return <Redirect href="/login" />;
-  }
-
-  const [currUser, setCurrUser] = useState(emptyUser);
+  console.log("Testing");
+  const [currUser, setCurrUser] = useState<UserType>(EmptyUser);
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getOne(user.uid);
+      const userData = await getOneUser(user.uid);
       setCurrUser(userData);
+      console.log("HERE!!!!!", userData);
     };
     fetchUser();
   }, []);
@@ -40,7 +37,10 @@ const Profile = () => {
 
       <Link
         asChild
-        href={{ pathname: `/profile/history`, params: { id: user.uid } }}
+        href={{
+          pathname: `/profile/history`,
+          params: { id: user.uid },
+        }}
       >
         <PlainButton section="top" width="87%" height={60} text="History" />
       </Link>
@@ -53,7 +53,10 @@ const Profile = () => {
       </Link>
 
       <Link
-        href={{ pathname: `/profile/settings`, params: { id: user.uid } }}
+        href={{
+          pathname: `/profile/settings`,
+          params: { id: user.uid },
+        }}
         asChild
       >
         <PlainButton section="middle" width="87%" height={60} text="Settings" />

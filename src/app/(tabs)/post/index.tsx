@@ -1,27 +1,18 @@
 import { Link } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
-import GalleryButton from "../../../../components/post/GalleryButton";
-import { EmptyPost, PostContext } from "../../../context/postContext";
+import GalleryButton from "../../../components/post/GalleryButton";
+import { PostContext } from "../../../context/postContext";
+import { EmptyPost } from "../../../../types/PostTypes";
 import { manipulateAsync } from "expo-image-manipulator";
-import NextButton from "../../../../components/post/NextButton";
-import { Camera, CameraType } from "expo-camera";
-import {
-  View,
-  SafeAreaView,
-  TextInput,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import NextButton from "../../../components/post/NextButton";
+import { Camera, CameraType } from "expo-camera/legacy";
+import { View, StyleSheet, Text, TouchableOpacity, Button } from "react-native";
 
-// export default function component()
 export default function openCamera() {
   const { postData, updatePostData } = useContext(PostContext);
-  const cameraRef = useRef(null);
-  // console.log(postData);
+  const cameraRef = useRef<Camera>(null);
   // handler for storing image URIs
-  const handleUpdateImages = (imageLinks) => {
+  const handleUpdateImages = (imageLinks: string[]) => {
     // append image links to old array
     const updatedImageURIs = [...postData.imageURIs, ...imageLinks];
 
@@ -43,9 +34,8 @@ export default function openCamera() {
 
   // function for adding camera picture to context.
   const takePhoto = async () => {
-    if (cameraRef) {
+    if (cameraRef.current) {
       let photo = await cameraRef.current.takePictureAsync();
-      //console.log(photo.uri);
       if (photo.hasOwnProperty("uri")) {
         // compress images
         const manipulateResult = await manipulateAsync(
@@ -58,8 +48,6 @@ export default function openCamera() {
       }
       // handleUpdateImages expects an array of URIs
     }
-
-    //console.log([postData.imageURIs]);
   };
 
   //////////////

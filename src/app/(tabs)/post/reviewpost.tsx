@@ -7,23 +7,15 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, router, useFocusEffect } from "expo-router";
-import { PostContext, EmptyPost } from "../../../context/postContext";
-import BackButton from "../../../../components/common/BackButton";
-import PlainButton2 from "../../../../components/common/PlainButton2";
-import ImageViewer from "../../../../components/common/ImageViewer";
-import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
+import React, { useContext } from "react";
+import { Link } from "expo-router";
+import { PostContext } from "../../../context/postContext";
+import { EmptyPost, postType } from "../../../../types/PostTypes";
+import ImageViewer from "../../../components/common/ImageViewer";
 import { storage } from "../../../../firebase";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import create from "../../../../api/posts/create";
-import NextButtonText from "../../../../components/post/NextButtonText";
-import ProgressBar from "../../../../components/post/ProgressBar";
+import NextButtonText from "../../../components/post/NextButtonText";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
 import { useAuth } from "../../../context/auth";
@@ -31,10 +23,11 @@ import { useAuth } from "../../../context/auth";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 export default function reviewpost() {
-  const { postData, updatePostData, resetContext } = useContext(PostContext);
   const { user } = useAuth();
+  const { progress, updateProgress, postData, updatePostData, resetContext } =
+    useContext(PostContext);
   // function to upload one picture given a local URI
-  const uploadPicture = async (uri) => {
+  const uploadPicture = async (uri: string) => {
     //setUploading(true);
 
     try {
@@ -64,10 +57,12 @@ export default function reviewpost() {
       const imagePaths = await Promise.all(
         uris.map((uri) => uploadPicture(uri))
       );
-
+      const filteredPaths: string[] = imagePaths.filter(
+        (path) => path !== undefined
+      ) as string[];
       postData.postTime = new Date();
       postData.postedBy = user.uid;
-      create({ ...postData, imageURIs: imagePaths }); // upload to mongoDB!r
+      create({ user: user, post: { ...postData, imageURIs: filteredPaths } }); // upload to mongoDB!r
       updatePostData(EmptyPost); // clear local post data
       resetContext(); // reset all options to default
 
@@ -85,7 +80,10 @@ export default function reviewpost() {
         keyboardVerticalOffset={100}
         behavior={"position"}
       >
-        <ScrollView contentContainerStyle={postStyles.scrollContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={postStyles.scrollContainer}
+        >
           <View
             style={{
               height: 70,
@@ -104,7 +102,7 @@ export default function reviewpost() {
           <ImageViewer
             placeholderImageSource={placeholder}
             selectedImage={postData.imageURIs}
-          ></ImageViewer>
+          />
 
           <View style={styles.textContainer}>
             <View style={styles.rowContainer}>
@@ -202,7 +200,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Tag = (props) => {
+const Tag = (props: { text: string }) => {
   return (
     <View style={styles.tagContainer}>
       <Text style={styles.tagText}>{props.text}</Text>

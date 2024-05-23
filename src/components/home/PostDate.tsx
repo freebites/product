@@ -1,10 +1,14 @@
 import { StyleSheet, Text } from "react-native";
 import React from "react";
 
-export const PostDate = (props) => {
+interface PostDateProps {
+  postDateTime: Date;
+}
+export const PostDate = (props: PostDateProps) => {
+  const { postDateTime } = props;
   const getTimeDifference = () => {
     const now = new Date();
-    const postTime = new Date(props.postDateTime);
+    const postTime = new Date(postDateTime);
 
     const timeSincePost = Math.abs(now.getTime() - postTime.getTime());
     if (isNaN(timeSincePost)) {

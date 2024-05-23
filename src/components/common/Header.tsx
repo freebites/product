@@ -8,8 +8,12 @@ const leftArrow = require("../../assets/icons/chevron-left.png");
 function goBack() {
   router.back();
 }
-
-const Header = (props) => {
+interface HeaderProps {
+  text: string;
+  children?: React.ReactNode;
+}
+const Header = (props: HeaderProps) => {
+  const { text, children } = props;
   return (
     <View style={styles.container}>
       <Pressable onPress={() => goBack()} style={styles.backButton}>
@@ -17,10 +21,10 @@ const Header = (props) => {
       </Pressable>
 
       <View style={styles.titleContainer}>
-        <Text style={globalStyles.headerText}>{props.text}</Text>
+        <Text style={globalStyles.headerText}>{text}</Text>
       </View>
 
-      <View style={styles.extraButtonContainer}>{props.children}</View>
+      <View style={styles.extraButtonContainer}>{children}</View>
     </View>
   );
 };

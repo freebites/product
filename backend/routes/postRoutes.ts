@@ -12,7 +12,7 @@ import * as post from "../controllers/postControllers";
  */
 const postRouter = express.Router();
 
-postRouter.get("/api/Posts", post.getPostsWithFilter);
+postRouter.get("/api/Posts", post.getAllPosts);
 
 postRouter.get("/api/Posts/:id", post.getOnePost);
 
