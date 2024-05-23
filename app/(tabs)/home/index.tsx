@@ -98,7 +98,7 @@ const Home = () => {
               post={eachPost}
               onPress={() =>
                 router.push({
-                  pathname: "home/postPopUp",
+                  pathname: "/postPopUp",
                   params: { id: eachPost._id },
                 })
               }
