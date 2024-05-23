@@ -197,8 +197,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   innerDes: {
-    height: 50,
-    marginBottom: 10,
     fontSize: 16,
     color: "#58565D",
   },
@@ -249,11 +247,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   titleContainer: {
-    paddingTop: 10,
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    // height: 140,
+    marginVertical: 10,
   },
 });
 export default PostCard;

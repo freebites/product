@@ -8,17 +8,14 @@ import {
   Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
-import React, { useMemo, useContext, useEffect, useRef, useState } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 
 import DisplayComments from "./DisplayComments";
 
-import { useAuth } from "../../context/auth";
 import UploadComment from "./UploadComment";
-const placeholderImage = require("../../assets/images/kemal.jpg");
 const dragHandle = require("../../assets/images/Drag_handle.png");
 
 export const CommentsModal = (props) => {
-  const { user } = useAuth();
   const isKeyboardVisible = useRef(false);
 
   useEffect(() => {
@@ -79,7 +76,6 @@ export const CommentsModal = (props) => {
       hasBackdrop={isBackdrop}
       onBackdropPress={() => props.changeCommentsVisible()}
       style={styles.modalContent}
-      //   scrollOffset={10}
     >
       <KeyboardAvoidingView
         behavior="position"
@@ -148,10 +144,8 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 35,
     borderTopColor: "#F3F0F4",
-    // borderTopStyle: "solid",
     borderTopWidth: 1,
     borderBottomColor: "#F3F0F4",
-    // borderBottomStyle: "solid",
     borderBottomWidth: 1,
   },
 });

@@ -29,7 +29,7 @@ export const PostDate = (props) => {
 const styles = StyleSheet.create({
   postDate: {
     fontSize: 14,
-    color: "#666",
+    color: "#668",
   },
 });
 export default PostDate;

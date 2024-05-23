@@ -27,7 +27,7 @@ export const DisplayComments = (props) => {
             </View>
           ))
         ) : (
-          <ScrollView style={styles.modalNoComments}>
+          <View style={styles.modalNoComments}>
             <Text
               style={{
                 fontSize: 22,
@@ -49,7 +49,7 @@ export const DisplayComments = (props) => {
               Commenting helps other users know {"\n"}
               more about the status of the food!
             </Text>
-          </ScrollView>
+          </View>
         )}
       </TouchableOpacity>
     </ScrollView>
