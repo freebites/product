@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-// const allergen = new mongoose.Schema({
-// 	allergen: String,
-// });
+const allergen = new mongoose.Schema({
+  allergen: String,
+});
 
-// const diet = new mongoose.Schema({
-// 	diet: String,
-// });
+const diet = new mongoose.Schema({
+  diet: String,
+});
 
 const tags = new mongoose.Schema({
 	perishable: String,
@@ -15,14 +15,13 @@ const tags = new mongoose.Schema({
 });
 
 const comment = new mongoose.Schema(
-	{
-		id: Number,
-		username: String,
-		body: String,
-		timestamp: Date, // may need to be changed to string
-	},
-	{ _id: false } // disables mongoDB id creation, we can re-enable if we
-	// run into issues w/ rendering comments (ensure unique keys)
+  {
+    username: String,
+    body: String,
+    timestamp: Date, // may need to be changed to string
+  }
+  // disables mongoDB id creation, we can re-enable if we
+  // run into issues w/ rendering comments (ensure unique keys)
 );
 
 const Location = new mongoose.Schema({

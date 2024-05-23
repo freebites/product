@@ -9,8 +9,6 @@ export type tags = {
 
 // types for comments
 export type comment = {
-	_id: string;
-	id: number;
 	username: string;
 	body: string;
 	timestamp: Date; // may need to be changed to string

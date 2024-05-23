@@ -5,6 +5,9 @@ import { Provider } from "../context/auth";
 import { StatusBar } from "expo-status-bar";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { AppContext, AppContextProvider } from "../context/appContext";
+import { Button, Pressable } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import BackButton from "../components/common/BackButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // can style statusbar for light/dark mode some time
@@ -24,10 +27,10 @@ const Layout = () => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#F0E1D2",
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "#F0E1D2",
+  },
 });
 
 export default Layout;

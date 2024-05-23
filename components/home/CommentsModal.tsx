@@ -1,103 +1,152 @@
 import {
-	Image,
-	View,
-	Text,
-	StyleSheet,
-	SafeAreaView,
-	Button,
-	Pressable,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	Modal,
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import {
-	EmptyPost,
-	postType,
-	comment,
-	PostContext,
-} from "../../context/postContext";
-import { PostCard } from "./PostCard";
+import Modal from "react-native-modal";
+import React, { useMemo, useEffect, useRef } from "react";
+
 import DisplayComments from "./DisplayComments";
-import { Divider } from "react-native-elements";
-import { getOne } from "../../api/posts/read";
-import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
-import update from "../../api/posts/update";
-import { color } from "react-native-elements/dist/helpers";
-import { storage } from "../../firebase";
-import { useAuth } from "../../context/auth";
-const placeholderImage = require("../../assets/images/kemal.jpg")
+
+import UploadComment from "./UploadComment";
+const dragHandle = require("../../assets/images/Drag_handle.png");
 
 export const CommentsModal = (props) => {
+  const isKeyboardVisible = useRef(false);
 
-
-    return (
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={props.modalVisible}
-        onRequestClose={() => {
-            props.setModalVisible(!props.modalVisible)
-        }}
-    >
-        <View style={{ flex: 1 }}>
-            <TouchableWithoutFeedback
-                onPress={() => props.setModalVisible(false)}
-            >
-                <View style={styles.modalBackground}></View>
-            </TouchableWithoutFeedback>
-            <View style={styles.modalComments}>
-                <View style={{ alignItems: "center", paddingTop: 10,}}>
-                    <Text style={{ fontSize: 18, }}>Comments</Text>
-                </View>
-                <Divider
-                    orientation="horizontal"
-                    style={styles.divider}
-                />
-                <DisplayComments 
-					modalVisible={props.modalVisible} 
-					singlePost={props.singlePost} 
-					setModalVisible={props.setModalVisible}>
-				</DisplayComments>
-
-                <View style={styles.modalAddComment}>
-                    <Text>Comment add</Text>
-                </View>
-            </View>
-        </View>
-    </Modal>
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        isKeyboardVisible.current = true;
+      }
     );
 
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        isKeyboardVisible.current = false;
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const dismissKeyboard = () => {
+    if (isKeyboardVisible.current) {
+      Keyboard.dismiss();
+    }
+  };
+
+  const isBackdrop = useMemo(() => {
+    return props.commentsVisible;
+  }, [props.commentsVisible]);
+
+  const handleModalSwipe = () => {
+    props.changeCommentsVisible();
+  };
+
+  const handleModalSwipeMove = (percent) => {
+    if (percent > 0 && isKeyboardVisible.current) {
+      dismissKeyboard();
+    }
+  };
+
+  return (
+    <Modal
+      animationIn={"slideInUp"}
+      animationInTiming={400}
+      animationOut={"slideOutDown"}
+      animationOutTiming={300}
+      backdropTransitionOutTiming={200}
+      swipeThreshold={100}
+      onSwipeMove={handleModalSwipeMove}
+      onSwipeComplete={handleModalSwipe}
+      swipeDirection={["down"]}
+      isVisible={props.commentsVisible}
+      propagateSwipe
+      coverScreen={true}
+      hasBackdrop={isBackdrop}
+      onBackdropPress={() => props.changeCommentsVisible()}
+      style={styles.modalContent}
+    >
+      <KeyboardAvoidingView
+        behavior="position"
+        style={{ width: "100%" }}
+        keyboardVerticalOffset={-20}
+      >
+        <View style={styles.modalComments}>
+          <View style={styles.titleContainer}>
+            <Image source={dragHandle}></Image>
+            <Text style={styles.titleText}>Live Thread</Text>
+          </View>
+          <ScrollView style={styles.commentThread}>
+            <DisplayComments
+              modalVisible={props.modalVisible}
+              singlePost={props.singlePost}
+            />
+          </ScrollView>
+          <UploadComment
+            singlePost={props.singlePost}
+            setSinglePost={props.setSinglePost}
+            functionality={true}
+          ></UploadComment>
+        </View>
+      </KeyboardAvoidingView>
+    </Modal>
+  );
 };
 const styles = StyleSheet.create({
-    divider: {
-        marginVertical: 15,
-    },
-    modalBackground: {
-        height: "40%",
-        width: "100%",
-        // backgroundColor: "black",
-        opacity: 0.6,
-        zIndex: 50,
-    },
-    modalComments: {
-        height: "60%",
-        width: "100%",
-        zIndex: 100,
-        backgroundColor: "white",
-        // flex: 1,
-        flexDirection: "column",
-        borderRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalAddComment: {
-        height: 100,
-        width: "100%",
-        backgroundColor: "white",
-        position: "absolute",
-        bottom: 0,
-    },
+  modalContent: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    margin: 0,
+  },
+  divider: {
+    width: "100%",
+    backgroundColor: "#F3F0F4",
+    color: "#F3F0F4",
+  },
+  modalComments: {
+    backgroundColor: "white",
+    borderColor: "#F3F0F4",
+    borderStyle: "solid",
+    borderWidth: 2,
+    width: "100%",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomWidth: 0,
+    alignItems: "center",
+  },
+  titleContainer: {
+    alignItems: "center",
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  titleText: {
+    paddingTop: 10,
+    fontWeight: "500",
+    fontSize: 18,
+    color: "black",
+  },
+  commentThread: {
+    height: 340,
+    width: "100%",
+    paddingHorizontal: 35,
+    borderTopColor: "#F3F0F4",
+    borderTopWidth: 1,
+    borderBottomColor: "#F3F0F4",
+    borderBottomWidth: 1,
+  },
 });
 export default CommentsModal;
