@@ -1,8 +1,8 @@
 import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React from "react";
-import { globalStyles } from "../../../components/global";
-import Header from "../../../components/common/Header";
-import BorderLine from "../../../components/settings/BorderLine";
+import { globalStyles } from "../../../../components/global";
+import Header from "../../../../components/common/Header";
+import BorderLine from "../../../../components/settings/BorderLine";
 const FAQ = () => {
   return (
     <SafeAreaView style={globalStyles.container}>

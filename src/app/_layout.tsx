@@ -7,23 +7,23 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { AppContext, AppContextProvider } from "../context/appContext";
 import { Button, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import BackButton from "../components/common/BackButton";
+import BackButton from "../../components/common/BackButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // can style statusbar for light/dark mode some time
 const Layout = () => {
-	return (
-		<Provider>
-			<GestureHandlerRootView>
-				<AppContextProvider>
-					<BottomSheetModalProvider>
-						<StatusBar style="dark" />
-						<Stack screenOptions={{ headerShown: false }} />
-					</BottomSheetModalProvider>
-				</AppContextProvider>
-			</GestureHandlerRootView>
-		</Provider>
-	);
+  return (
+    <Provider>
+      <GestureHandlerRootView>
+        <AppContextProvider>
+          <BottomSheetModalProvider>
+            <StatusBar style="dark" />
+            <Stack screenOptions={{ headerShown: false }} />
+          </BottomSheetModalProvider>
+        </AppContextProvider>
+      </GestureHandlerRootView>
+    </Provider>
+  );
 };
 
 const styles = StyleSheet.create({

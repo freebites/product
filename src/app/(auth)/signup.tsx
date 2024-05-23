@@ -6,10 +6,10 @@ import {
   Keyboard,
 } from "react-native";
 import { useState } from "react";
-import { globalStyles } from "../../components/global";
+import { globalStyles } from "../../../components/global";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import LoginSection from "../../components/login/LoginSection";
-import SignupSection from "../../components/login/SignupSection";
+import LoginSection from "../../../components/login/LoginSection";
+import SignupSection from "../../../components/login/SignupSection";
 import { useLocalSearchParams } from "expo-router";
 //import React from 'react'
 

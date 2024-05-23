@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Pressable } from "react-native";
 import { Link, Redirect } from "expo-router";
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../../components/global";
-import ProfileCard from "../../../components/common/cards/ProfileCard";
-import PlainButton from "../../../components/common/PlainButton";
+import { globalStyles } from "../../../../components/global";
+import ProfileCard from "../../../../components/common/cards/ProfileCard";
+import PlainButton from "../../../../components/common/PlainButton";
 import { useAuth } from "../../../context/auth";
-import { getOne } from "../../../api/user/usercrud";
+import { getOne } from "../../../../api/user/usercrud";
 import { emptyUser } from "../../../context/userContext";
 
-import Header from "../../../components/common/Header";
+import Header from "../../../../components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();

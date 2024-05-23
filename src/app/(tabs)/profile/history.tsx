@@ -1,20 +1,25 @@
 import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-import { globalStyles } from "../../../components/global";
-import Header from "../../../components/common/Header";
-import { useAuth } from "../../../context/auth";
+import { globalStyles } from "../../../../components/global";
+import Header from "../../../../components/common/Header";
+import { useAuth, validateRoutePerms } from "../../../context/auth";
+import { useGlobalSearchParams } from "expo-router";
 
 /*
 	TODO: 
 		- Currently the localParams in this page is the UID
-		- For backend, each User should have a [drafts] 
-		- Pass [drafts] from profile, display accordingly
+		- For backend, each User should have a [postIDs] 
+		- Pass in the user's postIDs instead of the whole user object
+		- Display each Post
 */
 
-const drafts = () => {
+const history = () => {
+  validateRoutePerms();
+
   return (
     <SafeAreaView style={globalStyles.container}>
-      <Header text="Drafts" />
+      <Header text="History" />
+
       <View
         style={{
           margin: "5%",
@@ -33,7 +38,7 @@ const drafts = () => {
             paddingBottom: 12,
           }}
         >
-          No drafts yet
+          No history yet
         </Text>
         <Text style={{ textAlign: "center", color: "#505A4E", opacity: 0.57 }}>
           Try making a post by clicking on the + button on the homepage!
@@ -43,4 +48,4 @@ const drafts = () => {
   );
 };
 
-export default drafts;
+export default history;
