@@ -9,9 +9,8 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
-import { postType, comment } from "types/PostTypes";
-import postRouter from "backend/routes/postRoutes";
-import update from "api/posts/update";
+import { postType, comment } from "../../../types/PostTypes";
+import update from "../../../api/posts/update";
 
 interface UploadCommentProps {
   singlePost: postType;
@@ -47,8 +46,8 @@ export const UploadComment = (props: UploadCommentProps) => {
 
   const handleAddComment = () => {
     if (newCommentText.trim().length > 0) {
-      const newComment: comment = {
-        _id: "1", // TODO: replace with actual id
+      const newComment = {
+        // _id: uuid, // TODO: replace with actual id
         username: "user1",
         body: newCommentText,
         timestamp: new Date(),

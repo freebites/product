@@ -61,8 +61,16 @@ export default function reviewpost() {
         (path) => path !== undefined
       ) as string[];
       postData.postTime = new Date();
-      postData.postedBy = user.uid;
-      create({ user: user, post: { ...postData, imageURIs: filteredPaths } }); // upload to mongoDB!r
+      console.log(user.uid);
+      create({
+        user: user,
+        post: {
+          ...postData,
+          imageURIs: filteredPaths,
+          postedBy: user.uid,
+          postTime: new Date(),
+        },
+      }); // upload to mongoDB!r
       updatePostData(EmptyPost); // clear local post data
       resetContext(); // reset all options to default
 

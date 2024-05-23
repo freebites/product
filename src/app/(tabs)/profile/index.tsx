@@ -8,7 +8,7 @@ import { useAuth } from "../../../context/auth";
 import { getOneUser } from "../../../../api/user/usercrud";
 import { EmptyUser, UserType } from "../../../context/userContext";
 
-import Header from "../../../../components/common/Header";
+import Header from "../../../components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();

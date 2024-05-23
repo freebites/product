@@ -1,9 +1,9 @@
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import PostCard from "../../components/home/PostCard";
+import PostCard from "../components/home/PostCard";
 
-export const postPopUp = (props, state) => {
+export const postPopUp = () => {
   const params = useLocalSearchParams();
 
   console.log(JSON.stringify(params));

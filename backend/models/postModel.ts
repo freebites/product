@@ -32,7 +32,7 @@ const itemSchema = new mongoose.Schema({
   title: String,
   description: String,
   imageURIs: [String],
-  tag: tags,
+  tags: tags,
   location: Location,
   comments: [comment],
   post_id: String,

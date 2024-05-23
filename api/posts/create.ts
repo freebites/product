@@ -38,7 +38,10 @@ const create = async (props: CreatePostProps) => {
     });
 
     const normalizedTags = normalizeTags(post.tags); // Normalize tags
-    const response = await axios.post(`${apiURL}:3001/api/Posts`, postData);
+    await axios.post(`${apiURL}:3001/api/Posts`, {
+      ...postData,
+      tags: normalizedTags,
+    });
   } catch (error) {
     console.error("Error adding item:", error);
   }

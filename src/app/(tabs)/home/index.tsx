@@ -24,7 +24,7 @@ import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
-import { postType } from "types/PostTypes";
+import { postType } from "../../../../types/PostTypes";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -141,25 +141,6 @@ const Home = () => {
           text={"Your Posts"}
           onPress={() => setUserToFilter(user.uid)}
         />
-
-        {/* sets a border width that's normally transparent, 
-						and then is tied to the 'loginSelected' boolean 
-						TODO: figure out how to animate it, might need 
-						a different component for this. Also make more 
-						readable  */}
-        <View style={{ width: "30%" }}>
-          <TouchableHighlight
-            style={{
-              borderBottomWidth: 1,
-              borderColor: !favoriteSelected ? "#EDA76E" : "transparent",
-              alignItems: "center",
-            }}
-            underlayColor="transparent"
-            onPress={() => setFavoriteSelected(false)}
-          >
-            <Text> Bookmark </Text>
-          </TouchableHighlight>
-        </View>
       </View>
 
       <ScrollView
