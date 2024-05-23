@@ -6,7 +6,7 @@ import InfoPopUp from "./InfoPopUp";
 export const InfoModal = (props) => {
   return (
     <Modal visible={props.modalVisible} transparent={true} animationType="fade">
-      <Pressable style={styles.modalContent}>
+      <Pressable style={styles.modalContent} onPress={props.setModalVisible}>
         <Pressable>
           <InfoPopUp setModalVisible={props.setModalVisible} />
         </Pressable>
