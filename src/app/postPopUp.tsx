@@ -5,13 +5,12 @@ import PostCard from "../components/home/PostCard";
 
 export const postPopUp = () => {
   const params = useLocalSearchParams();
-
-  console.log(JSON.stringify(params));
+  const id = params.id as string;
 
   return (
     <SafeAreaView style={[styles.cardView, { backgroundColor: "white" }]}>
       <View style={styles.cardbox}>
-        <PostCard id={params.id} />
+        <PostCard id={id} />
       </View>
     </SafeAreaView>
   );

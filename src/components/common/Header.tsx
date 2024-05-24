@@ -21,7 +21,7 @@ const Header = (props: HeaderProps) => {
       </Pressable>
 
       <View style={styles.titleContainer}>
-        <Text style={globalStyles.headerText}>{text}</Text>
+        <Text style={styles.headerText}>{text}</Text>
       </View>
 
       <View style={styles.extraButtonContainer}>{children}</View>
@@ -35,7 +35,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "10%",
+    marginBottom: "2%",
+    marginTop: 10,
+  },
+  headerText: {
+    fontSize: 16,
+    color: "black",
+    fontWeight: "bold",
   },
   image: {
     marginTop: 10,
