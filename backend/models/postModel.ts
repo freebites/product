@@ -38,7 +38,7 @@ const itemSchema = new mongoose.Schema({
   post_id: String,
   room: String,
   postTime: Date,
-  postedBy: { type: String, required: true }, // firebase UID
+  postedBy: String
 });
 
 // index the parameters that you want to be able to search in

@@ -4,6 +4,9 @@ import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
+import deleteOne from "../../../api/posts/delete";
+// import fetchData from "../../app/(tabs)/home/index";
+import DeleteButton from "../common/cards/DeleteButton";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 interface HomePostProps {
@@ -48,10 +51,17 @@ export const HomePost = (props: HomePostProps) => {
       </View>
       <View style={styles.sidebox}>
         <View style={styles.location}>
-          <Text>{post.location ? post.location.place_id : post.location}</Text>
+          <Text style={styles.text}>{post._id}</Text>
         </View>
         <Text style={styles.description}>{post.title}</Text>
       </View>
+      <DeleteButton
+        onPress={() => {
+          deleteOne(post._id);
+          console.log("deleted it");
+          // fetchData();
+        }}
+      ></DeleteButton>
     </Pressable>
   );
 };
@@ -98,6 +108,9 @@ const styles = StyleSheet.create({
   description: {
     height: 40,
     flexDirection: "row",
+  },
+  text: {
+    fontSize: 10,
   },
 });
 

@@ -11,13 +11,13 @@ type filterTypes = {
 type AppContextType = {
 	// so we can edit filters directly from the filter modal
 	filters: filterTypes; // string so we can use directly as a query parameter
-	setFilters: (string) => void;
+	setFilters: (arg0: string) => void;
 	sort: string;
-	setSort: (string) => void;
+	setSort: (arg0: string) => void;
 	location: locationInfo;
-	setLocation: (locationInfo) => void;
+	setLocation: (arg0: locationInfo) => void;
 	userToFilter: string; // firebase UID of currently authenticated/searched user
-	setUserToFilter: (string) => void;
+	setUserToFilter: (arg0: string) => void;
 };
 export const noLocation: locationInfo = {
 	latitude: "",

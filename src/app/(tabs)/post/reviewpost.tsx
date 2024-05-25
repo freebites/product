@@ -71,6 +71,12 @@ export default function reviewpost() {
           postTime: new Date(),
         },
       }); // upload to mongoDB!r
+      console.log({
+        ...postData,
+        imageURIs: filteredPaths,
+        postedBy: user.uid,
+        postTime: new Date(),
+      });
       updatePostData(EmptyPost); // clear local post data
       resetContext(); // reset all options to default
 

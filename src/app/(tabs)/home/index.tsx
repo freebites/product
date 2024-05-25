@@ -25,6 +25,7 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
+import DeleteButton from "../../../components/common/cards/DeleteButton";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -139,7 +140,11 @@ const Home = () => {
         <GrowToggle
           selected={userToFilter != ""}
           text={"Your Posts"}
-          onPress={() => setUserToFilter(user.uid)}
+          onPress={() => {
+            console.log(user.uid);
+            setUserToFilter(user.uid);
+            console.log(userToFilter);
+          }}
         />
       </View>
 
