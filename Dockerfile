@@ -4,6 +4,7 @@ FROM node:20
 # Set the working directory in the container
 WORKDIR ./
 
+ENV HOST 0.0.0.0
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./   
 COPY react-native-map-web-fix.js ./

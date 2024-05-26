@@ -13,7 +13,7 @@ import type { ExpoPushMessage, ExpoPushTicket } from "expo-server-sdk";
 import User from "./models/userModel";
 
 const app = express();
-export const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 const expo = new Expo();
 console.log("hi");
 // Enable CORS to allow requests from React Native app

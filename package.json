@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "postinstall": "node react-native-map-web-fix.js",
-    "server": "ts-node backend/server.ts"
+    "server": "ts-node backend/server.ts",
+    "test2": "cross-env PORT=8080 docker run -p 8080:${PORT} -e PORT=${PORT} image-test2"
   },
   "dependencies": {
     "@freebites/backend": "^1.0.0",
@@ -27,6 +28,7 @@
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@types/react": "~18.2.45",
     "@types/react-native": "^0.72.2",
+    "cross-env": "^7.0.3",
     "metro": "^0.80.9",
     "typescript": "~5.3.3"
   },
