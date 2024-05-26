@@ -16,9 +16,9 @@ const Profile = () => {
   const [currUser, setCurrUser] = useState<UserType>(EmptyUser);
   useEffect(() => {
     const fetchUser = async () => {
+      console.log("HERE!!!!!", user.uid);
       const userData = await getOneUser(user.uid);
       setCurrUser(userData);
-      console.log("HERE!!!!!", userData);
     };
     fetchUser();
   }, []);

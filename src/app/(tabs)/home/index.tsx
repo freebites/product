@@ -36,7 +36,7 @@ const Home = () => {
     setUserToFilter,
     sort,
   } = useContext(AppContext);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const fetchData = async (
     query?:
       | {
@@ -134,12 +134,16 @@ const Home = () => {
         <GrowToggle
           selected={userToFilter == ""}
           text={"All Posts"}
-          onPress={() => setUserToFilter("")}
+          onPress={() => {
+            setUserToFilter("");
+          }}
         />
         <GrowToggle
           selected={userToFilter != ""}
           text={"Your Posts"}
-          onPress={() => setUserToFilter(user.uid)}
+          onPress={() => {
+            setUserToFilter(user.uid);
+          }}
         />
       </View>
 
