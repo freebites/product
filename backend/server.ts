@@ -7,13 +7,13 @@ import bodyParser from "body-parser";
 import postRouter from "./routes/postRoutes";
 import userRouter from "./routes/userRoutes";
 import notifyRouter from "./routes/notifyRoutes";
-import type { UserType } from "../types/UserTypes";
+import type { UserType } from "./types/UserTypes";
 import Expo from "expo-server-sdk";
 import type { ExpoPushMessage, ExpoPushTicket } from "expo-server-sdk";
 import User from "./models/userModel";
 
 const app = express();
-const port = 3001;
+export const port = process.env.PORT || 8080;
 const expo = new Expo();
 console.log("hi");
 // Enable CORS to allow requests from React Native app
@@ -57,7 +57,9 @@ app.use(notifyRouter);
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(
+    `Server is running on https://freebites-backend-3tycrwhobq-ue.a.run.app`
+  );
 });
 
 /*

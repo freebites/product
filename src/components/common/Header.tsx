@@ -2,6 +2,7 @@ import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
+import { Icon } from "react-native-elements";
 
 const leftArrow = require("../../assets/icons/chevron-left.png");
 
@@ -17,7 +18,7 @@ const Header = (props: HeaderProps) => {
   return (
     <View style={styles.container}>
       <Pressable onPress={() => goBack()} style={styles.backButton}>
-        <Image source={leftArrow} style={styles.image} />
+        <Icon type={"entypo"} name={"chevron-left"} style={styles.image} />
       </Pressable>
 
       <View style={styles.titleContainer}>

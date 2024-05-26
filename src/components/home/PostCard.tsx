@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { EmptyPost, postType, comment } from "../../../types/PostTypes";
 import { CommentsModal } from "./CommentsModal";
-import { Divider } from "react-native-elements";
+import { Divider, Icon } from "react-native-elements";
 import { getOne } from "../../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
 import { TextInput } from "react-native-gesture-handler";
@@ -22,7 +22,6 @@ import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 const placeholderImage = require("../../assets/images/kemal.jpg");
-const elipsis = require("../../assets/icons/freebites/ellipsis-horizontal.png");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const msg = require("../../assets/icons/freebites/msg.png");
@@ -47,8 +46,10 @@ export const PostCard = (props: PostCardProps) => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        console.log("post image:", props.id);
         const postData = await getOne(props.id);
         setSinglePost(postData);
+        console.log("post image:", postData.imageURIs[0]);
         const url = await getDownloadURL(ref(storage, postData.imageURIs[0]));
         setImageURL(url);
       } catch (error) {
@@ -77,7 +78,7 @@ export const PostCard = (props: PostCardProps) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        <Image source={elipsis} />
+        <Icon type={"entypo"} name={"dots-three-horizontal"} />
       </Header>
 
       <Divider></Divider>

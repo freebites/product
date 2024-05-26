@@ -55,7 +55,6 @@ export function validateRoutePerms() {
   if (
     user == EmptyUser ||
     user === undefined ||
-    user === EmptyUser ||
     user.uid === "" ||
     user.uid !== routeParams.id
   ) {
@@ -65,14 +64,17 @@ export function validateRoutePerms() {
 
 export function useProtectedRoute(user: UserType) {
   let segments = useSegments(); // useSegments returns the current in-file 'url'
-
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)"; // checks if current url is in (auth)
     // if user not signed in AND not looking at a login page,
-    if (segments === undefined || (user == EmptyUser && !inAuthGroup)) {
-      // redirect them to the login page
+    if (
+      segments === undefined ||
+      ((user == EmptyUser || user.uid === "") && !inAuthGroup)
+    ) {
+      // redirect them to the login page, hack fix to prevent infinite loop
+      // user.uid = "PLACEHOLDER";
       router.replace("/login");
-    } else if (user != EmptyUser && inAuthGroup) {
+    } else if (user != EmptyUser && user.uid != "" && inAuthGroup) {
       router.replace("/"); // stay on apge
     }
   }, [user, segments]); // run function whenever user or segments change

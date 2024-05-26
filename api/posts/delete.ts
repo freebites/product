@@ -1,12 +1,13 @@
 import axios from "axios";
 import { storage } from "../../firebase";
 import { ref, deleteObject } from "firebase/storage";
+import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const deleteOne = async (itemID: string) => {
   try {
     // find and delete all associated images in firebase database
     await axios
-      .get(`${apiURL}:3001/api/Posts/${itemID}`)
+      .get(`${apiURL}/api/Posts/${itemID}`)
       .then(async function (response) {
         // could use forEach, but deletes all images concurrently
         await Promise.all(
@@ -27,7 +28,7 @@ const deleteOne = async (itemID: string) => {
       });
 
     // delete document from mongoDB
-    const response = await axios.delete(`${apiURL}:3001/api/Posts/${itemID}`);
+    const response = await axios.delete(`${apiURL}/api/Posts/${itemID}`);
   } catch (error) {
     // throw error;
     console.error("Error deleting item IN FRONTEND  :", error);

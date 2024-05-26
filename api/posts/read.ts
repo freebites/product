@@ -1,11 +1,11 @@
 import axios from "axios";
 import { postType } from "types/PostTypes";
-
+import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getAllPosts = async (): Promise<postType[]> => {
   try {
-    const response = await axios.get(`${apiURL}:3001/api/Posts`);
+    const response = await axios.get(`${apiURL}/api/Posts`);
     return response.data;
   } catch (error) {
     throw error;
@@ -14,7 +14,7 @@ export const getAllPosts = async (): Promise<postType[]> => {
 
 export const getOne = async (itemID: string): Promise<postType> => {
   try {
-    const response = await axios.get(`${apiURL}:3001/api/Posts/${itemID}`);
+    const response = await axios.get(`${apiURL}/api/Posts/${itemID}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -31,7 +31,7 @@ export const getWithFilter = async (params: {
 }) => {
   try {
     // add the params to the URL as needed
-    const response = await axios.get(`${apiURL}:3001/api/Posts`, {
+    const response = await axios.get(`${apiURL}/api/Posts`, {
       params,
     });
 

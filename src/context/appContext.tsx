@@ -11,7 +11,7 @@ type filterTypes = {
 type AppContextType = {
 	// so we can edit filters directly from the filter modal
 	filters: filterTypes; // string so we can use directly as a query parameter
-	setFilters: (arg0: string) => void;
+	setFilters: (arg0: filterTypes) => void;
 	sort: string;
 	setSort: (arg0: string) => void;
 	location: locationInfo;
@@ -36,11 +36,11 @@ export const AppContext = React.createContext<AppContextType>({
 });
 
 export interface locationInfo {
-	latitude: string;
-	longitude: string;
+	latitude: string | number;
+	longitude: string | number;
 }
 
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = (props: { children: any }) => {
 	const [filters, setFilters] = useState<filterTypes>({
 		vegan: "",
 		vegetarian: "",
@@ -73,7 +73,7 @@ export const AppContextProvider = ({ children }) => {
 				setUserToFilter,
 			}}
 		>
-			{children}
+			{props.children}
 		</AppContext.Provider>
 	);
 };
