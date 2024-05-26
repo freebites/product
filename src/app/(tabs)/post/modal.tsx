@@ -1,9 +1,8 @@
-import { View, StyleSheet } from "react-native";
+import React, { View, StyleSheet } from "react-native";
 import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import PlainButton2 from "../../../../components/common/PlainButton2";
-import CancelButton from "../../../../components/post/PostModal/CancelButton";
-import Options from "../../../../components/post/PostModal/Options";
+import CancelButton from "../../../components/post/PostModal/CancelButton";
+import Options from "../../../components/post/PostModal/Options";
 
 /*
  * Modal

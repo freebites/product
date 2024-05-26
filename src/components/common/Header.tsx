@@ -2,25 +2,30 @@ import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
+import { Icon } from "react-native-elements";
 
 const leftArrow = require("../../assets/icons/chevron-left.png");
 
 function goBack() {
   router.back();
 }
-
-const Header = (props) => {
+interface HeaderProps {
+  text: string;
+  children?: React.ReactNode;
+}
+const Header = (props: HeaderProps) => {
+  const { text, children } = props;
   return (
     <View style={styles.container}>
       <Pressable onPress={() => goBack()} style={styles.backButton}>
-        <Image source={leftArrow} style={styles.image} />
+        <Icon type={"entypo"} name={"chevron-left"} style={styles.image} />
       </Pressable>
 
       <View style={styles.titleContainer}>
-        <Text style={globalStyles.headerText}>{props.text}</Text>
+        <Text style={globalStyles.headerText}>{text}</Text>
       </View>
 
-      <View style={styles.extraButtonContainer}>{props.children}</View>
+      <View style={styles.extraButtonContainer}>{children}</View>
     </View>
   );
 };

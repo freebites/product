@@ -6,30 +6,31 @@
  */
 
 import { useEffect, useState } from "react";
+import { port } from "./server";
 import axios from "axios";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const Database = () => {
-	const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(`${apiURL}:3001/api/Posts/`);
-				console.log(
-					"Network request to get data was successful",
-					response.data
-				);
-				setData(response.data);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			}
-		};
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${apiURL}/api/Posts/`);
+        console.log(
+          "Network request to get data was successful",
+          response.data
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-		fetchData();
-	}, []);
+    fetchData();
+  }, []);
 
-	return data;
+  return data;
 };
 
 export default Database;

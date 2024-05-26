@@ -3,42 +3,53 @@ import {
   View,
   Text,
   StyleSheet,
-  Pressable,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { EmptyPost } from "../../context/postContext";
+import { EmptyPost, postType, comment } from "../../../types/PostTypes";
 import { CommentsModal } from "./CommentsModal";
-import { InfoModal } from "./InfoModal";
-import { Divider } from "react-native-elements";
-import { getOne } from "../../api/posts/read";
+import { Divider, Icon } from "react-native-elements";
+import { getOne } from "../../../api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-
-import { storage } from "../../firebase";
+import { TextInput } from "react-native-gesture-handler";
+import update from "../../../api/posts/update";
+import { storage } from "../../../firebase";
 import { useAuth } from "../../context/auth";
-const placeholderImage = require("../../assets/images/kemal.jpg");
+import DisplayComments from "./DisplayComments";
+import InfoModal from "./InfoModal";
+import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
-import DisplayTags from "./DisplayTags";
-import Header from "../common/Header";
-const elipsis = require("../../assets/icons/freebites/ellipsis-horizontal.png");
+const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const msg = require("../../assets/icons/freebites/msg.png");
 const lactose = require("../../assets/icons/freebites/lactose.png");
 
-export const PostCard = (props) => {
+interface PostCardProps {
+  id: string;
+}
+
+export const PostCard = (props: PostCardProps) => {
   const { user } = useAuth();
-  const [singlePost, setSinglePost] = useState(EmptyPost);
-  const [imageURL, setImageURL] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [commentsVisible, setCommentsVisible] = useState(false);
+  const [singlePost, setSinglePost] = useState<postType>(EmptyPost);
+  const [imageURL, setImageURL] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [commentsVisible, setCommentsVisible] = useState<boolean>(false);
+
+  const [newCommentText, setNewCommentText] = useState<string>("");
+  const handleCommentChange = (text: string) => {
+    setNewCommentText(text);
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        console.log("post image:", props.id);
         const postData = await getOne(props.id);
         setSinglePost(postData);
+        console.log("post image:", postData.imageURIs[0]);
         const url = await getDownloadURL(ref(storage, postData.imageURIs[0]));
         setImageURL(url);
       } catch (error) {
@@ -67,7 +78,7 @@ export const PostCard = (props) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        <Image source={elipsis} />
+        <Icon type={"entypo"} name={"dots-three-horizontal"} />
       </Header>
 
       <Divider></Divider>
@@ -160,7 +171,7 @@ export const PostCard = (props) => {
           <CommentsModal
             changeCommentsVisible={changeCommentsVisible}
             singlePost={singlePost}
-            setSinglePost={setSinglePost}
+            setSinglePost={(post: postType) => setSinglePost(post)}
             commentsVisible={commentsVisible}
           ></CommentsModal>
         </Pressable>
@@ -171,7 +182,6 @@ export const PostCard = (props) => {
 
 const styles = StyleSheet.create({
   mainbox: {
-    // position: "relative",
     zIndex: 20,
     width: "100%",
     height: "100%",

@@ -13,7 +13,7 @@ export const postStyles = StyleSheet.create({
   scrollContainer: {
     alignItems: "center",
     justifyContent: "center",
-    flexGrow: 1,
+    width: "100%",
   },
   scrollContainer2: {
     alignItems: "center",

@@ -1,17 +1,16 @@
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import PostCard from "../../components/home/PostCard";
+import PostCard from "../components/home/PostCard";
 
-export const postPopUp = (props, state) => {
+export const postPopUp = () => {
   const params = useLocalSearchParams();
-
-  console.log(JSON.stringify(params));
+  const postId = Array.isArray(params) ? params[0] : params;
 
   return (
     <SafeAreaView style={[styles.cardView, { backgroundColor: "white" }]}>
       <View style={styles.cardbox}>
-        <PostCard id={params.id} />
+        <PostCard id={postId.id} />
       </View>
     </SafeAreaView>
   );

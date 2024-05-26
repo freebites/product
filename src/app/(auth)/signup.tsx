@@ -6,11 +6,13 @@ import {
   Keyboard,
 } from "react-native";
 import { useState } from "react";
-import { globalStyles } from "../../../components/global";
-import { TouchableHighlight } from "react-native-gesture-handler";
-import LoginSection from "../../../components/login/LoginSection";
-import SignupSection from "../../../components/login/SignupSection";
+import { globalStyles } from "../../components/global";
+import { TouchableOpacity } from "react-native";
+import LoginSection from "../../components/login/LoginSection";
+import SignupSection from "../../components/login/SignupSection";
 import { useLocalSearchParams } from "expo-router";
+import React from "react";
+import { TouchableHighlight } from "react-native-gesture-handler";
 //import React from 'react'
 
 //import top image icon thingy

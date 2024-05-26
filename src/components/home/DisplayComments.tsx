@@ -3,9 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import PostDate from "./PostDate";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import { postType } from "types/PostTypes";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
-export const DisplayComments = (props) => {
+interface DisplayCommentsProps {
+  singlePost: postType;
+  setModalVisible: (value: boolean) => void;
+}
+
+export const DisplayComments = (props: DisplayCommentsProps) => {
   return (
     <ScrollView style={{ zIndex: 30 }}>
       <TouchableOpacity>

@@ -1,31 +1,47 @@
 {
-	"expo": {
-		"scheme": "acme",
-		"web": {
-			"bundler": "metro"
-		},
-		"android": {
-			"softwareKeyboardLayoutMode": "pan",
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#ffffff",
-				"googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
-			}
-		},
-		"name": "product",
-		"slug": "product",
-		"plugins": [
-			"expo-router",
-			[
-				"expo-location",
-				{
-					"locationAlwaysAndWhenInUsePermission": "Allow Maps to use your location."
-				}
-			]
-		],
-		"ios": {
-			"supportsTablet": true,
-			"googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
-		}
-	}
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "entryPoint": "./frontend/app/index.tsx",
+    "android": {
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff",
+        "googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.jtan06.product"
+    },
+    "name": "product",
+    "slug": "product",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Maps to use your location."
+        }
+      ]
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA",
+      "bundleIdentifier": "com.jtan06.product"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ba8d18b9-14b6-42d3-9a3d-2bfaafa7883f"
+      }
+    }
+  }
 }

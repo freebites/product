@@ -8,12 +8,16 @@ import {
   Animated,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { comment } from "../../context/postContext";
-
 import { TextInput } from "react-native-gesture-handler";
-import update from "../../api/posts/update";
+import { postType, comment } from "../../../types/PostTypes";
+import update from "../../../api/posts/update";
 
-export const UploadComment = (props) => {
+interface UploadCommentProps {
+  singlePost: postType;
+  setSinglePost: (post: postType) => void;
+  functionality: boolean;
+}
+export const UploadComment = (props: UploadCommentProps) => {
   const [newCommentText, setNewCommentText] = useState("");
   const [buttonOpacity] = useState(new Animated.Value(0));
 
@@ -25,24 +29,25 @@ export const UploadComment = (props) => {
     }).start();
   }, [newCommentText]); // Re-run the effect whenever newCommentText changes
 
-  const handleCommentChange = (text) => {
+  const handleCommentChange = (text: string) => {
     setNewCommentText(text);
   };
 
-  const handleUpdateComments = async (newComment) => {
+  const handleUpdateComments = async (newComment: comment) => {
     try {
       const updatedComments = [...props.singlePost.comments, newComment];
       const updatedPost = { ...props.singlePost, comments: updatedComments };
       props.setSinglePost(updatedPost);
-      await update(updatedPost, updatedPost._id);
-    } catch (error) {
+      await update({ post: updatedPost, itemID: updatedPost._id });
+    } catch (error: any) {
       console.error("Error updating comments:", error);
     }
   };
 
   const handleAddComment = () => {
     if (newCommentText.trim().length > 0) {
-      const newComment: comment = {
+      const newComment = {
+        // _id: uuid, // TODO: replace with actual id
         username: "user1",
         body: newCommentText,
         timestamp: new Date(),

@@ -11,13 +11,13 @@ type filterTypes = {
 type AppContextType = {
 	// so we can edit filters directly from the filter modal
 	filters: filterTypes; // string so we can use directly as a query parameter
-	setFilters: (string) => void;
+	setFilters: (arg0: filterTypes) => void;
 	sort: string;
-	setSort: (string) => void;
+	setSort: (arg0: string) => void;
 	location: locationInfo;
-	setLocation: (locationInfo) => void;
+	setLocation: (arg0: locationInfo) => void;
 	userToFilter: string; // firebase UID of currently authenticated/searched user
-	setUserToFilter: (string) => void;
+	setUserToFilter: (arg0: string) => void;
 };
 export const noLocation: locationInfo = {
 	latitude: "",
@@ -36,11 +36,11 @@ export const AppContext = React.createContext<AppContextType>({
 });
 
 export interface locationInfo {
-	latitude: string;
-	longitude: string;
+	latitude: string | number;
+	longitude: string | number;
 }
 
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = (props: { children: any }) => {
 	const [filters, setFilters] = useState<filterTypes>({
 		vegan: "",
 		vegetarian: "",
@@ -73,7 +73,7 @@ export const AppContextProvider = ({ children }) => {
 				setUserToFilter,
 			}}
 		>
-			{children}
+			{props.children}
 		</AppContext.Provider>
 	);
 };

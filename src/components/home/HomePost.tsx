@@ -1,141 +1,104 @@
 import { Image, View, Text, StyleSheet, Pressable } from "react-native";
-import React, { forwardRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import styled from "styled-components/native";
-import { postType } from "../../context/postContext";
-import { StyleSheetContext } from "styled-components";
-import { faBookmark } from "@fortawesome/free-solid-svg-icons/faBookmark";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { storage } from "../../firebase";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import create from "../../api/posts/create";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
+import { postType } from "../../../types/PostTypes";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
+interface HomePostProps {
+  post: postType;
+  onPress: () => void;
+  style?: object;
+}
+export const HomePost = (props: HomePostProps) => {
+  const { post, onPress } = props;
 
-const dummyData: postType = {
-	_id: "",
-	title: "testtitle",
-	description: "Pizzas, burritos, tacos",
-	imageURIs: ["../../assets/images/the-pizza-box.jpeg"],
-	tags: {
-		perishable: true,
-		allergens: ["peanuts"],
-		diet: ["none"],
-	},
-	location: {
-		place_id: "JCC 180",
-		location: {
-			type: "Point",
-			coordinates: [0, 0],
-		},
-	},
-	comments: [],
-	post_id: "",
-	room: "123",
-	postTime: new Date(),
-};
+  // temp fix for null
+  if (!post.imageURIs) {
+    post.imageURIs = [];
+  }
+  const [imageURL, setImageURL] = useState<string>("");
 
-export const HomePost = (props) => {
-	// temp fix for null
-	if (!props.post.imageURIs) {
-		props.post.imageURIs = [];
-	}
+  useEffect(() => {
+    const loadImageURL = async () => {
+      try {
+        // grab firebase URL from Firebase
+        const url = await getDownloadURL(ref(storage, post.imageURIs[0]));
+        setImageURL(url);
+      } catch (error) {
+        setImageURL(placeholderImage); // set image to dummy pizza when not found
+        console.error("Error loading image URL:", error);
+      }
+    };
 
-	const [imageURL, setImageURL] = useState(null);
+    loadImageURL();
+  }, [post.imageURIs[0]]);
 
-	useEffect(() => {
-		const loadImageURL = async () => {
-			try {
-				// grab firebase URL from Firebase
-				const url = await getDownloadURL(
-					ref(storage, props.post.imageURIs[0])
-				);
-				setImageURL(url);
-			} catch (error) {
-				setImageURL(placeholderImage); // set image to dummy pizza when not found
-				console.error("Error loading image URL:", error);
-			}
-		};
-
-		loadImageURL();
-	}, [props.post.imageURIs[0]]);
-	//const [imageURL, setImageURL] = useState();
-
-	return (
-		<Pressable style={styles.mainbox} onPress={props.onPress}>
-			<View style={styles.imagebox}>
-				<Image source={{ uri: imageURL }} style={styles.image} />
-			</View>
-			<View style={styles.sidebox}>
-				<Pressable>
-					<FontAwesomeIcon
-						icon={faBookmark}
-						style={styles.bookmark}
-					/>
-				</Pressable>
-				<View style={styles.location}>
-					<Text>
-						{props.post.location
-							? props.post.location.place_id
-							: props.post.location}
-					</Text>
-				</View>
-				<Text style={styles.description}>{props.post.title}</Text>
-			</View>
-		</Pressable>
-	);
+  return (
+    <Pressable style={styles.mainbox} onPress={onPress}>
+      <View style={styles.imagebox}>
+        <Image
+          source={{
+            // add loading skeleton here? or a state management if we want the whole post to do an animation
+            uri: imageURL != "" ? imageURL : "https://i.gifer.com/ZKZg.gif",
+          }}
+          style={styles.image}
+        />
+      </View>
+      <View style={styles.sidebox}>
+        <View style={styles.location}>
+          <Text>{post.location ? post.location.place_id : post.location}</Text>
+        </View>
+        <Text style={styles.description}>{post.title}</Text>
+      </View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
-	mainbox: {
-		width: "100%",
-		backgroundColor: "white",
-		height: 151,
-		// elevation: 5,
+  mainbox: {
+    width: "100%",
+    backgroundColor: "white",
+    height: 151,
 
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.2,
-		shadowRadius: 4,
-		borderRadius: 20,
-		paddingHorizontal: 20,
-		paddingVertical: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
 
-		flexDirection: "row",
-	},
-	imagebox: {
-		// flex : 1,
-		width: 135,
-		marginRight: 10,
-	},
-	image: {
-		flex: 1,
-		borderRadius: 15,
-	},
-	sidebox: {
-		flex: 3,
-		marginLeft: 10,
-		flexDirection: "column",
-	},
-	location: {
-		height: 25,
-		flexDirection: "row",
-	},
-	bookmark: {
-		width: 20,
-		height: 25,
-		flexDirection: "row",
-		alignSelf: "flex-end",
-
-		// flex : 1,
-		// width : 10,
-	},
-	description: {
-		height: 40,
-		flexDirection: "row",
-	},
+    flexDirection: "row",
+  },
+  imagebox: {
+    width: 135,
+    marginRight: 10,
+  },
+  image: {
+    flex: 1,
+    borderRadius: 15,
+  },
+  sidebox: {
+    flex: 3,
+    marginLeft: 10,
+    flexDirection: "column",
+  },
+  location: {
+    height: 25,
+    flexDirection: "row",
+  },
+  bookmark: {
+    width: 20,
+    height: 25,
+    flexDirection: "row",
+    alignSelf: "flex-end",
+  },
+  description: {
+    height: 40,
+    flexDirection: "row",
+  },
 });
 
 export default HomePost;

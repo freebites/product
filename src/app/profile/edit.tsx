@@ -9,9 +9,9 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useCallback, useMemo, useRef } from "react";
-import { globalStyles } from "../../../components/global";
-import EditProfileHeader from "../../../components/profile/EditProfileHeader";
-import EditProfileInput from "../../../components/profile/EditProfileInput";
+import { globalStyles } from "../../components/global";
+import EditProfileHeader from "../../components/profile/EditProfileHeader";
+import EditProfileInput from "../../components/profile/EditProfileInput";
 
 import {
   BottomSheetBackdrop,
@@ -20,7 +20,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import EditModal from "../../../components/profile/EditModal";
+import EditModal from "../../components/profile/EditModal";
 import { validateRoutePerms } from "../../context/auth";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
@@ -30,7 +30,6 @@ const editProfile = () => {
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["35%"], []);
-  const [isEditing, setIsEditing] = React.useState(false);
   const handleImagePress = () => {
     bottomSheetModalRef.current?.present();
   };
@@ -52,7 +51,7 @@ const editProfile = () => {
       <SafeAreaView
         style={[globalStyles.containerLight, { position: "relative" }]}
       >
-        <EditProfileHeader isEditing={isEditing} />
+        <EditProfileHeader />
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();

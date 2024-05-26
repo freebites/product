@@ -1,5 +1,8 @@
-import { postType } from "../../src/context/postContext";
+import { Request, Response } from "express";
+
 import Item from "../models/postModel";
+import { postType } from "../../types/PostTypes";
+import { Error } from "mongoose";
 
 /*
  * postController.ts
@@ -12,11 +15,9 @@ import Item from "../models/postModel";
  * @description Get all posts from the database.
  * @route GET /api/Posts
  */
-const getAllPosts = async (req, res) => {
+const getAllPosts = async (req: Request, res: Response) => {
   try {
     const items = await Item.find();
-    // console.log(Item);
-    console.log("items acquired", items);
     res.json(items);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
@@ -28,24 +29,26 @@ const getAllPosts = async (req, res) => {
  * @route GET /api/Posts/:id
  * @param {string} id - The mongoDB _id of the post
  */
-const getOnePost = async (req, res) => {
+const getOnePost = async (req: Request, res: Response) => {
   const itemId = req.params.id;
-  console.log("looking");
+
   try {
     const item = await Item.findOne({ _id: itemId });
-    console.log("item acquired", item);
     res.json(item);
   } catch (error) {
     res.status(500).json({ error: "Something went hi" });
   }
 };
 
+interface CreatePostRequest extends Request {
+  body: postType;
+}
 /**
- * @description Gets posts with filter from the database.
- * @route GET /api/Posts/ {query parameters}
- * @param { coordinates?, maxDistance?, filter?, } params - should be { string, string, distance in meters, string }
+ * @description Get all posts from the database.
+ * @route GET /api/Posts/:id
+ * @param { postType } post - should be of type postType, adhering to 'ItemSchema'
  */
-const getPostsWithFilter = async (req, res) => {
+const getPostsWithFilter = async (req: Request, res: Response) => {
   // yoinks the query params like .../Posts?keyword=apple&location=store
   // it'll get keyword = apple, location = store
 
@@ -54,7 +57,7 @@ const getPostsWithFilter = async (req, res) => {
     const sortBy = query.sort;
 
     const sortParams = {
-      [sortBy]: 1,
+      [String(sortBy)]: 1,
     }; // add .sort(sortParams)
     let filters;
     let items;
@@ -69,7 +72,7 @@ const getPostsWithFilter = async (req, res) => {
 
     console.log(items);
     res.json(items);
-  } catch (error) {
+  } catch (error: any) {
     const simpleError = {
       message: error.message,
       stack: error.stack,
@@ -102,17 +105,23 @@ interface PostQueryConditions {
 }
 
 // Function to build post query based on provided filters into mongoDB query
-function buildPostQueryConditions(filters) {
+function buildPostQueryConditions(filters: {
+  diet?: string[];
+  perishable?: string;
+  latitude?: string;
+  longitude?: string;
+  maxDistance?: string;
+}) {
   // empty conditions by default
   const conditions: PostQueryConditions = {};
   // checks for tag filter
   if (filters.diet) {
     // can further optimize by only searching in tags field, but would need sep
-    conditions["tag.diet"] = { $all: filters.diet };
+    conditions["tags.diet"] = { $all: filters.diet };
   }
 
   if (filters.perishable) {
-    conditions["tag.perishable"] = { $in: filters.perishable };
+    conditions["tags.perishable"] = { $in: filters.perishable };
   }
   // turns the lat/long coordinate [x, y] into mongoDB geospatial query params
   if (filters.latitude && filters.longitude) {
@@ -137,14 +146,14 @@ function buildPostQueryConditions(filters) {
   return conditions;
 }
 
-const createPost = async (req, res) => {
+const createPost = async (req: CreatePostRequest, res: Response) => {
   const post = req.body; // should be the same as the posts schema
 
   try {
     const savedItem = await Item.create(post);
     res.json(savedItem);
   } catch (error) {
-    console.log("creating review document", error);
+    console.log("Error creating review document", error);
   }
 };
 
@@ -155,12 +164,10 @@ const createPost = async (req, res) => {
  * @param { Object } updatedData - the data to update in the post
  * @returns { Object }
  */
-const updatePost = async (req, res) => {
+const updatePost = async (req: Request, res: Response) => {
   try {
     const itemId = req.params.id;
     const updatedData = req.body;
-
-    console.log("gets here");
 
     // Find the item by ID and update its properties
     const updatedItem = await Item.findByIdAndUpdate(itemId, updatedData, {
@@ -168,13 +175,11 @@ const updatePost = async (req, res) => {
     });
 
     if (!updatedItem) {
-      console.log("gets here");
       return res.status(404).json({ message: "Item not found" });
     }
 
     res.json(updatedItem);
   } catch (error) {
-    console.error("Error updating item IN BACKEND:", error);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -184,14 +189,12 @@ const updatePost = async (req, res) => {
  * @route GET /api/Posts/:id
  * @param { string } id - the mongoDB _id of the post
  */
-const deletePost = async (req, res) => {
+const deletePost = async (req: Request, res: Response) => {
   try {
     const itemId = req.params.id;
 
-    console.log("gets here");
-
     // Find the item by ID and remove it
-    const deletedItem = await Item.findByIdAndRemove(itemId);
+    const deletedItem = await Item.findByIdAndDelete(itemId);
 
     if (!deletedItem) {
       return res.status(404).json({ message: "Item not found" });

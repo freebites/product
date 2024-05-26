@@ -1,54 +1,46 @@
+import React from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
-import { styled } from "styled-components/native";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
 
-const placeholder = require("../../assets/icons/freebites/placeholder.png");
-const left = require(" ../../../assets/icons/chevron-left.png");
-const check = require(" ../../../assets/icons/check.png");
-const HeaderUI = styled.View`
-  width: 100%;
-  padding-top: 60px;
-  padding-bottom: 30px;
-  background-color: #f0e1d2;
-  position: absolute;
-  border-bottom-right-radius: 30px;
-  border-bottom-left-radius: 30px;
-  z-index: 2;
-`;
+const left = require("../../assets/icons/chevron-left.png");
+const check = require("../../assets/icons/check.png");
 
-const HeaderTextUI = styled.View`
-  width: 100%;
-  padding-horizontal: 40px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
 function PrevPage() {
   router.back();
 }
 
-const EditProfileHeader = (props) => {
-  const { isEditing } = props;
+const EditProfileHeader = () => {
   return (
-    <HeaderUI>
-      <HeaderTextUI>
+    <View style={styles.headerUI}>
+      <View style={styles.headerTextUI}>
         <Pressable onPress={() => PrevPage()} style={{ height: 30, width: 30 }}>
           <Image source={left} />
         </Pressable>
-        <Text style={[globalStyles.headerText]}>My Profile</Text>
+        <Text style={globalStyles.headerText}>My Profile</Text>
         <Image source={check} />
-      </HeaderTextUI>
-    </HeaderUI>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  HeaderUI: {
+  headerUI: {
     width: "100%",
     paddingTop: 60,
+    paddingBottom: 30,
     backgroundColor: "#f0e1d2",
     position: "absolute",
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    zIndex: 2,
+  },
+  headerTextUI: {
+    width: "100%",
+    paddingHorizontal: 40,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });
 

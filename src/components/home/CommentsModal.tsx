@@ -9,13 +9,21 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import React, { useMemo, useEffect, useRef } from "react";
+import { postType } from "types/PostTypes";
 
 import DisplayComments from "./DisplayComments";
 
 import UploadComment from "./UploadComment";
 const dragHandle = require("../../assets/images/Drag_handle.png");
-
-export const CommentsModal = (props) => {
+interface CommentsModalProps {
+  changeCommentsVisible: () => void;
+  singlePost: postType;
+  setSinglePost: (post: postType) => void;
+  commentsVisible: boolean;
+}
+export const CommentsModal = (props: CommentsModalProps) => {
+  const { changeCommentsVisible, singlePost, setSinglePost, commentsVisible } =
+    props;
   const isKeyboardVisible = useRef(false);
 
   useEffect(() => {
@@ -50,10 +58,10 @@ export const CommentsModal = (props) => {
   }, [props.commentsVisible]);
 
   const handleModalSwipe = () => {
-    props.changeCommentsVisible();
+    changeCommentsVisible();
   };
 
-  const handleModalSwipeMove = (percent) => {
+  const handleModalSwipeMove = (percent: number) => {
     if (percent > 0 && isKeyboardVisible.current) {
       dismissKeyboard();
     }
@@ -74,7 +82,7 @@ export const CommentsModal = (props) => {
       propagateSwipe
       coverScreen={true}
       hasBackdrop={isBackdrop}
-      onBackdropPress={() => props.changeCommentsVisible()}
+      onBackdropPress={() => changeCommentsVisible()}
       style={styles.modalContent}
     >
       <KeyboardAvoidingView
@@ -89,13 +97,13 @@ export const CommentsModal = (props) => {
           </View>
           <ScrollView style={styles.commentThread}>
             <DisplayComments
-              modalVisible={props.modalVisible}
               singlePost={props.singlePost}
+              setModalVisible={() => changeCommentsVisible()}
             />
           </ScrollView>
           <UploadComment
-            singlePost={props.singlePost}
-            setSinglePost={props.setSinglePost}
+            singlePost={singlePost}
+            setSinglePost={setSinglePost}
             functionality={true}
           ></UploadComment>
         </View>
