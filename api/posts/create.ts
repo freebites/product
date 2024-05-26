@@ -5,6 +5,7 @@ import { postType, tags } from "../../types/PostTypes";
 import { UserType } from "../../types/UserTypes";
 import { getAllUsers, getOneUser } from "api/user/usercrud";
 import { notifyUsers } from "api/notify/notifyUsers";
+import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface CreatePostProps {
@@ -38,7 +39,7 @@ const create = async (props: CreatePostProps) => {
     });
 
     const normalizedTags = normalizeTags(post.tags); // Normalize tags
-    await axios.post(`${apiURL}:3001/api/Posts`, {
+    await axios.post(`${apiURL}/api/Posts`, {
       ...postData,
       tags: normalizedTags,
     });

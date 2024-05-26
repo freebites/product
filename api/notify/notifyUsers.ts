@@ -1,6 +1,6 @@
 import axios from "axios";
-import { UserType } from "../../context/userContext";
-
+import { UserType } from "../../src/context/userContext";
+import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface NotifyUserProps {
@@ -11,7 +11,7 @@ interface NotifyUserProps {
 export const notifyUsers = async (props: NotifyUserProps) => {
   const { users, title, body } = props;
   try {
-    const response = await axios.post(`${apiURL}:3001/api/notify`, {
+    const response = await axios.post(`${apiURL}/api/notify`, {
       users,
       title,
       body,
