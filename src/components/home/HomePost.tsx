@@ -6,7 +6,8 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
 import deleteOne from "../../../api/posts/delete";
 // import fetchData from "../../app/(tabs)/home/index";
-import DeleteButton from "../common/cards/DeleteButton";
+// import DeleteButton from "../common/cards/DeleteButton";
+import DeleteModal from "./DeleteModal";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 interface HomePostProps {
@@ -55,13 +56,15 @@ export const HomePost = (props: HomePostProps) => {
         </View>
         <Text style={styles.description}>{post.title}</Text>
       </View>
-      <DeleteButton
+      {/* <DeleteButton
         onPress={() => {
-          deleteOne(post._id);
+          // return <DeleteModal></DeleteModal>;
+          // deleteOne(post._id);
           console.log("deleted it");
           // fetchData();
         }}
-      ></DeleteButton>
+      ></DeleteButton> */}
+      <DeleteModal postID={post._id}></DeleteModal>
     </Pressable>
   );
 };
