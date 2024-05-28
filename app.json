@@ -4,7 +4,6 @@
     "web": {
       "bundler": "metro"
     },
-    "entryPoint": "./frontend/app/index.tsx",
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
