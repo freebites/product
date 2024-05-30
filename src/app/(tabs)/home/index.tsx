@@ -160,6 +160,7 @@ const Home = () => {
         }
       >
         {AllPosts.map((eachPost: postType) => {
+          // here?
           return (
             <HomePost
               style={styles.postCard}

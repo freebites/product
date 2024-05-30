@@ -13,6 +13,7 @@ import { Icon } from "react-native-elements";
 import deleteOne from "../../../api/posts/delete";
 // import fetchData from "../../app/(tabs)/home/index";
 import forceRefresh from "../../app/(tabs)/home/index";
+import { router } from "expo-router";
 
 interface DeleteButtonProps {
   postID: string;
@@ -54,6 +55,8 @@ const DeleteModal = (props: DeleteButtonProps) => {
                 onPress={() => {
                   setModalVisible(!modalVisible);
                   deleteOne(postID);
+                  // router.dismissAll();
+                  router.push("/home");
                   // forceRefresh();
                 }}
               >
