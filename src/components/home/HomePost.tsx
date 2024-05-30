@@ -8,15 +8,19 @@ import deleteOne from "../../../api/posts/delete";
 // import fetchData from "../../app/(tabs)/home/index";
 // import DeleteButton from "../common/cards/DeleteButton";
 import DeleteModal from "./DeleteModal";
+import { useAuth } from "../../context/auth";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
+
 interface HomePostProps {
   post: postType;
   onPress: () => void;
   style?: object;
 }
+
 export const HomePost = (props: HomePostProps) => {
   const { post, onPress } = props;
+  const { user } = useAuth();
 
   // temp fix for null
   if (!post.imageURIs) {
@@ -64,7 +68,10 @@ export const HomePost = (props: HomePostProps) => {
           // fetchData();
         }}
       ></DeleteButton> */}
-      <DeleteModal postID={post._id}></DeleteModal>
+      <DeleteModal
+        postID={post._id}
+        userPost={post.postedBy == user.uid}
+      ></DeleteModal>
     </Pressable>
   );
 };

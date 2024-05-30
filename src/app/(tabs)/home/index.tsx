@@ -100,6 +100,11 @@ const Home = () => {
     setRefreshing(true);
   }, [userToFilter, filters]);
 
+  const forceRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+  };
+
   return (
     <View style={[globalStyles.container]}>
       <HomeSearchBar
