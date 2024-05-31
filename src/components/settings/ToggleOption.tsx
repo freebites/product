@@ -1,10 +1,55 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getItem, setItem } from "../../local-storage/asyncStorage"
 
-const ToggleOption = (props: { text: string }) => {
+
+
+const ToggleOption = (props: { storageKey: string, text: string}) => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  useEffect(() => {
+    const getOption = async () => {
+      const state = await getItem(props.storageKey);
+      setIsEnabled((previousState) => state);
+    }
 
+    getOption();
+  }, []);
+
+  // console.log("new try");
+  const toggleSwitch = async () => {
+    if (isEnabled) {
+      console.log("BEFORE enabled");
+    } else {
+      console.log("BEFORE false");
+    }
+    setIsEnabled((previousState) => !previousState);
+
+    if (isEnabled) {
+      console.log("AFTER enabled");
+    } else {
+      console.log("AFTER false");
+    }
+    setLocalStorage();
+  };
+
+  
+
+  const setLocalStorage = async () => {
+    try {
+      await setItem(props.storageKey, !isEnabled);
+      if (isEnabled) {
+        console.log("toggle ON after async");
+      } else {
+        console.log("toggle OFF after async");
+      }
+      console.log("calling toggle");
+    } catch (error: any) {
+      console.log("Error updating to local storage: ", error);
+    }
+  };
+
+  
+  
   return (
     <View style={styles.container}>
       <Text>{props.text}</Text>
