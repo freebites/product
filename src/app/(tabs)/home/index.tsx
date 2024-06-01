@@ -25,6 +25,7 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
+import {setItem} from "../../../local-storage/asyncStorage"
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -78,6 +79,7 @@ const Home = () => {
         sort: sort,
       });
     }
+    console.log("Printing location: ", location.latitude, " ", location.longitude);
     console.log(filters);
     setPosts(postData);
     setRefreshing(false);
@@ -99,6 +101,12 @@ const Home = () => {
     setRefreshing(true);
   }, [userToFilter, filters]);
 
+  const updateLocation = async (newLocation: locationInfo) => {
+    await setItem("location", newLocation);
+    setLocation(newLocation);
+    console.log("setting location LOCALLY");
+  };
+
   return (
     <View style={[globalStyles.container]}>
       <HomeSearchBar
@@ -113,10 +121,10 @@ const Home = () => {
                   longitude: details.lng,
                 }
               : noLocation;
-          setLocation(newCoords);
+          updateLocation(newCoords);
           fetchData(newCoords);
           setRefreshing(true);
-          console.log(location);
+          console.log("updating location:", location);
         }}
       />
 

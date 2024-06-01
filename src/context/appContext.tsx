@@ -1,4 +1,5 @@
-import React, { Children, createContext, useState } from "react";
+import React, { Children, createContext, useState, useEffect } from "react";
+import { getItem } from "../local-storage/asyncStorage"
 
 /* this is a context to store application state, UI preferences, etc.
  * Update as needed.
@@ -49,11 +50,24 @@ export const AppContextProvider = (props: { children: any }) => {
 		kosher: "",
 		halal: "",
 	});
+
 	const [location, setLocation] = useState<locationInfo>({
 		latitude: "",
 		longitude: "",
 	});
+
 	const [sort, setSort] = useState<string>("");
+
+	
+	useEffect(() => {
+		const getLocation = async () => {
+			const newLocation = await getItem("location");
+			setLocation(newLocation);
+			console.log("GETTING LOCATION LOCALLY");
+		};
+
+		getLocation();
+	}, []);
 
 	const [userToFilter, setUserToFilter] = useState<string>("");
 
