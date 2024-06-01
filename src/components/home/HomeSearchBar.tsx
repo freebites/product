@@ -77,7 +77,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
     // Update local state on text change
     setSearchQuery(text);
     if (text === "" && checked == false) {
-      props.onPress(null); // Send an "empty" parameter if text is cleared
+      onPress(null); // Send an "empty" parameter if text is cleared
       setChecked(true);
     } else if (text != "" && checked == true) {
       setChecked(false);
@@ -111,7 +111,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
           textInputProps={{
             onSubmitEditing: () => {
               if (searchQuery === "") {
-                props.onPress(null); // Send an "empty" parameter if "return" is hit with an empty query
+                onPress(null); // Send an "empty" parameter if "return" is hit with an empty query
               }
             },
             onFocus: onSelected ? () => onSelected() : () => setIsFocused(true),
