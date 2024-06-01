@@ -82,7 +82,8 @@ const Home = () => {
     console.log(filters);
     setPosts(postData);
     setRefreshing(false);
-    //console.log(postData);
+    // console.log(postData);
+    // console.log("we are in fetchData");
   };
 
   const { postData, updatePostData } = useContext(PostContext);
@@ -99,11 +100,6 @@ const Home = () => {
     fetchData();
     setRefreshing(true);
   }, [userToFilter, filters]);
-
-  const forceRefresh = () => {
-    setRefreshing(true);
-    fetchData();
-  };
 
   return (
     <View style={[globalStyles.container]}>
@@ -161,21 +157,46 @@ const Home = () => {
       >
         {AllPosts.map((eachPost: postType) => {
           // here?
-          return (
-            <HomePost
-              style={styles.postCard}
-              key={eachPost._id}
-              post={eachPost}
-              onPress={() =>
-                router.push({
-                  pathname: "/postPopUp",
+          if (userToFilter == "") {
+            return (
+              <HomePost
+                style={styles.postCard}
+                key={eachPost._id}
+                post={eachPost}
+                setRefreshing={setRefreshing}
+                fetchData={fetchData}
+                onPress={() =>
+                  router.push({
+                    pathname: "/postPopUp",
 
-                  params: { id: eachPost._id },
-                })
-              }
-            />
-            //<Text>{JSON.stringify(eachPost)}</Text>
-          );
+                    params: { id: eachPost._id },
+                  })
+                }
+              />
+              //<Text>{JSON.stringify(eachPost)}</Text>
+            );
+          } else {
+            if (userToFilter == eachPost.postedBy) {
+              return (
+                <HomePost
+                  style={styles.postCard}
+                  key={eachPost._id}
+                  post={eachPost}
+                  setRefreshing={setRefreshing}
+                  fetchData={fetchData}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/postPopUp",
+
+                      params: { id: eachPost._id },
+                    })
+                  }
+                />
+              );
+            } else {
+              return null;
+            }
+          }
         })}
       </ScrollView>
     </View>

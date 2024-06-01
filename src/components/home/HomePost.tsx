@@ -4,7 +4,7 @@ import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
-import deleteOne from "../../../api/posts/delete";
+// import deleteOne from "../../../api/posts/delete";
 // import fetchData from "../../app/(tabs)/home/index";
 // import DeleteButton from "../common/cards/DeleteButton";
 import DeleteModal from "./DeleteModal";
@@ -15,11 +15,13 @@ const placeholderImage = require("../../assets/images/kemal.jpg");
 interface HomePostProps {
   post: postType;
   onPress: () => void;
+  setRefreshing: (arg0: boolean) => void;
+  fetchData: () => void;
   style?: object;
 }
 
 export const HomePost = (props: HomePostProps) => {
-  const { post, onPress } = props;
+  const { post, onPress, setRefreshing, fetchData } = props;
   const { user } = useAuth();
 
   // temp fix for null
@@ -71,6 +73,8 @@ export const HomePost = (props: HomePostProps) => {
       <DeleteModal
         postID={post._id}
         userPost={post.postedBy == user.uid}
+        setRefreshing={setRefreshing}
+        fetchData={fetchData}
       ></DeleteModal>
     </Pressable>
   );

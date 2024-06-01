@@ -11,18 +11,20 @@ import {
 import { Icon } from "react-native-elements";
 
 import deleteOne from "../../../api/posts/delete";
-// import fetchData from "../../app/(tabs)/home/index";
-import forceRefresh from "../../app/(tabs)/home/index";
+import fetchData from "../../app/(tabs)/home/index";
+// import forceRefresh from "../../app/(tabs)/home/index";
 import { router } from "expo-router";
 
 interface DeleteButtonProps {
   postID: string;
   userPost: boolean;
+  setRefreshing: (arg0: boolean) => void;
+  fetchData: () => void;
 }
 
 const DeleteModal = (props: DeleteButtonProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { postID, userPost } = props;
+  const { postID, userPost, setRefreshing, fetchData } = props;
 
   if (userPost) {
     return (
@@ -52,9 +54,11 @@ const DeleteModal = (props: DeleteButtonProps) => {
               <View style={styles.hr} />
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => {
+                onPress={async () => {
                   setModalVisible(!modalVisible);
-                  deleteOne(postID);
+                  await deleteOne(postID);
+                  // fetchData();
+                  // setRefreshing(true);
                   // router.dismissAll();
                   router.push("/home");
                   // forceRefresh();
