@@ -64,13 +64,10 @@ const getPostsWithFilter = async (req: Request, res: Response) => {
     if (query.userID) {
       items = await Item.find({ postedBy: query.userID });
     } else {
-      console.log("Applying Filters: ", query);
       filters = buildPostQueryConditions(query);
-      console.log(filters);
       items = await Item.find(filters);
     }
 
-    console.log(items);
     res.json(items);
   } catch (error: any) {
     const simpleError = {
@@ -78,7 +75,6 @@ const getPostsWithFilter = async (req: Request, res: Response) => {
       stack: error.stack,
       // You can manually copy other properties if necessary and safe
     };
-    console.log(simpleError);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -125,7 +121,6 @@ function buildPostQueryConditions(filters: {
   }
   // turns the lat/long coordinate [x, y] into mongoDB geospatial query params
   if (filters.latitude && filters.longitude) {
-    console.log(filters.latitude, filters.longitude);
     // default to 5km radius if maxDistance isn't applied
     const longitude = filters.longitude;
     const latitude = filters.latitude;
