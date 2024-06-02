@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { globalStyles } from "../../components/global";
 import EditProfileHeader from "../../components/profile/EditProfileHeader";
 import EditProfileInput from "../../components/profile/EditProfileInput";
@@ -22,16 +22,50 @@ import {
 } from "@gorhom/bottom-sheet";
 import EditModal from "../../components/profile/EditModal";
 import { validateRoutePerms } from "../../context/auth";
+import { getAuth } from "firebase/auth";
+import { getOneUser, updateUser } from "../../../api/user/usercrud";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const editProfile = () => {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [pronouns, setPronouns] = useState('');
+
   validateRoutePerms();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["35%"], []);
   const handleImagePress = () => {
     bottomSheetModalRef.current?.present();
+  };
+  const handleSubmit = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (!user){
+      console.log("User is not authenticated");
+      return;
+    }
+
+    const uid = user.uid;
+    const currentUserData = getOneUser(uid);
+
+    if (!currentUserData) {
+      console.log("Failed to fetch current user data");
+      return;
+    }
+   
+    const newUserData = {
+      firstName: name,
+      pronouns: pronouns,
+      profile: username,
+    }
+
+    const updatedUserData = { ...currentUserData, ...newUserData};
+    updateUser({ user: updatedUserData, userID: uid });
+
+    console.log({ name, username, pronouns });
   };
 
   const renderBackdrop = useCallback(
@@ -51,7 +85,7 @@ const editProfile = () => {
       <SafeAreaView
         style={[globalStyles.containerLight, { position: "relative" }]}
       >
-        <EditProfileHeader />
+        <EditProfileHeader onSubmit={handleSubmit}/>
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();
@@ -114,9 +148,9 @@ const editProfile = () => {
                 justifyContent: "center",
               }}
             >
-              <EditProfileInput title="Name" />
-              <EditProfileInput title="Username" />
-              <EditProfileInput title="Pronouns" />
+              <EditProfileInput title="Name" value={name} onChangeText={setName}/>
+              <EditProfileInput title="Username" value={username} onChangeText={setUsername}/>
+              <EditProfileInput title="Pronouns" value={pronouns} onChangeText={setPronouns}/>
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>

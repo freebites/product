@@ -3,14 +3,17 @@ import React from "react";
 
 interface EditProfileInputProps {
   title: string;
+  value: string;
+  onChangeText: (text: string) => void;
   multiline?: boolean;
 }
+
 const EditProfileInput = (props: EditProfileInputProps) => {
-  const { title, multiline } = props;
+  const { title, multiline, value, onChangeText } = props;
   return (
     <View style={styles.container}>
       <Text style={{ color: "#9e9797", fontSize: 20 }}>{title}</Text>
-      <TextInput style={styles.textInput} multiline={multiline} />
+      <TextInput style={styles.textInput} multiline={multiline} value={value} onChangeText={onChangeText}/>
     </View>
   );
 };
