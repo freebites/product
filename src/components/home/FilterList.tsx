@@ -6,7 +6,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { AppContext } from "../../context/appContext";
+import { AppContext, filterTypes } from "../../context/appContext";
+import { setItem } from "../../local-storage/asyncStorage"
 
 const FilterList = () => {
 	const { filters, sort, setFilters, setSort } = useContext(AppContext);
@@ -50,13 +51,25 @@ const FilterList = () => {
 
 		let query = parts.join(" ");
 		setFilters(filters);
+		updateFilters(filters);
+		
 		console.log(filters);
 	}, [filters]); // update on change of any filter
+
+	const updateFilters = async (filters: filterTypes) => {
+		await setItem("filters", filters);
+	};
 
 	useEffect(() => {
 		setSort(setting);
 		console.log(setting);
 	}, [setting]);
+
+
+	const updateSort = async (newSort: string) => {
+		await setItem("sort", newSort);
+		setSort(newSort);
+	  }
 
 	return (
 		<View style={styles.container}>
@@ -79,7 +92,7 @@ const FilterList = () => {
 					]}
 					onPress={() => {
 						if (setting != "closest") {
-							setSetting("closest");
+							updateSort("closest");
 						}
 					}}
 				>
@@ -106,7 +119,7 @@ const FilterList = () => {
 					]}
 					onPress={() => {
 						if (setting != "recent") {
-							setSetting("recent");
+							updateSort("recent");
 						}
 					}}
 				>
@@ -133,7 +146,7 @@ const FilterList = () => {
 					]}
 					onPress={() => {
 						if (setting != "perish") {
-							setSetting("perish");
+							updateSort("perish");
 						}
 					}}
 				>
@@ -164,7 +177,7 @@ const FilterList = () => {
 					]}
 					onPress={() => {
 						if (setting != "nonperish") {
-							setSetting("nonperish");
+							updateSort("nonperish");
 						}
 					}}
 				>

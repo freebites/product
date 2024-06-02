@@ -5,9 +5,15 @@ import { getItem } from "../local-storage/asyncStorage"
  * Update as needed.
  */
 
-type filterTypes = {
+export interface locationInfo {
+	latitude: string | number;
+	longitude: string | number;
+}
+
+export type filterTypes = {
 	[key: string]: string;
 };
+
 // define types for the provider
 type AppContextType = {
 	// so we can edit filters directly from the filter modal
@@ -20,10 +26,12 @@ type AppContextType = {
 	userToFilter: string; // firebase UID of currently authenticated/searched user
 	setUserToFilter: (arg0: string) => void;
 };
+
 export const noLocation: locationInfo = {
 	latitude: "",
 	longitude: "",
 };
+
 // define the app's context here
 export const AppContext = React.createContext<AppContextType>({
 	filters: {},
@@ -35,11 +43,6 @@ export const AppContext = React.createContext<AppContextType>({
 	userToFilter: "",
 	setUserToFilter: () => {},
 });
-
-export interface locationInfo {
-	latitude: string | number;
-	longitude: string | number;
-}
 
 export const AppContextProvider = (props: { children: any }) => {
 	const [filters, setFilters] = useState<filterTypes>({
@@ -57,19 +60,28 @@ export const AppContextProvider = (props: { children: any }) => {
 	});
 
 	const [sort, setSort] = useState<string>("");
-
+	const [userToFilter, setUserToFilter] = useState<string>("");
 	
 	useEffect(() => {
-		const getLocation = async () => {
+		const getState = async () => {
 			const newLocation = await getItem("location");
+			const newFilter = await getItem("filters");
+			const newUserToFilter = await getItem("userToFilter");
+			const newSort = await getItem("sort");
+
+			// Check for first time app is opened
+			if (newFilter != null) {
+				setFilters(newFilter);
+			}
 			setLocation(newLocation);
-			console.log("GETTING LOCATION LOCALLY");
+			setUserToFilter(newUserToFilter);
+			setSort(newSort);
 		};
 
-		getLocation();
+		getState();
 	}, []);
 
-	const [userToFilter, setUserToFilter] = useState<string>("");
+
 
 	// note: we can put set functions in wrapper functions if there's some
 	// additional logic required
