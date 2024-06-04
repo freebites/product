@@ -25,7 +25,6 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
-import DeleteButton from "../../../components/common/cards/DeleteButton";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);

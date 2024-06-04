@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { globalStyles } from "../../../components/global";
 import Header from "../../../components/common/Header";
 import { useAuth, validateRoutePerms } from "../../../context/auth";
@@ -8,6 +8,7 @@ import { getWithFilter, getAllPosts } from "../../../../api/posts/read";
 import { postType } from "../../../../types/PostTypes";
 import { router } from "expo-router";
 import HomePost from "../../../components/home/HomePost";
+import { AppContext } from "../../../context/appContext";
 // import { useState } from "react";
 
 /*
@@ -18,25 +19,59 @@ import HomePost from "../../../components/home/HomePost";
 		- Display each Post
 */
 
-const history = () => {
+// use local search parameters
+const History = () => {
   validateRoutePerms();
-  // const { user } = useAuth();
-  // const [AllPosts, setPosts] = useState([]);
+  const [AllPosts, setPosts] = useState<postType[]>([]);
+  const {
+    filters,
+    location,
+    setLocation,
+    userToFilter,
+    setUserToFilter,
+    sort,
+  } = useContext(AppContext);
 
-  // let postData = await getAllPosts();
-  // postData = postData.filter((eachPost: postType) => {
-  //   eachPost.postedBy == user.uid;
-  // });
+  const getYourPosts = async () => {
+    // const [AllPosts, setPosts] = useState([]);
+    const { user } = useAuth();
+    let postData;
+    postData = await getAllPosts();
+    console.log(postData.length);
+    postData = postData.filter((eachPost: postType) => {
+      // console.log(eachPost.postedBy);
+      // console.log(user.uid);
+      return eachPost.postedBy == user.uid;
+    });
+    console.log(postData.length);
+
+    postData.map((eachPost: postType) => {
+      console.log("Found a post that you posted in post history");
+      // console.log(user.uid == eachPost.postedBy);
+    });
+
+    // setPosts(postData);
+    setPosts(postData);
+  };
+
+  let posts: postType[] = [];
+
+  useEffect(() => {
+    // async function
+    // fetchData();
+    // setRefreshing(true);
+    getYourPosts();
+  }, [userToFilter, filters]);
+  // const { user } = useAuth();
+  // let posts = getYourPosts();
   // let postData;
-  // postData = await getWithFilter({
+  // postData = getWithFilter({
   //   diet: [],
   //   latitude: 0,
   //   longitude: 0,
   //   userID: "",
   //   sort: 0,
   // });
-
-  // setPosts(postData);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -60,7 +95,7 @@ const history = () => {
             paddingBottom: 12,
           }}
         >
-          {/* {AllPosts.map((eachPost: postType) => {
+          {AllPosts.map((eachPost: postType) => {
             // here?
             return (
               <HomePost
@@ -79,7 +114,7 @@ const history = () => {
               />
               //<Text>{JSON.stringify(eachPost)}</Text>
             );
-          })} */}
+          })}
           No history yet
         </Text>
         <Text style={{ textAlign: "center", color: "#505A4E", opacity: 0.57 }}>
@@ -100,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default history;
+export default History;
