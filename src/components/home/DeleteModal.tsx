@@ -19,7 +19,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
   const { postID, userPost, setRefreshing, fetchData } = props;
 
   return (
-    <View style={styles.trashIcon}>
+    <View style={styles.trashIconContainer}>
       {userPost ? (
         <View>
           <Modal
@@ -31,7 +31,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
             isVisible={modalVisible}
             onBackdropPress={() => setModalVisible(!modalVisible)}
             coverScreen={true}
-            // hasBackdrop={true}
+            hasBackdrop={true}
             // onRequestClose={() => {
             //   Alert.alert("Modal has been closed.");
             //   setModalVisible(!modalVisible);
@@ -48,7 +48,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                 </Text>
                 <View style={styles.hr} />
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={styles.button}
                   onPress={async () => {
                     setModalVisible(!modalVisible);
                     await deleteOne(postID);
@@ -61,49 +61,57 @@ const DeleteModal = (props: DeleteButtonProps) => {
                 </Pressable>
                 <View style={styles.hr} />
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={styles.button}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>No Oops!</Text>
+                  <Text style={styles.textStyle}>No oops</Text>
                 </Pressable>
               </View>
               <View style={styles.cancelButton}>
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={styles.button}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>Cancel</Text>
+                  <Icon type={"feather"} name={"x"}></Icon>
                 </Pressable>
               </View>
             </View>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>
-            <Icon type={"entypo"} name={"trash"}></Icon>
+            {/* <Icon type={"entypo"} name={"trash"}></Icon> */}
+            <Image
+              source={require("../../assets/icons/trash.png")}
+              style={styles.trashIcon}
+            />
           </Pressable>
         </View>
       ) : (
-        <View> </View>
+        <View></View>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  trashIcon: {
+  trashIconContainer: {
     display: "flex",
-    backgroundColor: "#fff",
     borderRadius: 25,
     justifyContent: "flex-end",
+  },
+  trashIcon: {
+    width: 24,
+    height: 24,
   },
   hr: {
     backgroundColor: "#CACFC9",
     width: "100%",
     height: 1.25,
-    margin: 1,
+    // margin: 1,
   },
   imgStyle: {
-    width: 45,
-    height: 50,
+    width: 46,
+    height: 52,
     marginBottom: 10,
   },
   bottomView: {
@@ -115,13 +123,13 @@ const styles = StyleSheet.create({
     // backgroundColor: "rgba(0,0,0,0.4)",
   },
   modalView: {
-    width: "90%",
+    width: "100%",
     margin: 0,
     backgroundColor: "white",
     borderRadius: 20,
     paddingTop: 15,
-    paddingBottom: 15,
-    alignItems: "center",
+    paddingBottom: 5,
+    // alignItems: "flex-start",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -132,32 +140,40 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cancelButton: {
-    width: "90%",
-    marginBottom: 30,
-    marginTop: 15,
+    width: "100%",
+    marginBottom: 10,
+    marginTop: 5,
     backgroundColor: "white",
-    padding: 5,
+    // padding: 5,
     borderRadius: 20,
   },
   button: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: "100%",
+    backgroundColor: "#fff",
   },
   buttonOpen: {
     backgroundColor: "#000",
   },
-  buttonClose: {
-    backgroundColor: "#fff",
-  },
   textStyle: {
-    color: "gray",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: "#79767D",
+    fontWeight: "500",
+    textAlign: "left",
+    paddingLeft: 30,
+    fontSize: 16,
   },
   modalText: {
     marginBottom: 15,
+    marginTop: 10,
     textAlign: "center",
+    color: "#58565D",
+    fontSize: 14,
   },
 });
 
