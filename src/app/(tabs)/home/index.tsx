@@ -81,8 +81,6 @@ const Home = () => {
     console.log(filters);
     setPosts(postData);
     setRefreshing(false);
-    // console.log(postData);
-    // console.log("we are in fetchData");
   };
 
   const { postData, updatePostData } = useContext(PostContext);

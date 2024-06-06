@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  Image,
-} from "react-native";
+import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
+import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 
 import deleteOne from "../../../api/posts/delete";
@@ -30,15 +23,19 @@ const DeleteModal = (props: DeleteButtonProps) => {
       {userPost ? (
         <View>
           <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            // coverScreen={true}
-            // hasBackdrop={isBackdrop}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
+            animationIn={"slideInUp"}
+            animationInTiming={400}
+            animationOut={"slideOutDown"}
+            animationOutTiming={300}
+            // transparent={true}
+            isVisible={modalVisible}
+            onBackdropPress={() => setModalVisible(!modalVisible)}
+            coverScreen={true}
+            // hasBackdrop={true}
+            // onRequestClose={() => {
+            //   Alert.alert("Modal has been closed.");
+            //   setModalVisible(!modalVisible);
+            // }}
           >
             <View style={styles.bottomView}>
               <Image
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
+    // backgroundColor: "rgba(0,0,0,0.4)",
   },
   modalView: {
     width: "90%",
