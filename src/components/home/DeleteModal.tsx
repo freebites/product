@@ -4,8 +4,7 @@ import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 
 import deleteOne from "../../../api/posts/delete";
-import fetchData from "../../app/(tabs)/home/index";
-import { router } from "expo-router";
+// import { router } from "expo-router";
 
 interface DeleteButtonProps {
   postID: string;
@@ -27,7 +26,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
             animationInTiming={400}
             animationOut={"slideOutDown"}
             animationOutTiming={300}
-            // transparent={true}
             isVisible={modalVisible}
             onBackdropPress={() => setModalVisible(!modalVisible)}
             coverScreen={true}
@@ -79,7 +77,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
             </View>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>
-            {/* <Icon type={"entypo"} name={"trash"}></Icon> */}
             <Image
               source={require("../../assets/icons/trash.png")}
               style={styles.trashIcon}
@@ -107,7 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#CACFC9",
     width: "100%",
     height: 1.25,
-    // margin: 1,
   },
   imgStyle: {
     width: 46,
@@ -120,7 +116,6 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
-    // backgroundColor: "rgba(0,0,0,0.4)",
   },
   modalView: {
     width: "100%",
@@ -129,7 +124,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingTop: 15,
     paddingBottom: 5,
-    // alignItems: "flex-start",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -144,7 +138,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 5,
     backgroundColor: "white",
-    // padding: 5,
     borderRadius: 20,
   },
   button: {

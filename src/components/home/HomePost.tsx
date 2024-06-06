@@ -4,9 +4,6 @@ import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
-// import deleteOne from "../../../api/posts/delete";
-// import fetchData from "../../app/(tabs)/home/index";
-// import DeleteButton from "../common/cards/DeleteButton";
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "../../context/auth";
 
@@ -58,18 +55,11 @@ export const HomePost = (props: HomePostProps) => {
       </View>
       <View style={styles.sidebox}>
         <View style={styles.location}>
-          <Text style={styles.text}>{post._id}</Text>
+          {/* <Text style={styles.text}>{post._id}</Text> */}
         </View>
         <Text style={styles.description}>{post.title}</Text>
       </View>
-      {/* <DeleteButton
-        onPress={() => {
-          // return <DeleteModal></DeleteModal>;
-          // deleteOne(post._id);
-          console.log("deleted it");
-          // fetchData();
-        }}
-      ></DeleteButton> */}
+
       <DeleteModal
         postID={post._id}
         userPost={post.postedBy == user.uid}
