@@ -4,11 +4,10 @@
     "web": {
       "bundler": "metro"
     },
-    "entryPoint": "./frontend/app/index.tsx",
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "googleMapsApiKey": "AIzaSyDF7AgfC9zzZNgYfptHcJM9iUWwU1BhSHA"
       },

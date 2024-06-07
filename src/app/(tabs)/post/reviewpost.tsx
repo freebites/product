@@ -42,7 +42,6 @@ export default function reviewpost() {
 
       // upload to the server, returns a Promise string
       return uploadBytes(storageRef, blob).then(async (snapshot) => {
-        //console.log("uploaded a blob");
         return await snapshot.ref.fullPath; // store firebase path NOT URL
         // need two returns cuz async
       });
@@ -61,7 +60,6 @@ export default function reviewpost() {
         (path) => path !== undefined
       ) as string[];
       postData.postTime = new Date();
-      console.log(user.uid);
       create({
         user: user,
         post: {

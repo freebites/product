@@ -12,11 +12,9 @@ import Header from "../../../components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();
-  console.log("Testing");
   const [currUser, setCurrUser] = useState<UserType>(EmptyUser);
   useEffect(() => {
     const fetchUser = async () => {
-      console.log("HERE!!!!!", user.uid);
       const userData = await getOneUser(user.uid);
       setCurrUser(userData);
     };

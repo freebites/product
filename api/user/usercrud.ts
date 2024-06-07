@@ -2,7 +2,6 @@ import axios from "axios";
 import { useNotifications } from "src/components/notifications/useNotifications";
 
 import { UserType } from "types/UserTypes.ts";
-import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getAllUsers = async (): Promise<UserType[]> => {
@@ -60,10 +59,8 @@ interface UpdateProps {
 
 export const updateUser = async (props: UpdateProps) => {
   const { user, userID } = props;
-  // console.log(user);
   try {
-    const response = await axios.put(`${apiURL}/api/Users/${userID}`, user);
-    console.log("Item updated successfully:", response.data);
+    await axios.put(`${apiURL}/api/Users/${userID}`, user);
   } catch (error) {
     console.error("Error updating item IN FRONTEND  :", error);
   }
