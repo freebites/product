@@ -46,10 +46,8 @@ export const PostCard = (props: PostCardProps) => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        console.log("post image:", props.id);
         const postData = await getOne(props.id);
         setSinglePost(postData);
-        console.log("post image:", postData.imageURIs[0]);
         const url = await getDownloadURL(ref(storage, postData.imageURIs[0]));
         setImageURL(url);
       } catch (error) {
@@ -62,7 +60,6 @@ export const PostCard = (props: PostCardProps) => {
   }, [props.id]);
 
   const changeCommentsVisible = () => {
-    console.log("called changecomments");
     setCommentsVisible(!commentsVisible);
   };
 

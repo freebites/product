@@ -35,7 +35,6 @@ export const getWithFilter = async (params: {
       params,
     });
 
-    console.log("getting with params: ", params);
     return response.data;
   } catch (error) {
     console.error("Error retrieving posts:", error);

@@ -15,7 +15,6 @@ import User from "./models/userModel";
 const app = express();
 const port = process.env.PORT || 8080;
 const expo = new Expo();
-console.log("hi");
 // Enable CORS to allow requests from React Native app
 app.use(cors());
 app.use(bodyParser.json());
@@ -37,15 +36,6 @@ mongoose
   .catch((err) => {
     console.log("error connecting to db", err);
   });
-
-// // listeners for account connection and errors
-// accountConnection.on("connected", () => {
-//   console.log("Account database connection successful!");
-// });
-
-// accountConnection.on("error", (error: any) => {
-//   console.error("Error connecting to account database: ", error);
-// });
 
 // use routes from post database
 app.use(postRouter);

@@ -78,10 +78,8 @@ const Home = () => {
         sort: sort,
       });
     }
-    console.log(filters);
     setPosts(postData);
     setRefreshing(false);
-    //console.log(postData);
   };
 
   const { postData, updatePostData } = useContext(PostContext);
@@ -90,8 +88,6 @@ const Home = () => {
   const handleUpdate = (eachPostData: postType) => {
     updatePostData(eachPostData);
   };
-
-  const [favoriteSelected, setFavoriteSelected] = useState(true);
 
   useEffect(() => {
     // async function
@@ -116,7 +112,6 @@ const Home = () => {
           setLocation(newCoords);
           fetchData(newCoords);
           setRefreshing(true);
-          console.log(location);
         }}
       />
 
