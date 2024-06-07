@@ -21,6 +21,7 @@ import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
+import DisplayTags from "./DisplayTags";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
@@ -78,7 +79,6 @@ export const PostCard = (props: PostCardProps) => {
         <Icon type={"entypo"} name={"dots-three-horizontal"} />
       </Header>
 
-      <Divider></Divider>
       <View style={styles.mainbox}>
         <Image
           style={styles.image}
@@ -101,10 +101,10 @@ export const PostCard = (props: PostCardProps) => {
           </TouchableOpacity>
         </View>
         <View style={styles.tags}>
-          {/* <DisplayTags tags={singlePost.tags}></DisplayTags> */}
-          <Image style={styles.tagImage} source={msg} />
+          <DisplayTags tags={singlePost.tags}></DisplayTags>
+          {/* <Image style={styles.tagImage} source={msg} />
           <Image style={styles.tagImage} source={lactose} />
-          <Image style={styles.tagImage} source={vegetarian} />
+          <Image style={styles.tagImage} source={vegetarian} /> */}
         </View>
         <Divider></Divider>
 
@@ -159,7 +159,10 @@ export const PostCard = (props: PostCardProps) => {
             </View>
           )}
         </View>
-        <Pressable onPress={() => changeCommentsVisible()}>
+        <Pressable
+          onPress={() => changeCommentsVisible()}
+          style={{ marginTop: "auto", marginBottom: "10%" }}
+        >
           <UploadComment
             singlePost={singlePost}
             setSinglePost={setSinglePost}
