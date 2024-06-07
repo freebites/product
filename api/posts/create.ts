@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
 import axios from "axios";
 import { postType, tags } from "../../types/PostTypes";
 import { UserType } from "../../types/UserTypes";
 import { getAllUsers, getOneUser } from "api/user/usercrud";
 import { notifyUsers } from "api/notify/notifyUsers";
-import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface CreatePostProps {

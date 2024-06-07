@@ -83,7 +83,7 @@ export const PostCard = (props: PostCardProps) => {
         <Image
           style={styles.image}
           source={{
-            uri: imageURL,
+            uri: imageURL === "" ? placeholderImage : imageURL,
           }}
         />
         <View style={styles.titleContainer}>
@@ -102,9 +102,6 @@ export const PostCard = (props: PostCardProps) => {
         </View>
         <View style={styles.tags}>
           <DisplayTags tags={singlePost.tags}></DisplayTags>
-          {/* <Image style={styles.tagImage} source={msg} />
-          <Image style={styles.tagImage} source={lactose} />
-          <Image style={styles.tagImage} source={vegetarian} /> */}
         </View>
         <Divider></Divider>
 
