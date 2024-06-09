@@ -55,14 +55,14 @@ export const HomePost = (props: HomePostProps) => {
       </View>
       <View style={styles.sidebox}>
         <View style={styles.location}>
-          {/* <Text style={styles.text}>{post._id}</Text> */}
+          <Text style={styles.text}>{post.title}</Text>
         </View>
         <Text style={styles.description}>{post.title}</Text>
       </View>
 
       <DeleteModal
         postID={post._id}
-        userPost={post.postedBy == user.uid}
+        userPost={post.postedBy === user.uid}
         setRefreshing={setRefreshing}
         fetchData={fetchData}
       ></DeleteModal>

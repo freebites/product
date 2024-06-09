@@ -4,7 +4,6 @@ import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 
 import deleteOne from "../../../api/posts/delete";
-// import { router } from "expo-router";
 
 interface DeleteButtonProps {
   postID: string;
@@ -30,10 +29,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
             onBackdropPress={() => setModalVisible(!modalVisible)}
             coverScreen={true}
             hasBackdrop={true}
-            // onRequestClose={() => {
-            //   Alert.alert("Modal has been closed.");
-            //   setModalVisible(!modalVisible);
-            // }}
           >
             <View style={styles.bottomView}>
               <Image
@@ -52,7 +47,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
                     await deleteOne(postID);
                     fetchData();
                     setRefreshing(true);
-                    // router.push("/home");
                   }}
                 >
                   <Text style={styles.textStyle}>Yes!</Text>
@@ -65,7 +59,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   <Text style={styles.textStyle}>No oops</Text>
                 </Pressable>
               </View>
-              <View style={styles.cancelButton}>
+              {/* <View style={styles.cancelButton}>
                 <Pressable
                   style={styles.button}
                   onPress={() => setModalVisible(!modalVisible)}
@@ -73,7 +67,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   <Text style={styles.textStyle}>Cancel</Text>
                   <Icon type={"feather"} name={"x"}></Icon>
                 </Pressable>
-              </View>
+              </View> */}
             </View>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>

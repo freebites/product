@@ -16,17 +16,16 @@ const History = () => {
   validateRoutePerms();
   const { user } = useAuth();
   const [AllPosts, setPosts] = useState<postType[]>([]);
-  const [refreshing, setRefreshing] = useState(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const getYourPosts = async () => {
-    let postData;
-    postData = await getAllPosts();
+    const postData = await getAllPosts();
 
-    postData = postData.filter((eachPost: postType) => {
+    const filteredData = postData.filter((eachPost: postType) => {
       return eachPost.postedBy == user.uid;
     });
 
-    setPosts(postData);
+    setPosts(filteredData);
   };
 
   useEffect(() => {
@@ -84,7 +83,7 @@ const History = () => {
             No history yet
           </Text>
           <Text
-            style={{ textAlign: "center", color: "#505A4E", opacity: 0.57 }}
+            style={styles.textBody}
           >
             Try making a post by clicking on the + button on the homepage!
           </Text>
@@ -101,6 +100,19 @@ const styles = StyleSheet.create({
   },
   postCard: {
     marginBottom: 30,
+  },
+  textTitle: {
+    fontWeight: "bold",
+    fontSize: 24,
+     color: "#505A4E",
+              textShadowRadius: 1,
+              textShadowColor: "black",
+              paddingBottom: 12,
+  },
+  textBody: {
+    textAlign: "center", 
+    color: "#505A4E", 
+    opacity: 0.57,
   },
 });
 

@@ -135,9 +135,7 @@ const Home = () => {
           selected={userToFilter != ""}
           text={"Your Posts"}
           onPress={() => {
-            console.log(user.uid);
             setUserToFilter(user.uid);
-            console.log(userToFilter);
           }}
         />
       </View>
@@ -149,7 +147,6 @@ const Home = () => {
         }
       >
         {AllPosts.map((eachPost: postType) => {
-          // here?
           if (userToFilter == "") {
             return (
               <HomePost
@@ -166,7 +163,6 @@ const Home = () => {
                   })
                 }
               />
-              //<Text>{JSON.stringify(eachPost)}</Text>
             );
           } else {
             if (userToFilter == eachPost.postedBy) {
