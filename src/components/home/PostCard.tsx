@@ -138,6 +138,7 @@ export const PostCard = (props: PostCardProps) => {
                   color: "#485445",
                   fontWeight: "bold",
                   textAlign: "center",
+                  marginTop: 10,
                 }}
               >
                 No comments yet
