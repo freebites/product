@@ -18,7 +18,7 @@ const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
         styles.button,
       ]}
     >
-      <Text>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </Pressable>
   );
 };
@@ -26,7 +26,7 @@ const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
 const styles = StyleSheet.create({
   button: {
     width: "80%",
-    backgroundColor: "#EDA76E",
+    backgroundColor: "#F19D48",
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   text: {
-    fontSize: 13,
+    fontSize: 16,
+    color: "#FFFCFA",
+    fontWeight: "bold",
   },
 });
 export default forwardRef(LoginButton);
