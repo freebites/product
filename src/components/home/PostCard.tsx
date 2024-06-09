@@ -21,6 +21,7 @@ import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
+import DisplayTags from "./DisplayTags";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
@@ -78,12 +79,11 @@ export const PostCard = (props: PostCardProps) => {
         <Icon type={"entypo"} name={"dots-three-horizontal"} />
       </Header>
 
-      <Divider></Divider>
       <View style={styles.mainbox}>
         <Image
           style={styles.image}
           source={{
-            uri: imageURL,
+            uri: imageURL === "" ? placeholderImage : imageURL,
           }}
         />
         <View style={styles.titleContainer}>
@@ -101,10 +101,7 @@ export const PostCard = (props: PostCardProps) => {
           </TouchableOpacity>
         </View>
         <View style={styles.tags}>
-          {/* <DisplayTags tags={singlePost.tags}></DisplayTags> */}
-          <Image style={styles.tagImage} source={msg} />
-          <Image style={styles.tagImage} source={lactose} />
-          <Image style={styles.tagImage} source={vegetarian} />
+          <DisplayTags tags={singlePost.tags}></DisplayTags>
         </View>
         <Divider></Divider>
 
@@ -141,6 +138,7 @@ export const PostCard = (props: PostCardProps) => {
                   color: "#485445",
                   fontWeight: "bold",
                   textAlign: "center",
+                  marginTop: 10,
                 }}
               >
                 No comments yet
@@ -159,7 +157,10 @@ export const PostCard = (props: PostCardProps) => {
             </View>
           )}
         </View>
-        <Pressable onPress={() => changeCommentsVisible()}>
+        <Pressable
+          onPress={() => changeCommentsVisible()}
+          style={{ marginTop: "auto", marginBottom: "10%" }}
+        >
           <UploadComment
             singlePost={singlePost}
             setSinglePost={setSinglePost}
