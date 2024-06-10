@@ -158,7 +158,7 @@ const Home = () => {
           }
         >
           {AllPosts.map((eachPost: postType) => {
-            if (userToFilter === "") {
+            if (userToFilter === "" || userToFilter === eachPost.postedBy) {
               return (
                 <HomePost
                   style={styles.postCard}
@@ -169,33 +169,11 @@ const Home = () => {
                   onPress={() =>
                     router.push({
                       pathname: "/postPopUp",
-
                       params: { id: eachPost._id },
                     })
                   }
                 />
               );
-            } else {
-              if (userToFilter === eachPost.postedBy) {
-                return (
-                  <HomePost
-                    style={styles.postCard}
-                    key={eachPost._id}
-                    post={eachPost}
-                    setRefreshing={setRefreshing}
-                    fetchData={fetchData}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/postPopUp",
-
-                        params: { id: eachPost._id },
-                      })
-                    }
-                  />
-                );
-              } else {
-                return null;
-              }
             }
           })}
         </ScrollView>
