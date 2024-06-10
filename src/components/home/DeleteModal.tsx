@@ -13,7 +13,7 @@ interface DeleteButtonProps {
 }
 
 const DeleteModal = (props: DeleteButtonProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { postID, userPost, setRefreshing, fetchData } = props;
 
   return (
@@ -59,15 +59,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   <Text style={styles.textStyle}>No oops</Text>
                 </Pressable>
               </View>
-              {/* <View style={styles.cancelButton}>
-                <Pressable
-                  style={styles.button}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                  <Icon type={"feather"} name={"x"}></Icon>
-                </Pressable>
-              </View> */}
             </View>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>
@@ -113,7 +104,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "100%",
-    margin: 0,
+    marginBottom: 10,
     backgroundColor: "white",
     borderRadius: 20,
     paddingTop: 15,
@@ -126,13 +117,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  cancelButton: {
-    width: "100%",
-    marginBottom: 10,
-    marginTop: 5,
-    backgroundColor: "white",
-    borderRadius: 20,
   },
   button: {
     display: "flex",
@@ -152,13 +136,14 @@ const styles = StyleSheet.create({
     color: "#79767D",
     fontWeight: "500",
     textAlign: "left",
-    paddingLeft: 30,
+    paddingLeft: 15,
     fontSize: 16,
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 20,
     marginTop: 10,
-    textAlign: "center",
+    paddingLeft: 25,
+    textAlign: "left",
     color: "#58565D",
     fontSize: 14,
   },

@@ -22,7 +22,7 @@ const History = () => {
     const postData = await getAllPosts();
 
     const filteredData = postData.filter((eachPost: postType) => {
-      return eachPost.postedBy == user.uid;
+      return eachPost.postedBy === user.uid;
     });
 
     setPosts(filteredData);
@@ -62,29 +62,9 @@ const History = () => {
           })}
         </ScrollView>
       ) : (
-        <View
-          style={{
-            margin: "5%",
-            alignItems: "center",
-            justifyContent: "center",
-            flex: 1,
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 24,
-              color: "#505A4E",
-              textShadowRadius: 1,
-              textShadowColor: "black",
-              paddingBottom: 12,
-            }}
-          >
-            No history yet
-          </Text>
-          <Text
-            style={styles.textBody}
-          >
+        <View style={styles.textContainer}>
+          <Text style={styles.textTitle}>No history yet</Text>
+          <Text style={styles.textBody}>
             Try making a post by clicking on the + button on the homepage!
           </Text>
         </View>
@@ -104,14 +84,20 @@ const styles = StyleSheet.create({
   textTitle: {
     fontWeight: "bold",
     fontSize: 24,
-     color: "#505A4E",
-              textShadowRadius: 1,
-              textShadowColor: "black",
-              paddingBottom: 12,
+    color: "#505A4E",
+    textShadowRadius: 1,
+    textShadowColor: "black",
+    paddingBottom: 12,
+  },
+  textContainer: {
+    margin: "5%",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
   textBody: {
-    textAlign: "center", 
-    color: "#505A4E", 
+    textAlign: "center",
+    color: "#505A4E",
     opacity: 0.57,
   },
 });
