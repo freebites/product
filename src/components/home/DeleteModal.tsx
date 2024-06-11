@@ -26,11 +26,18 @@ const DeleteModal = (props: DeleteButtonProps) => {
             animationOut={"slideOutDown"}
             animationOutTiming={300}
             isVisible={modalVisible}
-            onBackdropPress={() => setModalVisible(!modalVisible)}
-            coverScreen={true}
-            hasBackdrop={true}
+            backdropTransitionOutTiming={0}
+            hasBackdrop
+            coverScreen
+            onBackdropPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+            style={styles.modalContainer}
           >
-            <View style={styles.bottomView}>
+            <Pressable
+              style={styles.bottomView}
+              onPress={() => setModalVisible(false)}
+            >
               <Image
                 source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
                 style={styles.imgStyle}
@@ -59,7 +66,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   <Text style={styles.textStyle}>No oops</Text>
                 </Pressable>
               </View>
-            </View>
+            </Pressable>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
@@ -78,7 +85,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
 const styles = StyleSheet.create({
   trashIconContainer: {
     display: "flex",
-    borderRadius: 25,
+    // borderRadius: 25,
     justifyContent: "flex-end",
   },
   trashIcon: {
@@ -95,11 +102,10 @@ const styles = StyleSheet.create({
     height: 52,
     marginBottom: 10,
   },
-  bottomView: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
+  modalContainer: {
     justifyContent: "flex-end",
+  },
+  bottomView: {
     alignItems: "center",
   },
   modalView: {
