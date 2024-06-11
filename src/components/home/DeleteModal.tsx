@@ -28,6 +28,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
             isVisible={modalVisible}
             backdropTransitionOutTiming={0}
             hasBackdrop
+            backdropOpacity={0.55}
             coverScreen
             onBackdropPress={() => {
               setModalVisible(!modalVisible);
@@ -63,7 +64,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   style={styles.button}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>No oops</Text>
+                  <Text style={styles.textStyle}>No, oops</Text>
                 </Pressable>
               </View>
             </Pressable>
@@ -76,7 +77,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
           </Pressable>
         </View>
       ) : (
-        <View></View>
+        <View />
       )}
     </View>
   );
@@ -110,7 +111,8 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "100%",
-    marginBottom: 10,
+    height: 153,
+    marginBottom: 40,
     backgroundColor: "white",
     borderRadius: 20,
     paddingTop: 15,

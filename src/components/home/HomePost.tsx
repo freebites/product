@@ -65,7 +65,7 @@ export const HomePost = (props: HomePostProps) => {
         userPost={post.postedBy === user.uid}
         setRefreshing={setRefreshing}
         fetchData={fetchData}
-      ></DeleteModal>
+      />
     </Pressable>
   );
 };
