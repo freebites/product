@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     margin: "5%",
+    width: "65%",
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
