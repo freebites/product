@@ -15,6 +15,9 @@ import { useState } from "react";
 import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../firebase";
+import { create } from "../../../api/user/usercrud";
 
 const logo = require("../../assets/icons/freebites/logo.png");
 const checkbox = require("../../assets/icons/checkbox.png");

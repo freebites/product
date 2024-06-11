@@ -58,7 +58,7 @@ export function validateRoutePerms() {
     user.uid === "" ||
     user.uid !== routeParams.id
   ) {
-    return <Redirect href="/login" />;
+    return <Redirect href="/loginPage" />;
   }
 }
 
@@ -73,7 +73,7 @@ export function useProtectedRoute(user: UserType) {
     ) {
       // redirect them to the login page, hack fix to prevent infinite loop
       // user.uid = "PLACEHOLDER";
-      router.replace("/login");
+      router.replace("/loginPage");
     } else if (user != EmptyUser && user.uid != "" && inAuthGroup) {
       router.replace("/"); // stay on apge
     }
