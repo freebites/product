@@ -11,7 +11,7 @@ import {
 import { globalStyles } from "../../../components/global";
 import HomePost from "../../../components/home/HomePost";
 import { router } from "expo-router";
-import { getAllPosts, getWithFilter } from "../../../../api/posts/read";
+import { getWithFilter } from "../../../../api/posts/read";
 import { PostContext } from "../../../context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";

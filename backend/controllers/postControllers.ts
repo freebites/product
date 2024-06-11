@@ -13,19 +13,6 @@ import { Error } from "mongoose";
 
 /**
  * @description Get all posts from the database.
- * @route GET /api/Posts
- */
-const getAllPosts = async (req: Request, res: Response) => {
-  try {
-    const items = await Item.find();
-    res.json(items);
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
-  }
-};
-
-/**
- * @description Get all posts from the database.
  * @route GET /api/Posts/:id
  * @param {string} id - The mongoDB _id of the post
  */
@@ -55,7 +42,7 @@ const getPostsWithFilter = async (req: Request, res: Response) => {
   try {
     const query = req.query;
     const sortBy = query.sort;
-
+    console.log(query);
     const sortParams = {
       [String(sortBy)]: 1,
     }; // add .sort(sortParams)
@@ -203,11 +190,4 @@ const deletePost = async (req: Request, res: Response) => {
 };
 
 // export these functions and put them into the routes
-export {
-  getAllPosts,
-  getOnePost,
-  getPostsWithFilter,
-  updatePost,
-  createPost,
-  deletePost,
-};
+export { getOnePost, getPostsWithFilter, updatePost, createPost, deletePost };
