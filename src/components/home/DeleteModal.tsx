@@ -35,10 +35,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
             }}
             style={styles.modalContainer}
           >
-            <Pressable
-              style={styles.bottomView}
-              onPress={() => setModalVisible(false)}
-            >
+            <View style={styles.bottomView}>
               <Image
                 source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
                 style={styles.imgStyle}
@@ -67,7 +64,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                   <Text style={styles.textStyle}>No, oops</Text>
                 </Pressable>
               </View>
-            </Pressable>
+            </View>
           </Modal>
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
@@ -86,7 +83,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
 const styles = StyleSheet.create({
   trashIconContainer: {
     display: "flex",
-    // borderRadius: 25,
     justifyContent: "flex-end",
   },
   trashIcon: {
