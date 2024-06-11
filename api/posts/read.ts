@@ -30,3 +30,12 @@ export const getWithFilter = async (params: {
     throw error;
   }
 };
+
+export const getAllPosts = async () =>
+  getWithFilter({
+    diet: [""],
+    latitude: "",
+    longitude: "",
+    userID: "",
+    sort: "",
+  });
