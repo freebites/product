@@ -64,10 +64,14 @@ export const AppContextProvider = (props: { children: any }) => {
 
   useEffect(() => {
     const getState = async () => {
-      const newLocation = await getItem("location");
-      const newFilter = await getItem("filters");
-      const newUserToFilter = await getItem("userToFilter");
-      const newSort = await getItem("sort");
+      // Run all promises concurrently
+      const [newLocation, newFilter, newUserToFilter, newSort] =
+        await Promise.all([
+          getItem("location"),
+          getItem("filters"),
+          getItem("userToFilter"),
+          getItem("sort"),
+        ]);
 
       // Check for first time app is opened
       if (newFilter != null) {

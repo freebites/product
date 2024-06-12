@@ -79,11 +79,8 @@ const Home = () => {
         sort: sort,
       });
     }
-    console.log("Printing location: ", location.latitude, " ", location.longitude);
-    console.log(filters);
     setPosts(postData);
     setRefreshing(false);
-    //console.log(postData);
   };
 
   const { postData, updatePostData } = useContext(PostContext);
@@ -128,7 +125,6 @@ const Home = () => {
           updateLocation(newCoords);
           fetchData(newCoords);
           setRefreshing(true);
-          console.log("updating location:", location);
         }}
       />
 

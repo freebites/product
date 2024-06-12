@@ -10,10 +10,10 @@ export const setItem = async (key: string, value: any): Promise<void> => {
   }
 };
 
-export const getItem = async (key: string): Promise<any | null> => {
+export const getItem = async <T>(key: string): Promise<T | null> => {
   try {
     const value = await AsyncStorage.getItem(key);
-    return value != null ? JSON.parse(value) : null;
+    return value != null ? JSON.parse(value) as T : null;
   } catch (error) {
     console.error("Error getting item:", error);
     return null;

@@ -50,7 +50,6 @@ const SignupSection = () => {
       await setItem("allNotification", true);
       await setItem("livePosts", true);
       await setItem("onlyFavs", false);
-      console.log("error here notifsect");
     }
 
     setupStorage();
