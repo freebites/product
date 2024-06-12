@@ -140,10 +140,10 @@ export default function reviewpost() {
                 <Text style={styles.labelText}>Filters:</Text>
               </View>
               <View style={styles.values}>
-                {postData.tags.perishable ? (
+                {postData.tags.perishable === "Perishable" ? (
                   <Tag text="Perishable" />
                 ) : (
-                  <Tag text="Non-Perishable" />
+                  <Tag text="Nonperishable" />
                 )}
                 {postData.tags.allergens.map((allergen, index) => (
                   <Tag key={index} text={allergen} />
