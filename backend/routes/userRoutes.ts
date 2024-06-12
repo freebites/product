@@ -14,8 +14,6 @@ userRouter.get("/api/Users", user.getAllUsers);
 
 userRouter.get("/api/Users/:id", user.getOneUser);
 
-userRouter.get("/api/Users/:email", user.getOneUserEmail)
-
 userRouter.post("/api/Users", user.createUser);
 
 userRouter.put("/api/Users/:id", user.updateUser);
