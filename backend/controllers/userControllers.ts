@@ -27,6 +27,8 @@ const getAllUsers = async (req: Request, res: Response) => {
  * @param { string } uid - The firebase UID (not the mongoDB _id).
  */
 const getOneUser = async (req: Request, res: Response) => {
+  console.log("getting by ID");
+
   const userId = req.params.id;
   try {
     const user = await User.findOne({ uid: userId });
@@ -35,6 +37,19 @@ const getOneUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: "fetch incorrectly" });
   }
 };
+
+const getOneUserEmail = async (req: Request, res: Response) => {
+  console.log("getting by Email");
+
+  const userEmail = req.params.email;
+
+  try {
+    const user = await User.findOne({ emailAddress: userEmail });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "fetch incorrectly" });
+  }
+}
 
 // api/freeites?filter1:hihih;filter2:hihi
 
@@ -118,4 +133,4 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUsers, getOneUser, createUser, updateUser, deleteUser };
+export { getAllUsers, getOneUser, getOneUserEmail, createUser, updateUser, deleteUser };

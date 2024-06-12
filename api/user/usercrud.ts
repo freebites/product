@@ -23,6 +23,19 @@ export const getOneUser = async (userID: string): Promise<UserType> => {
   }
 };
 
+export const getOneUserEmail = async (emailAddress: string): Promise<UserType> => {
+  try {
+    console.log("In Crud Email Function");
+    console.log(emailAddress);
+    const response = await axios.get(`${apiURL}/api/Users/${emailAddress}`);
+    console.log(response.data.emailAddress);
+    return response.data;
+  } catch (error) {
+    console.log("error getting all items:", error);
+    throw error;
+  }
+}
+
 interface CreateProps {
   uid: string;
   firstName: string;
