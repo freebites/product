@@ -13,6 +13,8 @@ import React, { useState } from "react";
 import LoginButton from "../../components/login/LoginButton";
 import { Welcome } from "../../components";
 import { globalStyles } from "../../components/global";
+import { getOneUserEmail } from "../../../api/user/usercrud";
+
 // import { TextInput } from "react-native-gesture-handler";
 
 export default function ForgotPassword() {
@@ -22,11 +24,12 @@ export default function ForgotPassword() {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const continuePressed = () => {
+  const continuePressed = async () => {
     console.log(email);
 
     if (isValidEmail(email)) {
-      console.log("yay");
+      const user = await getOneUserEmail(email);
+      console.log(user.emailAddress);
     }
   };
 
