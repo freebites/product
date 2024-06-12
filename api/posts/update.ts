@@ -1,6 +1,6 @@
 import axios from "axios";
 import { postType } from "types/PostTypes";
-import { port } from "backend/server";
+
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface UpdateProps {

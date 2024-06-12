@@ -3,6 +3,7 @@ import { postType, tags } from "../../types/PostTypes";
 import { UserType } from "../../types/UserTypes";
 import { getAllUsers, getOneUser } from "api/user/usercrud";
 import { notifyUsers } from "api/notify/notifyUsers";
+
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface CreatePostProps {

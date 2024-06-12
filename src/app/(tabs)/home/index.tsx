@@ -11,7 +11,7 @@ import {
 import { globalStyles } from "../../../components/global";
 import HomePost from "../../../components/home/HomePost";
 import { router } from "expo-router";
-import { getAllPosts, getWithFilter } from "../../../../api/posts/read";
+import { getWithFilter } from "../../../../api/posts/read";
 import { PostContext } from "../../../context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
@@ -36,7 +36,7 @@ const Home = () => {
     setUserToFilter,
     sort,
   } = useContext(AppContext);
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const fetchData = async (
     query?:
       | {
@@ -129,9 +129,7 @@ const Home = () => {
         <GrowToggle
           selected={userToFilter == ""}
           text={"All Posts"}
-          onPress={() => {
-            setUserToFilter("");
-          }}
+          onPress={() => setUserToFilter("")}
         />
         <GrowToggle
           selected={userToFilter != ""}
@@ -142,30 +140,44 @@ const Home = () => {
         />
       </View>
 
-      <ScrollView
-        contentContainerStyle={styles.postContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-        }
-      >
-        {AllPosts.map((eachPost: postType) => {
-          return (
-            <HomePost
-              style={styles.postCard}
-              key={eachPost._id}
-              post={eachPost}
-              onPress={() =>
-                router.push({
-                  pathname: "/postPopUp",
-
-                  params: { id: eachPost._id },
-                })
-              }
-            />
-            //<Text>{JSON.stringify(eachPost)}</Text>
-          );
-        })}
-      </ScrollView>
+      {userToFilter !== "" &&
+      AllPosts.filter((eachPost: postType) => {
+        return eachPost.postedBy === userToFilter;
+      }).length === 0 ? (
+        <View style={styles.textContainer}>
+          <Text style={styles.textTitle}>No history yet</Text>
+          <Text style={styles.textBody}>
+            Try making a post by clicking on the + button on the homepage!
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.postContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+        >
+          {AllPosts.map((eachPost: postType) => {
+            if (userToFilter === "" || userToFilter === eachPost.postedBy) {
+              return (
+                <HomePost
+                  style={styles.postCard}
+                  key={eachPost._id}
+                  post={eachPost}
+                  setRefreshing={setRefreshing}
+                  fetchData={fetchData}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/postPopUp",
+                      params: { id: eachPost._id },
+                    })
+                  }
+                />
+              );
+            }
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -177,6 +189,26 @@ const styles = StyleSheet.create({
   },
   postCard: {
     marginBottom: 30,
+  },
+  textTitle: {
+    fontWeight: "bold",
+    fontSize: 24,
+    color: "#505A4E",
+    textShadowRadius: 1,
+    textShadowColor: "black",
+    paddingBottom: 12,
+  },
+  textContainer: {
+    margin: "5%",
+    width: "65%",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  textBody: {
+    textAlign: "center",
+    color: "#505A4E",
+    opacity: 0.57,
   },
 });
 
