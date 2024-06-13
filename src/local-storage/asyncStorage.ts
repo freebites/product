@@ -13,11 +13,19 @@ export const setItem = async (key: string, value: any): Promise<void> => {
 export const getItem = async <T>(key: string): Promise<T | null> => {
   try {
     const value = await AsyncStorage.getItem(key);
-    return value != null ? JSON.parse(value) as T : null;
+    return value !== null ? (JSON.parse(value) as T) : null;
   } catch (error) {
     console.error("Error getting item:", error);
     return null;
   }
+};
+
+export const getItemWithDefault = async <T>(
+  key: string,
+  defaultValue: T
+): Promise<T> => {
+  const storageItem = await getItem<T>(key);
+  return storageItem ?? defaultValue;
 };
 
 export const removeItem = async (key: string): Promise<void> => {

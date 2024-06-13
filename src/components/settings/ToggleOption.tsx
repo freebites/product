@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
 import React, { useState, useEffect } from "react";
-import { getItem, setItem } from "../../local-storage/asyncStorage";
+import { getItemWithDefault, setItem } from "../../local-storage/asyncStorage";
 
 interface ToggleOptionProps {
   storageKey: string;
@@ -14,19 +14,19 @@ const ToggleOption = (props: ToggleOptionProps) => {
   /* Gets the current option from Local Storage */
   useEffect(() => {
     const getOption = async () => {
-      const state = await getItem(storageKey);
-      setIsEnabled((previousState) => state);
+      const state = await getItemWithDefault<boolean>(storageKey, isEnabled);
+      setIsEnabled(state);
     };
-
     getOption();
   }, []);
 
   /* Stores the current change to Local Storage */
   const toggleSwitch = async () => {
-    setIsEnabled((previousState) => !previousState);
-    await setItem(storageKey, !isEnabled);
+    setIsEnabled((previousState) => {
+      setItem(storageKey, !previousState);
+      return !previousState;
+    });
   };
-
   return (
     <View style={styles.container}>
       <Text>{text}</Text>

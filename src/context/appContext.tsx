@@ -1,5 +1,5 @@
-import React, { Children, createContext, useState, useEffect } from "react";
-import { getItem } from "../local-storage/asyncStorage";
+import React, { useState, useEffect } from "react";
+import { getItemWithDefault } from "../local-storage/asyncStorage";
 
 /* this is a context to store application state, UI preferences, etc.
  * Update as needed.
@@ -67,16 +67,14 @@ export const AppContextProvider = (props: { children: any }) => {
       // Run all promises concurrently
       const [newLocation, newFilter, newUserToFilter, newSort] =
         await Promise.all([
-          getItem("location"),
-          getItem("filters"),
-          getItem("userToFilter"),
-          getItem("sort"),
+          //Assume the 4 states are the default values
+          getItemWithDefault<locationInfo>("location", location),
+          getItemWithDefault<filterTypes>("filters", filters),
+          getItemWithDefault<string>("userToFilter", userToFilter),
+          getItemWithDefault<string>("sort", sort),
         ]);
 
-      // Check for first time app is opened
-      if (newFilter != null) {
-        setFilters(newFilter);
-      }
+      setFilters(newFilter);
       setLocation(newLocation);
       setUserToFilter(newUserToFilter);
       setSort(newSort);
