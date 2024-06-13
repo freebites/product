@@ -95,8 +95,6 @@ const SignupSection = () => {
 				<LoginInput title="Last Name" />
 				<LoginInput title="Email Address" />
 				<LoginInput title="Password" isPassword="true" />
-				
-				
 				*/}
 
         <Text style={styles.title}>First Name</Text>

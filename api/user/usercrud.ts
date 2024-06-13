@@ -38,6 +38,7 @@ export const create = async (props: CreateProps) => {
     firstName,
     lastName,
     emailAddress,
+    userName: "",
     profile: "",
     bio: "",
     pronouns: "",
