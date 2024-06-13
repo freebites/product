@@ -16,6 +16,7 @@ import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
 import Svg, { Circle, Rect } from "react-native-svg";
+import CheckBox from '@react-native-community/checkbox';
 
 const logo = require("../../assets/icons/freebites/logo.png");
 const checkbox = require("../../assets/icons/checkbox.png");
@@ -72,10 +73,21 @@ const LoginSection = () => {
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
-          <Image
+          {/* <Image
             source={checkbox}
             style={{ width: 16, height: 16, alignSelf: "flex-start" }}
-          />
+          /> */}
+          {/* <CheckBox
+          disabled={true}
+          // value={this.state.value0}
+          // onValueChange={(value) =>
+            // this.setState({
+            //   value0: value,
+            // })
+          }
+          /> */}
+
+          
           <View style={{ flex: 1, flexDirection: "row", gap: 89 }}>
             <Text
               style={{

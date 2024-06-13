@@ -13,7 +13,6 @@ import SignupSection from "../../components/login/SignupSection";
 import { Link, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { TouchableHighlight } from "react-native-gesture-handler";
-//import React from 'react'
 
 //import top image icon thingy
 const icon = require("../../assets/icons/freebites/logo.png");
@@ -30,13 +29,6 @@ const signup = () => {
   );
 
   return (
-    // <TouchableWithoutFeedback
-    //   onPress={() => Keyboard.dismiss()}
-    //   accessible={false}
-    // >
-
-    // KeyboardAvoidingView
-
     <View
       style={[
         globalStyles.container,
@@ -97,7 +89,6 @@ const signup = () => {
 
       {loginSelected ? <LoginSection /> : <SignupSection />}
     </View>
-    // </TouchableWithoutFeedback>
   );
 };
 

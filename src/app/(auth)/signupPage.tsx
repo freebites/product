@@ -31,7 +31,6 @@ const signupPage = () => {
     >
       <KeyboardAvoidingView
         style={{ width: "100%", flex: 1 }}
-        // keyboardVerticalOffset={200}
         behavior={"position"}
       >
         <ScrollView style={{ width: "100%" }}>
@@ -41,7 +40,6 @@ const signupPage = () => {
           </View>
 
           <SignupSection />
-          {/* </View> */}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

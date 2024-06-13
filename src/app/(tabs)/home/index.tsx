@@ -152,6 +152,7 @@ const Home = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
         }
+        showsVerticalScrollIndicator={false}
       >
         {AllPosts.map((eachPost: postType) => {
           return (
