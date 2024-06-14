@@ -25,17 +25,24 @@ export const getOneUser = async (userID: string): Promise<UserType> => {
 
 export const getOneUserEmail = async (emailAddress: string): Promise<UserType> => {
   try {
-    console.log("In Crud Email Function");
-    console.log(emailAddress);
-    const response = await axios.get(`${apiURL}/api/Users/${emailAddress}`);
-    console.log(response.data.emailAddress);
+    const response = await axios.get(`${apiURL}/api/Users/Email/${emailAddress}`);
     return response.data;
   } catch (error) {
     console.log("error getting all items:", error);
     throw error;
   }
  }
- 
+
+ export const sendPasswordResetEmail = async (emailAddress: string) => {
+  try {
+    console.log("entering send password reset API call")
+    const response = await axios.get(`${apiURL}/api/Users/Reset/${emailAddress}`);
+    return response.data;
+  } catch (error) {
+    console.log("error sending email:", error);
+    throw error;
+  }
+};
 
 interface CreateProps {
   uid: string;
@@ -43,6 +50,7 @@ interface CreateProps {
   lastName: string;
   emailAddress: string;
 }
+
 export const create = async (props: CreateProps) => {
   const { uid, firstName, lastName, emailAddress } = props;
   const token = await useNotifications();

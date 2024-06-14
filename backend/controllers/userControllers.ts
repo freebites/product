@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import nodemailer from "nodemailer";
+
 /*
  * Controllers for User Database. These implement the functions that are
  * called for each route in the user database.
@@ -27,9 +29,11 @@ const getAllUsers = async (req: Request, res: Response) => {
  * @param { string } uid - The firebase UID (not the mongoDB _id).
  */
 const getOneUser = async (req: Request, res: Response) => {
+  // console.log("getting by ID");
   const userId = req.params.id;
   try {
     const user = await User.findOne({ uid: userId });
+    // console.log(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "fetch incorrectly" });
@@ -37,17 +41,52 @@ const getOneUser = async (req: Request, res: Response) => {
 };
 
 const getOneUserEmail = async (req: Request, res: Response) => {
-  console.log("getting by Email");
+  // console.log("getting by Email");
 
   const userEmail = req.params.email;
-
+//  console.log("Input email to getOneUserEmail " + userEmail);
   try {
     const user = await User.findOne({ emailAddress: userEmail });
+    // console.log(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "fetch incorrectly" });
   }
 }
+
+
+const sendPasswordResetEmail = async (req: Request, res: Response) => {
+  console.log("In userControllers");
+  const userEmail = req.params.email;
+  try {const transporter = nodemailer.createTransport({
+      host: "mail.hoster902.com",
+      port: 465, // or 587
+      secure: true, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "",
+        pass: "",
+      },
+    });
+
+   // send mail with defined transport object
+  const info = await transporter.sendMail({
+      from: '"FreeBites" <FreeBites@gmail.com>', // sender address
+      to: userEmail, // list of receivers
+      subject: "FreeBites Password Reset", // Subject line
+      text: "Please click here to reset password?", // plain text body
+      html: "<b>PLEASE CLICK HERE TO RESET PASSWORD</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  res.json(true);
+} catch (error) {
+  console.log("Failed to send Email");
+  throw(error);
+  res.json(false);
+}
+  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+};
+
 
 // api/freeites?filter1:hihih;filter2:hihi
 
@@ -131,4 +170,4 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUsers, getOneUser, getOneUserEmail, createUser, updateUser, deleteUser };
+export { getAllUsers, getOneUser, getOneUserEmail, sendPasswordResetEmail, createUser, updateUser, deleteUser };
