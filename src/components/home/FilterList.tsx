@@ -6,7 +6,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { AppContext } from "../../context/appContext";
+import { AppContext, filterTypes } from "../../context/appContext";
+import { setItem } from "../../local-storage/asyncStorage";
 
 const FilterList = () => {
   const { filters, sort, setFilters, setSort } = useContext(AppContext);
@@ -50,11 +51,23 @@ const FilterList = () => {
 
     let query = parts.join(" ");
     setFilters(filters);
+    updateFilters(filters);
   }, [filters]); // update on change of any filter
+
+  const updateFilters = async (filters: filterTypes) => {
+    await setItem("filters", filters);
+  };
+
+  /* Sorting needs to be implemented */
 
   useEffect(() => {
     setSort(setting);
   }, [setting]);
+
+  const updateSort = async (newSort: string) => {
+    await setItem("sort", newSort);
+    setSort(newSort);
+  };
 
   return (
     <View style={styles.container}>
@@ -77,7 +90,7 @@ const FilterList = () => {
           ]}
           onPress={() => {
             if (setting != "closest") {
-              setSetting("closest");
+              updateSort("closest");
             }
           }}
         >
@@ -104,7 +117,7 @@ const FilterList = () => {
           ]}
           onPress={() => {
             if (setting != "recent") {
-              setSetting("recent");
+              updateSort("recent");
             }
           }}
         >
@@ -122,27 +135,27 @@ const FilterList = () => {
           </View>
         </Pressable>
 
-        <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "grey" : "transparent",
-            },
-            styles.button,
-          ]}
-          onPress={() => {
-            if (setting != "perish") {
-              setSetting("perish");
-            }
-          }}
-        >
-          <View style={styles.option}>
-            <MaterialCommunityIcons
-              name="food-outline"
-              size={24}
-              color="black"
-            />
-            <Text style={styles.optionsText}>Perishables</Text>
-          </View>
+				<Pressable
+					style={({ pressed }) => [
+						{
+							backgroundColor: pressed ? "grey" : "transparent",
+						},
+						styles.button,
+					]}
+					onPress={() => {
+						if (setting != "perish") {
+							setSetting("perish");
+						}
+					}}
+				>
+					<View style={styles.option}>
+						<MaterialCommunityIcons
+							name="food-outline"
+							size={24}
+							color="black"
+						/>
+						<Text style={styles.optionsText}>Perishables</Text>
+					</View>
 
           <View style={styles.checkmark}>
             {setting == "perish" ? (
@@ -153,27 +166,27 @@ const FilterList = () => {
           </View>
         </Pressable>
 
-        <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "grey" : "transparent",
-            },
-            styles.button,
-          ]}
-          onPress={() => {
-            if (setting != "nonperish") {
-              setSetting("nonperish");
-            }
-          }}
-        >
-          <View style={styles.option}>
-            <MaterialCommunityIcons
-              name="food-off-outline"
-              size={24}
-              color="black"
-            />
-            <Text style={styles.optionsText}>Non-Perishables</Text>
-          </View>
+				<Pressable
+					style={({ pressed }) => [
+						{
+							backgroundColor: pressed ? "grey" : "transparent",
+						},
+						styles.button,
+					]}
+					onPress={() => {
+						if (setting != "nonperish") {
+							setSetting("nonperish");
+						}
+					}}
+				>
+					<View style={styles.option}>
+						<MaterialCommunityIcons
+							name="food-off-outline"
+							size={24}
+							color="black"
+						/>
+						<Text style={styles.optionsText}>Non-Perishables</Text>
+					</View>
 
           <View style={styles.checkmark}>
             {setting == "nonperish" ? (

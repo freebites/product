@@ -1,79 +1,105 @@
-import React, { Children, createContext, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getItemWithDefault } from "../local-storage/asyncStorage";
 
 /* this is a context to store application state, UI preferences, etc.
  * Update as needed.
  */
 
-type filterTypes = {
-	[key: string]: string;
-};
-// define types for the provider
-type AppContextType = {
-	// so we can edit filters directly from the filter modal
-	filters: filterTypes; // string so we can use directly as a query parameter
-	setFilters: (arg0: filterTypes) => void;
-	sort: string;
-	setSort: (arg0: string) => void;
-	location: locationInfo;
-	setLocation: (arg0: locationInfo) => void;
-	userToFilter: string; // firebase UID of currently authenticated/searched user
-	setUserToFilter: (arg0: string) => void;
-};
-export const noLocation: locationInfo = {
-	latitude: "",
-	longitude: "",
-};
-// define the app's context here
-export const AppContext = React.createContext<AppContextType>({
-	filters: {},
-	setFilters: () => {},
-	sort: "",
-	setSort: () => {},
-	location: noLocation,
-	setLocation: () => {},
-	userToFilter: "",
-	setUserToFilter: () => {},
-});
-
 export interface locationInfo {
-	latitude: string | number;
-	longitude: string | number;
+  latitude: string | number;
+  longitude: string | number;
 }
 
+export type filterTypes = {
+  [key: string]: string;
+};
+
+// define types for the provider
+type AppContextType = {
+  // so we can edit filters directly from the filter modal
+  filters: filterTypes; // string so we can use directly as a query parameter
+  setFilters: (arg0: filterTypes) => void;
+  sort: string;
+  setSort: (arg0: string) => void;
+  location: locationInfo;
+  setLocation: (arg0: locationInfo) => void;
+  userToFilter: string; // firebase UID of currently authenticated/searched user
+  setUserToFilter: (arg0: string) => void;
+};
+
+export const noLocation: locationInfo = {
+  latitude: "",
+  longitude: "",
+};
+
+// define the app's context here
+export const AppContext = React.createContext<AppContextType>({
+  filters: {},
+  setFilters: () => {},
+  sort: "",
+  setSort: () => {},
+  location: noLocation,
+  setLocation: () => {},
+  userToFilter: "",
+  setUserToFilter: () => {},
+});
+
 export const AppContextProvider = (props: { children: any }) => {
-	const [filters, setFilters] = useState<filterTypes>({
-		vegan: "",
-		vegetarian: "",
-		gluten: "",
-		lactose: "",
-		kosher: "",
-		halal: "",
-	});
-	const [location, setLocation] = useState<locationInfo>({
-		latitude: "",
-		longitude: "",
-	});
-	const [sort, setSort] = useState<string>("");
+  const [filters, setFilters] = useState<filterTypes>({
+    vegan: "",
+    vegetarian: "",
+    gluten: "",
+    lactose: "",
+    kosher: "",
+    halal: "",
+  });
 
-	const [userToFilter, setUserToFilter] = useState<string>("");
+  const [location, setLocation] = useState<locationInfo>({
+    latitude: "",
+    longitude: "",
+  });
 
-	// note: we can put set functions in wrapper functions if there's some
-	// additional logic required
+  const [sort, setSort] = useState<string>("");
+  const [userToFilter, setUserToFilter] = useState<string>("");
 
-	return (
-		<AppContext.Provider
-			value={{
-				filters,
-				setFilters,
-				sort,
-				setSort,
-				location,
-				setLocation,
-				userToFilter,
-				setUserToFilter,
-			}}
-		>
-			{props.children}
-		</AppContext.Provider>
-	);
+  useEffect(() => {
+    const getState = async () => {
+      // Run all promises concurrently
+      const [newLocation, newFilter, newUserToFilter, newSort] =
+        await Promise.all([
+          //Assume the 4 states are the default values
+          getItemWithDefault<locationInfo>("location", location),
+          getItemWithDefault<filterTypes>("filters", filters),
+          getItemWithDefault<string>("userToFilter", userToFilter),
+          getItemWithDefault<string>("sort", sort),
+        ]);
+
+      setFilters(newFilter);
+      setLocation(newLocation);
+      setUserToFilter(newUserToFilter);
+      setSort(newSort);
+    };
+
+    getState();
+  }, []);
+
+  // note: we can put set functions in wrapper functions if there's some
+  // additional logic required
+
+  return (
+    <AppContext.Provider
+      value={{
+        filters,
+        setFilters,
+        sort,
+        setSort,
+        location,
+        setLocation,
+        userToFilter,
+        setUserToFilter,
+      }}
+    >
+      {props.children}
+    </AppContext.Provider>
+  );
 };

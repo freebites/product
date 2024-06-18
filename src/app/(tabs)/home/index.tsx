@@ -25,6 +25,7 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
+import { setItem } from "../../../local-storage/asyncStorage"
 
 const Home = () => {
   const [AllPosts, setPosts] = useState([]);
@@ -95,6 +96,16 @@ const Home = () => {
     setRefreshing(true);
   }, [userToFilter, filters]);
 
+  const updateLocation = async (newLocation: locationInfo) => {
+    await setItem("location", newLocation);
+    setLocation(newLocation);
+  };
+
+  const updateUserToFilter = async (newUserToFilter: string) => {
+    await setItem("userToFilter", newUserToFilter);
+    setUserToFilter(newUserToFilter);
+  };
+  
   return (
     <View style={[globalStyles.container]}>
       <HomeSearchBar
@@ -109,7 +120,7 @@ const Home = () => {
                   longitude: details.lng,
                 }
               : noLocation;
-          setLocation(newCoords);
+          updateLocation(newCoords);
           fetchData(newCoords);
           setRefreshing(true);
         }}
@@ -129,13 +140,15 @@ const Home = () => {
         <GrowToggle
           selected={userToFilter == ""}
           text={"All Posts"}
-          onPress={() => setUserToFilter("")}
+          onPress={() => {
+            updateUserToFilter("");
+          }}
         />
         <GrowToggle
           selected={userToFilter != ""}
           text={"Your Posts"}
           onPress={() => {
-            setUserToFilter(user.uid);
+            updateUserToFilter(user.uid);
           }}
         />
       </View>
