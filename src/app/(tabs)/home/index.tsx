@@ -28,7 +28,7 @@ import { postType } from "../../../../types/PostTypes";
 import { setItem } from "../../../local-storage/asyncStorage"
 
 const Home = () => {
-  const [AllPosts, setPosts] = useState([]);
+  const [AllPosts, setPosts] = useState<postType[]>([]);
   const {
     filters,
     location,
@@ -58,7 +58,7 @@ const Home = () => {
     });
 
     // let query = dietArray.join(" ");
-    let postData;
+    let postData: postType[];
 
     // include custom query to deal with state update changes
     if (query) {
@@ -79,6 +79,14 @@ const Home = () => {
         sort: sort,
       });
     }
+
+    if (sort === "recent") {
+      postData = postData.sort(
+        (a, b) =>
+          new Date(b.postTime).getTime() - new Date(a.postTime).getTime()
+      );
+    }
+
     setPosts(postData);
     setRefreshing(false);
   };
@@ -94,7 +102,7 @@ const Home = () => {
     // async function
     fetchData();
     setRefreshing(true);
-  }, [userToFilter, filters]);
+  }, [userToFilter, filters, sort]);
 
   const updateLocation = async (newLocation: locationInfo) => {
     await setItem("location", newLocation);

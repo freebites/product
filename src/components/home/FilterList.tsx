@@ -8,6 +8,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { AppContext, filterTypes } from "../../context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
+import fetchData from "../../app/index";
+
 
 const FilterList = () => {
   const { filters, sort, setFilters, setSort } = useContext(AppContext);
@@ -21,29 +23,20 @@ const FilterList = () => {
   // const [kosher, setKosher] = useState("");
   // const [halal, setHalal] = useState("");
 
-  const [options, setOptions] = useState({
-    vegan: "",
-    vegetarian: "",
-    gluten: "",
-    lactose: "",
-    kosher: "",
-    halal: "",
-  });
+  // const [options, setOptions] = useState({
+  //   vegan: "",
+  //   vegetarian: "",
+  //   gluten: "",
+  //   lactose: "",
+  //   kosher: "",
+  //   halal: "",
+  // });
 
-  const [setting, setSetting] = useState("closest");
   useEffect(() => {
     let parts = [];
 
-    // turn this into one array please
-    // if (vegan) parts.push(vegan);
-    // if (vegetarian) parts.push(vegetarian);
-    // if (gluten) parts.push(gluten);
-    // if (lactose) parts.push(lactose);
-    // if (kosher) parts.push(kosher);
-    // if (halal) parts.push(halal);
-
     // get array of options' keys, iterate over each key (option)
-    Object.keys(filters).forEach((option) => {
+    Object.keys(filters).forEach((option: string) => {
       if (filters[option]) {
         parts.push(filters[option]);
       }
@@ -61,8 +54,8 @@ const FilterList = () => {
   /* Sorting needs to be implemented */
 
   useEffect(() => {
-    setSort(setting);
-  }, [setting]);
+    setSort(sort);
+  }, [sort]);
 
   const updateSort = async (newSort: string) => {
     await setItem("sort", newSort);
@@ -89,7 +82,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (setting != "closest") {
+            if (sort != "closest") {
               updateSort("closest");
             }
           }}
@@ -100,7 +93,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {setting == "closest" ? (
+            {sort == "closest" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -116,7 +109,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (setting != "recent") {
+            if (sort != "recent") {
               updateSort("recent");
             }
           }}
@@ -127,7 +120,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {setting == "recent" ? (
+            {sort == "recent" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -143,8 +136,8 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						if (setting != "perish") {
-							setSetting("perish");
+						if (sort != "perish") {
+							updateSort("perish");
 						}
 					}}
 				>
@@ -158,7 +151,7 @@ const FilterList = () => {
 					</View>
 
           <View style={styles.checkmark}>
-            {setting == "perish" ? (
+            {sort == "perish" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -174,8 +167,8 @@ const FilterList = () => {
 						styles.button,
 					]}
 					onPress={() => {
-						if (setting != "nonperish") {
-							setSetting("nonperish");
+						if (sort != "nonperish") {
+							updateSort("nonperish");
 						}
 					}}
 				>
@@ -189,7 +182,7 @@ const FilterList = () => {
 					</View>
 
           <View style={styles.checkmark}>
-            {setting == "nonperish" ? (
+            {sort == "nonperish" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
