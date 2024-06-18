@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { router } from "expo-router";
+
 import {
   SafeAreaView,
   TextInput,
@@ -8,57 +10,108 @@ import {
 } from "react-native";
 import { validateRoutePerms } from "../../context/auth";
 import { globalStyles } from "../../components/global";
-import { updatePassword } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 import { useAuth } from "../../context/auth";
 import { auth } from "../../../firebase";
+import { getOneUser } from "../../../api/user/usercrud";
+import { getOne } from "../../../api/posts/read";
 
 export default function UpdatePassword() {
   validateRoutePerms();
+  const [oldPassword, setOldPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const { user, setUser } = useAuth();
 
-  let old_validated = false;
-  let new_validated = false;
-  let confirm_validated = false;
+  // const [oldValidated, setOldValidated] = useState<boolean>(false);
+  const [newValidated, setNewValidated] = useState<boolean>(false);
+  const [confirmValidated, setConfirmValidated] = useState<boolean>(false);
 
-  const validateOldPassword = (password: string) => {
-    if (user.password === password) {
-      old_validated = true;
-    } else {
-      old_validated = false;
+  const validateOldPassword = async () => {
+    const currentUser = await getOneUser(user.uid);
+    // console.log(currentUser.emailAddress);
+    console.log(oldPassword);
+    const credential = EmailAuthProvider.credential(
+      currentUser.emailAddress,
+      oldPassword
+    );
+    // console.log(credential);
+    if (auth.currentUser) {
+      console.log(auth.currentUser);
+      try {
+        const newCredential = await reauthenticateWithCredential(
+          auth.currentUser,
+          credential
+        );
+        // setOldValidated(true);
+        console.log("authenticated ");
+        return true;
+      } catch (error) {
+        console.log(error);
+        console.log("could not authenticate");
+        return false;
+      }
+      // reauthenticateWithCredential(auth.currentUser, credential)
+      //   .then(() => {
+      //     // User re-authenticated.
+      //     console.log("authenticated");
+      //     setOldValidated(true);
+      //   })
+      //   .catch((error) => {
+      //     // An error ocurred
+      //     // ...
+      //     console.log("error");
+      //     setOldValidated(false);
+      //   });
     }
   };
 
   const validateNewPassword = (password: string) => {
     var regularExpression =
-      /^(?=.*[/d])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     if (regularExpression.test(password)) {
+      console.log("New password works: " + password);
       setNewPassword(password);
-      new_validated = true;
+      setNewValidated(true);
+      console.log(newValidated);
     } else {
       console.log(
-        "Password needs at least 1 number, 1 symbol, and between 8-16 characters"
+        "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters"
       );
-      new_validated = false;
+      setNewValidated(false);
     }
   };
 
   const validateConfirmPassword = (password: string) => {
+    console.log("confirm password field: " + password);
+    console.log("password to match: " + newPassword);
     if (password === newPassword) {
       //validated
-      confirm_validated = true;
+      setConfirmValidated(true);
     } else {
       console.log("new passwords do not match");
-      confirm_validated = false;
+      setConfirmValidated(false);
     }
   };
 
-  const submitPressed = () => {
-    if (old_validated && new_validated && confirm_validated) {
-      // const currUser = auth.currentUser;
-      // updatePassword(currUser, newPassword);
+  const submitPressed = async () => {
+    const oldValidated = await validateOldPassword();
+    console.log(oldValidated);
+    if (oldValidated && newValidated && confirmValidated) {
+      if (auth.currentUser) {
+        updatePassword(auth.currentUser, newPassword);
+      }
+      console.log("validation success");
+      router.replace("/home");
     } else {
       console.log("validation failed");
+      console.log(oldValidated);
+      console.log(newValidated);
+      console.log(confirmValidated);
     }
   };
 
@@ -70,7 +123,8 @@ export default function UpdatePassword() {
         keyboardType="default"
         textContentType="password"
         onChangeText={(old) => {
-          validateOldPassword(old);
+          setOldPassword(old);
+          // validateOldPassword(old);
         }}
       />
       <TextInput
