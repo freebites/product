@@ -16,8 +16,6 @@ userRouter.get("/api/Users/:id", user.getOneUser);
 
 userRouter.get("/api/Users/Email/:email", user.getOneUserEmail);
 
-userRouter.get("/api/Users/Reset/:email", user.sendPasswordResetEmail);
-
 userRouter.post("/api/Users", user.createUser);
 
 userRouter.put("/api/Users/:id", user.updateUser);

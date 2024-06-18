@@ -33,16 +33,6 @@ export const getOneUserEmail = async (emailAddress: string): Promise<UserType> =
   }
  }
 
- export const sendPasswordResetEmail = async (emailAddress: string) => {
-  try {
-    console.log("entering send password reset API call")
-    const response = await axios.get(`${apiURL}/api/Users/Reset/${emailAddress}`);
-    return response.data;
-  } catch (error) {
-    console.log("error sending email:", error);
-    throw error;
-  }
-};
 
 interface CreateProps {
   uid: string;

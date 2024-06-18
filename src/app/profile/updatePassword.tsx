@@ -1,31 +1,64 @@
 import React, { useState } from "react";
-import { SafeAreaView, TextInput, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Text,
+} from "react-native";
 import { validateRoutePerms } from "../../context/auth";
 import { globalStyles } from "../../components/global";
+import { updatePassword } from "firebase/auth";
+import { useAuth } from "../../context/auth";
+import { auth } from "../../../firebase";
 
-export const UpdatePassword = () => {
+export default function UpdatePassword() {
   validateRoutePerms();
   const [newPassword, setNewPassword] = useState<string>("");
+  const { user, setUser } = useAuth();
 
-  const validateOldPassword = (password: string) => {};
+  let old_validated = false;
+  let new_validated = false;
+  let confirm_validated = false;
+
+  const validateOldPassword = (password: string) => {
+    if (user.password === password) {
+      old_validated = true;
+    } else {
+      old_validated = false;
+    }
+  };
 
   const validateNewPassword = (password: string) => {
     var regularExpression =
       /^(?=.*[/d])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
     if (regularExpression.test(password)) {
       setNewPassword(password);
+      new_validated = true;
     } else {
       console.log(
         "Password needs at least 1 number, 1 symbol, and between 8-16 characters"
       );
+      new_validated = false;
     }
   };
 
   const validateConfirmPassword = (password: string) => {
     if (password === newPassword) {
       //validated
+      confirm_validated = true;
     } else {
       console.log("new passwords do not match");
+      confirm_validated = false;
+    }
+  };
+
+  const submitPressed = () => {
+    if (old_validated && new_validated && confirm_validated) {
+      // const currUser = auth.currentUser;
+      // updatePassword(currUser, newPassword);
+    } else {
+      console.log("validation failed");
     }
   };
 
@@ -46,7 +79,7 @@ export const UpdatePassword = () => {
         keyboardType="default"
         textContentType="newPassword"
         onChangeText={(newpass) => {
-          validateOldPassword(newpass);
+          validateNewPassword(newpass);
         }}
       />
       <TextInput
@@ -55,12 +88,25 @@ export const UpdatePassword = () => {
         keyboardType="default"
         textContentType="newPassword"
         onChangeText={(confirm) => {
-          validateOldPassword(confirm);
+          validateConfirmPassword(confirm);
         }}
       />
+
+      <Pressable
+        onPress={() => submitPressed()}
+        // ref={ref}
+        style={({ pressed }) => [
+          {
+            opacity: pressed ? 0.5 : 1,
+          },
+          styles.button,
+        ]}
+      >
+        <Text>Update</Text>
+      </Pressable>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   form: {

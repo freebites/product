@@ -7,16 +7,12 @@ import {
   Pressable,
   Text,
 } from "react-native";
-import { useAuth } from "../../context/auth";
-import { Link } from "expo-router";
 import React, { useState } from "react";
 import LoginButton from "../../components/login/LoginButton";
-import { Welcome } from "../../components";
 import { globalStyles } from "../../components/global";
 import { getOneUserEmail } from "../../../api/user/usercrud";
-import { sendPasswordResetEmail } from "../../../api/user/usercrud";
-
-// import { TextInput } from "react-native-gesture-handler";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
@@ -29,15 +25,20 @@ export default function ForgotPassword() {
     // console.log(email);
 
     if (isValidEmail(email)) {
-      sendPasswordResetEmail(email);
-      //   const user = await getOneUserEmail(email);
-      //   if (user != null) {
-      //     sendEmail(user.emailAddress);
-      //   } else {
-      //     console.log("no user with this email address.");
-      //   }
-      // } else {
-      //   console.log("invalid email format");
+      const user = await getOneUserEmail(email);
+      if (user != null) {
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            console.log("reset email sent");
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } else {
+        console.log("no user with this email address.");
+      }
+    } else {
+      console.log("invalid email format");
     }
   };
 
