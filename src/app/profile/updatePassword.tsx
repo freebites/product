@@ -113,6 +113,7 @@ export default function UpdatePassword() {
 
   return (
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
+      <Text style={styles.labelText}>Current Password:</Text>
       <TextInput
         style={[styles.textInput, { color: colorFunc(oldValidated) }]}
         placeholder="current password"
@@ -122,7 +123,10 @@ export default function UpdatePassword() {
           setOldPassword(old);
         }}
       />
-      <Text>{oldError}</Text>
+      <Text style={styles.errorText}>{oldError}</Text>
+
+      <Text style={styles.labelText}>New Password:</Text>
+
       <TextInput
         style={[styles.textInput, { color: colorFunc(newValidated) }]}
         placeholder="new password"
@@ -132,7 +136,9 @@ export default function UpdatePassword() {
           validateNewPassword(newpass);
         }}
       />
-      <Text>{newError}</Text>
+      <Text style={styles.errorText}>{newError}</Text>
+      <Text style={styles.labelText}>Confirm New Password:</Text>
+
       <TextInput
         style={[styles.textInput, { color: colorFunc(confirmValidated) }]}
         placeholder="confirm new password"
@@ -142,7 +148,7 @@ export default function UpdatePassword() {
           validateConfirmPassword(confirm);
         }}
       />
-      <Text>{confirmError}</Text>
+      <Text style={styles.errorText}>{confirmError}</Text>
 
       <Pressable
         onPress={() => submitPressed()}
@@ -173,7 +179,7 @@ const styles = StyleSheet.create({
     width: "70%",
     borderBottomWidth: 1,
     borderBottomColor: "#9e9797",
-    marginVertical: 20,
+    marginVertical: 10,
   },
   title: {
     color: "#9e9797",
@@ -190,7 +196,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingVertical: 16,
   },
-  text: {
-    fontSize: 13,
+  labelText: {
+    fontSize: 14,
+    textAlign: "left",
+    width: "70%",
+    marginTop: 20,
+  },
+  errorText: {
+    fontSize: 12,
+    color: "red",
+    textAlign: "left",
+    width: "70%",
   },
 });
