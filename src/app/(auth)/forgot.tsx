@@ -7,7 +7,7 @@ import {
   Pressable,
   Text,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginButton from "../../components/login/LoginButton";
 import { globalStyles } from "../../components/global";
 import { getOneUserEmail } from "../../../api/user/usercrud";
@@ -16,31 +16,32 @@ import { auth } from "../../../firebase";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const isValidEmail = (email: string) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
   const continuePressed = async () => {
-    // console.log(email);
-
     if (isValidEmail(email)) {
       const user = await getOneUserEmail(email);
       if (user != null) {
         sendPasswordResetEmail(auth, email)
           .then(() => {
-            console.log("reset email sent");
+            setErrorMessage("Email Sent");
           })
           .catch((error) => {
             console.log(error.message);
           });
       } else {
-        console.log("no user with this email address.");
+        setErrorMessage("no user with this email address.");
       }
     } else {
-      console.log("invalid email format");
+      setErrorMessage("invalid email format");
     }
   };
+
+  useEffect(() => {});
 
   return (
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
@@ -55,9 +56,9 @@ export default function ForgotPassword() {
         textContentType="emailAddress"
         onChangeText={(newEmail) => {
           setEmail(newEmail);
-          //   console.log(email);
         }}
       />
+      <Text>{errorMessage}</Text>
       <LoginButton onPress={continuePressed} text="Continue" />
     </SafeAreaView>
   );

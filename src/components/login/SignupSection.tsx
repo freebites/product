@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from "react";
+import { Link } from "expo-router";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -148,7 +149,7 @@ const SignupSection = () => {
       >
         {/* LoginButton */}
         <LoginButton onPress={handleSubmitData} text="Sign Up" />
-        <Text>Forgot password?</Text>
+        <Link href="/forgot">Forgot password?</Link>
       </View>
     </View>
   );

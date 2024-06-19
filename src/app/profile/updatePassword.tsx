@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import { router } from "expo-router";
 
 import {
@@ -19,6 +19,7 @@ import { useAuth } from "../../context/auth";
 import { auth } from "../../../firebase";
 import { getOneUser } from "../../../api/user/usercrud";
 import { getOne } from "../../../api/posts/read";
+import { color } from "react-native-elements/dist/helpers";
 
 export default function UpdatePassword() {
   validateRoutePerms();
@@ -26,46 +27,31 @@ export default function UpdatePassword() {
   const [newPassword, setNewPassword] = useState<string>("");
   const { user, setUser } = useAuth();
 
-  // const [oldValidated, setOldValidated] = useState<boolean>(false);
+  const [oldValidated, setOldValidated] = useState<boolean>(true);
   const [newValidated, setNewValidated] = useState<boolean>(false);
   const [confirmValidated, setConfirmValidated] = useState<boolean>(false);
 
+  const [oldError, setOldError] = useState<string>("");
+  const [newError, setNewError] = useState<string>("");
+  const [confirmError, setConfirmError] = useState<string>("");
+
   const validateOldPassword = async () => {
     const currentUser = await getOneUser(user.uid);
-    // console.log(currentUser.emailAddress);
-    console.log(oldPassword);
     const credential = EmailAuthProvider.credential(
       currentUser.emailAddress,
       oldPassword
     );
     // console.log(credential);
     if (auth.currentUser) {
-      console.log(auth.currentUser);
       try {
         const newCredential = await reauthenticateWithCredential(
           auth.currentUser,
           credential
         );
-        // setOldValidated(true);
-        console.log("authenticated ");
         return true;
       } catch (error) {
-        console.log(error);
-        console.log("could not authenticate");
         return false;
       }
-      // reauthenticateWithCredential(auth.currentUser, credential)
-      //   .then(() => {
-      //     // User re-authenticated.
-      //     console.log("authenticated");
-      //     setOldValidated(true);
-      //   })
-      //   .catch((error) => {
-      //     // An error ocurred
-      //     // ...
-      //     console.log("error");
-      //     setOldValidated(false);
-      //   });
     }
   };
 
@@ -74,61 +60,71 @@ export default function UpdatePassword() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     if (regularExpression.test(password)) {
-      console.log("New password works: " + password);
       setNewPassword(password);
       setNewValidated(true);
-      console.log(newValidated);
     } else {
-      console.log(
-        "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters"
-      );
       setNewValidated(false);
     }
   };
 
   const validateConfirmPassword = (password: string) => {
-    console.log("confirm password field: " + password);
-    console.log("password to match: " + newPassword);
     if (password === newPassword) {
-      //validated
       setConfirmValidated(true);
     } else {
-      console.log("new passwords do not match");
       setConfirmValidated(false);
     }
   };
 
   const submitPressed = async () => {
     const oldValidated = await validateOldPassword();
-    console.log(oldValidated);
     if (oldValidated && newValidated && confirmValidated) {
       if (auth.currentUser) {
         updatePassword(auth.currentUser, newPassword);
       }
-      console.log("validation success");
       router.replace("/home");
     } else {
-      console.log("validation failed");
-      console.log(oldValidated);
-      console.log(newValidated);
-      console.log(confirmValidated);
+      if (!oldValidated) {
+        setOldError("Incorrect password");
+      } else {
+        setOldError("");
+      }
+      if (!newValidated) {
+        setNewError(
+          "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters"
+        );
+      } else {
+        setNewError("");
+      }
+      if (!confirmValidated) {
+        setConfirmError("New Password does not match");
+      } else {
+        setConfirmError("");
+      }
+    }
+  };
+
+  const colorFunc = (valid: boolean) => {
+    if (valid) {
+      return "black";
+    } else {
+      return "red";
     }
   };
 
   return (
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { color: colorFunc(oldValidated) }]}
         placeholder="current password"
         keyboardType="default"
         textContentType="password"
         onChangeText={(old) => {
           setOldPassword(old);
-          // validateOldPassword(old);
         }}
       />
+      <Text>{oldError}</Text>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { color: colorFunc(newValidated) }]}
         placeholder="new password"
         keyboardType="default"
         textContentType="newPassword"
@@ -136,8 +132,9 @@ export default function UpdatePassword() {
           validateNewPassword(newpass);
         }}
       />
+      <Text>{newError}</Text>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { color: colorFunc(confirmValidated) }]}
         placeholder="confirm new password"
         keyboardType="default"
         textContentType="newPassword"
@@ -145,10 +142,10 @@ export default function UpdatePassword() {
           validateConfirmPassword(confirm);
         }}
       />
+      <Text>{confirmError}</Text>
 
       <Pressable
         onPress={() => submitPressed()}
-        // ref={ref}
         style={({ pressed }) => [
           {
             opacity: pressed ? 0.5 : 1,
@@ -176,6 +173,7 @@ const styles = StyleSheet.create({
     width: "70%",
     borderBottomWidth: 1,
     borderBottomColor: "#9e9797",
+    marginVertical: 20,
   },
   title: {
     color: "#9e9797",
