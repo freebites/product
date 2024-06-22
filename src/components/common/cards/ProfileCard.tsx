@@ -40,7 +40,6 @@ const ProfileCard = (props) => {
     const fetchUser = async () => {
 
       try {
-        console.log("rerasdasdas");
         const data = await getOneUser(user.uid);
         if (data.profile){
           const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
