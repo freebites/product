@@ -10,9 +10,9 @@ import { AppContext, filterTypes } from "../../context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
 import fetchData from "../../app/index";
 
-
 const FilterList = () => {
-  const { filters, sort, setFilters, setSort } = useContext(AppContext);
+  const { filters, sort, perish, setFilters, setSort, setPerishable } =
+    useContext(AppContext);
 
   // just refactor this into an array that's stored in the context haha.
   // eventually we're gonna want to store this asynchronously.
@@ -60,6 +60,15 @@ const FilterList = () => {
   const updateSort = async (newSort: string) => {
     await setItem("sort", newSort);
     setSort(newSort);
+  };
+
+  useEffect(() => {
+    setPerishable(perish);
+  }, [perish]);
+
+  const updatePerishable = async (newPerish: string) => {
+    await setItem("perishable", newPerish);
+    setPerishable(newPerish);
   };
 
   return (
@@ -127,31 +136,33 @@ const FilterList = () => {
             )}
           </View>
         </Pressable>
-
-				<Pressable
-					style={({ pressed }) => [
-						{
-							backgroundColor: pressed ? "grey" : "transparent",
-						},
-						styles.button,
-					]}
-					onPress={() => {
-						if (sort != "perish") {
-							updateSort("perish");
-						}
-					}}
-				>
-					<View style={styles.option}>
-						<MaterialCommunityIcons
-							name="food-outline"
-							size={24}
-							color="black"
-						/>
-						<Text style={styles.optionsText}>Perishables</Text>
-					</View>
+        <Text style={styles.subTitle}>Perishable</Text>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "grey" : "transparent",
+            },
+            styles.button,
+          ]}
+          onPress={() => {
+            if (perish != "perishable") {
+              updatePerishable("perishable");
+            } else {
+              updatePerishable("");
+            }
+          }}
+        >
+          <View style={styles.option}>
+            <MaterialCommunityIcons
+              name="food-outline"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.optionsText}>Perishables</Text>
+          </View>
 
           <View style={styles.checkmark}>
-            {sort == "perish" ? (
+            {perish == "perishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -159,34 +170,41 @@ const FilterList = () => {
           </View>
         </Pressable>
 
-				<Pressable
-					style={({ pressed }) => [
-						{
-							backgroundColor: pressed ? "grey" : "transparent",
-						},
-						styles.button,
-					]}
-					onPress={() => {
-						if (sort != "nonperish") {
-							updateSort("nonperish");
-						}
-					}}
-				>
-					<View style={styles.option}>
-						<MaterialCommunityIcons
-							name="food-off-outline"
-							size={24}
-							color="black"
-						/>
-						<Text style={styles.optionsText}>Non-Perishables</Text>
-					</View>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "grey" : "transparent",
+            },
+            styles.button,
+          ]}
+          onPress={() => {
+            if (perish != "nonperishable") {
+              updatePerishable("nonperishable");
+            } else {
+              updatePerishable("");
+            }
+          }}
+        >
+          <View style={styles.option}>
+            <MaterialCommunityIcons
+              name="food-off-outline"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.optionsText}>Non-Perishables</Text>
+          </View>
 
           <View style={styles.checkmark}>
-            {sort == "nonperish" ? (
+            {perish == "nonperishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
             )}
+            {/* {filters.nonperish != "" ? (
+              <Feather name="check" size={24} color="green" />
+            ) : (
+              <></>
+            )} */}
           </View>
         </Pressable>
       </View>

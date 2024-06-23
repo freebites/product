@@ -25,7 +25,7 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
-import { setItem } from "../../../local-storage/asyncStorage"
+import { setItem } from "../../../local-storage/asyncStorage";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState<postType[]>([]);
@@ -36,11 +36,13 @@ const Home = () => {
     userToFilter,
     setUserToFilter,
     sort,
+    perish,
   } = useContext(AppContext);
   const { user } = useAuth();
   const fetchData = async (
     query?:
       | {
+          perishable?: string;
           latitude: string | number;
           longitude: string | number;
           diet?: string[];
@@ -67,7 +69,7 @@ const Home = () => {
         latitude: query.latitude ? query.latitude : location.latitude,
         longitude: query.longitude ? query.longitude : location.longitude,
         userID: userToFilter,
-        sort: query.sort ? query.sort : sort,
+        perishable: perish,
       });
     } else {
       // usually just do this
@@ -76,7 +78,7 @@ const Home = () => {
         latitude: location.latitude,
         longitude: location.longitude,
         userID: userToFilter,
-        sort: sort,
+        perishable: perish,
       });
     }
 
@@ -86,6 +88,10 @@ const Home = () => {
           new Date(b.postTime).getTime() - new Date(a.postTime).getTime()
       );
     }
+
+    // if (perishable === "perish") {
+
+    // }
 
     setPosts(postData);
     setRefreshing(false);
@@ -102,7 +108,7 @@ const Home = () => {
     // async function
     fetchData();
     setRefreshing(true);
-  }, [userToFilter, filters, sort]);
+  }, [userToFilter, filters, sort, perish]);
 
   const updateLocation = async (newLocation: locationInfo) => {
     await setItem("location", newLocation);
@@ -113,7 +119,7 @@ const Home = () => {
     await setItem("userToFilter", newUserToFilter);
     setUserToFilter(newUserToFilter);
   };
-  
+
   return (
     <View style={[globalStyles.container]}>
       <HomeSearchBar
