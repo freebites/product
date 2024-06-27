@@ -1,5 +1,13 @@
 import { View, Text, Button, StyleSheet } from "react-native";
-import React, { forwardRef, useCallback, useContext, useMemo } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -10,19 +18,10 @@ import FilterList from "./FilterList";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 
 const SearchModal = forwardRef<BottomSheetModalMethods, any>((props, ref) => {
-  // create references to filters/sort state from the app's context
-
-  // // ref
-  // const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
   // variables
-  const snapPoints = useMemo(() => ["25%", "90%"], []);
-
-  // // callbacks
-  // const handlePresentModalPress = useCallback(() => {
-  // 	bottomSheetModalRef.current?.present();
-  // }, []);
+  const snapPoints = useMemo(() => ["95%"], []);
   const handleSheetChanges = useCallback((index: number) => {}, []);
+
 
   // backdrop component
   const renderBackdrop = useCallback(
@@ -31,23 +30,27 @@ const SearchModal = forwardRef<BottomSheetModalMethods, any>((props, ref) => {
     ) => (
       <BottomSheetBackdrop
         {...props}
-        appearsOnIndex={1}
-        enableTouchThrough={false}
+        appearsOnIndex={0} // Updated to match the index when the modal is open
+        disappearsOnIndex={-1} // Updated to match the index when the modal is closed
       />
     ),
     []
   );
+
   // renders
   return (
     <BottomSheetModal
       ref={ref}
-      index={1}
+      index={0}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       backdropComponent={renderBackdrop}
+      enablePanDownToClose={true}
+      backgroundComponent={null}
+      handleIndicatorStyle={{ display: "none" }}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <FilterList />
+        <FilterList/>
       </BottomSheetView>
     </BottomSheetModal>
   );

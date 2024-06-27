@@ -8,29 +8,20 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { AppContext, filterTypes } from "../../context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
+
 import fetchData from "../../app/index";
 
 const FilterList = () => {
   const { filters, sort, perish, setFilters, setSort, setPerishable } =
     useContext(AppContext);
 
-  // just refactor this into an array that's stored in the context haha.
-  // eventually we're gonna want to store this asynchronously.
-  // const [vegan, setVegan] = useState("");
-  // const [vegetarian, setVegetarian] = useState("");
-  // const [gluten, setGluten] = useState("");
-  // const [lactose, setLactose] = useState("");
-  // const [kosher, setKosher] = useState("");
-  // const [halal, setHalal] = useState("");
-
-  // const [options, setOptions] = useState({
-  //   vegan: "",
-  //   vegetarian: "",
-  //   gluten: "",
-  //   lactose: "",
-  //   kosher: "",
-  //   halal: "",
-  // });
+  // Can access modal methods because component is descendant through hook
+  const { dismiss } = useBottomSheetModal();
+  const handleCloseModal = () => {
+    dismiss();
+  };
 
   useEffect(() => {
     let parts = [];
@@ -50,8 +41,6 @@ const FilterList = () => {
   const updateFilters = async (filters: filterTypes) => {
     await setItem("filters", filters);
   };
-
-  /* Sorting needs to be implemented */
 
   useEffect(() => {
     setSort(sort);
@@ -74,7 +63,7 @@ const FilterList = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable>
+        <Pressable onPress={handleCloseModal}>
           <Entypo name="chevron-thin-left" size={17} color="black" />
         </Pressable>
         <Text style={styles.title}>Sort and Filter</Text>
@@ -422,16 +411,16 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FAEFE4",
     width: "100%",
-    height: 810,
+    height: "100%",
     borderRadius: 20,
-    paddingTop: 24,
+    paddingTop: 20,
     // paddingHorizontal: 33,
   },
   topBar: {
     flexDirection: "row",
     alignItems: "center",
     gap: 80,
-    paddingHorizontal: 33,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
