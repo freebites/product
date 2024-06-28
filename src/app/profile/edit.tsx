@@ -29,7 +29,7 @@ import { useAuth } from "../../context/auth";
 import { EmptyUser, UserType } from "../../context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
-import post from "components/common/cards/post";
+import OpenCamera from "../../components/common/Camera";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
@@ -37,8 +37,16 @@ const editProfile = () => {
   
   const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
+  const [showCamera, setShowCamera] = useState(false);
   const [profilePicURL, setProfilePicURL] = useState("");
   const { user } = useAuth();
+
+  enum UserFields {
+    userName = 'userName',
+    firstName = 'firstName',
+    lastName = 'lastName',
+    pronouns = 'pronouns',
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -58,7 +66,7 @@ const editProfile = () => {
     fetchUser();
   },[])
 
-  const handleDataChange = (attribute : string, text : string) => {
+  const handleDataChange = (attribute : UserFields, text : string) => {
     setUserData(prevData => ({
       ...prevData,
       [attribute]: text
@@ -66,17 +74,11 @@ const editProfile = () => {
   };
 
   const validateRequired = (text: string) => {
-    if (!text) {
-      return "This field is required";
-    }
-    return null;
+    return !text ? "This field is required" :  null
   };
 
   const validatePronouns = (text: string) => {
-    if (text === "null") {
-      return "Pronouns are required";
-    }
-    return null;
+    return !text ? "Pronouns are required" :  null
   };
 
   validateRoutePerms();
@@ -88,15 +90,7 @@ const editProfile = () => {
   };
 
   const handleSubmit = async () => {
-    const firstNameError = validateRequired(userData?.firstName);
-    const lastNameError = validateRequired(userData?.lastName);
-    const usernameError = validateRequired(userData?.userName);
-    const pronounsError = validatePronouns(userData?.pronouns);
-
-    if (firstNameError || lastNameError || usernameError || pronounsError) {
-      console.log("Validation errors:", firstNameError, lastNameError, usernameError, pronounsError);
-      return;
-    }
+    if (!userData.firstName || !userData.lastName || !userData.userName || !userData.pronouns) return;
 
     try {
       const currentUserData = await getOneUser(user.uid); 
@@ -106,7 +100,6 @@ const editProfile = () => {
         ...currentUserData,
         ...userData
       };
-      console.log("sdfsdf", updatedUserData);
   
       await updateUser({ user: updatedUserData, userID: user.uid }); 
       Alert.alert("Profile updated successfully");
@@ -128,6 +121,10 @@ const editProfile = () => {
     ),
     []
   );
+
+  if (showCamera) {
+    return <OpenCamera profile={true}/>;
+  }
 
   return (
     <BottomSheetModalProvider>
@@ -151,7 +148,7 @@ const editProfile = () => {
                     enablePanDownToClose={true}
                   >
                     <BottomSheetView style={styles.contentContainer}>
-                      <EditModal />
+                      <EditModal setShowCamera={setShowCamera}/>
                     </BottomSheetView>
                   </BottomSheetModal>
                   <Image source={profilePicURL? {uri : profilePicURL} : placeholder} style={styles.profileImage} />
@@ -163,25 +160,25 @@ const editProfile = () => {
                   <EditProfileInput
                     title="First Name"
                     value={userData?.firstName}
-                    onChangeText={(text) => handleDataChange('firstName', text)}
+                    onChangeText={(text) => handleDataChange(UserFields.firstName, text)}
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Last Name"
                     value={userData?.lastName}
-                    onChangeText={(text) => handleDataChange('lastName', text)}
+                    onChangeText={(text) => handleDataChange(UserFields.lastName, text)}
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Username"
                     value={userData?.userName}
-                    onChangeText={(text) => handleDataChange('userName', text)}
+                    onChangeText={(text) => handleDataChange(UserFields.userName, text)}
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Pronouns"
                     value={userData?.pronouns}
-                    onChangeText={(text) => handleDataChange('pronouns', text)}
+                    onChangeText={(text) => handleDataChange(UserFields.pronouns, text)}
                     validate={validatePronouns}
                     options={pronounsOptions}
                   />

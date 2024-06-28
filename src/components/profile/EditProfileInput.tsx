@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
-import { getOneUser } from "../../../api/user/usercrud";
-import { useAuth } from "../../context/auth";
+
 
 interface EditProfileInputProps {
   title: string;

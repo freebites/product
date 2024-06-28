@@ -1,46 +1,24 @@
 import React from "react";
-import { Text, View, StyleSheet, Image, Touchable, Alert } from "react-native";
+import { Text, View, StyleSheet, Image, Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { storage } from "../../../firebase";
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { getOneUser, updateUser } from "../../../api/user/usercrud";
 import { useAuth } from "../../context/auth";
-
+import { uploadPicture } from "./UploadPicture";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 const choosephoto = require(" ../../../assets/icons/choosephoto.png");
 const camera = require(" ../../../assets/icons/camera.png");
 const trash = require(" ../../../assets/icons/trash.png");
 
-const EditModal = () => {
+interface EditModalProps {
+  setShowCamera: (show: boolean) => void;
+}
+
+const EditModal = ( {setShowCamera} : EditModalProps) => {
   const {user} = useAuth();
-
-  const uploadPicture = async (uri: string) => {
-    try {
-      const userData = await getOneUser(user.uid);
-      if (userData.profile) {
-        const oldFileRef = ref(storage, 'profilePictures/' + userData.profile.substring(userData.profile.lastIndexOf("/") + 1));
-        await deleteObject(oldFileRef); 
-      }
-      await updateUser({ user: {...userData, profile: uri.substring(uri.lastIndexOf("/") + 1)} , userID: user.uid }); 
-
-      const response: any = await fetch(uri);
-      const blob = await response.blob();
-
-      const storageRef = ref(storage, 'profilePictures/' + uri.substring(uri.lastIndexOf("/") + 1));
-
-      const snapshot = await uploadBytes(storageRef, blob);
-      const fullPath = await snapshot.ref.fullPath;
-
-      Alert.alert("Profile picture updated successfully");
-
-      return fullPath;
-    } catch (error) {
-      console.error("Failed to upload picture:", error);
-    }
-  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -52,7 +30,7 @@ const EditModal = () => {
     });
 
     if (!result.canceled) {
-      uploadPicture(result.assets[0].uri);
+      uploadPicture(result.assets[0].uri, user.uid);
     }
   };
 
@@ -75,9 +53,8 @@ const EditModal = () => {
       console.error("Error deleting profile picture:", error);
     }
   };
-  
-  
 
+  
   return (
     <View style={styles.container}>
       <Image
@@ -106,7 +83,7 @@ const EditModal = () => {
             <Text style={{ color: "#505A4E" }}>Photo Album</Text>
           </View>
         </TouchableOpacity >
-        <TouchableOpacity onPress={() => router.push({ pathname: `/post`, params: {profile : true} })}>
+        <TouchableOpacity onPress={() => setShowCamera(true)}>
           <View style={styles.modalColumns}>
             <Image source={camera} />
             <Text style={{ color: "#505A4E" }}>Take a Photo</Text>
