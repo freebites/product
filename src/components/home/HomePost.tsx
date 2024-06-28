@@ -4,15 +4,22 @@ import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
+import DeleteModal from "./DeleteModal";
+import { useAuth } from "../../context/auth";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
+
 interface HomePostProps {
   post: postType;
   onPress: () => void;
+  setRefreshing: (arg0: boolean) => void;
+  fetchData: () => void;
   style?: object;
 }
+
 export const HomePost = (props: HomePostProps) => {
-  const { post, onPress } = props;
+  const { post, onPress, setRefreshing, fetchData } = props;
+  const { user } = useAuth();
 
   // temp fix for null
   if (!post.imageURIs) {
@@ -48,10 +55,17 @@ export const HomePost = (props: HomePostProps) => {
       </View>
       <View style={styles.sidebox}>
         <View style={styles.location}>
-          <Text>{post.location ? post.location.place_id : post.location}</Text>
+          <Text style={styles.text}>{post.title}</Text>
         </View>
         <Text style={styles.description}>{post.title}</Text>
       </View>
+
+      <DeleteModal
+        postID={post._id}
+        userPost={post.postedBy === user.uid}
+        setRefreshing={setRefreshing}
+        fetchData={fetchData}
+      />
     </Pressable>
   );
 };
@@ -98,6 +112,9 @@ const styles = StyleSheet.create({
   description: {
     height: 40,
     flexDirection: "row",
+  },
+  text: {
+    fontSize: 10,
   },
 });
 
