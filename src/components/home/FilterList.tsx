@@ -189,11 +189,6 @@ const FilterList = () => {
             ) : (
               <></>
             )}
-            {/* {filters.nonperish != "" ? (
-              <Feather name="check" size={24} color="green" />
-            ) : (
-              <></>
-            )} */}
           </View>
         </Pressable>
       </View>
@@ -209,10 +204,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // vegetarian == ""
-            // 	? setVegetarian("vegetarian")
-            // 	: setVegetarian("");
-
             // update options. setOptions takes in function prev.
             setFilters((prev) => ({
               ...prev, // spread operator
@@ -246,7 +237,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // vegan == "" ? setVegan("vegan") : setVegan("");
             setFilters((prev) => ({
               ...prev, // spread operator
               // update specific option
@@ -277,7 +267,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // gluten == "" ? setGluten("gluten") : setGluten("");
             setFilters((prev) => ({
               ...prev, // spread operator
               // update specific option
@@ -310,7 +299,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // lactose == "" ? setLactose("lactose") : setLactose("");
             setFilters((prev) => ({
               ...prev, // spread operator
               // update specific option
@@ -343,7 +331,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // kosher == "" ? setKosher("kosher") : setKosher("");
             setFilters((prev) => ({
               ...prev, // spread operator
               // update specific option
@@ -380,7 +367,6 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // halal == "" ? setHalal("halal") : setHalal("");
             setFilters((prev) => ({
               ...prev, // spread operator
               // update specific option
@@ -414,7 +400,6 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 20,
     paddingTop: 20,
-    // paddingHorizontal: 33,
   },
   topBar: {
     flexDirection: "row",
@@ -450,12 +435,10 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 3,
     gap: 24,
-    // backgroundColor: "red",
     paddingLeft: 48,
     alignItems: "center",
   },
   checkmark: {
-    // backgroundColor: "blue",
     width: "100%",
     height: "100%",
     alignItems: "center",

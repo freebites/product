@@ -89,10 +89,6 @@ const Home = () => {
       );
     }
 
-    // if (perishable === "perish") {
-
-    // }
-
     setPosts(postData);
     setRefreshing(false);
   };
