@@ -24,9 +24,10 @@ export default function ForgotPassword() {
 
   const continuePressed = async () => {
     if (isValidEmail(email)) {
-      const user = await getOneUserEmail(email);
+      const newEmail = email.toLowerCase();
+      const user = await getOneUserEmail(newEmail);
       if (user != null) {
-        sendPasswordResetEmail(auth, email)
+        sendPasswordResetEmail(auth, newEmail)
           .then(() => {
             setErrorMessage("Email Sent");
           })

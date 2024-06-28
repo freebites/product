@@ -1,6 +1,5 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { router } from "expo-router";
-
 import {
   SafeAreaView,
   TextInput,
@@ -18,8 +17,6 @@ import {
 import { useAuth } from "../../context/auth";
 import { auth } from "../../../firebase";
 import { getOneUser } from "../../../api/user/usercrud";
-import { getOne } from "../../../api/posts/read";
-import { color } from "react-native-elements/dist/helpers";
 
 export default function UpdatePassword() {
   validateRoutePerms();
@@ -27,13 +24,25 @@ export default function UpdatePassword() {
   const [newPassword, setNewPassword] = useState<string>("");
   const { user, setUser } = useAuth();
 
-  const [oldValidated, setOldValidated] = useState<boolean>(true);
-  const [newValidated, setNewValidated] = useState<boolean>(false);
-  const [confirmValidated, setConfirmValidated] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{
+    oldError: string;
+    newError: string;
+    confirmError: string;
+  }>({
+    oldError: "",
+    newError: "",
+    confirmError: "",
+  });
 
-  const [oldError, setOldError] = useState<string>("");
-  const [newError, setNewError] = useState<string>("");
-  const [confirmError, setConfirmError] = useState<string>("");
+  const [validated, setValidated] = useState<{
+    oldValidated: boolean;
+    newValidated: boolean;
+    confirmValidated: boolean;
+  }>({
+    oldValidated: true,
+    newValidated: false,
+    confirmValidated: false,
+  });
 
   const validateOldPassword = async () => {
     const currentUser = await getOneUser(user.uid);
@@ -41,7 +50,6 @@ export default function UpdatePassword() {
       currentUser.emailAddress,
       oldPassword
     );
-    // console.log(credential);
     if (auth.currentUser) {
       try {
         const newCredential = await reauthenticateWithCredential(
@@ -61,44 +69,79 @@ export default function UpdatePassword() {
 
     if (regularExpression.test(password)) {
       setNewPassword(password);
-      setNewValidated(true);
+      setValidated((prevState) => ({
+        ...prevState,
+        newValidated: true,
+      }));
     } else {
-      setNewValidated(false);
+      setValidated((prevState) => ({
+        ...prevState,
+        newValidated: false,
+      }));
     }
   };
 
   const validateConfirmPassword = (password: string) => {
     if (password === newPassword) {
-      setConfirmValidated(true);
+      setValidated((prevState) => ({
+        ...prevState,
+        confirmValidated: true,
+      }));
     } else {
-      setConfirmValidated(false);
+      setValidated((prevState) => ({
+        ...prevState,
+        confirmValidated: false,
+      }));
     }
   };
 
   const submitPressed = async () => {
-    const oldValidated = await validateOldPassword();
-    if (oldValidated && newValidated && confirmValidated) {
+    const oldCheck = await validateOldPassword();
+    if (oldCheck != null) {
+      setValidated((prevState) => ({
+        ...prevState,
+        oldValidated: oldCheck,
+      }));
+    }
+    if (oldCheck && validated.newValidated && validated.confirmValidated) {
       if (auth.currentUser) {
         updatePassword(auth.currentUser, newPassword);
       }
       router.replace("/home");
     } else {
-      if (!oldValidated) {
-        setOldError("Incorrect password");
+      if (!oldCheck) {
+        setErrors((prevState) => ({
+          ...prevState,
+          oldError: "Incorrect password",
+        }));
       } else {
-        setOldError("");
+        setErrors((prevState) => ({
+          ...prevState,
+          oldError: "",
+        }));
       }
-      if (!newValidated) {
-        setNewError(
-          "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters"
-        );
+      if (!validated.newValidated) {
+        setErrors((prevState) => ({
+          ...prevState,
+          newError:
+            "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters",
+        }));
       } else {
-        setNewError("");
+        setErrors((prevState) => ({
+          ...prevState,
+          newError: "",
+        }));
       }
-      if (!confirmValidated) {
-        setConfirmError("New Password does not match");
+      if (!validated.confirmValidated) {
+        setErrors((prevState) => ({
+          ...prevState,
+          confirmError: "New Password does not match",
+        }));
       } else {
-        setConfirmError("");
+        setErrors((prevState) => ({
+          ...prevState,
+          confirmError: "",
+        }));
       }
     }
   };
@@ -115,7 +158,7 @@ export default function UpdatePassword() {
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
       <Text style={styles.labelText}>Current Password:</Text>
       <TextInput
-        style={[styles.textInput, { color: colorFunc(oldValidated) }]}
+        style={[styles.textInput, { color: colorFunc(validated.oldValidated) }]}
         placeholder="current password"
         keyboardType="default"
         textContentType="password"
@@ -123,12 +166,12 @@ export default function UpdatePassword() {
           setOldPassword(old);
         }}
       />
-      <Text style={styles.errorText}>{oldError}</Text>
+      <Text style={styles.errorText}>{errors.oldError}</Text>
 
       <Text style={styles.labelText}>New Password:</Text>
 
       <TextInput
-        style={[styles.textInput, { color: colorFunc(newValidated) }]}
+        style={[styles.textInput, { color: colorFunc(validated.newValidated) }]}
         placeholder="new password"
         keyboardType="default"
         textContentType="newPassword"
@@ -136,11 +179,14 @@ export default function UpdatePassword() {
           validateNewPassword(newpass);
         }}
       />
-      <Text style={styles.errorText}>{newError}</Text>
+      <Text style={styles.errorText}>{errors.newError}</Text>
       <Text style={styles.labelText}>Confirm New Password:</Text>
 
       <TextInput
-        style={[styles.textInput, { color: colorFunc(confirmValidated) }]}
+        style={[
+          styles.textInput,
+          { color: colorFunc(validated.confirmValidated) },
+        ]}
         placeholder="confirm new password"
         keyboardType="default"
         textContentType="newPassword"
@@ -148,7 +194,7 @@ export default function UpdatePassword() {
           validateConfirmPassword(confirm);
         }}
       />
-      <Text style={styles.errorText}>{confirmError}</Text>
+      <Text style={styles.errorText}>{errors.confirmError}</Text>
 
       <Pressable
         onPress={() => submitPressed()}

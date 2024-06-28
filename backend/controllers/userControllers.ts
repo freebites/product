@@ -28,11 +28,9 @@ const getAllUsers = async (req: Request, res: Response) => {
  * @param { string } uid - The firebase UID (not the mongoDB _id).
  */
 const getOneUser = async (req: Request, res: Response) => {
-  // console.log("getting by ID");
   const userId = req.params.id;
   try {
     const user = await User.findOne({ uid: userId });
-    // console.log(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "fetch incorrectly" });
@@ -40,10 +38,8 @@ const getOneUser = async (req: Request, res: Response) => {
 };
 
 const getOneUserEmail = async (req: Request, res: Response) => {
-  // console.log("getting by Email");
 
   const userEmail = req.params.email;
-//  console.log("Input email to getOneUserEmail " + userEmail);
   try {
     const user = await User.findOne({ emailAddress: userEmail });
     // console.log(user);
