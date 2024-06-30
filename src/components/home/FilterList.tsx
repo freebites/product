@@ -11,7 +11,7 @@ import { setItem } from "../../local-storage/asyncStorage";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 
 const FilterList = () => {
-  const { filters, sort, perish, setFilters, setSort, setPerishable } =
+  const { filters, sort, perishable, setFilters, setSort, setPerishable } =
     useContext(AppContext);
 
   // Can access modal methods because component is descendant through hook
@@ -48,12 +48,12 @@ const FilterList = () => {
   };
 
   useEffect(() => {
-    setPerishable(perish);
-  }, [perish]);
+    setPerishable(perishable);
+  }, [perishable]);
 
-  const updatePerishable = async (newPerish: string) => {
-    await setItem("perishable", newPerish);
-    setPerishable(newPerish);
+  const updatePerishable = async (newPerishable: string) => {
+    await setItem("perishable", newPerishable);
+    setPerishable(newPerishable);
   };
 
   return (
@@ -130,7 +130,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (perish !== "perishable") {
+            if (perishable !== "perishable") {
               updatePerishable("perishable");
             } else {
               updatePerishable("");
@@ -147,7 +147,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {perish === "perishable" ? (
+            {perishable === "perishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -163,7 +163,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (perish !== "nonperishable") {
+            if (perishable !== "nonperishable") {
               updatePerishable("nonperishable");
             } else {
               updatePerishable("");
@@ -180,7 +180,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {perish === "nonperishable" ? (
+            {perishable === "nonperishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>

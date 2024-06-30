@@ -36,7 +36,7 @@ const Home = () => {
     userToFilter,
     setUserToFilter,
     sort,
-    perish,
+    perishable,
   } = useContext(AppContext);
   const { user } = useAuth();
   const fetchData = async (
@@ -69,7 +69,7 @@ const Home = () => {
         latitude: query.latitude ? query.latitude : location.latitude,
         longitude: query.longitude ? query.longitude : location.longitude,
         userID: userToFilter,
-        perishable: perish,
+        perishable: perishable,
       });
     } else {
       // usually just do this
@@ -78,7 +78,7 @@ const Home = () => {
         latitude: location.latitude,
         longitude: location.longitude,
         userID: userToFilter,
-        perishable: perish,
+        perishable: perishable,
       });
     }
 
@@ -104,7 +104,7 @@ const Home = () => {
     // async function
     fetchData();
     setRefreshing(true);
-  }, [userToFilter, filters, sort, perish]);
+  }, [userToFilter, filters, sort, perishable]);
 
   const updateLocation = async (newLocation: locationInfo) => {
     await setItem("location", newLocation);

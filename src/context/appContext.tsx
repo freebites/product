@@ -25,7 +25,7 @@ type AppContextType = {
   setLocation: (arg0: locationInfo) => void;
   userToFilter: string; // firebase UID of currently authenticated/searched user
   setUserToFilter: (arg0: string) => void;
-  perish: string;
+  perishable: string;
   setPerishable: (arg0: string) => void;
 };
 
@@ -44,7 +44,7 @@ export const AppContext = React.createContext<AppContextType>({
   setLocation: () => {},
   userToFilter: "",
   setUserToFilter: () => {},
-  perish: "",
+  perishable: "",
   setPerishable: () => {},
 });
 
@@ -65,28 +65,28 @@ export const AppContextProvider = (props: { children: any }) => {
 
   const [sort, setSort] = useState<string>("");
 
-  const [perish, setPerishable] = useState<string>("");
+  const [perishable, setPerishable] = useState<string>("");
 
   const [userToFilter, setUserToFilter] = useState<string>("");
 
   useEffect(() => {
     const getState = async () => {
       // Run all promises concurrently
-      const [newLocation, newFilter, newUserToFilter, newSort, newPerish] =
+      const [newLocation, newFilter, newUserToFilter, newSort, newPerishable] =
         await Promise.all([
           //Assume the 4 states are the default values
           getItemWithDefault<locationInfo>("location", location),
           getItemWithDefault<filterTypes>("filters", filters),
           getItemWithDefault<string>("userToFilter", userToFilter),
           getItemWithDefault<string>("sort", sort),
-          getItemWithDefault<string>("perishable", perish),
+          getItemWithDefault<string>("perishable", perishable),
         ]);
 
       setFilters(newFilter);
       setLocation(newLocation);
       setUserToFilter(newUserToFilter);
       setSort(newSort);
-      setPerishable(newPerish);
+      setPerishable(newPerishable);
     };
 
     getState();
@@ -106,7 +106,7 @@ export const AppContextProvider = (props: { children: any }) => {
         setLocation,
         userToFilter,
         setUserToFilter,
-        perish,
+        perishable,
         setPerishable,
       }}
     >
