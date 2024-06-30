@@ -8,10 +8,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { AppContext, filterTypes } from "../../context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
-
-import fetchData from "../../app/index";
 
 const FilterList = () => {
   const { filters, sort, perish, setFilters, setSort, setPerishable } =
@@ -24,7 +21,7 @@ const FilterList = () => {
   };
 
   useEffect(() => {
-    let parts = [];
+    let parts: string[] = [];
 
     // get array of options' keys, iterate over each key (option)
     Object.keys(filters).forEach((option: string) => {
@@ -33,7 +30,6 @@ const FilterList = () => {
       }
     });
 
-    let query = parts.join(" ");
     setFilters(filters);
     updateFilters(filters);
   }, [filters]); // update on change of any filter
@@ -80,7 +76,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (sort != "closest") {
+            if (sort !== "closest") {
               updateSort("closest");
             }
           }}
@@ -91,7 +87,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {sort == "closest" ? (
+            {sort === "closest" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -107,7 +103,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (sort != "recent") {
+            if (sort !== "recent") {
               updateSort("recent");
             }
           }}
@@ -134,7 +130,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (perish != "perishable") {
+            if (perish !== "perishable") {
               updatePerishable("perishable");
             } else {
               updatePerishable("");
@@ -151,7 +147,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {perish == "perishable" ? (
+            {perish === "perishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -167,7 +163,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (perish != "nonperishable") {
+            if (perish !== "nonperishable") {
               updatePerishable("nonperishable");
             } else {
               updatePerishable("");
@@ -184,7 +180,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {perish == "nonperishable" ? (
+            {perish === "nonperishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -205,14 +201,10 @@ const FilterList = () => {
           ]}
           onPress={() => {
             // update options. setOptions takes in function prev.
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              vegetarian:
-                prev.vegetarian == ""
-                  ? (prev.vegetarian = "vegetarian")
-                  : (prev.vegetarian = ""),
-            }));
+            setFilters({
+              ...filters,
+              vegetarian: filters.vegetarian === "" ? "vegetarian" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -221,7 +213,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.vegetarian != "" ? (
+            {filters.vegetarian !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -237,12 +229,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              vegan:
-                prev.vegan == "" ? (prev.vegan = "vegan") : (prev.vegan = ""),
-            }));
+            setFilters({
+              ...filters,
+              vegan: filters.vegan === "" ? "vegan" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -267,14 +257,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              gluten:
-                prev.gluten == ""
-                  ? (prev.gluten = "gluten")
-                  : (prev.gluten = ""),
-            }));
+            setFilters({
+              ...filters,
+              gluten: filters.gluten === "" ? "gluten" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -283,7 +269,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.gluten != "" ? (
+            {filters.gluten !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -299,14 +285,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              lactose:
-                prev.lactose == ""
-                  ? (prev.lactose = "lactose")
-                  : (prev.lactose = ""),
-            }));
+            setFilters({
+              ...filters,
+              lactose: filters.lactose === "" ? "lactose" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -315,7 +297,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.lactose != "" ? (
+            {filters.lactose !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -331,14 +313,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              kosher:
-                prev.kosher == ""
-                  ? (prev.kosher = "kosher")
-                  : (prev.kosher = ""),
-            }));
+            setFilters({
+              ...filters,
+              kosher: filters.kosher === "" ? "kosher" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -351,7 +329,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.kosher != "" ? (
+            {filters.kosher !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -367,12 +345,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              halal:
-                prev.halal == "" ? (prev.halal = "halal") : (prev.halal = ""),
-            }));
+            setFilters({
+              ...filters,
+              halal: filters.halal === "" ? "halal" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -381,7 +357,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.halal != "" ? (
+            {filters.halal !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
