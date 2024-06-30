@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, Image } from "react-native";
 import { tags } from "../../../types/PostTypes";
 import { TagCard } from "../post/TagCard";
@@ -17,6 +17,14 @@ const DisplayTags = (props: DisplayTagsProps) => {
   // Destructure perishable, allergens, and diet from the tag object
   const { perishable, allergens, diet } = tags;
 
+  // use this to catch random empty states
+  const isTagsEmpty = useMemo(() => {
+    return (
+      (tags.perishable === "" || tags.perishable === undefined) &&
+      tags.allergens.length === 0 &&
+      tags.diet.length === 0
+    );
+  }, [tags]);
   return (
     <View
       style={{
@@ -24,7 +32,11 @@ const DisplayTags = (props: DisplayTagsProps) => {
         flexWrap: "wrap",
       }}
     >
-      <TagCard tag={perishable} />
+      {isTagsEmpty ? (
+        <TagCard tag={"perishable"} />
+      ) : (
+        <TagCard tag={perishable} />
+      )}
       {allergens.map((allergen, index) => (
         <TagCard key={index} tag={allergen} />
       ))}

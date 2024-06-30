@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { postType, comment } from "../../../types/PostTypes";
 import update from "../../../api/posts/update";
+import { useAuth } from "../../context/auth";
 
 interface UploadCommentProps {
   singlePost: postType;
@@ -18,6 +19,7 @@ interface UploadCommentProps {
   functionality: boolean;
 }
 export const UploadComment = (props: UploadCommentProps) => {
+  const { user } = useAuth();
   const [newCommentText, setNewCommentText] = useState("");
   const [buttonOpacity] = useState(new Animated.Value(0));
 
@@ -48,9 +50,10 @@ export const UploadComment = (props: UploadCommentProps) => {
     if (newCommentText.trim().length > 0) {
       const newComment = {
         // _id: uuid, // TODO: replace with actual id
-        username: "user1",
+        username: user.userName,
         body: newCommentText,
         timestamp: new Date(),
+        postedBy: user.uid,
       };
 
       handleUpdateComments(newComment);
