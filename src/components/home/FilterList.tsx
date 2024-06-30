@@ -8,48 +8,28 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { AppContext, filterTypes } from "../../context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 
 const FilterList = () => {
-  const { filters, sort, setFilters, setSort } = useContext(AppContext);
+  const { filters, sort, perishable, setFilters, setSort, setPerishable } =
+    useContext(AppContext);
 
-  // just refactor this into an array that's stored in the context haha.
-  // eventually we're gonna want to store this asynchronously.
-  // const [vegan, setVegan] = useState("");
-  // const [vegetarian, setVegetarian] = useState("");
-  // const [gluten, setGluten] = useState("");
-  // const [lactose, setLactose] = useState("");
-  // const [kosher, setKosher] = useState("");
-  // const [halal, setHalal] = useState("");
+  // Can access modal methods because component is descendant through hook
+  const { dismiss } = useBottomSheetModal();
+  const handleCloseModal = () => {
+    dismiss();
+  };
 
-  const [options, setOptions] = useState({
-    vegan: "",
-    vegetarian: "",
-    gluten: "",
-    lactose: "",
-    kosher: "",
-    halal: "",
-  });
-
-  const [setting, setSetting] = useState("closest");
   useEffect(() => {
-    let parts = [];
-
-    // turn this into one array please
-    // if (vegan) parts.push(vegan);
-    // if (vegetarian) parts.push(vegetarian);
-    // if (gluten) parts.push(gluten);
-    // if (lactose) parts.push(lactose);
-    // if (kosher) parts.push(kosher);
-    // if (halal) parts.push(halal);
+    let parts: string[] = [];
 
     // get array of options' keys, iterate over each key (option)
-    Object.keys(filters).forEach((option) => {
+    Object.keys(filters).forEach((option: string) => {
       if (filters[option]) {
         parts.push(filters[option]);
       }
     });
 
-    let query = parts.join(" ");
     setFilters(filters);
     updateFilters(filters);
   }, [filters]); // update on change of any filter
@@ -58,21 +38,28 @@ const FilterList = () => {
     await setItem("filters", filters);
   };
 
-  /* Sorting needs to be implemented */
-
   useEffect(() => {
-    setSort(setting);
-  }, [setting]);
+    setSort(sort);
+  }, [sort]);
 
   const updateSort = async (newSort: string) => {
     await setItem("sort", newSort);
     setSort(newSort);
   };
 
+  useEffect(() => {
+    setPerishable(perishable);
+  }, [perishable]);
+
+  const updatePerishable = async (newPerishable: string) => {
+    await setItem("perishable", newPerishable);
+    setPerishable(newPerishable);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable>
+        <Pressable onPress={handleCloseModal}>
           <Entypo name="chevron-thin-left" size={17} color="black" />
         </Pressable>
         <Text style={styles.title}>Sort and Filter</Text>
@@ -89,7 +76,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (setting != "closest") {
+            if (sort !== "closest") {
               updateSort("closest");
             }
           }}
@@ -100,7 +87,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {setting == "closest" ? (
+            {sort === "closest" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -116,7 +103,7 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            if (setting != "recent") {
+            if (sort !== "recent") {
               updateSort("recent");
             }
           }}
@@ -127,7 +114,40 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {setting == "recent" ? (
+            {sort == "recent" ? (
+              <Feather name="check" size={24} color="green" />
+            ) : (
+              <></>
+            )}
+          </View>
+        </Pressable>
+        <Text style={styles.subTitle}>Perishable</Text>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "grey" : "transparent",
+            },
+            styles.button,
+          ]}
+          onPress={() => {
+            if (perishable !== "perishable") {
+              updatePerishable("perishable");
+            } else {
+              updatePerishable("");
+            }
+          }}
+        >
+          <View style={styles.option}>
+            <MaterialCommunityIcons
+              name="food-outline"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.optionsText}>Perishables</Text>
+          </View>
+
+          <View style={styles.checkmark}>
+            {perishable === "perishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -135,61 +155,32 @@ const FilterList = () => {
           </View>
         </Pressable>
 
-				<Pressable
-					style={({ pressed }) => [
-						{
-							backgroundColor: pressed ? "grey" : "transparent",
-						},
-						styles.button,
-					]}
-					onPress={() => {
-						if (setting != "perish") {
-							setSetting("perish");
-						}
-					}}
-				>
-					<View style={styles.option}>
-						<MaterialCommunityIcons
-							name="food-outline"
-							size={24}
-							color="black"
-						/>
-						<Text style={styles.optionsText}>Perishables</Text>
-					</View>
-
-          <View style={styles.checkmark}>
-            {setting == "perish" ? (
-              <Feather name="check" size={24} color="green" />
-            ) : (
-              <></>
-            )}
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "grey" : "transparent",
+            },
+            styles.button,
+          ]}
+          onPress={() => {
+            if (perishable !== "nonperishable") {
+              updatePerishable("nonperishable");
+            } else {
+              updatePerishable("");
+            }
+          }}
+        >
+          <View style={styles.option}>
+            <MaterialCommunityIcons
+              name="food-off-outline"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.optionsText}>Non-Perishables</Text>
           </View>
-        </Pressable>
-
-				<Pressable
-					style={({ pressed }) => [
-						{
-							backgroundColor: pressed ? "grey" : "transparent",
-						},
-						styles.button,
-					]}
-					onPress={() => {
-						if (setting != "nonperish") {
-							setSetting("nonperish");
-						}
-					}}
-				>
-					<View style={styles.option}>
-						<MaterialCommunityIcons
-							name="food-off-outline"
-							size={24}
-							color="black"
-						/>
-						<Text style={styles.optionsText}>Non-Perishables</Text>
-					</View>
 
           <View style={styles.checkmark}>
-            {setting == "nonperish" ? (
+            {perishable === "nonperishable" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -209,19 +200,11 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // vegetarian == ""
-            // 	? setVegetarian("vegetarian")
-            // 	: setVegetarian("");
-
             // update options. setOptions takes in function prev.
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              vegetarian:
-                prev.vegetarian == ""
-                  ? (prev.vegetarian = "vegetarian")
-                  : (prev.vegetarian = ""),
-            }));
+            setFilters({
+              ...filters,
+              vegetarian: filters.vegetarian === "" ? "vegetarian" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -230,7 +213,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.vegetarian != "" ? (
+            {filters.vegetarian !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -246,13 +229,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // vegan == "" ? setVegan("vegan") : setVegan("");
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              vegan:
-                prev.vegan == "" ? (prev.vegan = "vegan") : (prev.vegan = ""),
-            }));
+            setFilters({
+              ...filters,
+              vegan: filters.vegan === "" ? "vegan" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -277,15 +257,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // gluten == "" ? setGluten("gluten") : setGluten("");
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              gluten:
-                prev.gluten == ""
-                  ? (prev.gluten = "gluten")
-                  : (prev.gluten = ""),
-            }));
+            setFilters({
+              ...filters,
+              gluten: filters.gluten === "" ? "gluten" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -294,7 +269,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.gluten != "" ? (
+            {filters.gluten !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -310,15 +285,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // lactose == "" ? setLactose("lactose") : setLactose("");
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              lactose:
-                prev.lactose == ""
-                  ? (prev.lactose = "lactose")
-                  : (prev.lactose = ""),
-            }));
+            setFilters({
+              ...filters,
+              lactose: filters.lactose === "" ? "lactose" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -327,7 +297,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.lactose != "" ? (
+            {filters.lactose !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -343,15 +313,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // kosher == "" ? setKosher("kosher") : setKosher("");
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              kosher:
-                prev.kosher == ""
-                  ? (prev.kosher = "kosher")
-                  : (prev.kosher = ""),
-            }));
+            setFilters({
+              ...filters,
+              kosher: filters.kosher === "" ? "kosher" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -364,7 +329,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.kosher != "" ? (
+            {filters.kosher !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -380,13 +345,10 @@ const FilterList = () => {
             styles.button,
           ]}
           onPress={() => {
-            // halal == "" ? setHalal("halal") : setHalal("");
-            setFilters((prev) => ({
-              ...prev, // spread operator
-              // update specific option
-              halal:
-                prev.halal == "" ? (prev.halal = "halal") : (prev.halal = ""),
-            }));
+            setFilters({
+              ...filters,
+              halal: filters.halal === "" ? "halal" : "",
+            });
           }}
         >
           <View style={styles.option}>
@@ -395,7 +357,7 @@ const FilterList = () => {
           </View>
 
           <View style={styles.checkmark}>
-            {filters.halal != "" ? (
+            {filters.halal !== "" ? (
               <Feather name="check" size={24} color="green" />
             ) : (
               <></>
@@ -411,16 +373,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FAEFE4",
     width: "100%",
-    height: 810,
+    height: "100%",
     borderRadius: 20,
-    paddingTop: 24,
-    // paddingHorizontal: 33,
+    paddingTop: 20,
   },
   topBar: {
     flexDirection: "row",
     alignItems: "center",
     gap: 80,
-    paddingHorizontal: 33,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
@@ -450,12 +411,10 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 3,
     gap: 24,
-    // backgroundColor: "red",
     paddingLeft: 48,
     alignItems: "center",
   },
   checkmark: {
-    // backgroundColor: "blue",
     width: "100%",
     height: "100%",
     alignItems: "center",

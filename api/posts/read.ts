@@ -17,7 +17,7 @@ export const getWithFilter = async (params: {
   latitude: string | number;
   longitude: string | number;
   userID: string;
-  sort: any;
+  perishable: string;
 }) => {
   try {
     // add the params to the URL as needed
@@ -37,5 +37,5 @@ export const getAllPosts = async () =>
     latitude: "",
     longitude: "",
     userID: "",
-    sort: "",
+    perishable: "",
   });

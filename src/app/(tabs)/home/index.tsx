@@ -25,10 +25,10 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
-import { setItem } from "../../../local-storage/asyncStorage"
+import { setItem } from "../../../local-storage/asyncStorage";
 
 const Home = () => {
-  const [AllPosts, setPosts] = useState([]);
+  const [AllPosts, setPosts] = useState<postType[]>([]);
   const {
     filters,
     location,
@@ -36,11 +36,13 @@ const Home = () => {
     userToFilter,
     setUserToFilter,
     sort,
+    perishable,
   } = useContext(AppContext);
   const { user } = useAuth();
   const fetchData = async (
     query?:
       | {
+          perishable?: string;
           latitude: string | number;
           longitude: string | number;
           diet?: string[];
@@ -58,7 +60,7 @@ const Home = () => {
     });
 
     // let query = dietArray.join(" ");
-    let postData;
+    let postData: postType[];
 
     // include custom query to deal with state update changes
     if (query) {
@@ -67,7 +69,7 @@ const Home = () => {
         latitude: query.latitude ? query.latitude : location.latitude,
         longitude: query.longitude ? query.longitude : location.longitude,
         userID: userToFilter,
-        sort: query.sort ? query.sort : sort,
+        perishable: perishable,
       });
     } else {
       // usually just do this
@@ -76,9 +78,17 @@ const Home = () => {
         latitude: location.latitude,
         longitude: location.longitude,
         userID: userToFilter,
-        sort: sort,
+        perishable: perishable,
       });
     }
+
+    if (sort === "recent") {
+      postData = postData.sort(
+        (a, b) =>
+          new Date(b.postTime).getTime() - new Date(a.postTime).getTime()
+      );
+    }
+
     setPosts(postData);
     setRefreshing(false);
   };
@@ -94,7 +104,7 @@ const Home = () => {
     // async function
     fetchData();
     setRefreshing(true);
-  }, [userToFilter, filters]);
+  }, [userToFilter, filters, sort, perishable]);
 
   const updateLocation = async (newLocation: locationInfo) => {
     await setItem("location", newLocation);
@@ -105,7 +115,7 @@ const Home = () => {
     await setItem("userToFilter", newUserToFilter);
     setUserToFilter(newUserToFilter);
   };
-  
+
   return (
     <View style={[globalStyles.container]}>
       <HomeSearchBar
