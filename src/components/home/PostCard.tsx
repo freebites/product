@@ -48,7 +48,6 @@ export const PostCard = (props: PostCardProps) => {
     const fetchPost = async () => {
       try {
         const postData = await getOne(props.id);
-        console.log("postData: ", postData.comments)
         setSinglePost(postData);
         const url = await getDownloadURL(ref(storage, postData.imageURIs[0]));
         setImageURL(url);
