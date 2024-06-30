@@ -37,7 +37,8 @@ const SignupSection = () => {
         const firebaseUser = userCredential.user;
         const uid = firebaseUser.uid;
         // send to mongoDB server
-        create({ uid, firstName, lastName, emailAddress });
+        const newEmail = emailAddress.toLowerCase();
+        create({ uid, firstName, lastName, emailAddress: newEmail });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -51,11 +52,10 @@ const SignupSection = () => {
       await setItem("allNotification", true);
       await setItem("livePosts", true);
       await setItem("onlyFavs", false);
-    }
+    };
 
     setupStorage();
-}, []);
-
+  }, []);
 
   /*
 
