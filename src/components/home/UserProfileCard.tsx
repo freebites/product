@@ -9,13 +9,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
-import { useAuth } from "../../context/auth";
 import Header from "../common/Header";
 import { getOneUser } from "../../../api/user/usercrud";
 import { EmptyUser, UserType } from "../../../types/UserTypes";
-import { Icon } from "react-native-elements";
 import { getWithFilter } from "../../../api/posts/read";
-import HomeSearchBar from "./HomeSearchBar";
 import HomePost from "./HomePost";
 import GrowToggle from "./GrowToggle";
 import { router } from "expo-router";
@@ -29,7 +26,7 @@ interface UserProfileCardProps {
 }
 
 const UserProfileCard = (props: UserProfileCardProps) => {
-  const { user } = useAuth(); // pull user data or propagate from parent component, don't use auth info
+  const { id } = props;
   const [userData, setUserData] = useState<UserType>(EmptyUser);
   const [live, setLive] = useState<boolean>(true);
   const [profilePicURL, setProfilePicURL] = useState("");
@@ -40,12 +37,12 @@ const UserProfileCard = (props: UserProfileCardProps) => {
   const currentTime = new Date().getTime();
   const oneHourInMillis = 60 * 60 * 1000;
 
-  const livePosts = AllPosts.filter((eachPost : postType) => {
+  const livePosts = AllPosts.filter((eachPost: postType) => {
     const postTime = new Date(eachPost.postTime).getTime();
     return currentTime - postTime < oneHourInMillis;
   });
 
-  const pastPosts = AllPosts.filter((eachPost : postType) => {
+  const pastPosts = AllPosts.filter((eachPost: postType) => {
     const postTime = new Date(eachPost.postTime).getTime();
     return currentTime - postTime >= oneHourInMillis;
   });
@@ -55,7 +52,7 @@ const UserProfileCard = (props: UserProfileCardProps) => {
       diet: [],
       latitude: "",
       longitude: "",
-      userID: user.uid, //change for props.id when comment postedBy attribute works
+      userID: id,
       sort: "",
     });
     setPosts(postData);
@@ -70,7 +67,7 @@ const UserProfileCard = (props: UserProfileCardProps) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const data = await getOneUser(user.uid); //change for props.id when comment postedBy attribute works
+        const data = await getOneUser(id);
         setUserData(data);
         if (data.profile) {
           const url = await getDownloadURL(
@@ -88,27 +85,38 @@ const UserProfileCard = (props: UserProfileCardProps) => {
 
   return (
     <View style={globalStyles.container}>
-      <Header text="Profile"/>
+      <Header text="Profile" />
       <Image
         source={profilePicURL ? { uri: profilePicURL } : placeholder}
         style={styles.picture}
       />
-      {userData?.firstName && <Text style={styles.firstLastName}>{userData.firstName} {userData.lastName}</Text>}
-      {userData?.userName || userData?.pronouns ? (
+      {userData?.firstName && (
+        <Text style={styles.firstLastName}>
+          {userData.firstName} {userData.lastName}
+        </Text>
+      )}
+      {userData?.firstName || userData?.pronouns ? ( //Change to username when username field is added in
         <Text style={styles.usernamePronouns}>
-          {userData?.userName}
-          {userData?.userName && userData?.pronouns ? ' | ' : ''}
+          {userData?.firstName}
+          {userData?.firstName && userData?.pronouns ? " | " : ""}
           {userData?.pronouns}
         </Text>
       ) : null}
       <View style={styles.mainbox}>
-
         <View style={styles.toggleContainer}>
-          <GrowToggle selected={live} text={"Live Posts"} onPress={() => setLive(true)}/>
-          <GrowToggle selected={!live} text={"Past Posts"} onPress={() => setLive(false)}/>
+          <GrowToggle
+            selected={live}
+            text={"Live Posts"}
+            onPress={() => setLive(true)}
+          />
+          <GrowToggle
+            selected={!live}
+            text={"Past Posts"}
+            onPress={() => setLive(false)}
+          />
         </View>
-        
-        {(live? livePosts : pastPosts).length === 0 ? (
+
+        {(live ? livePosts : pastPosts).length === 0 ? (
           <View style={styles.textContainer}>
             <Text style={styles.textTitle}>No history yet</Text>
             <Text style={styles.textBody}>
@@ -122,7 +130,7 @@ const UserProfileCard = (props: UserProfileCardProps) => {
               <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
             }
           >
-            {(live ? livePosts : pastPosts).map((eachPost : postType) => (
+            {(live ? livePosts : pastPosts).map((eachPost: postType) => (
               <HomePost
                 style={styles.postCard}
                 key={eachPost._id}
@@ -194,7 +202,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#505A4E",
     textShadowRadius: 1,
-    opacity: .9,
+    opacity: 0.9,
     textShadowColor: "black",
     paddingBottom: 6,
   },
@@ -217,7 +225,6 @@ const styles = StyleSheet.create({
     color: "#505A4E",
     opacity: 0.57,
   },
-
 });
 
 export default UserProfileCard;
