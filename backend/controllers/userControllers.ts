@@ -38,16 +38,14 @@ const getOneUser = async (req: Request, res: Response) => {
 };
 
 const getOneUserEmail = async (req: Request, res: Response) => {
-
   const userEmail = req.params.email;
   try {
     const user = await User.findOne({ emailAddress: userEmail });
-    // console.log(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "fetch incorrectly" });
   }
-}
+};
 
 // api/freeites?filter1:hihih;filter2:hihi
 
@@ -131,4 +129,11 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUsers, getOneUser, getOneUserEmail, createUser, updateUser, deleteUser };
+export {
+  getAllUsers,
+  getOneUser,
+  getOneUserEmail,
+  createUser,
+  updateUser,
+  deleteUser,
+};
