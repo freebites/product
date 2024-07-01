@@ -8,6 +8,7 @@ import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
+import { Link } from "expo-router";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -36,7 +37,8 @@ const SignupSection = () => {
         const firebaseUser = userCredential.user;
         const uid = firebaseUser.uid;
         // send to mongoDB server
-        create({ uid, firstName, lastName, emailAddress });
+        const newEmail = emailAddress.toLowerCase();
+        create({ uid, firstName, lastName, emailAddress: newEmail });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -50,11 +52,10 @@ const SignupSection = () => {
       await setItem("allNotification", true);
       await setItem("livePosts", true);
       await setItem("onlyFavs", false);
-    }
+    };
 
     setupStorage();
-}, []);
-
+  }, []);
 
   /*
 
@@ -160,7 +161,7 @@ const SignupSection = () => {
       >
         {/* LoginButton */}
         <LoginButton onPress={handleSubmitData} text="Sign Up" />
-        <Text>Forgot password?</Text>
+        <Link href="/forgot">Forgot password?</Link>
       </View>
     </View>
   );
