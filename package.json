@@ -25,7 +25,8 @@
     "react-native": "0.74.1",
     "react-native-maps": "1.14.0",
     "react-native-reanimated": "~3.10.1",
-    "react-native-svg": "^15.3.0"
+    "react-native-svg": "^15.3.0",
+    "expo-checkbox": "~3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

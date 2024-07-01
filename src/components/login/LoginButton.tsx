@@ -4,18 +4,20 @@ import React, { forwardRef } from "react";
 interface LoginButtonProps {
   onPress?: () => void;
   text: string;
+  allowed: boolean;
 }
 const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
-  const { onPress, text } = props;
+  const { onPress, text, allowed } = props;
   return (
     <Pressable
-      onPress={onPress}
+      onPress={allowed ? onPress : undefined}
       ref={ref}
       style={({ pressed }) => [
         {
           opacity: pressed ? 0.5 : 1,
         },
         styles.button,
+        { backgroundColor: !allowed ? "#808080" : "#F19D48" },
       ]}
     >
       <Text style={styles.text}>{text}</Text>
@@ -26,7 +28,6 @@ const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
 const styles = StyleSheet.create({
   button: {
     width: "80%",
-    backgroundColor: "#F19D48",
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",

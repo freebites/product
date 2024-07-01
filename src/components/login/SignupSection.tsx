@@ -18,7 +18,7 @@ import { COLORS } from "../../constants";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { create } from "../../../api/user/usercrud";
-
+import Checkbox from "expo-checkbox";
 const logo = require("../../assets/icons/freebites/logo.png");
 const checkbox = require("../../assets/icons/checkbox.png");
 
@@ -30,6 +30,7 @@ const SignupSection = () => {
   const [emailAddress, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const handleFirstName = (text: string) => {
     setFirstName(text);
   };
@@ -151,7 +152,7 @@ const SignupSection = () => {
         />
 
         <View style={{ flex: 1, flexDirection: "row", gap: 16 }}>
-          <Image source={checkbox} style={{ width: 16, height: 16 }} />
+          <Checkbox value={isChecked} onValueChange={setIsChecked} />
           <Text style={{ color: COLORS.neutral[70], fontSize: 11 }}>
             I have read and agree to the{" "}
             <Link
@@ -176,7 +177,11 @@ const SignupSection = () => {
         }}
       >
         {/* LoginButton */}
-        <LoginButton onPress={handleSubmitData} text="Sign Up" />
+        <LoginButton
+          onPress={handleSubmitData}
+          text="Sign Up"
+          allowed={isChecked}
+        />
         <Text style={{ color: COLORS.neutral[70] }}>
           Have an account?{"    "}
           <Link

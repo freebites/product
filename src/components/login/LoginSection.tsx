@@ -16,16 +16,16 @@ import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
 import Svg, { Circle, Rect } from "react-native-svg";
-import CheckBox from '@react-native-community/checkbox';
+import Checkbox from "expo-checkbox";
 
 const logo = require("../../assets/icons/freebites/logo.png");
-const checkbox = require("../../assets/icons/checkbox.png");
 
 const LoginSection = () => {
   const { signIn } = useAuth();
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleEmail = (text: string) => {
     setEmail(text);
@@ -36,10 +36,6 @@ const LoginSection = () => {
 
   const handleLogin = () => {};
   return (
-    // <TouchableWithoutFeedback
-    //   onPress={() => Keyboard.dismiss()}
-    //   accessible={false}
-    // >
     <View
       style={{
         flex: 1,
@@ -73,21 +69,9 @@ const LoginSection = () => {
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
-          {/* <Image
-            source={checkbox}
-            style={{ width: 16, height: 16, alignSelf: "flex-start" }}
-          /> */}
-          {/* <CheckBox
-          disabled={true}
-          // value={this.state.value0}
-          // onValueChange={(value) =>
-            // this.setState({
-            //   value0: value,
-            // })
-          }
-          /> */}
+          <Checkbox value={isChecked} onValueChange={setIsChecked} />
+          {/* Remember me checkbox -> add session/login to async storage */}
 
-          
           <View style={{ flex: 1, flexDirection: "row", gap: 89 }}>
             <Text
               style={{
@@ -120,6 +104,7 @@ const LoginSection = () => {
             signIn(email, password);
           }}
           text="Get Started"
+          allowed
         />
 
         <Text style={{ color: COLORS.neutral[70] }}>
@@ -136,7 +121,6 @@ const LoginSection = () => {
         </Text>
       </View>
     </View>
-    // </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
