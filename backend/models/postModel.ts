@@ -10,6 +10,7 @@ const comment = new mongoose.Schema(
   {
     username: String,
     body: String,
+    postedBy: String,
     timestamp: Date, // may need to be changed to string
   }
   // disables mongoDB id creation, we can re-enable if we

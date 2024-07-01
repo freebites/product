@@ -4,6 +4,7 @@ import PostDate from "./PostDate";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { postType } from "types/PostTypes";
+import { router } from "expo-router";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
 interface DisplayCommentsProps {
@@ -12,25 +13,37 @@ interface DisplayCommentsProps {
 }
 
 export const DisplayComments = (props: DisplayCommentsProps) => {
+
   return (
     <ScrollView style={{ zIndex: 30 }}>
       <TouchableOpacity>
         {props.singlePost.comments.length > 0 ? (
           props.singlePost.comments.map((comment) => (
-            <View style={styles.comments} key={comment.username + comment.body}>
-              <Image
-                source={require("../../assets/icons/freebites/3d_avatar_25.png")}
-              />
-              <View style={styles.commentContent}>
-                <View>
-                  <Text style={styles.username}>{comment.username}</Text>
-                  <Text style={styles.body}>{comment.body}</Text>
-                </View>
-                <View style={styles.postTimeWrapper}>
-                  <PostDate postDateTime={comment.timestamp} />
+            <TouchableOpacity
+              key={comment.username + comment.body}
+              onPress={() => {
+                props.setModalVisible(false)
+                router.push({
+                  pathname: "home/profilePopUp",
+                  params: { id: comment.postedBy },
+                })}
+              }
+            >
+              <View style={styles.comments} key={comment.username + comment.body} >
+                <Image
+                  source={require("../../assets/icons/freebites/3d_avatar_25.png")}
+                />
+                <View style={styles.commentContent}>
+                  <View>
+                    <Text style={styles.username}>{comment.username}</Text>
+                    <Text style={styles.body}>{comment.body}</Text>
+                  </View>
+                  <View style={styles.postTimeWrapper}>
+                    <PostDate postDateTime={comment.timestamp} />
+                  </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))
         ) : (
           <View style={styles.modalNoComments}>
