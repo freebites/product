@@ -21,7 +21,7 @@ const LoginSection = () => {
   const [email, setEmail] = useState("");
 
   const handleEmail = (text: string) => {
-    setEmail(text);
+    setEmail(text.toLowerCase());
   };
   const handlePassword = (text: string) => {
     setPassword(text);
