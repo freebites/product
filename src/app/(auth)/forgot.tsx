@@ -13,7 +13,7 @@ import { globalStyles } from "../../components/global";
 import { getOneUserEmail } from "../../../api/user/usercrud";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
-
+import { COLORS } from "../../constants";
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -26,7 +26,7 @@ export default function ForgotPassword() {
     if (isValidEmail(email)) {
       const newEmail = email.toLowerCase();
       const user = await getOneUserEmail(newEmail);
-      if (user != null) {
+      if (user !== null) {
         sendPasswordResetEmail(auth, newEmail)
           .then(() => {
             setErrorMessage("Email Sent");
@@ -41,8 +41,6 @@ export default function ForgotPassword() {
       setErrorMessage("invalid email format");
     }
   };
-
-  useEffect(() => {});
 
   return (
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
@@ -78,16 +76,16 @@ const styles = StyleSheet.create({
     minWidth: 150,
     width: "70%",
     borderBottomWidth: 1,
-    borderBottomColor: "#9e9797",
+    borderBottomColor: COLORS.gray,
   },
   title: {
-    color: "#9e9797",
+    color: COLORS.gray,
     alignSelf: "flex-start",
     paddingLeft: "15%",
   },
   button: {
     width: "80%",
-    backgroundColor: "#EDA76E",
+    backgroundColor: COLORS.orange[80],
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",

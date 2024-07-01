@@ -17,6 +17,7 @@ import {
 import { useAuth } from "../../context/auth";
 import { auth } from "../../../firebase";
 import { getOneUser } from "../../../api/user/usercrud";
+import { COLORS } from "../../constants";
 
 export default function UpdatePassword() {
   validateRoutePerms();
@@ -67,32 +68,37 @@ export default function UpdatePassword() {
     var regularExpression =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (regularExpression.test(password)) {
+    const valid = regularExpression.test(password);
+
+    setValidated((prevState) => ({
+      ...prevState,
+      newValidated: valid,
+    }));
+
+    setErrors((prevState) => ({
+      ...prevState,
+      newError: valid
+        ? ""
+        : "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters",
+    }));
+
+    if (valid) {
       setNewPassword(password);
-      setValidated((prevState) => ({
-        ...prevState,
-        newValidated: true,
-      }));
-    } else {
-      setValidated((prevState) => ({
-        ...prevState,
-        newValidated: false,
-      }));
     }
   };
 
   const validateConfirmPassword = (password: string) => {
-    if (password === newPassword) {
-      setValidated((prevState) => ({
-        ...prevState,
-        confirmValidated: true,
-      }));
-    } else {
-      setValidated((prevState) => ({
-        ...prevState,
-        confirmValidated: false,
-      }));
-    }
+    const valid = password === newPassword;
+
+    setValidated((prevState) => ({
+      ...prevState,
+      confirmValidated: valid,
+    }));
+
+    setErrors((prevState) => ({
+      ...prevState,
+      confirmError: valid ? "" : "New Password does not match",
+    }));
   };
 
   const submitPressed = async () => {
@@ -109,40 +115,10 @@ export default function UpdatePassword() {
       }
       router.replace("/home");
     } else {
-      if (!oldCheck) {
-        setErrors((prevState) => ({
-          ...prevState,
-          oldError: "Incorrect password",
-        }));
-      } else {
-        setErrors((prevState) => ({
-          ...prevState,
-          oldError: "",
-        }));
-      }
-      if (!validated.newValidated) {
-        setErrors((prevState) => ({
-          ...prevState,
-          newError:
-            "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters",
-        }));
-      } else {
-        setErrors((prevState) => ({
-          ...prevState,
-          newError: "",
-        }));
-      }
-      if (!validated.confirmValidated) {
-        setErrors((prevState) => ({
-          ...prevState,
-          confirmError: "New Password does not match",
-        }));
-      } else {
-        setErrors((prevState) => ({
-          ...prevState,
-          confirmError: "",
-        }));
-      }
+      setErrors((prevState) => ({
+        ...prevState,
+        oldError: oldCheck ? "" : "Incorrect password",
+      }));
     }
   };
 
@@ -150,7 +126,7 @@ export default function UpdatePassword() {
     if (valid) {
       return "black";
     } else {
-      return "red";
+      return COLORS.error[70];
     }
   };
 
@@ -224,17 +200,17 @@ const styles = StyleSheet.create({
     minWidth: 150,
     width: "70%",
     borderBottomWidth: 1,
-    borderBottomColor: "#9e9797",
+    borderBottomColor: COLORS.gray,
     marginVertical: 10,
   },
   title: {
-    color: "#9e9797",
+    color: COLORS.gray,
     alignSelf: "flex-start",
     paddingLeft: "15%",
   },
   button: {
     width: "80%",
-    backgroundColor: "#EDA76E",
+    backgroundColor: COLORS.orange[80],
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
@@ -250,7 +226,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 12,
-    color: "red",
+    color: COLORS.error[70],
     textAlign: "left",
     width: "70%",
   },
