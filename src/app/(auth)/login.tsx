@@ -1,4 +1,10 @@
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { useAuth } from "../../context/auth";
 import { Link } from "expo-router";
 import React from "react";
@@ -11,18 +17,31 @@ export default function SignIn() {
     <SafeAreaView style={[globalStyles.container, { alignItems: "center" }]}>
       <Welcome />
 
-      <View style={{ gap: 23, flex: 1, width: "100%", alignItems: "center" }}>
-        <Link href={{ pathname: "/signup", params: { login: "true" } }} asChild>
-          <LoginButton text="login" />
+      <View style={styles.container}>
+        <Link
+          href={{ pathname: "/loginPage", params: { login: "true" } }}
+          asChild
+        >
+          <LoginButton text="Login" allowed />
         </Link>
 
         <Link
-          href={{ pathname: "/signup", params: { login: "false" } }}
+          href={{ pathname: "/signupPage", params: { login: "false" } }}
           asChild
         >
-          <LoginButton text="sign up" />
+          <LoginButton text="Sign Up" allowed />
         </Link>
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 23,
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 86,
+  },
+});

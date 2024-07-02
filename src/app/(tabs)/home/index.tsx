@@ -207,7 +207,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   postContainer: {
-    rowGap: 15,
+    rowGap: 26,
     width: 345,
   },
   postCard: {

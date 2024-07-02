@@ -58,7 +58,7 @@ export default function ForgotPassword() {
         }}
       />
       <Text>{errorMessage}</Text>
-      <LoginButton onPress={continuePressed} text="Continue" />
+      <LoginButton onPress={continuePressed} text="Continue" allowed />
     </SafeAreaView>
   );
 }
