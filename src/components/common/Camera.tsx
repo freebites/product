@@ -14,7 +14,8 @@ interface OpenCameraProps {
     profile: boolean,
 }
 
-export default function OpenCamera({profile} : OpenCameraProps) {
+export default function OpenCamera(props : OpenCameraProps) {
+  const { profile } = props;
   const { postData, updatePostData } = useContext(PostContext);
   const cameraRef = useRef<Camera>(null);
   const { user } = useAuth();
