@@ -49,7 +49,7 @@ export default function location() {
         place_id: place_id,
         location: {
           ...postData.location.location,
-          coordinates: [lat, lng],
+          coordinates: [lng, lat],
         },
       },
     });

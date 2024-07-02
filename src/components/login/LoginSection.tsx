@@ -28,7 +28,7 @@ const LoginSection = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleEmail = (text: string) => {
-    setEmail(text);
+    setEmail(text.toLowerCase());
   };
   const handlePassword = (text: string) => {
     setPassword(text);
@@ -81,7 +81,7 @@ const LoginSection = () => {
               Remember me
             </Text>
             <Link
-              href={{ pathname: "/signupPage" }}
+              href={{ pathname: "/forgot" }}
               style={{ color: COLORS.neutral[70], alignSelf: "flex-end" }}
             >
               <Text>Forgot password?</Text>

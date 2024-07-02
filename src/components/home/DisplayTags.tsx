@@ -1,54 +1,48 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, Image } from "react-native";
+import { tags } from "../../../types/PostTypes";
+import { TagCard } from "../post/TagCard";
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const perishableImg = require("../../assets/icons/freebites/perishable.png");
 const nonperishable = require("../../assets/icons/freebites/nonperishable.png");
 const msg = require("../../assets/icons/freebites/msg.png");
 const lactose = require("../../assets/icons/freebites/lactose.png");
 
-const DisplayTags = (props) => {
-  const { tag } = props;
+interface DisplayTagsProps {
+  tags: tags;
+}
+const DisplayTags = (props: DisplayTagsProps) => {
+  const { tags } = props;
 
   // Destructure perishable, allergens, and diet from the tag object
-  const { perishable, allergens, diet } = tag;
+  const { perishable, allergens, diet } = tags;
 
-  let perishableElement = null;
-  let allergenElements = null;
-  let dietElements = null;
-
-  if (perishable) {
-    perishableElement = <Image source={perishableImg} />;
-  }
-
-  allergenElements = allergens.map((allergen, index) => {
-    switch (allergen) {
-      case "peanut":
-        return <Text key={index}>Peanut</Text>;
-      case "dairy":
-        return <Image key={index} source={lactose} />;
-      case "tree nut":
-        return <Text key={index}>Tree nut</Text>;
-      default:
-        return null;
-    }
-  });
-
-  dietElements = diet.map((dietType, index) => {
-    switch (dietType) {
-      case "vegetarian":
-        return <Image key={index} source={vegetarian} />;
-      case "vegan":
-        return <Text key={index}>Vegan</Text>;
-      default:
-        return null;
-    }
-  });
-
+  // use this to catch random empty states
+  const isTagsEmpty = useMemo(() => {
+    return (
+      (tags.perishable === "" || tags.perishable === undefined) &&
+      tags.allergens.length === 0 &&
+      tags.diet.length === 0
+    );
+  }, [tags]);
   return (
-    <View>
-      {perishableElement}
-      {allergenElements}
-      {dietElements}
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+      }}
+    >
+      {isTagsEmpty ? (
+        <TagCard tag={"perishable"} />
+      ) : (
+        <TagCard tag={perishable} />
+      )}
+      {allergens.map((allergen, index) => (
+        <TagCard key={index} tag={allergen} />
+      ))}
+      {diet.map((dietTag, index) => (
+        <TagCard key={index} tag={dietTag} />
+      ))}
     </View>
   );
 };

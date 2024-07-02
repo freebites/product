@@ -12,20 +12,26 @@ import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
 import { COLORS } from "../../constants";
-import { Link, router } from "expo-router";
 
 const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
 const avatar = require("../../assets/icons/janesmith.png");
+import DeleteModal from "./DeleteModal";
+import { useAuth } from "../../context/auth";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
+
 interface HomePostProps {
   post: postType;
   onPress: () => void;
+  setRefreshing: (arg0: boolean) => void;
+  fetchData: () => void;
   style?: object;
 }
+
 export const HomePost = (props: HomePostProps) => {
-  const { post, onPress } = props;
+  const { post, onPress, setRefreshing, fetchData } = props;
+  const { user } = useAuth();
 
   // temp fix for null
   if (!post.imageURIs) {
@@ -97,7 +103,7 @@ export const HomePost = (props: HomePostProps) => {
         <View style={styles.rightbox}>
           <View>
             <Pressable
-              style={true ? { display: "block" } : { opacity: 0 }}
+              style={true ? { display: "none" } : { opacity: 0 }}
               disabled={true ? true : false}
             >
               <Image source={trash} style={{ width: 24, height: 24 }} />
@@ -110,6 +116,13 @@ export const HomePost = (props: HomePostProps) => {
           </View>
         </View>
       </View>
+
+      <DeleteModal
+        postID={post._id}
+        userPost={post.postedBy === user.uid}
+        setRefreshing={setRefreshing}
+        fetchData={fetchData}
+      />
     </Pressable>
   );
 };
@@ -186,6 +199,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     color: COLORS.brown[50],
     fontSize: 12,
+  },
+  text: {
+    fontSize: 10,
   },
 });
 

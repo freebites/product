@@ -42,7 +42,6 @@ export default function reviewpost() {
 
       // upload to the server, returns a Promise string
       return uploadBytes(storageRef, blob).then(async (snapshot) => {
-        //console.log("uploaded a blob");
         return await snapshot.ref.fullPath; // store firebase path NOT URL
         // need two returns cuz async
       });
@@ -61,7 +60,6 @@ export default function reviewpost() {
         (path) => path !== undefined
       ) as string[];
       postData.postTime = new Date();
-      console.log(user.uid);
       create({
         user: user,
         post: {
@@ -71,6 +69,12 @@ export default function reviewpost() {
           postTime: new Date(),
         },
       }); // upload to mongoDB!r
+      console.log({
+        ...postData,
+        imageURIs: filteredPaths,
+        postedBy: user.uid,
+        postTime: new Date(),
+      });
       updatePostData(EmptyPost); // clear local post data
       resetContext(); // reset all options to default
 
@@ -136,10 +140,10 @@ export default function reviewpost() {
                 <Text style={styles.labelText}>Filters:</Text>
               </View>
               <View style={styles.values}>
-                {postData.tags.perishable ? (
+                {postData.tags.perishable === "Perishable" ? (
                   <Tag text="Perishable" />
                 ) : (
-                  <Tag text="Non-Perishable" />
+                  <Tag text="Nonperishable" />
                 )}
                 {postData.tags.allergens.map((allergen, index) => (
                   <Tag key={index} text={allergen} />

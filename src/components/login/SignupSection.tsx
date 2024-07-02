@@ -11,16 +11,15 @@ import {
 } from "react-native";
 import LoginButton from "./LoginButton";
 import { useAuth } from "../../context/auth";
-import { useState } from "react";
+import { COLORS } from "../../constants";
+import Checkbox from "expo-checkbox";
+import { create } from "../../../api/user/usercrud";
+import { useState, useEffect } from "react";
+import { auth } from "../../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
-import { COLORS } from "../../constants";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../firebase";
-import { create } from "../../../api/user/usercrud";
-import Checkbox from "expo-checkbox";
-const logo = require("../../assets/icons/freebites/logo.png");
-const checkbox = require("../../assets/icons/checkbox.png");
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -50,7 +49,8 @@ const SignupSection = () => {
         const firebaseUser = userCredential.user;
         const uid = firebaseUser.uid;
         // send to mongoDB server
-        create({ uid, firstName, lastName, emailAddress });
+        const newEmail = emailAddress.toLowerCase();
+        create({ uid, firstName, lastName, emailAddress: newEmail });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -58,6 +58,16 @@ const SignupSection = () => {
         console.log("user creation failed with: ", errorCode, errorMessage);
       });
   };
+
+  useEffect(() => {
+    const setupStorage = async () => {
+      await setItem("allNotification", true);
+      await setItem("livePosts", true);
+      await setItem("onlyFavs", false);
+    };
+
+    setupStorage();
+  }, []);
 
   /*
 
@@ -110,8 +120,6 @@ const SignupSection = () => {
 				<LoginInput title="Last Name" />
 				<LoginInput title="Email Address" />
 				<LoginInput title="Password" isPassword="true" />
-				
-				
 				*/}
 
         <Text style={styles.title}>First Name</Text>
