@@ -11,7 +11,7 @@ import {
 import { globalStyles } from "../../../components/global";
 import HomePost from "../../../components/home/HomePost";
 import { router } from "expo-router";
-import { getAllPosts, getWithFilter } from "../../../../api/posts/read";
+import { getWithFilter } from "../../../../api/posts/read";
 import { PostContext } from "../../../context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
@@ -25,9 +25,10 @@ import { useAuth } from "../../../context/auth";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
+import { setItem } from "../../../local-storage/asyncStorage";
 
 const Home = () => {
-  const [AllPosts, setPosts] = useState([]);
+  const [AllPosts, setPosts] = useState<postType[]>([]);
   const {
     filters,
     location,
@@ -35,11 +36,13 @@ const Home = () => {
     userToFilter,
     setUserToFilter,
     sort,
+    perishable,
   } = useContext(AppContext);
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const fetchData = async (
     query?:
       | {
+          perishable?: string;
           latitude: string | number;
           longitude: string | number;
           diet?: string[];
@@ -57,7 +60,7 @@ const Home = () => {
     });
 
     // let query = dietArray.join(" ");
-    let postData;
+    let postData: postType[];
 
     // include custom query to deal with state update changes
     if (query) {
@@ -66,7 +69,7 @@ const Home = () => {
         latitude: query.latitude ? query.latitude : location.latitude,
         longitude: query.longitude ? query.longitude : location.longitude,
         userID: userToFilter,
-        sort: query.sort ? query.sort : sort,
+        perishable: perishable,
       });
     } else {
       // usually just do this
@@ -75,13 +78,19 @@ const Home = () => {
         latitude: location.latitude,
         longitude: location.longitude,
         userID: userToFilter,
-        sort: sort,
+        perishable: perishable,
       });
     }
-    console.log(filters);
+
+    if (sort === "recent") {
+      postData = postData.sort(
+        (a, b) =>
+          new Date(b.postTime).getTime() - new Date(a.postTime).getTime()
+      );
+    }
+
     setPosts(postData);
     setRefreshing(false);
-    //console.log(postData);
   };
 
   const { postData, updatePostData } = useContext(PostContext);
@@ -91,13 +100,21 @@ const Home = () => {
     updatePostData(eachPostData);
   };
 
-  const [favoriteSelected, setFavoriteSelected] = useState(true);
-
   useEffect(() => {
     // async function
     fetchData();
     setRefreshing(true);
-  }, [userToFilter, filters]);
+  }, [userToFilter, filters, sort, perishable]);
+
+  const updateLocation = async (newLocation: locationInfo) => {
+    await setItem("location", newLocation);
+    setLocation(newLocation);
+  };
+
+  const updateUserToFilter = async (newUserToFilter: string) => {
+    await setItem("userToFilter", newUserToFilter);
+    setUserToFilter(newUserToFilter);
+  };
 
   return (
     <View style={[globalStyles.container]}>
@@ -113,10 +130,9 @@ const Home = () => {
                   longitude: details.lng,
                 }
               : noLocation;
-          setLocation(newCoords);
+          updateLocation(newCoords);
           fetchData(newCoords);
           setRefreshing(true);
-          console.log(location);
         }}
       />
 
@@ -135,42 +151,56 @@ const Home = () => {
           selected={userToFilter == ""}
           text={"All Posts"}
           onPress={() => {
-            setUserToFilter("");
+            updateUserToFilter("");
           }}
         />
         <GrowToggle
           selected={userToFilter != ""}
           text={"Your Posts"}
           onPress={() => {
-            setUserToFilter(user.uid);
+            updateUserToFilter(user.uid);
           }}
         />
       </View>
 
-      <ScrollView
-        contentContainerStyle={styles.postContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-        }
-      >
-        {AllPosts.map((eachPost: postType) => {
-          return (
-            <HomePost
-              style={styles.postCard}
-              key={eachPost._id}
-              post={eachPost}
-              onPress={() =>
-                router.push({
-                  pathname: "/postPopUp",
-
-                  params: { id: eachPost._id },
-                })
-              }
-            />
-            //<Text>{JSON.stringify(eachPost)}</Text>
-          );
-        })}
-      </ScrollView>
+      {userToFilter !== "" &&
+      AllPosts.filter((eachPost: postType) => {
+        return eachPost.postedBy === userToFilter;
+      }).length === 0 ? (
+        <View style={styles.textContainer}>
+          <Text style={styles.textTitle}>No history yet</Text>
+          <Text style={styles.textBody}>
+            Try making a post by clicking on the + button on the homepage!
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.postContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+        >
+          {AllPosts.map((eachPost: postType) => {
+            if (userToFilter === "" || userToFilter === eachPost.postedBy) {
+              return (
+                <HomePost
+                  style={styles.postCard}
+                  key={eachPost._id}
+                  post={eachPost}
+                  setRefreshing={setRefreshing}
+                  fetchData={fetchData}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/postPopUp",
+                      params: { id: eachPost._id },
+                    })
+                  }
+                />
+              );
+            }
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -182,6 +212,26 @@ const styles = StyleSheet.create({
   },
   postCard: {
     marginBottom: 30,
+  },
+  textTitle: {
+    fontWeight: "bold",
+    fontSize: 24,
+    color: "#505A4E",
+    textShadowRadius: 1,
+    textShadowColor: "black",
+    paddingBottom: 12,
+  },
+  textContainer: {
+    margin: "5%",
+    width: "65%",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  textBody: {
+    textAlign: "center",
+    color: "#505A4E",
+    opacity: 0.57,
   },
 });
 

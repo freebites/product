@@ -12,6 +12,7 @@ import LoginButton from "./LoginButton";
 import { useAuth } from "../../context/auth";
 import { useState } from "react";
 import React from "react";
+import { Link } from "expo-router";
 
 const LoginSection = () => {
   const { signIn } = useAuth();
@@ -20,7 +21,7 @@ const LoginSection = () => {
   const [email, setEmail] = useState("");
 
   const handleEmail = (text: string) => {
-    setEmail(text);
+    setEmail(text.toLowerCase());
   };
   const handlePassword = (text: string) => {
     setPassword(text);
@@ -88,7 +89,7 @@ const LoginSection = () => {
           }}
           text="Login"
         />
-        <Text>Forgot password?</Text>
+        <Link href="/forgot">Forgot password?</Link>
       </View>
     </View>
     // </TouchableWithoutFeedback>

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 /*
  * Controllers for User Database. These implement the functions that are
  * called for each route in the user database.
@@ -30,6 +31,16 @@ const getOneUser = async (req: Request, res: Response) => {
   const userId = req.params.id;
   try {
     const user = await User.findOne({ uid: userId });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "fetch incorrectly" });
+  }
+};
+
+const getOneUserEmail = async (req: Request, res: Response) => {
+  const userEmail = req.params.email;
+  try {
+    const user = await User.findOne({ emailAddress: userEmail });
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "fetch incorrectly" });
@@ -118,4 +129,11 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUsers, getOneUser, createUser, updateUser, deleteUser };
+export {
+  getAllUsers,
+  getOneUser,
+  getOneUserEmail,
+  createUser,
+  updateUser,
+  deleteUser,
+};

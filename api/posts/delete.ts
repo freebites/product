@@ -1,7 +1,6 @@
 import axios from "axios";
 import { storage } from "../../firebase";
 import { ref, deleteObject } from "firebase/storage";
-import { port } from "backend/server";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const deleteOne = async (itemID: string) => {
   try {
@@ -16,7 +15,6 @@ const deleteOne = async (itemID: string) => {
 
             deleteObject(deleteRef)
               .then(() => {
-                console.log("item deleted successfully");
                 // file deletes successfully, debug or handle
                 // any other code here
               })

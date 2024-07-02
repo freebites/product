@@ -11,6 +11,7 @@ export type comment = {
   // _id: string;
   username: string;
   body: string;
+  postedBy: string;
   timestamp: Date; // may need to be changed to string
 };
 

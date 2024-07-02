@@ -10,6 +10,7 @@ const comment = new mongoose.Schema(
   {
     username: String,
     body: String,
+    postedBy: String,
     timestamp: Date, // may need to be changed to string
   }
   // disables mongoDB id creation, we can re-enable if we
@@ -38,7 +39,7 @@ const itemSchema = new mongoose.Schema({
   post_id: String,
   room: String,
   postTime: Date,
-  postedBy: { type: String, required: true }, // firebase UID
+  postedBy: String
 });
 
 // index the parameters that you want to be able to search in
