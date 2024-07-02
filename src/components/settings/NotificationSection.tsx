@@ -3,17 +3,18 @@ import React, { useEffect } from "react";
 import { globalStyles } from "../global";
 import ToggleOption from "./ToggleOption";
 import BorderLine from "./BorderLine";
-import {setItem} from "../../local-storage/asyncStorage"
+import { setItem } from "../../local-storage/asyncStorage";
+import Dropdown from "./Dropdown";
 
 const NotificationSection = () => {
-  
-
   return (
     <View>
-      <Text>Notifications</Text>
-      <ToggleOption storageKey="allNotification" text="All notifications" />
-      <ToggleOption storageKey="livePosts" text="Only live posts" />
-      <ToggleOption storageKey="onlyFavs" text="Only favorites" />
+      <Dropdown title="Notifications">
+        <ToggleOption storageKey="allNotification" text="All notifications" />
+        <ToggleOption storageKey="livePosts" text="Only live posts" />
+        <ToggleOption storageKey="onlyFavs" text="Only favorites" />
+      </Dropdown>
+
       <View style={{ paddingTop: 40 }}>
         <BorderLine />
       </View>
