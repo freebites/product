@@ -27,7 +27,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Maps to use your location."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "ios": {
       "supportsTablet": true,
