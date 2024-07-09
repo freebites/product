@@ -77,7 +77,6 @@ export const PostCard = (props: PostCardProps) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        {/* <Icon type={"entypo"} name={"dots-three-horizontal"} /> */}
         <OptionModel></OptionModel>
       </Header>
 

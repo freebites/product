@@ -1,17 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { COLORS } from "../../constants/theme";
 
 interface ReportModal {
-  reportVisable: boolean,
+  reportVisible: boolean;
+  setReportVisible: () => void;
 }
 
-const ReportModal = () => {
-  const { reportVisable } = props;
-  const { modalVisible, setModalVisible } = useState<boolean>(props.reportVisable);
+export const ReportModal = (props: ReportModal) => {
+  const { reportVisible, setReportVisible } = props;
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
-    return (
+  console.log("reportVisible: " + reportVisible);
+  // console.log("modalVisible: " + modalVisible);
+  return (
+    <Modal
+      animationIn={"slideInUp"}
+      animationInTiming={400}
+      animationOut={"slideOutDown"}
+      animationOutTiming={300}
+      isVisible={reportVisible}
+      backdropTransitionOutTiming={0}
+      hasBackdrop
+      backdropOpacity={0.55}
+      coverScreen
+      onBackdropPress={() => {
+        setReportVisible();
+      }}
+      style={styles.modalContainer}
+    >
+      <View>
+        <Text>yippeee</Text>
+      </View>
+    </Modal>
   );
 };
 
