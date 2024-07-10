@@ -36,6 +36,16 @@ const OptionModel = () => {
   const changeReportVisible = () => {
     setReportModalVisible(!reportModalVisible);
   };
+
+  const openreportModal = () => {
+    setModalVisible(false);
+    setReportModalVisible(true);
+  };
+  const closeReportModal = () => {
+    setModalVisible(false);
+    setReportModalVisible(false);
+  };
+
   // console.log("1: report visible in options file: " + reportModalVisible);
   return (
     <View>
@@ -47,70 +57,74 @@ const OptionModel = () => {
       >
         <Icon type={"entypo"} name={"dots-three-horizontal"} />
       </Pressable>
-      {/* <View>
-        <Modal
-          animationIn={"slideInUp"}
-          animationInTiming={400}
-          animationOut={"slideOutDown"}
-          animationOutTiming={300}
-          isVisible={modalVisible}
-          backdropTransitionOutTiming={0}
-          hasBackdrop
-          backdropOpacity={0.55}
-          coverScreen
-          onBackdropPress={() => {
-            setModalVisible(!modalVisible);
-          }}
-          style={styles.modalContainer}
-        >
-          <Image
-            source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
-            style={styles.imgStyle}
-          />
-          <View style={styles.textContainer}>
-            <View>
-              <Text>Would you like to report or share this post?</Text>
+      {!reportModalVisible ? (
+        <View>
+          <Modal
+            animationIn={undefined}
+            animationInTiming={400}
+            animationOut={"slideOutDown"}
+            animationOutTiming={!reportModalVisible ? 0 : 1}
+            isVisible={modalVisible}
+            backdropTransitionInTiming={0}
+            backdropTransitionOutTiming={!reportModalVisible ? 0 : 1}
+            hasBackdrop
+            backdropOpacity={0.55}
+            coverScreen
+            onBackdropPress={() => {
+              setModalVisible(false);
+            }}
+            style={styles.modalContainer}
+          >
+            <Image
+              source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
+              style={styles.imgStyle}
+            />
+            <View style={styles.textContainer}>
+              <View>
+                <Text>Would you like to report or share this post?</Text>
+              </View>
+
+              <Pressable
+                style={styles.optionButton}
+                onPress={() => {
+                  setModalVisible(false);
+                  setReportModalVisible(true);
+                }}
+              >
+                <Text>Report</Text>
+              </Pressable>
+
+              <Pressable
+                style={styles.optionButton}
+                onPress={() =>
+                  Sharing.shareAsync(
+                    "https://www.youtube.com/watch?v=N3uGzshhntM"
+                  )
+                }
+              >
+                <Text>Share</Text>
+              </Pressable>
             </View>
 
             <Pressable
-              style={styles.optionButton}
-              onPress={() => {
-                setModalVisible(false);
-                setReportModalVisible(!reportModalVisible);
-              }}
+              style={styles.cancelButton}
+              onPress={() => setModalVisible(false)}
             >
-              <Text>Report</Text>
+              <Text>Cancel</Text>
             </Pressable>
-
-            <Pressable
-              style={styles.optionButton}
-              onPress={() =>
-                Sharing.shareAsync(
-                  "https://www.youtube.com/watch?v=N3uGzshhntM"
-                )
-              }
-            >
-              <Text>Share</Text>
-            </Pressable>
-          </View>
-
-          <Pressable
-            style={styles.cancelButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text>Cancel</Text>
-          </Pressable>
-        </Modal>
-      </View> */}
+          </Modal>
+        </View>
+      ) : (
+        <View>
+          <ReportModal
+            reportVisible={reportModalVisible}
+            // setReportVisible={changeReportVisible}
+            setReportVisible={closeReportModal}
+          ></ReportModal>
+        </View>
+      )}
 
       {/* <View>
-        <ReportModal
-          reportVisible={reportModalVisible}
-          setReportVisible={changeReportVisible}
-        ></ReportModal>
-      </View> */}
-
-      <View>
         <Modal
           animationIn={"slideInUp"}
           animationInTiming={400}
@@ -182,7 +196,7 @@ const OptionModel = () => {
             )}
           </KeyboardAvoidingView>
         </Modal>
-      </View>
+      </View> */}
     </View>
   );
 };

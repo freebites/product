@@ -17,14 +17,15 @@ export const ReportModal = (props: ReportModal) => {
   return (
     <Modal
       animationIn={"slideInUp"}
-      animationInTiming={400}
+      animationInTiming={1}
       animationOut={"slideOutDown"}
       animationOutTiming={300}
       isVisible={reportVisible}
-      backdropTransitionOutTiming={0}
+      backdropTransitionInTiming={1}
+      backdropTransitionOutTiming={300}
       hasBackdrop
       backdropOpacity={0.55}
-      coverScreen
+      // coverScreen
       onBackdropPress={() => {
         setReportVisible();
       }}
