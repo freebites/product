@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, Pressable, View, Image, KeyboardAvoidingView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Image,
+  KeyboardAvoidingView,
+  TextInput,
+} from "react-native";
 import Modal from "react-native-modal";
+import { Icon } from "react-native-elements";
 import { COLORS } from "../../constants/theme";
 
 interface ReportModal {
@@ -13,9 +22,11 @@ export const ReportModal = (props: ReportModal) => {
   const [text, changeText] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [introText, setIntroText] = useState<string>(
-    "Would you like to report or share this post?"
+    "Why are you reporting this post?"
   );
   const [buttonText, setButtonText] = useState<string>("Submit");
+
+  const [vis, setVis] = useState<boolean>(reportVisible);
 
   const submitReport = () => {
     setIntroText(
@@ -24,78 +35,90 @@ export const ReportModal = (props: ReportModal) => {
     setButtonText("I got it!");
   };
 
+  console.log(
+    "Checking initial values: report: " + reportVisible + " vis: " + vis
+  );
+
   return (
     <Modal
       animationIn={"slideInUp"}
       animationInTiming={1}
       animationOut={"slideOutDown"}
       animationOutTiming={300}
-      isVisible={reportVisible}
+      isVisible={vis}
       backdropTransitionInTiming={1}
       backdropTransitionOutTiming={300}
       hasBackdrop
       backdropOpacity={0.55}
       // coverScreen
       onBackdropPress={() => {
+        // setReportVisible();
+        setVis(false);
+      }}
+      onModalHide={() => {
         setReportVisible();
       }}
       style={styles.modalContainer}
     >
       <KeyboardAvoidingView
-            behavior="position"
-            style={{ width: "100%" }}
-            keyboardVerticalOffset={25}
-          >
-            <Image
-              source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
-              style={styles.imgStyle}
-            />
+        behavior="position"
+        style={{ width: "100%" }}
+        keyboardVerticalOffset={25}
+      >
+        <Image
+          source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
+          style={styles.imgStyle}
+        />
 
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>{introText}</Text>
-              {submitted ? (
-                <View></View>
-              ) : (
-                <TextInput
-                  style={styles.textInput}
-                  onChangeText={(newText) => {
-                    changeText(newText);
-                  }}
-                  value={text}
-                  placeholder="Please type your answer here"
-                  placeholderTextColor="#AEA9B1"
-                />
-              )}
-            </View>
-            {text !== "" ? (
-              <Pressable
-                style={styles.submitButton}
-                onPress={() => {
-                  if (!submitted) {
-                    submitReport();
-                    setSubmitted(true);
-                  } else {
-                    setReportVisible();
-                    setSubmitted(false);
-                    changeText("");
-                    setIntroText(
-                      "Would you like to report or share this post?"
-                    );
-                    setButtonText("Submit");
-                  }
-                }}
-              >
-                <Text>{buttonText}</Text>
-              </Pressable>
-            ) : (
-              <Pressable
-                style={styles.cancelButton}
-                onPress={() => setReportVisible()}
-              >
-                <Text>Cancel</Text>
-              </Pressable>
-            )}
-          </KeyboardAvoidingView>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{introText}</Text>
+          {submitted ? (
+            <View></View>
+          ) : (
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(newText) => {
+                changeText(newText);
+              }}
+              value={text}
+              placeholder="Please type your answer here"
+              placeholderTextColor="#AEA9B1"
+              multiline={true}
+            />
+          )}
+        </View>
+        {text !== "" ? (
+          <Pressable
+            style={styles.submitButton}
+            onPress={() => {
+              if (!submitted) {
+                submitReport();
+                setSubmitted(true);
+              } else {
+                // setReportVisible();
+                setVis(false);
+                setSubmitted(false);
+                changeText("");
+                setIntroText("Would you like to report or share this post?");
+                setButtonText("Submit");
+              }
+            }}
+          >
+            <Text>{buttonText}</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.cancelButton}
+            onPress={() => {
+              // setReportVisible();
+              setVis(false);
+            }}
+          >
+            <Text style={styles.textStyle}>Cancel</Text>
+            <Icon type={"antDesign"} name={"close"} />
+          </Pressable>
+        )}
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -104,16 +127,6 @@ const styles = StyleSheet.create({
   modalContainer: {
     justifyContent: "flex-end",
     alignItems: "center",
-  },
-
-  reportContainer: {
-    backgroundColor: COLORS.white,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 20,
-    width: "100%",
-    height: 153,
-    paddingVertical: 10,
   },
 
   imgStyle: {
@@ -131,6 +144,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 20,
     padding: 20,
+    textAlign: "left",
   },
 
   textContainer: {
@@ -139,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 20,
     width: "100%",
-    height: 153,
+    height: 163,
     paddingVertical: 10,
   },
 
@@ -148,14 +162,25 @@ const styles = StyleSheet.create({
     width: "90%",
   },
 
+  textStyle: {
+    color: "#79767D",
+    fontWeight: "500",
+    textAlign: "left",
+    paddingLeft: 15,
+    fontSize: 16,
+  },
+
   cancelButton: {
     backgroundColor: COLORS.white,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
     borderRadius: 20,
     width: "100%",
     height: 43,
     marginTop: 5,
+    paddingHorizontal: 20,
   },
 
   submitButton: {

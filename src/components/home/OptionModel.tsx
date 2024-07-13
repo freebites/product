@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 import { COLORS } from "../../constants/theme";
@@ -33,7 +27,6 @@ const OptionModel = () => {
     <View>
       <Pressable
         onPress={() => {
-          console.log("pressed the three dots");
           setModalVisible(true);
         }}
       >
@@ -62,8 +55,10 @@ const OptionModel = () => {
               style={styles.imgStyle}
             />
             <View style={styles.textContainer}>
-              <View>
-                <Text>Would you like to report or share this post?</Text>
+              <View style={styles.headText}>
+                <Text style={styles.modalText}>
+                  Would you like to report or share this post?
+                </Text>
               </View>
 
               <Pressable
@@ -73,7 +68,7 @@ const OptionModel = () => {
                   setReportModalVisible(true);
                 }}
               >
-                <Text>Report</Text>
+                <Text style={styles.textStyle}>Report</Text>
               </Pressable>
 
               <Pressable
@@ -84,7 +79,7 @@ const OptionModel = () => {
                   )
                 }
               >
-                <Text>Share</Text>
+                <Text style={styles.textStyle}>Share</Text>
               </Pressable>
             </View>
 
@@ -92,7 +87,8 @@ const OptionModel = () => {
               style={styles.cancelButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text>Cancel</Text>
+              <Text style={styles.textStyle}>Cancel</Text>
+              <Icon type={"antDesign"} name={"close"} />
             </Pressable>
           </Modal>
         </View>
@@ -114,6 +110,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  headText: {
+    paddingVertical: 20,
+  },
+
   imgStyle: {
     width: 46,
     height: 52,
@@ -127,25 +127,42 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 20,
     width: "100%",
-    height: 153,
-    paddingVertical: 10,
+    height: 163,
+    paddingTop: 10,
+    paddingBottom: 15,
   },
 
   optionButton: {
     borderTopColor: COLORS.gray,
     borderTopWidth: 1,
     width: "100%",
-    padding: 20,
+    padding: 15,
+  },
+
+  modalText: {
+    color: "#58565D",
+    fontSize: 14,
+  },
+
+  textStyle: {
+    color: "#79767D",
+    fontWeight: "500",
+    textAlign: "left",
+    paddingLeft: 15,
+    fontSize: 16,
   },
 
   cancelButton: {
     backgroundColor: COLORS.white,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
     borderRadius: 20,
     width: "100%",
     height: 43,
     marginTop: 5,
+    paddingHorizontal: 20,
   },
 });
 
