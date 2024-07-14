@@ -20,7 +20,6 @@ const TagMultiSelect = (props: TagMultiSelectProps) => {
 
   const { postData } = useContext(PostContext);
   const tagList = type == "diet" ? postData.tags.diet : postData.tags.allergens;
-  // const [tags, setTags] = useState(tagList);
 
   const [other, setOther] = useState(false);
 
@@ -35,7 +34,6 @@ const TagMultiSelect = (props: TagMultiSelectProps) => {
     }
 
     // only after new tags are updated do we pass them into the setStates
-    // setTags(newTags);
     changeHandler(newTags);
   };
 
