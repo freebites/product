@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,14 +19,15 @@ interface ReportModal {
 
 export const ReportModal = (props: ReportModal) => {
   const { reportVisible, setReportVisible } = props;
+  const [visible, setVisible] = useState<boolean>(reportVisible);
+
   const [text, changeText] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
+
   const [introText, setIntroText] = useState<string>(
     "Why are you reporting this post?"
   );
   const [buttonText, setButtonText] = useState<string>("Submit");
-
-  const [vis, setVis] = useState<boolean>(reportVisible);
 
   const submitReport = () => {
     setIntroText(
@@ -35,25 +36,20 @@ export const ReportModal = (props: ReportModal) => {
     setButtonText("I got it!");
   };
 
-  console.log(
-    "Checking initial values: report: " + reportVisible + " vis: " + vis
-  );
-
   return (
     <Modal
       animationIn={"slideInUp"}
       animationInTiming={1}
       animationOut={"slideOutDown"}
       animationOutTiming={300}
-      isVisible={vis}
+      isVisible={visible}
       backdropTransitionInTiming={1}
       backdropTransitionOutTiming={300}
       hasBackdrop
       backdropOpacity={0.55}
-      // coverScreen
+      coverScreen
       onBackdropPress={() => {
-        // setReportVisible();
-        setVis(false);
+        setVisible(false);
       }}
       onModalHide={() => {
         setReportVisible();
@@ -95,8 +91,7 @@ export const ReportModal = (props: ReportModal) => {
                 submitReport();
                 setSubmitted(true);
               } else {
-                // setReportVisible();
-                setVis(false);
+                setVisible(false);
                 setSubmitted(false);
                 changeText("");
                 setIntroText("Would you like to report or share this post?");
@@ -110,8 +105,7 @@ export const ReportModal = (props: ReportModal) => {
           <Pressable
             style={styles.cancelButton}
             onPress={() => {
-              // setReportVisible();
-              setVis(false);
+              setVisible(false);
             }}
           >
             <Text style={styles.textStyle}>Cancel</Text>
@@ -163,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
-    color: "#79767D",
+    color: COLORS.neutral[70],
     fontWeight: "500",
     textAlign: "left",
     paddingLeft: 15,

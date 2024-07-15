@@ -10,14 +10,6 @@ const OptionModel = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
 
-  const changeReportVisible = () => {
-    setReportModalVisible(!reportModalVisible);
-  };
-
-  const openreportModal = () => {
-    setModalVisible(false);
-    setReportModalVisible(true);
-  };
   const closeReportModal = () => {
     setModalVisible(false);
     setReportModalVisible(false);
@@ -140,12 +132,12 @@ const styles = StyleSheet.create({
   },
 
   modalText: {
-    color: "#58565D",
+    color: COLORS.neutral[90],
     fontSize: 14,
   },
 
   textStyle: {
-    color: "#79767D",
+    color: COLORS.neutral[70],
     fontWeight: "500",
     textAlign: "left",
     paddingLeft: 15,
