@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import HomePost from "../../../components/home/HomePost";
 import { AppContext } from "../../../context/appContext";
 import { RefreshControl } from "react-native-gesture-handler";
+import MissingContentTemplate from "../../../components/common/MissingContent";
 
 // use local search parameters
 const History = () => {
@@ -62,12 +63,7 @@ const History = () => {
           })}
         </ScrollView>
       ) : (
-        <View style={styles.textContainer}>
-          <Text style={styles.textTitle}>No history yet</Text>
-          <Text style={styles.textBody}>
-            Try making a post by clicking on the + button on the homepage!
-          </Text>
-        </View>
+        <MissingContentTemplate title={"No history yet"} body={"Try making a post by clicking on the + button on the homepage!"}/>
       )}
     </SafeAreaView>
   );

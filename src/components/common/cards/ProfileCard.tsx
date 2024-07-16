@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 
 import { router } from "expo-router";
@@ -7,8 +7,8 @@ import { useAuth } from "../../../context/auth";
 import { getOneUser } from "../../../../api/user/usercrud";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../../firebase";
+import MissingImageSvg from "../../../components/home/svg/missingImageSVG";
 
-const placeholder = require("../../../assets/icons/placeholder.png");
 const editbutton = require("../../../assets/icons/editbutton.png");
 
 const style = StyleSheet.create({
@@ -35,6 +35,7 @@ const style = StyleSheet.create({
 const ProfileCard = (props) => {
   const { user } = useAuth();
   const [profilePicURL, setProfilePicURL] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -44,18 +45,30 @@ const ProfileCard = (props) => {
         if (data.profile){
           const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
           setProfilePicURL(url);
-        } else setProfilePicURL(placeholder);
+        }
       } catch (error) {
-        setProfilePicURL(placeholder);
         console.error("Error fetching post:", error);
       }
+      setLoading(false);
     };
     fetchUser();
   }, [])
 
   return (
     <View style={{ marginBottom: 15 }}>
-      <Image source={profilePicURL? {uri : profilePicURL} : placeholder} style={style.picture}></Image>
+      {loading ? (
+        <View style={{...style.picture, alignItems: "center", justifyContent:"center"}}>
+          <ActivityIndicator size="large" color="#F19D48" />
+        </View>      
+        ) : (
+        profilePicURL ? (
+          <Image source={{uri: profilePicURL}} style={style.picture}/>
+        ) : (
+          <View style={{...style.picture, alignItems: "center", justifyContent:"center"}}>
+            <MissingImageSvg />
+          </View>
+        )
+      )}      
       <Pressable
         style={{
           position: "absolute",

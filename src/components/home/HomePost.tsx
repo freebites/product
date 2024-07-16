@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
@@ -15,11 +16,12 @@ import { COLORS } from "../../constants";
 
 const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
-const avatar = require("../../assets/icons/janesmith.png");
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "../../context/auth";
-
-const placeholderImage = require("../../assets/images/kemal.jpg");
+import { getTimeDifference } from "../common/GetTimeDifference";
+import MissingImageSvg from "./svg/missingImageSVG";
+import { getOneUser } from "../../../api/user/usercrud";
+import { EmptyUser, UserType } from "../../context/userContext";
 
 interface HomePostProps {
   post: postType;
@@ -29,15 +31,59 @@ interface HomePostProps {
   style?: object;
 }
 
+const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
+
 export const HomePost = (props: HomePostProps) => {
   const { post, onPress, setRefreshing, fetchData } = props;
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingPP, setLoadingPP] = useState<boolean>(true);
+  const [address, setAddress] = useState<string>();
+  const [postedByData, setPostedByData] = useState<UserType>(EmptyUser);
+  const [postedByPic, setPostedByPic] = useState<string>("");
+
 
   // temp fix for null
   if (!post.imageURIs) {
     post.imageURIs = [];
   }
   const [imageURL, setImageURL] = useState<string>("");
+
+  const timeAgo = getTimeDifference({ postTime : post.postTime });
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const apiKey = process.env.EXPO_PUBLIC_API_KEY;
+        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${post.location.place_id}&key=${apiKey}`;
+        const response = await fetch(url, {method: "GET", mode: "cors"});
+        const data = await response.json();
+        setAddress(data.result.formatted_address);
+      } catch (error) {
+        console.error("Error fetching place details:", error);
+        return null;
+      }
+    };
+    if (post.location.place_id) fetchAddress();
+  }, [])
+ 
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getOneUser(post.postedBy);
+        setPostedByData(data);
+        if (data.profile){
+          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
+          setPostedByPic(url);
+        } 
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } 
+      setLoadingPP(false);
+    };
+    fetchUserData();
+  }, [])
 
   useEffect(() => {
     const loadImageURL = async () => {
@@ -46,39 +92,49 @@ export const HomePost = (props: HomePostProps) => {
         const url = await getDownloadURL(ref(storage, post.imageURIs[0]));
         setImageURL(url);
       } catch (error) {
-        setImageURL(placeholderImage); // set image to dummy pizza when not found
         console.error("Error loading image URL:", error);
       }
+      setIsLoading(false);
     };
 
     loadImageURL();
   }, [post.imageURIs[0]]);
 
   return (
+    <View>
+
     <Pressable style={styles.mainbox} onPress={onPress}>
       <View style={styles.imagebox}>
-        <Image
-          source={{
-            // add loading skeleton here? or a state management if we want the whole post to do an animation
-            uri: imageURL != "" ? imageURL : "https://i.gifer.com/ZKZg.gif",
-          }}
-          style={styles.image}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#F19D48" />
+        ) : (
+          imageURL ? (
+            <Image
+              source={{
+                uri: imageURL,
+              }}
+              style={styles.image}
+            />
+          ) : (
+            <MissingImageSvg />
+          )
+        )}
       </View>
-
+      {postedByData.userName &&    
       <View style={styles.topbox}>
-        <Image source={avatar} style={{ width: 13.916, height: 13.916 }} />
+        {loadingPP? <ActivityIndicator color="#F19D48"/> : <Image source={postedByPic? {uri : postedByPic} : placeholder} style={{ width: 13.916, height: 13.916 }} />}
         <Text style={{ fontSize: 8.118, color: COLORS.neutral[100] }}>
-          Jane Smith
+          {postedByData?.userName}
         </Text>
       </View>
+      }
 
       <View style={{ width: "100%", flex: 1, flexDirection: "row" }}>
         <View style={styles.leftbox}>
           <View style={styles.time}>
             <Image source={clock} style={{ width: 9, height: 9 }} />
             <Text style={{ color: COLORS.brown[30], fontSize: 10 }}>
-              5 min ago
+              {timeAgo}
             </Text>
           </View>
 
@@ -91,12 +147,12 @@ export const HomePost = (props: HomePostProps) => {
                 fontWeight: "bold",
               }}
             >
-              JCC 160{post.location ? post.location.place_id : post.location}
+              {address ? address : "Location not available"}
             </Text>
           </View>
 
           <Text style={styles.description}>
-            Assorted pizzas from TCU event...{post.title}
+            {post.description}
           </Text>
         </View>
 
@@ -124,6 +180,7 @@ export const HomePost = (props: HomePostProps) => {
         fetchData={fetchData}
       />
     </Pressable>
+    </View>
   );
 };
 
@@ -144,9 +201,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 125,
     marginRight: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
     flex: 1,
+    width: "100%", 
+    height: "100%", 
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
   },

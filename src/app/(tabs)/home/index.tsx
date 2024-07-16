@@ -22,13 +22,17 @@ import {
 } from "../../../context/appContext";
 import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import GrowToggle from "../../../components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
 import { setItem } from "../../../local-storage/asyncStorage";
+import NetInfo from "@react-native-community/netinfo";
+import MissingContentTemplate from "../../../components/common/MissingContent";
+import HomePostSkeleton from "../../../components/home/HomePostSkeleton";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState<postType[]>([]);
+  const [isConnected, setIsConnected] = useState(true);
+
   const {
     filters,
     location,
@@ -101,9 +105,16 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // async function
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(state.isConnected);
+    });
+
     fetchData();
     setRefreshing(true);
+
+    return () => {
+      unsubscribe();
+    };
   }, [userToFilter, filters, sort, perishable]);
 
   const updateLocation = async (newLocation: locationInfo) => {
@@ -115,6 +126,14 @@ const Home = () => {
     await setItem("userToFilter", newUserToFilter);
     setUserToFilter(newUserToFilter);
   };
+
+  if (!isConnected){
+    return (
+      <View style={[globalStyles.container]}>
+        <MissingContentTemplate title={"No internet connection"} body={"Try refreshing the page or logging back into the app."}/>
+      </View>
+    )
+  }
 
   return (
     <View style={[globalStyles.container]}>
@@ -167,12 +186,7 @@ const Home = () => {
       AllPosts.filter((eachPost: postType) => {
         return eachPost.postedBy === userToFilter;
       }).length === 0 ? (
-        <View style={styles.textContainer}>
-          <Text style={styles.textTitle}>No history yet</Text>
-          <Text style={styles.textBody}>
-            Try making a post by clicking on the + button on the homepage!
-          </Text>
-        </View>
+        <MissingContentTemplate title={"No history yet"} body={"Try making a post by clicking on the + button on the homepage!"}/>
       ) : (
         <ScrollView
           contentContainerStyle={styles.postContainer}
@@ -180,25 +194,33 @@ const Home = () => {
             <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
           }
         >
-          {AllPosts.map((eachPost: postType) => {
-            if (userToFilter === "" || userToFilter === eachPost.postedBy) {
-              return (
-                <HomePost
-                  style={styles.postCard}
-                  key={eachPost._id}
-                  post={eachPost}
-                  setRefreshing={setRefreshing}
-                  fetchData={fetchData}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/postPopUp",
-                      params: { id: eachPost._id },
-                    })
-                  }
-                />
-              );
-            }
-          })}
+          {refreshing ? (
+            // Render the loading skeleton while refreshing
+            <View style={styles.skeletonContainer}>
+              <HomePostSkeleton/>
+              <HomePostSkeleton/>
+            </View>
+          ) : (
+            AllPosts.map((eachPost) => {
+              if (userToFilter === "" || userToFilter === eachPost.postedBy) {
+                return (
+                  <HomePost
+                    style={styles.postCard}
+                    key={eachPost._id}
+                    post={eachPost}
+                    setRefreshing={setRefreshing}
+                    fetchData={fetchData}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/postPopUp",
+                        params: { id: eachPost._id },
+                      })
+                    }
+                  />
+                );
+              }
+            })
+          )}
         </ScrollView>
       )}
     </View>
@@ -209,6 +231,9 @@ const styles = StyleSheet.create({
   postContainer: {
     rowGap: 26,
     width: 345,
+  },
+  skeletonContainer: {
+    rowGap: 26,
   },
   postCard: {
     marginBottom: 30,

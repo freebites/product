@@ -5,13 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { EmptyPost, postType, comment } from "../../../types/PostTypes";
 import { CommentsModal } from "./CommentsModal";
 import { Divider, Icon } from "react-native-elements";
 import { getOne } from "../../../api/posts/read";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, StorageError } from "firebase/storage";
 import { TextInput } from "react-native-gesture-handler";
 import update from "../../../api/posts/update";
 import { storage } from "../../../firebase";
@@ -27,6 +28,8 @@ const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const msg = require("../../assets/icons/freebites/msg.png");
 const lactose = require("../../assets/icons/freebites/lactose.png");
+import MissingImageSvg from "./svg/missingImageSVG";
+import PostCardSkeleton from "./PostCardSkeleton";
 
 interface PostCardProps {
   id: string;
@@ -36,6 +39,8 @@ export const PostCard = (props: PostCardProps) => {
   const { user } = useAuth();
   const [singlePost, setSinglePost] = useState<postType>(EmptyPost);
   const [imageURL, setImageURL] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [commentsVisible, setCommentsVisible] = useState<boolean>(false);
 
@@ -52,9 +57,10 @@ export const PostCard = (props: PostCardProps) => {
         const url = await getDownloadURL(ref(storage, postData.imageURIs[0]));
         setImageURL(url);
       } catch (error) {
-        setImageURL(placeholderImage);
         console.error("Error fetching post:", error);
+        setError(true);
       }
+      setIsLoading(false);
     };
 
     fetchPost();
@@ -68,6 +74,23 @@ export const PostCard = (props: PostCardProps) => {
     setModalVisible(!modalVisible);
   };
 
+  if (error){
+    return (
+      <View>
+         <InfoModal
+            modalVisible={modalVisible}
+            setModalVisible={changeModalVisible}
+          ></InfoModal>
+
+          <Header text="Post Description">
+            <Icon type={"entypo"} name={"dots-three-horizontal"} />
+          </Header>
+          <PostCardSkeleton />
+
+      </View>
+    )
+  }
+
   return (
     <View>
       <InfoModal
@@ -80,12 +103,22 @@ export const PostCard = (props: PostCardProps) => {
       </Header>
 
       <View style={styles.mainbox}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: imageURL === "" ? placeholderImage : imageURL,
-          }}
-        />
+        <View style={styles.imageContainer}>
+          {isLoading ? (
+              <ActivityIndicator size="large" color="#F19D48" />
+            ) : (
+              imageURL ? (
+                <Image
+                  source={{
+                    uri: imageURL,
+                  }}
+                  style={styles.image}
+                />
+              ) : (
+                <MissingImageSvg />
+              )
+          )}
+        </View>
         <View style={styles.titleContainer}>
           {/* <View style={styles.locationContainer}>
 							<Text style={styles.location}>{singlePost.title}</Text>
@@ -189,8 +222,14 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingTop: 20,
   },
-  image: {
+  imageContainer: {
     height: 300,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%", 
     borderRadius: 15,
   },
   description: {

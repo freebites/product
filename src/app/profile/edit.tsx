@@ -8,7 +8,8 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  Alert
+  Alert,
+  ActivityIndicator
 } from "react-native";
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { globalStyles } from "../../components/global";
@@ -30,12 +31,12 @@ import { EmptyUser, UserType } from "../../context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
 import OpenCamera from "../../components/common/Camera";
-
-const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
+import MissingImageSvg from "../../components/home/svg/missingImageSVG";
 
 const editProfile = () => {
   
   const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
   const [showCamera, setShowCamera] = useState(false);
   const [profilePicURL, setProfilePicURL] = useState("");
@@ -50,18 +51,17 @@ const editProfile = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-
       try {
         const data = await getOneUser(user.uid);
         setUserData(data);
         if (data.profile){
           const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
           setProfilePicURL(url);
-        } else setProfilePicURL(placeholder);
+        } 
       } catch (error) {
-        setProfilePicURL(placeholder);
         console.error("Error fetching post:", error);
       }
+      setLoading(false);
     };
     fetchUser();
   },[])
@@ -151,7 +151,19 @@ const editProfile = () => {
                       <EditModal setShowCamera={setShowCamera}/>
                     </BottomSheetView>
                   </BottomSheetModal>
-                  <Image source={profilePicURL? {uri : profilePicURL} : placeholder} style={styles.profileImage} />
+                  {loading ? (
+                    <View style={{...styles.profileImage, alignItems: "center", justifyContent:"center"}}>
+                      <ActivityIndicator size="large" color="#F19D48" />
+                    </View>
+                  ) : (
+                    profilePicURL ? (
+                      <Image source={{uri: profilePicURL}} style={styles.profileImage}/>
+                    ) : (
+                      <View style={{...styles.profileImage, alignItems: "center", justifyContent:"center"}}>
+                        <MissingImageSvg />
+                      </View>
+                    )
+                  )}
                   <Text style={styles.changePhotoText} onPress={handleImagePress}>
                     Change profile photo
                   </Text>
