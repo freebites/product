@@ -21,7 +21,14 @@ export default function Modal() {
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       <StatusBar style="light" />
       <View style={styles.modalContent}>
-        <Options />
+        <Options
+          onPress1={() => {
+            router.navigate("/home");
+          }}
+          onPress2={() => {
+            console.log("hit draft button");
+          }}
+        />
         <Link href="../" asChild>
           <CancelButton text="Cancel" />
         </Link>
