@@ -7,6 +7,7 @@ interface GalleryButtonProps {
 }
 const GalleryButton = ({ onPress }: GalleryButtonProps) => {
   const pickImage = async () => {
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsMultipleSelection: true,
@@ -14,7 +15,7 @@ const GalleryButton = ({ onPress }: GalleryButtonProps) => {
       quality: 0.2,
       selectionLimit: 5,
     });
-
+    
     if (!result.canceled) {
       // Loops through all of the images and sets strings of the uri
       // TODO: make this immutable
