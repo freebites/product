@@ -52,15 +52,21 @@ const OptionModel = () => {
         animationIn={undefined}
         animationInTiming={400}
         animationOut={"slideOutDown"}
-        animationOutTiming={!reportModalVisible ? 0 : 1}
+        animationOutTiming={0}
         isVisible={modalVisible}
         backdropTransitionInTiming={0}
-        backdropTransitionOutTiming={!reportModalVisible ? 0 : 1}
+        backdropTransitionOutTiming={0}
         hasBackdrop
         backdropOpacity={0.55}
         coverScreen
         onBackdropPress={() => {
           setModalVisible(false);
+          setReportModalVisible(false);
+
+          setSubmitted(false);
+          changeText("");
+          setIntroText("Would you like to report or share this post?");
+          setButtonText("Submit");
         }}
         style={styles.modalContainer}
       >
@@ -75,7 +81,6 @@ const OptionModel = () => {
           />
 
           {reportModalVisible ? (
-
             //Report Modal
 
             <View>
@@ -131,9 +136,8 @@ const OptionModel = () => {
               )}
             </View>
           ) : (
-
             //Option Modal
-            
+
             <View>
               <View style={styles.textContainer}>
                 <View style={styles.headText}>
