@@ -57,9 +57,8 @@ function FreeBitesModal(props: FreeBitesModalProps) {
             </Pressable>
           </View>
         </View>
-        {props.hasCancelButton ? <CancelButton onPress={() => {
-          // setVis(!vis)
-          props.setModalVisible}}></CancelButton> : <Text></Text>}
+        {props.hasCancelButton ? <CancelButton onPress={
+          props.setModalVisible}></CancelButton> : <Text></Text>}
       </Modal>
     </View>
   );
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: "100%",
     height: 153,
-    marginBottom: 40,
+    marginBottom: 10,
     backgroundColor: "white",
     borderRadius: 20,
     paddingTop: 15,
