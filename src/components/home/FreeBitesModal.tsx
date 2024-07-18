@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
-import { CancelButton } from "../post/PostModal/CancelButton";
+import CancelButton from "../post/PostModal/CancelButton";
 
 interface FreeBitesModalProps {
   headText: string;
@@ -11,10 +11,12 @@ interface FreeBitesModalProps {
   onPress1: () => void;
   onPress2: () => void;
   hasCancelButton: boolean;
+  modalVisible: boolean;
+  setModalVisible: () => void;
 }
 
 function FreeBitesModal(props: FreeBitesModalProps) {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  // const [ vis, setVis ] = useState<boolean>(props.modalVisible)
 
   return (
     <View>
@@ -23,14 +25,13 @@ function FreeBitesModal(props: FreeBitesModalProps) {
         animationInTiming={400}
         animationOut={"slideOutDown"}
         animationOutTiming={300}
-        isVisible={modalVisible}
+        isVisible={props.modalVisible}
         backdropTransitionOutTiming={0}
         hasBackdrop
         backdropOpacity={0.55}
         coverScreen
-        onBackdropPress={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onBackdropPress={
+          props.setModalVisible}
         style={styles.modalContainer}
       >
         <View style={styles.bottomView}>
@@ -43,24 +44,22 @@ function FreeBitesModal(props: FreeBitesModalProps) {
             <View style={styles.hr} />
             <Pressable
               style={styles.button}
-              onPress={() => {
-                props.onPress1;
-              }}
+              onPress={props.onPress1}
             >
               <Text style={styles.textStyle}>{props.buttonText1}</Text>
             </Pressable>
             <View style={styles.hr} />
             <Pressable
               style={styles.button}
-              onPress={() => {
-                props.onPress2;
-              }}
+              onPress={props.onPress2}
             >
               <Text style={styles.textStyle}>{props.buttonText2}</Text>
             </Pressable>
           </View>
         </View>
-        {props.hasCancelButton ? <Text></Text> : <Text></Text>}
+        {props.hasCancelButton ? <CancelButton onPress={() => {
+          // setVis(!vis)
+          props.setModalVisible}}></CancelButton> : <Text></Text>}
       </Modal>
     </View>
   );

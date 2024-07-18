@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
+import FreeBitesModal from "./FreeBitesModal";
 
 import deleteOne from "../../../api/posts/delete";
 
@@ -16,11 +17,38 @@ const DeleteModal = (props: DeleteButtonProps) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { postID, userPost, setRefreshing, fetchData } = props;
 
+  const deleteFunc = async () => {
+    setModalVisible(!modalVisible);
+    await deleteOne(postID);
+    fetchData();
+    setRefreshing(true);
+  };
+
+  const changeModalVisible = () => {
+    setModalVisible(!modalVisible);
+  }
+
   return (
     <View style={styles.trashIconContainer}>
       {userPost ? (
         <View>
-          <Modal
+          <FreeBitesModal
+            headText="Are you sure you want to delete this post?"
+            buttonText1="Yes!"
+            buttonText2="No, oops"
+            onPress1={() => {
+              console.log("Pressed 1");
+              deleteFunc();
+            }}
+            onPress2={() => {
+              console.log("Pressed 2");
+              setModalVisible(!modalVisible);
+            }}
+            hasCancelButton={false}
+            modalVisible={modalVisible}
+            setModalVisible={changeModalVisible}
+          />
+          {/* <Modal
             animationIn={"slideInUp"}
             animationInTiming={400}
             animationOut={"slideOutDown"}
@@ -47,11 +75,8 @@ const DeleteModal = (props: DeleteButtonProps) => {
                 <View style={styles.hr} />
                 <Pressable
                   style={styles.button}
-                  onPress={async () => {
-                    setModalVisible(!modalVisible);
-                    await deleteOne(postID);
-                    fetchData();
-                    setRefreshing(true);
+                  onPress={() => {
+                    deleteFunc();
                   }}
                 >
                   <Text style={styles.textStyle}>Yes!</Text>
@@ -65,7 +90,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
                 </Pressable>
               </View>
             </View>
-          </Modal>
+          </Modal> */}
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
               source={require("../../assets/icons/trash.png")}
