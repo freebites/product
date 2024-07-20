@@ -5,21 +5,32 @@ import { PostContext } from "../../context/postContext";
 import { EmptyPost } from "../../../types/PostTypes";
 import { manipulateAsync } from "expo-image-manipulator";
 import NextButton from "../post/NextButton";
-import { Camera, CameraType } from "expo-camera/legacy";
-import { View, StyleSheet, Text, TouchableOpacity, Button, Image, Alert } from "react-native";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Button,
+  Image,
+  Alert,
+} from "react-native";
 import { useAuth } from "../../context/auth";
 import { uploadPicture } from "../profile/UploadPicture";
 
 interface OpenCameraProps {
-    profile: boolean,
+  profile: boolean;
 }
 
-export default function OpenCamera(props : OpenCameraProps) {
+export default function OpenCamera(props: OpenCameraProps) {
   const { profile } = props;
+  const [facing, setFacing] = useState("back");
   const { postData, updatePostData } = useContext(PostContext);
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef();
+  const [isCameraReady, setIsCameraReady] = useState(false);
   const { user } = useAuth();
-  
+  const [permission, requestPermission] = useCameraPermissions();
+
   // handler for storing image URIs
   const handleUpdateImages = (imageLinks: string[]) => {
     // append image links to old array
@@ -31,20 +42,20 @@ export default function OpenCamera(props : OpenCameraProps) {
     });
   };
 
-  // states for camera usage
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
+  // Function to toggle camera if needed
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
   }
+
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
 
   // function for adding camera picture to context.
   const takePhoto = async () => {
     if (cameraRef.current) {
-      let photo = await cameraRef.current.takePictureAsync();
+      const options = { quality: 0.5, base64: true, skipProcessing: true };
+      let photo = await cameraRef.current.takePictureAsync(options);
       if (photo.hasOwnProperty("uri")) {
         // compress images
         const manipulateResult = await manipulateAsync(
@@ -54,7 +65,6 @@ export default function OpenCamera(props : OpenCameraProps) {
         );
         if (profile) {
           uploadPicture(manipulateResult.uri, user.uid);
-          
         } else {
           handleUpdateImages([manipulateResult.uri]);
         }
@@ -67,7 +77,7 @@ export default function OpenCamera(props : OpenCameraProps) {
   //////////////
   // ask for permissions before:
   // note: during testing, our phones already gave permissions automatically
-  // and we're not sure if this is because it persists across loading or not 
+  // and we're not sure if this is because it persists across loading or not
   if (permission == null) {
     // Camera permissions are still loading
     return <View />;
@@ -87,7 +97,12 @@ export default function OpenCamera(props : OpenCameraProps) {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={cameraRef}>
+      <CameraView
+        style={styles.camera}
+        facing={facing}
+        onCameraReady={onCameraReady}
+        ref={cameraRef}
+      >
         <View style={styles.buttonContainer}>
           <Link href={profile ? `/(tabs)/profile` : `/(tabs)/home`} asChild>
             <TouchableOpacity
@@ -99,9 +114,15 @@ export default function OpenCamera(props : OpenCameraProps) {
               <Text style={styles.closeText}>x</Text>
             </TouchableOpacity>
           </Link>
-          {!profile && <View style={styles.galleryContainer}>
-            <GalleryButton onPress={handleUpdateImages}></GalleryButton>
-          </View>}
+          {!profile && (
+            <View style={styles.galleryContainer}>
+              {/* <TouchableOpacity
+                style={styles.cameraButton}
+                onPress={toggleCameraFacing}
+              ></TouchableOpacity> */}
+              <GalleryButton onPress={handleUpdateImages}></GalleryButton>
+            </View>
+          )}
 
           <View style={styles.borderContainer}>
             <View style={styles.border}>
@@ -120,7 +141,7 @@ export default function OpenCamera(props : OpenCameraProps) {
             </Link>
           )}
         </View>
-      </Camera>
+      </CameraView>
     </View>
   );
 }
