@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 import CancelButton from "../post/PostModal/CancelButton";
+import Feather from "@expo/vector-icons/Feather";
 
 interface FreeBitesModalProps {
   headText: string;
+  headMargin: boolean;
   buttonText1: string;
+  buttonIcon1: ReactNode;
   buttonText2: string;
+  buttonIcon2: ReactNode;
   onPress1: () => void;
   onPress2: () => void;
   hasCancelButton: boolean;
@@ -15,6 +19,7 @@ interface FreeBitesModalProps {
   setModalVisible: () => void;
 }
 
+//For Modals where two button options are given
 function FreeBitesModal(props: FreeBitesModalProps) {
   // const [ vis, setVis ] = useState<boolean>(props.modalVisible)
 
@@ -30,8 +35,7 @@ function FreeBitesModal(props: FreeBitesModalProps) {
         hasBackdrop
         backdropOpacity={0.55}
         coverScreen
-        onBackdropPress={
-          props.setModalVisible}
+        onBackdropPress={props.setModalVisible}
         style={styles.modalContainer}
       >
         <View style={styles.bottomView}>
@@ -40,39 +44,34 @@ function FreeBitesModal(props: FreeBitesModalProps) {
             style={styles.imgStyle}
           />
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{props.headText}</Text>
+            {props.headMargin ? (
+              <Text style={styles.modalTextMargin}>{props.headText}</Text>
+            ) : (
+              <Text style={styles.modalText}>{props.headText}</Text>
+            )}
             <View style={styles.hr} />
-            <Pressable
-              style={styles.button}
-              onPress={props.onPress1}
-            >
+            <Pressable style={styles.button} onPress={props.onPress1}>
               <Text style={styles.textStyle}>{props.buttonText1}</Text>
+              {props.buttonIcon1}
             </Pressable>
             <View style={styles.hr} />
-            <Pressable
-              style={styles.button}
-              onPress={props.onPress2}
-            >
+            <Pressable style={styles.button} onPress={props.onPress2}>
               <Text style={styles.textStyle}>{props.buttonText2}</Text>
+              {props.buttonIcon2}
             </Pressable>
           </View>
         </View>
-        {props.hasCancelButton ? <CancelButton onPress={
-          props.setModalVisible}></CancelButton> : <Text></Text>}
+        {props.hasCancelButton ? (
+          <CancelButton onPress={props.setModalVisible}></CancelButton>
+        ) : (
+          <Text></Text>
+        )}
       </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  trashIconContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  trashIcon: {
-    width: 24,
-    height: 24,
-  },
   hr: {
     backgroundColor: "#CACFC9",
     width: "100%",
@@ -113,6 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     padding: 10,
+    paddingRight: 34,
     elevation: 2,
     width: "100%",
     backgroundColor: "#fff",
@@ -128,12 +128,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   modalText: {
-    marginBottom: 20,
-    marginTop: 10,
     paddingLeft: 25,
     textAlign: "left",
     color: "#58565D",
     fontSize: 14,
+    marginBottom: 10,
+    width: "95%",
+  },
+  modalTextMargin: {
+    paddingLeft: 25,
+    textAlign: "left",
+    color: "#58565D",
+    fontSize: 14,
+    marginBottom: 20,
+    marginTop: 10,
   },
 });
 

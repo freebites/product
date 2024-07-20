@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 import FreeBitesModal from "./FreeBitesModal";
-
+import FreeBitesConfirmationModal from "./FreeBitesConfirmationModal";
 import deleteOne from "../../../api/posts/delete";
 
 interface DeleteButtonProps {
@@ -15,9 +15,11 @@ interface DeleteButtonProps {
 
 const DeleteModal = (props: DeleteButtonProps) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const { postID, userPost, setRefreshing, fetchData } = props;
 
   const deleteFunc = async () => {
+    changeConfirmVisible();
     setModalVisible(!modalVisible);
     await deleteOne(postID);
     fetchData();
@@ -26,16 +28,28 @@ const DeleteModal = (props: DeleteButtonProps) => {
 
   const changeModalVisible = () => {
     setModalVisible(!modalVisible);
-  }
+  };
+  const changeConfirmVisible = () => {
+    setConfirmVisible(!confirmVisible);
+  };
 
   return (
     <View style={styles.trashIconContainer}>
       {userPost ? (
         <View>
+          <FreeBitesConfirmationModal
+            headText="You successfully deleted your post!"
+            modalVisible={confirmVisible}
+            setModalVisible={changeConfirmVisible}
+          />
+
           <FreeBitesModal
             headText="Are you sure you want to delete this post?"
+            headMargin={true}
             buttonText1="Yes!"
+            buttonIcon1={null}
             buttonText2="No, oops"
+            buttonIcon2={null}
             onPress1={() => {
               console.log("Pressed 1");
               deleteFunc();
@@ -48,49 +62,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
             modalVisible={modalVisible}
             setModalVisible={changeModalVisible}
           />
-          {/* <Modal
-            animationIn={"slideInUp"}
-            animationInTiming={400}
-            animationOut={"slideOutDown"}
-            animationOutTiming={300}
-            isVisible={modalVisible}
-            backdropTransitionOutTiming={0}
-            hasBackdrop
-            backdropOpacity={0.55}
-            coverScreen
-            onBackdropPress={() => {
-              setModalVisible(!modalVisible);
-            }}
-            style={styles.modalContainer}
-          >
-            <View style={styles.bottomView}>
-              <Image
-                source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
-                style={styles.imgStyle}
-              />
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>
-                  Are you sure you want to delete this post?
-                </Text>
-                <View style={styles.hr} />
-                <Pressable
-                  style={styles.button}
-                  onPress={() => {
-                    deleteFunc();
-                  }}
-                >
-                  <Text style={styles.textStyle}>Yes!</Text>
-                </Pressable>
-                <View style={styles.hr} />
-                <Pressable
-                  style={styles.button}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>No, oops</Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal> */}
+
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
               source={require("../../assets/icons/trash.png")}
@@ -113,68 +85,6 @@ const styles = StyleSheet.create({
   trashIcon: {
     width: 24,
     height: 24,
-  },
-  hr: {
-    backgroundColor: "#CACFC9",
-    width: "100%",
-    height: 1.25,
-  },
-  imgStyle: {
-    width: 46,
-    height: 52,
-    marginBottom: 10,
-  },
-  modalContainer: {
-    justifyContent: "flex-end",
-  },
-  bottomView: {
-    alignItems: "center",
-  },
-  modalView: {
-    width: "100%",
-    height: 153,
-    marginBottom: 40,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingTop: 15,
-    paddingBottom: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    width: "100%",
-    backgroundColor: "#fff",
-  },
-  buttonOpen: {
-    backgroundColor: "#000",
-  },
-  textStyle: {
-    color: "#79767D",
-    fontWeight: "500",
-    textAlign: "left",
-    paddingLeft: 15,
-    fontSize: 16,
-  },
-  modalText: {
-    marginBottom: 20,
-    marginTop: 10,
-    paddingLeft: 25,
-    textAlign: "left",
-    color: "#58565D",
-    fontSize: 14,
   },
 });
 
