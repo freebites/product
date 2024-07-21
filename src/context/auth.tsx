@@ -14,6 +14,7 @@ import { auth } from "../../firebase";
 import { useNotifications } from "../components/notifications/useNotifications";
 import { getOneUser, updateUser } from "../../api/user/usercrud";
 import { EmptyUser, UserType } from "./userContext";
+import { err } from "react-native-svg";
 
 //////////
 // type PostContextType = {
@@ -87,29 +88,57 @@ export function Provider({ children }: any) {
 
   const login = async (email: string, password: string) => {
     // firebase sign in function
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const uid = userCredential.user.uid; // user.uid
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then(async (userCredential) => {
+    //     const uid = userCredential.user.uid; // user.uid
+    //     //Get Device Speicific Token and update the user's tokens
+    //     if (process.env.EXPO_PUBLIC_TEST === "production") {
+    //       const newExpoToken = await useNotifications();
+    //       const newMongoUser = await getOneUser(user.uid);
+    //       const { expoToken, ...other } = newMongoUser;
+    //       if (newExpoToken && newMongoUser.expoToken !== newExpoToken.data) {
+    //         await updateUser({
+    //           userID: user.uid,
+    //           user: { ...other, expoToken: newExpoToken.data },
+    //         });
+    //       }
+    //     }
+    //     const mongoUser = await getOneUser(uid); // get user from mongoDB
+    //     setAuth(mongoUser);
+    //   })
+    //   .catch((error) => {
+    //     console.log("error signing in: ", error);
+    //     return Promise.reject(
+    //       new Error(error.message || "Unknown error occurred during sign-in")
+    //     );
+    //   });
 
-        //Get Device Speicific Token and update the user's tokens
-        if (process.env.EXPO_PUBLIC_TEST === "production") {
-          const newExpoToken = await useNotifications();
-          const newMongoUser = await getOneUser(user.uid);
-          const { expoToken, ...other } = newMongoUser;
-          if (newExpoToken && newMongoUser.expoToken !== newExpoToken.data) {
-            await updateUser({
-              userID: user.uid,
-              user: { ...other, expoToken: newExpoToken.data },
-            });
-          }
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const uid = userCredential.user.uid; // user.uid
+
+      if (process.env.EXPO_PUBLIC_TEST === "production") {
+        const newExpoToken = await useNotifications();
+        const newMongoUser = await getOneUser(user.uid);
+        const { expoToken, ...other } = newMongoUser;
+        if (newExpoToken && newMongoUser.expoToken !== newExpoToken.data) {
+          await updateUser({
+            userID: user.uid,
+            user: { ...other, expoToken: newExpoToken.data },
+          });
         }
+      }
 
-        const mongoUser = await getOneUser(uid); // get user from mongoDB
-        setAuth(mongoUser);
-      })
-      .catch((error) => {
-        console.log("error signing in: ", error);
-      });
+      const mongoUser = await getOneUser(uid); // get user from mongoDB
+      setAuth(mongoUser);
+    } catch (error) {
+      console.error("Error signing in:", error);
+      throw error;
+    }
   };
 
   const logout = async () => {

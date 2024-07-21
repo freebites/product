@@ -26,6 +26,7 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleEmail = (text: string) => {
     setEmail(text.toLowerCase());
@@ -33,8 +34,18 @@ const LoginSection = () => {
   const handlePassword = (text: string) => {
     setPassword(text);
   };
+  const handleLogin = async () => {
+    signIn(email, password)
+      .then(() => {
+        console.log("Sign in successful");
+        setErrorMessage(""); // Clear previous errors
+      })
+      .catch((error) => {
+        console.error("Error signing in:", error);
+        setErrorMessage("Incorrect password. Please try again.");
+      });
+  };
 
-  const handleLogin = () => {};
   return (
     <View
       style={{
@@ -58,7 +69,10 @@ const LoginSection = () => {
         />
         <Text style={styles.title}>Password</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            errorMessage ? styles.errorBorder : null, // Apply error border if there's an error message
+          ]}
           placeholder=""
           secureTextEntry
           autoComplete={Platform.OS === "ios" ? "password-new" : "new-password"}
@@ -66,6 +80,9 @@ const LoginSection = () => {
             handlePassword(text);
           }}
         />
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
@@ -101,7 +118,7 @@ const LoginSection = () => {
       >
         <LoginButton
           onPress={() => {
-            signIn(email, password);
+            handleLogin();
           }}
           text="Get Started"
           allowed
@@ -146,6 +163,14 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     paddingLeft: "8%",
     fontSize: 14,
+  },
+  errorBorder: {
+    borderColor: COLORS.error[70],
+  },
+  errorText: {
+    color: COLORS.error[70],
+    marginTop: -10,
+    marginBottom: 10,
   },
 });
 export default LoginSection;

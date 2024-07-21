@@ -20,16 +20,63 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
+import validateNewPassword from "../../app/profile/updatePassword";
 
 const SignupSection = () => {
-  const { signIn } = useAuth();
+  const { user, setUser, signIn } = useAuth();
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [emailAddress, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [password, setNewPassword] = useState<string>("");
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const [errors, setErrors] = useState<{
+    oldError: string;
+    newError: string;
+    confirmError: string;
+  }>({
+    oldError: "",
+    newError: "",
+    confirmError: "",
+  });
+
+  const [validated, setValidated] = useState<{
+    oldValidated: boolean;
+    newValidated: boolean;
+    confirmValidated: boolean;
+  }>({
+    oldValidated: true,
+    newValidated: false,
+    confirmValidated: false,
+  });
+
+  const validateNewPassword = (password: string) => {
+    var regularExpression =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    const valid = regularExpression.test(password);
+
+    setValidated((prevState) => ({
+      ...prevState,
+      newValidated: valid,
+    }));
+
+    setErrors((prevState) => ({
+      ...prevState,
+      newError: valid
+        ? ""
+        : "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters",
+    }));
+
+    if (valid) {
+      setNewPassword(password);
+    } else {
+      console.log("not valid bruv");
+    }
+  };
+
   const handleFirstName = (text: string) => {
     setFirstName(text);
   };
@@ -38,9 +85,6 @@ const SignupSection = () => {
   };
   const handleEmail = (text: string) => {
     setEmail(text);
-  };
-  const handlePassword = (text: string) => {
-    setPassword(text);
   };
   const handleSubmitData = () => {
     // firebase shit
@@ -155,9 +199,10 @@ const SignupSection = () => {
           secureTextEntry
           autoComplete={Platform.OS === "ios" ? "password-new" : "new-password"}
           onChangeText={(text) => {
-            handlePassword(text);
+            validateNewPassword(text);
           }}
         />
+        <Text style={styles.errorText}>{errors.newError}</Text>
 
         <View style={{ flex: 1, flexDirection: "row", gap: 16 }}>
           <Checkbox value={isChecked} onValueChange={setIsChecked} />
@@ -226,6 +271,12 @@ const styles = StyleSheet.create({
     paddingLeft: "8%",
     marginBottom: 4,
     fontSize: 14,
+  },
+  errorText: {
+    fontSize: 12,
+    color: COLORS.error[70],
+    textAlign: "left",
+    width: "70%",
   },
 });
 
