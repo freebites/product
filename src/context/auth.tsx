@@ -15,6 +15,7 @@ import { useNotifications } from "../components/notifications/useNotifications";
 import { getOneUser, updateUser } from "../../api/user/usercrud";
 import { EmptyUser, UserType } from "./userContext";
 import { err } from "react-native-svg";
+import { FirebaseError } from "firebase/app";
 
 //////////
 // type PostContextType = {
@@ -88,8 +89,8 @@ export function Provider({ children }: any) {
 
   const login = async (email: string, password: string) => {
     // firebase sign in function
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then(async (userCredential) => {
+    // signInWithEmailAndPassword(auth, email, password).then(
+    //   async (userCredential) => {
     //     const uid = userCredential.user.uid; // user.uid
     //     //Get Device Speicific Token and update the user's tokens
     //     if (process.env.EXPO_PUBLIC_TEST === "production") {
@@ -105,13 +106,11 @@ export function Provider({ children }: any) {
     //     }
     //     const mongoUser = await getOneUser(uid); // get user from mongoDB
     //     setAuth(mongoUser);
-    //   })
-    //   .catch((error) => {
-    //     console.log("error signing in: ", error);
-    //     return Promise.reject(
-    //       new Error(error.message || "Unknown error occurred during sign-in")
-    //     );
-    //   });
+    //   }
+    // );
+    // .catch((error) => {
+    //   throw error;
+    // });
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -135,8 +134,18 @@ export function Provider({ children }: any) {
 
       const mongoUser = await getOneUser(uid); // get user from mongoDB
       setAuth(mongoUser);
-    } catch (error) {
-      console.error("Error signing in:", error);
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (
+          error.code === "auth/too-many-requests" ||
+          error.code === "auth/invalid-email"
+        ) {
+          throw error;
+        } else {
+          console.error(error.code);
+        }
+      }
+      // console.error("Error signing in:", error);
       throw error;
     }
   };

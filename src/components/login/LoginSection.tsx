@@ -35,15 +35,25 @@ const LoginSection = () => {
     setPassword(text);
   };
   const handleLogin = async () => {
-    signIn(email, password)
-      .then(() => {
-        console.log("Sign in successful");
-        setErrorMessage(""); // Clear previous errors
-      })
-      .catch((error) => {
-        console.error("Error signing in:", error);
-        setErrorMessage("Incorrect password. Please try again.");
-      });
+    try {
+      console.log('signing in..."');
+      const loginTest = await signIn(email, password);
+    } catch (error) {
+      console.error("fuck you", error);
+      setErrorMessage("Incorrect password. Please try again.");
+    }
+
+    // .then(() => {
+    //   console.log("Sign in successful");
+    //   setErrorMessage(""); // Clear previous errors
+    // })
+    // .catch((error) => {
+    //   console.error("Error signing in:", error);
+    //   setErrorMessage("Incorrect password. Please try again.");
+    //   // if error = auth/too-many-requests
+    //   // return/set state of a conditionally rendered component that'll tell the user that they've signed in too many times
+    //   // make this red under the login field
+    // });
   };
 
   return (
