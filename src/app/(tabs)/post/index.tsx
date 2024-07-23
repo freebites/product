@@ -1,16 +1,16 @@
 import { Link } from "expo-router";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import GalleryButton from "../../../components/post/GalleryButton";
 import { PostContext } from "../../../context/postContext";
 import { EmptyPost } from "../../../../types/PostTypes";
 import { manipulateAsync } from "expo-image-manipulator";
 import NextButton from "../../../components/post/NextButton";
-import { Camera, CameraType } from "expo-camera/legacy";
+import { CameraView, useCameraPermissions } from "expo-camera";
 import { View, StyleSheet, Text, TouchableOpacity, Button } from "react-native";
 
 export default function openCamera() {
   const { postData, updatePostData } = useContext(PostContext);
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<CameraView>(null);
   // handler for storing image URIs
   const handleUpdateImages = (imageLinks: string[]) => {
     // append image links to old array
@@ -23,20 +23,18 @@ export default function openCamera() {
   };
 
   // states for camera usage
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  // const [facing, setFacing] = useState<CameraType>("back");
+  const [permission, requestPermission] = useCameraPermissions();
 
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
+  // function toggleCameraType() {
+  //   setFacing((current) => (current === "back" ? "front" : "back"));
+  // }
 
   // function for adding camera picture to context.
   const takePhoto = async () => {
     if (cameraRef.current) {
       let photo = await cameraRef.current.takePictureAsync();
-      if (photo.hasOwnProperty("uri")) {
+      if (photo?.hasOwnProperty("uri")) {
         // compress images
         const manipulateResult = await manipulateAsync(
           photo.uri,
@@ -76,7 +74,7 @@ export default function openCamera() {
   } else {
     return (
       <View style={styles.container}>
-        <Camera style={styles.camera} type={type} ref={cameraRef}>
+        <CameraView style={styles.camera} ref={cameraRef}>
           <View style={styles.buttonContainer}>
             <Link href="/(tabs)/home" asChild>
               <TouchableOpacity
@@ -108,7 +106,7 @@ export default function openCamera() {
               />
             </Link>
           </View>
-        </Camera>
+        </CameraView>
       </View>
     );
   }

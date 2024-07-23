@@ -2,7 +2,11 @@ import { View, Text, StyleSheet, Platform, Alert, Linking } from "react-native";
 import React, { useEffect, useState } from "react";
 import { globalStyles } from "../global";
 import { setItem } from "../../local-storage/asyncStorage";
-import * as Location from "expo-location";
+import {
+  useForegroundPermissions,
+  requestForegroundPermissionsAsync,
+  PermissionStatus,
+} from "expo-location";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 
@@ -13,22 +17,22 @@ const LocationAccess = () => {
   const [always, setAlways] = useState<boolean>(false);
   const [none, setNone] = useState<boolean>(false);
 
-  const [status, requestPermission] = Location.useForegroundPermissions();
+  const [status, requestPermission] = useForegroundPermissions();
 
   useEffect(() => {
     const requestPermissions = async () => {
       if (Platform.OS !== "web") {
-        const { status, ios} =
-          await requestPermission();
-        if (status === "granted") {
-          if (ios?.scope === "whenInUse") {
+        const response = await requestForegroundPermissionsAsync();
+        console.log("response", response);
+        if (response.status === PermissionStatus.GRANTED) {
+          if (response.ios?.scope === "whenInUse") {
             toggleSwitch("whenInUse");
-          } else if (ios?.scope === "always") {
+          } else if (response.ios?.scope === "always") {
             toggleSwitch("always");
-          } else if (ios?.scope === "none") {
+          } else if (response.ios?.scope === "none") {
             toggleSwitch("none");
           } else {
-            console.log("fuck we do not know: ", ios?.scope);
+            console.log("fuck we do not know: ", response.ios);
           }
         }
         console.log(status);
@@ -45,7 +49,7 @@ const LocationAccess = () => {
   const askLocationPermissions = async () => {
     // check if user can come back to app after going to settings without restarting app
     Alert.alert(
-      "Change Location in you Settings",
+      "Change Location in your Settings",
       "Photo access permissions are denied. Please enable them in settings.",
       [
         { text: "Cancel", style: "cancel" },
