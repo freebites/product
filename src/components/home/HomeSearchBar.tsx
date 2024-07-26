@@ -9,12 +9,35 @@ import {
   View,
   Dimensions,
   SafeAreaView,
+  Text,
 } from "react-native";
 import {
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
 } from "react-native-google-places-autocomplete";
 import SearchModal from "./SearchModal";
+import Svg, {
+  Circle,
+  Ellipse,
+  G,
+  TSpan,
+  TextPath,
+  Path,
+  Polygon,
+  Polyline,
+  Line,
+  Rect,
+  Use,
+  Symbol,
+  Defs,
+  LinearGradient,
+  RadialGradient,
+  Stop,
+  ClipPath,
+  Pattern,
+  Mask,
+} from "react-native-svg";
+import { COLORS } from "../../constants";
 
 // constants
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
@@ -36,24 +59,59 @@ const SearchFilterIcon = () => {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <Pressable
-      style={styles.RightComponent}
-      onPress={handlePresentModalPress}
-      onPressIn={() => setIsPressed(true)} // Set isPressed to true when press starts
-      onPressOut={() => setIsPressed(false)} // Reset isPressed when press ends
-    >
-      <Image
-        style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}
-        source={require("../../assets/icons/freebites/filter.png")}
-      />
-      <SearchModal ref={bottomSheetModalRef} />
-    </Pressable>
+    <View>
+      <Pressable
+        style={styles.RightComponent}
+        onPress={handlePresentModalPress}
+        onPressIn={() => setIsPressed(true)} // Set isPressed to true when press starts
+        onPressOut={() => setIsPressed(false)} // Reset isPressed when press ends
+      >
+        <View style={styles.verticleLine}></View>
+        <View style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}>
+          <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <Path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3 6.75C3 6.33579 3.33579 6 3.75 6H20.25C20.6642 6 21 6.33579 21 6.75C21 7.16421 20.6642 7.5 20.25 7.5H3.75C3.33579 7.5 3 7.16421 3 6.75ZM3 12C3 11.5858 3.33579 11.25 3.75 11.25H20.25C20.6642 11.25 21 11.5858 21 12C21 12.4142 20.6642 12.75 20.25 12.75H3.75C3.33579 12.75 3 12.4142 3 12ZM11.25 17.25C11.25 16.8358 11.5858 16.5 12 16.5H20.25C20.6642 16.5 21 16.8358 21 17.25C21 17.6642 20.6642 18 20.25 18H12C11.5858 18 11.25 17.6642 11.25 17.25Z"
+              fill="#0F172A"
+            />
+          </Svg>
+        </View>
+        <SearchModal ref={bottomSheetModalRef} />
+      </Pressable>
+    </View>
   );
 };
 
 const SearchIcon = () => {
-  const searchIcon = require("../../assets/icons/freebites/search.png");
-  return <Image source={searchIcon} style={styles.searchIcon} />;
+  // const searchIcon = require("../../assets/icons/freebites/search.png");
+  return (
+    <View style={styles.LeftComponent}>
+      <Svg width="18" height="21" viewBox="0 0 18 21" fill="none">
+        <G clip-path="url(#clip0_5998_3250)">
+          <Path
+            d="M12 8.5C12 10.1569 10.6569 11.5 9 11.5C7.34315 11.5 6 10.1569 6 8.5C6 6.84315 7.34315 5.5 9 5.5C10.6569 5.5 12 6.84315 12 8.5Z"
+            stroke="#0F172A"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <Path
+            d="M16.5 8.5C16.5 15.6421 9 19.75 9 19.75C9 19.75 1.5 15.6421 1.5 8.5C1.5 4.35786 4.85786 1 9 1C13.1421 1 16.5 4.35786 16.5 8.5Z"
+            stroke="#0F172A"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </G>
+        <Defs>
+          <ClipPath id="clip0_5998_3250">
+            <Rect width="18" height="21" fill="white" />
+          </ClipPath>
+        </Defs>
+      </Svg>
+    </View>
+  );
 };
 
 interface HomeSearchBarProps {
@@ -89,7 +147,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
       <SafeAreaView style={styles.searchBarContainer}>
         <GooglePlacesAutocomplete
           ref={ref}
-          placeholder="Search"
+          placeholder="Search location"
           onPress={async (data, details) => {
             // 'details' is provided when fetchDetails = true
             const coords = data === null ? null : details?.geometry.location;
@@ -122,6 +180,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
             onChangeText: (text) => {
               handleChangeText(text);
             },
+            placeholderTextColor: COLORS.neutral[50],
           }}
           enablePoweredByContainer={false}
           renderRightButton={() => <SearchFilterIcon />}
@@ -156,7 +215,7 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: -1, // Ensure the overlay is behind the autocomplete options
+    zIndex: 0, // Ensure the overlay is behind the autocomplete options
   },
   textInputContainer: {
     backgroundColor: "rgba(0,0,0,0)",
@@ -167,13 +226,11 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 42,
-    paddingLeft: 50,
+    // paddingLeft: 50,
     borderRadius: 0,
     color: "#5d5d5d",
     fontSize: 16,
     borderWidth: 0,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
   },
   predefinedPlacesDescription: {
     color: "#1faadb",
@@ -218,12 +275,34 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingRight: 35,
+    gap: 19,
+  },
+  LeftComponent: {
+    backgroundColor: "white",
+    height: 42,
+    width: 42,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    justifyContent: "center",
+    paddingLeft: 18,
   },
   searchBarContainer: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  verticleLine: {
+    height: "70%",
+    width: 1,
+    backgroundColor: COLORS.neutral[50],
   },
 });
 

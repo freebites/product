@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Pressable } from "react-native";
+import { View, Image, StyleSheet, Pressable, Text } from "react-native";
 import React, { useCallback, useRef } from "react";
 import styled from "styled-components/native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -58,6 +58,12 @@ const SearchBar = () => {
 			<View
 				style={{
 					height: "100%",
+				}}>
+				<Text style={styles.text}>Search Location</Text>
+			</View>
+			<View
+				style={{
+					height: "100%",
 					justifyContent: "center",
 					paddingRight: "4%",
 					alignItems: "flex-end",
@@ -77,5 +83,11 @@ const SearchBar = () => {
 		</SearchBarStyle>
 	);
 };
+
+const styles = StyleSheet.create({
+	text: {
+		color: "black",
+	}
+});
 
 export default SearchBar;
