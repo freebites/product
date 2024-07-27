@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
-import Modal from "react-native-modal";
-import { Icon } from "react-native-elements";
+import { StyleSheet, Pressable, View, Image } from "react-native";
 import FreeBitesModal from "./FreeBitesModal";
 import FreeBitesConfirmationModal from "./FreeBitesConfirmationModal";
 import deleteOne from "../../../api/posts/delete";
@@ -19,8 +17,6 @@ const DeleteModal = (props: DeleteButtonProps) => {
   const { postID, userPost, setRefreshing, fetchData } = props;
 
   const deleteFunc = async () => {
-    changeConfirmVisible();
-    setModalVisible(!modalVisible);
     await deleteOne(postID);
     fetchData();
     setRefreshing(true);
@@ -41,6 +37,8 @@ const DeleteModal = (props: DeleteButtonProps) => {
             headText="You successfully deleted your post!"
             modalVisible={confirmVisible}
             setModalVisible={changeConfirmVisible}
+            pressEffect={true}
+            onPress={deleteFunc}
           />
 
           <FreeBitesModal
@@ -51,12 +49,11 @@ const DeleteModal = (props: DeleteButtonProps) => {
             buttonText2="No, oops"
             buttonIcon2={null}
             onPress1={() => {
-              console.log("Pressed 1");
-              deleteFunc();
+              setConfirmVisible(true);
+              setModalVisible(false);
             }}
             onPress2={() => {
-              console.log("Pressed 2");
-              setModalVisible(!modalVisible);
+              setModalVisible(false);
             }}
             hasCancelButton={false}
             modalVisible={modalVisible}

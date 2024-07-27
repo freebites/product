@@ -9,18 +9,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 
-// don't really know why it's called profile, it's just post (breaks when i rename it)
 interface openOptionsProps {
   modalVisible: boolean;
   setModalVisible: () => void;
 }
 
 const OpenOptions = (props: openOptionsProps) => {
+  const { modalVisible, setModalVisible } = props;
   return (
     <Pressable
       style={{ marginRight: "8.7%" }}
-      // onPress={() => router.push("./modal")}
-      onPress={() => props.setModalVisible()}
+      onPress={() => setModalVisible()}
     >
       <MaterialCommunityIcons name="dots-horizontal" size={24} color="black" />
     </Pressable>
@@ -63,7 +62,7 @@ export default function ProfileLayout() {
         headText="Would you like to draft or trash this post? If trashed, your post will be discarded."
         headMargin={false}
         buttonText1="Trash"
-        buttonIcon1={<EvilIcons name="trash" size={30} color="gray" />}
+        buttonIcon1={<Ionicons name="trash" size={22} color="gray" />}
         buttonText2="Draft"
         buttonIcon2={<Ionicons name="archive-outline" size={22} color="gray" />}
         onPress1={() => {
@@ -71,7 +70,7 @@ export default function ProfileLayout() {
           setModalVisible(false);
         }}
         onPress2={() => {
-          console.log("Pressed 2");
+          // Save and route to drafts
         }}
         hasCancelButton={true}
         modalVisible={modalVisible}

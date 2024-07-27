@@ -8,9 +8,14 @@ interface FreeBitesConfirmationModalProps {
   headText: string;
   modalVisible: boolean;
   setModalVisible: () => void;
+  pressEffect: boolean;
+  onPress: () => void;
 }
 
 function FreeBitesConfirmationModal(props: FreeBitesConfirmationModalProps) {
+  const { headText, modalVisible, setModalVisible, pressEffect, onPress } =
+    props;
+
   return (
     <View>
       <Modal
@@ -18,12 +23,12 @@ function FreeBitesConfirmationModal(props: FreeBitesConfirmationModalProps) {
         animationInTiming={400}
         animationOut={"slideOutDown"}
         animationOutTiming={300}
-        isVisible={props.modalVisible}
+        isVisible={modalVisible}
         backdropTransitionOutTiming={0}
         hasBackdrop
         backdropOpacity={0.55}
         coverScreen
-        onBackdropPress={props.setModalVisible}
+        onBackdropPress={setModalVisible}
         style={styles.modalContainer}
       >
         <View style={styles.bottomView}>
@@ -32,10 +37,19 @@ function FreeBitesConfirmationModal(props: FreeBitesConfirmationModalProps) {
             style={styles.imgStyle}
           />
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{props.headText}</Text>
+            <Text style={styles.modalText}>{headText}</Text>
           </View>
         </View>
-        <Pressable style={styles.button} onPress={props.setModalVisible}>
+        <Pressable
+          style={styles.button}
+          onPress={async () => {
+            setModalVisible();
+
+            if (pressEffect) {
+              onPress();
+            }
+          }}
+        >
           <Text>I got it!</Text>
         </Pressable>
       </Modal>

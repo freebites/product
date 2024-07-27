@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 20,
-    padding: 10,
-    paddingRight: 34,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
     elevation: 2,
     width: "100%",
     backgroundColor: "#fff",
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
     color: "#79767D",
     fontWeight: "500",
     textAlign: "left",
-    paddingLeft: 15,
     fontSize: 16,
   },
   modalText: {
