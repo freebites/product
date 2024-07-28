@@ -2,13 +2,13 @@ import { Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef } from "react";
 import { COLORS } from "constants/theme";
 
-interface FreebitesButtonProps {
+interface ButtonProps {
   onPress?: () => void;
   text: string;
   disabled?: boolean;
   bold?: boolean;
 }
-const FreebitesButton = (props: FreebitesButtonProps, ref: React.Ref<any>) => {
+const RectangleOrangeButton = (props: ButtonProps, ref: React.Ref<any>) => {
   const { onPress, text, disabled, bold } = props;
   return (
     <Pressable
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     color: "#FFFCFA",
   },
 });
-export default forwardRef(FreebitesButton);
+export default forwardRef(RectangleOrangeButton);

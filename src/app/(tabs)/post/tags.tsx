@@ -5,7 +5,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Link, router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import React, { useContext } from "react";
 import { PostContext } from "@context/postContext";
 import TagMultiSelect from "@components/post/TagMultiSelect";
@@ -14,7 +14,7 @@ import ImageViewer from "@components/common/ImageViewer";
 import { postStyles } from "./styles/postStyles";
 import HorizontalRule from "@components/common/HorizontalRule";
 import ProgressBar from "@components/post/ProgressBar";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
@@ -105,10 +105,7 @@ const tags = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {/* <Link href="/post/location" asChild>
-        <NextButtonText validInput={true} />
-      </Link> */}
-      <FreebitesButton
+      <RectangleOrangeButton
         text="Next Step"
         onPress={() => {
           router.push("/post/location");

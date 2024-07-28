@@ -5,7 +5,7 @@ import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const logo = require("../../assets/icons/freebites/logo.png");
 
@@ -88,12 +88,12 @@ const LoginSection = () => {
           marginTop: 36,
         }}
       >
-        <FreebitesButton
+        <RectangleOrangeButton
           onPress={() => {
             signIn(email, password);
           }}
           text="Get Started"
-          allowed={email.length > 0 && password.length > 0}
+          disabled={email.length === 0 || password.length === 0}
           bold
         />
 

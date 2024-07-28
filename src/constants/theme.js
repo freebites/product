@@ -1,4 +1,4 @@
-export const COLORS = {
+const COLORS = {
   orange: {
     100: "#F17A00",
     99: "#F18518",
@@ -75,7 +75,7 @@ export const COLORS = {
     30: "#F3F0F4",
     20: "#FFFCFA",
     10: "#FFFBFE",
-  }
+  },
 };
 
 const FONT = {

@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import React from "react";
 import Welcome from "@components/home/Welcome";
 import { globalStyles } from "@components/global";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 export default function SignIn() {
   return (
@@ -15,14 +15,14 @@ export default function SignIn() {
           href={{ pathname: "/loginPage", params: { login: "true" } }}
           asChild
         >
-          <FreebitesButton text="Login" />
+          <RectangleOrangeButton text="Login" />
         </Link>
 
         <Link
           href={{ pathname: "/signupPage", params: { login: "false" } }}
           asChild
         >
-          <FreebitesButton text="Sign Up" bold />
+          <RectangleOrangeButton text="Sign Up" bold />
         </Link>
       </View>
     </SafeAreaView>

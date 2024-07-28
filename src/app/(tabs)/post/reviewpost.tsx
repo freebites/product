@@ -8,9 +8,9 @@ import {
   Image,
 } from "react-native";
 import React, { useContext } from "react";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { PostContext } from "@context/postContext";
-import { EmptyPost, postType } from "../../../../types/PostTypes";
+import { EmptyPost } from "../../../../types/PostTypes";
 import ImageViewer from "@components/common/ImageViewer";
 import { storage } from "../../../../firebase";
 import { ref, uploadBytes } from "firebase/storage";
@@ -18,7 +18,7 @@ import create from "@api/posts/create";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
 import { useAuth } from "@context/auth";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
@@ -156,7 +156,7 @@ export default function reviewpost() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <FreebitesButton
+      <RectangleOrangeButton
         text="Post"
         onPress={() => {
           router.push("/home");

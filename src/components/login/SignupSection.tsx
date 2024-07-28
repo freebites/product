@@ -9,7 +9,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -175,10 +175,12 @@ const SignupSection = () => {
         }}
       >
         {/* LoginButton */}
-        <FreebitesButton
+        <RectangleOrangeButton
           onPress={handleSubmitData}
           text="Sign Up"
-          allowed={isChecked}
+          disabled={
+            emailAddress.length === 0 || password.length === 0 || !isChecked
+          }
           bold
         />
         <Text style={{ color: COLORS.neutral[70] }}>

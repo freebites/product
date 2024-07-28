@@ -13,7 +13,7 @@ import {
 import Description from "@components/post/Description";
 import { postStyles } from "./styles/postStyles";
 import ProgressBar from "@components/post/ProgressBar";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
@@ -96,7 +96,7 @@ const gallery = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <FreebitesButton
+      <RectangleOrangeButton
         text="Next Step"
         disabled={postData.description === ""}
         onPress={() => {

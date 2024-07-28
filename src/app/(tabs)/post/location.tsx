@@ -10,9 +10,8 @@ import PlacesSearchBar from "@components/common/PlacesSearchBar";
 import GoogleMapView from "@components/common/GoogleMapView";
 import MapView from "react-native-maps";
 import { getGeolocationWithPlaceID } from "@api/util/maps";
-import NextButtonText from "@components/post/NextButtonText";
 import ProgressBar from "@components/post/ProgressBar";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 interface latlong {
@@ -129,9 +128,9 @@ export default function location() {
         disabled={!locationSelected}
         coordinates={coordinates}
       />
-      <FreebitesButton
+      <RectangleOrangeButton
         text="Next Step"
-        disabled={postData.location === null}
+        // disabled={mapRef === null}
         onPress={() => {
           router.push("/post/reviewpost");
         }}

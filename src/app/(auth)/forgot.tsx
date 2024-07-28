@@ -5,7 +5,7 @@ import { getOneUserEmail } from "@api/user/usercrud";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { COLORS } from "../../constants";
-import FreebitesButton from "@components/common/FreebitesButton";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -50,7 +50,7 @@ export default function ForgotPassword() {
         }}
       />
       <Text>{errorMessage}</Text>
-      <FreebitesButton
+      <RectangleOrangeButton
         onPress={continuePressed}
         text="Continue"
         disabled={email.length === 0}
