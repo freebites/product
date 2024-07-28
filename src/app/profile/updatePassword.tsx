@@ -7,16 +7,16 @@ import {
   Pressable,
   Text,
 } from "react-native";
-import { validateRoutePerms } from "../../context/auth";
-import { globalStyles } from "../../components/global";
+import { validateRoutePerms } from "@context/auth";
+import { globalStyles } from "@components/global";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 import { auth } from "../../../firebase";
-import { getOneUser } from "../../../api/user/usercrud";
+import { getOneUser } from "@api/user/usercrud";
 import { COLORS } from "../../constants";
 
 export default function UpdatePassword() {

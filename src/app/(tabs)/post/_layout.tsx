@@ -1,9 +1,9 @@
 import { Stack, router } from "expo-router";
-import { PostProvider } from "../../../context/postContext";
+import { PostProvider } from "@context/postContext";
 import { Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import BackButton from "../../../components/common/BackButton";
-import ProgressBar from "../../../components/post/ProgressBar";
+import BackButton from "@components/common/BackButton";
+import ProgressBar from "@components/post/ProgressBar";
 import React from "react";
 
 // don't really know why it's called profile, it's just post (breaks when i rename it)

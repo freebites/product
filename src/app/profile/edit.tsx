@@ -8,12 +8,18 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
-import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { globalStyles } from "../../components/global";
-import EditProfileHeader from "../../components/profile/EditProfileHeader";
-import EditProfileInput from "../../components/profile/EditProfileInput";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
+import { globalStyles } from "@components/global";
+import EditProfileHeader from "@components/profile/EditProfileHeader";
+import EditProfileInput from "@components/profile/EditProfileInput";
 
 import {
   BottomSheetBackdrop,
@@ -22,19 +28,18 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import EditModal from "../../components/profile/EditModal";
-import { validateRoutePerms } from "../../context/auth";
-import { getOneUser, updateUser } from "../../../api/user/usercrud";
-import { useAuth } from "../../context/auth";
-import { EmptyUser, UserType } from "../../context/userContext";
+import EditModal from "@components/profile/EditModal";
+import { validateRoutePerms } from "@context/auth";
+import { getOneUser, updateUser } from "@api/user/usercrud";
+import { useAuth } from "@context/auth";
+import { EmptyUser, UserType } from "@context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
-import OpenCamera from "../../components/common/Camera";
+import OpenCamera from "@components/common/Camera";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const editProfile = () => {
-  
   const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
   const [showCamera, setShowCamera] = useState(false);
@@ -42,20 +47,21 @@ const editProfile = () => {
   const { user } = useAuth();
 
   enum UserFields {
-    userName = 'userName',
-    firstName = 'firstName',
-    lastName = 'lastName',
-    pronouns = 'pronouns',
+    userName = "userName",
+    firstName = "firstName",
+    lastName = "lastName",
+    pronouns = "pronouns",
   }
 
   useEffect(() => {
     const fetchUser = async () => {
-
       try {
         const data = await getOneUser(user.uid);
         setUserData(data);
-        if (data.profile){
-          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
+        if (data.profile) {
+          const url = await getDownloadURL(
+            ref(storage, "profilePictures/" + data.profile)
+          );
           setProfilePicURL(url);
         } else setProfilePicURL(placeholder);
       } catch (error) {
@@ -64,21 +70,21 @@ const editProfile = () => {
       }
     };
     fetchUser();
-  },[])
+  }, []);
 
-  const handleDataChange = (attribute : UserFields, text : string) => {
-    setUserData(prevData => ({
+  const handleDataChange = (attribute: UserFields, text: string) => {
+    setUserData((prevData) => ({
       ...prevData,
-      [attribute]: text
+      [attribute]: text,
     }));
   };
 
   const validateRequired = (text: string) => {
-    return !text ? "This field is required" :  null
+    return !text ? "This field is required" : null;
   };
 
   const validatePronouns = (text: string) => {
-    return !text ? "Pronouns are required" :  null
+    return !text ? "Pronouns are required" : null;
   };
 
   validateRoutePerms();
@@ -90,25 +96,29 @@ const editProfile = () => {
   };
 
   const handleSubmit = async () => {
-    if (!userData.firstName || !userData.lastName || !userData.userName || !userData.pronouns) return;
+    if (
+      !userData.firstName ||
+      !userData.lastName ||
+      !userData.userName ||
+      !userData.pronouns
+    )
+      return;
 
     try {
-      const currentUserData = await getOneUser(user.uid); 
-  
+      const currentUserData = await getOneUser(user.uid);
+
       // Update the user data
       const updatedUserData = {
         ...currentUserData,
-        ...userData
+        ...userData,
       };
-  
-      await updateUser({ user: updatedUserData, userID: user.uid }); 
+
+      await updateUser({ user: updatedUserData, userID: user.uid });
       Alert.alert("Profile updated successfully");
-  
     } catch (error) {
       console.error("Error during user data update:", error);
     }
   };
-
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -123,12 +133,14 @@ const editProfile = () => {
   );
 
   if (showCamera) {
-    return <OpenCamera profile={true}/>;
+    return <OpenCamera profile={true} />;
   }
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={[globalStyles.containerLight, { position: "relative" }]}>
+      <SafeAreaView
+        style={[globalStyles.containerLight, { position: "relative" }]}
+      >
         <EditProfileHeader onSubmit={handleSubmit} />
         <TouchableWithoutFeedback
           onPress={() => {
@@ -148,11 +160,19 @@ const editProfile = () => {
                     enablePanDownToClose={true}
                   >
                     <BottomSheetView style={styles.contentContainer}>
-                      <EditModal setShowCamera={setShowCamera}/>
+                      <EditModal setShowCamera={setShowCamera} />
                     </BottomSheetView>
                   </BottomSheetModal>
-                  <Image source={profilePicURL? {uri : profilePicURL} : placeholder} style={styles.profileImage} />
-                  <Text style={styles.changePhotoText} onPress={handleImagePress}>
+                  <Image
+                    source={
+                      profilePicURL ? { uri: profilePicURL } : placeholder
+                    }
+                    style={styles.profileImage}
+                  />
+                  <Text
+                    style={styles.changePhotoText}
+                    onPress={handleImagePress}
+                  >
                     Change profile photo
                   </Text>
                 </View>
@@ -160,25 +180,33 @@ const editProfile = () => {
                   <EditProfileInput
                     title="First Name"
                     value={userData?.firstName}
-                    onChangeText={(text) => handleDataChange(UserFields.firstName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.firstName, text)
+                    }
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Last Name"
                     value={userData?.lastName}
-                    onChangeText={(text) => handleDataChange(UserFields.lastName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.lastName, text)
+                    }
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Username"
                     value={userData?.userName}
-                    onChangeText={(text) => handleDataChange(UserFields.userName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.userName, text)
+                    }
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Pronouns"
                     value={userData?.pronouns}
-                    onChangeText={(text) => handleDataChange(UserFields.pronouns, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.pronouns, text)
+                    }
                     validate={validatePronouns}
                     options={pronounsOptions}
                   />

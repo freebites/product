@@ -1,29 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableHighlight,
-  StyleSheet,
-  ScrollView,
-} from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../../components/global";
-import HomePost from "../../../components/home/HomePost";
+import { View, Text, StyleSheet, ScrollView } from "react-native"; // views are divs and text a p tags
+import { globalStyles } from "@components/global";
+import HomePost from "@components/home/HomePost";
 import { router } from "expo-router";
-import { getWithFilter } from "../../../../api/posts/read";
-import { PostContext } from "../../../context/postContext";
+import { getWithFilter } from "@api/posts/read";
+import { PostContext } from "@context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
-import FilterList from "../../../components/home/FilterList";
-import {
-  AppContext,
-  locationInfo,
-  noLocation,
-} from "../../../context/appContext";
-import HomeSearchBar from "../../../components/home/HomeSearchBar";
-import { useAuth } from "../../../context/auth";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import GrowToggle from "../../../components/home/GrowToggle";
+import { AppContext, locationInfo, noLocation } from "@context/appContext";
+import HomeSearchBar from "@components/home/HomeSearchBar";
+import { useAuth } from "@context/auth";
+import GrowToggle from "@components/home/GrowToggle";
 import { postType } from "../../../../types/PostTypes";
 import { setItem } from "../../../local-storage/asyncStorage";
 

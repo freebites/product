@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import { Link } from "expo-router";
 import React from "react";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 
 const LogoutSection = () => {
   const { signOut } = useAuth();

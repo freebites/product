@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 
-import deleteOne from "../../../api/posts/delete";
+import deleteOne from "@api/posts/delete";
 
 interface DeleteButtonProps {
   postID: string;

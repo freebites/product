@@ -22,6 +22,13 @@ config.resolver.nodeModulesPaths = [
   path.resolve(backendRoot, "node_modules"),
 ];
 
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  "@components": path.resolve(frontendRoot, "components"),
+  "@context:": path.resolve(frontendRoot, "context"),
+  "@api": path.resolve(projectRoot, "/api"),
+};
+
 module.exports = config;
 
 // const defaultConfig = getDefaultConfig(__dirname);

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import TagButton from "./TagButton";
-import { PostContext } from "../../context/postContext";
+import { PostContext } from "@context/postContext";
 import FilterModal from "./FilterModal";
 import OtherButton from "./OtherButton";
 

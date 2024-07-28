@@ -1,14 +1,14 @@
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { globalStyles } from "../../../components/global";
-import Header from "../../../components/common/Header";
-import { useAuth, validateRoutePerms } from "../../../context/auth";
+import { globalStyles } from "@components/global";
+import Header from "@components/common/Header";
+import { useAuth, validateRoutePerms } from "@context/auth";
 import { useGlobalSearchParams } from "expo-router";
-import { getWithFilter, getAllPosts } from "../../../../api/posts/read";
+import { getWithFilter, getAllPosts } from "@api/posts/read";
 import { postType } from "../../../../types/PostTypes";
 import { router } from "expo-router";
-import HomePost from "../../../components/home/HomePost";
-import { AppContext } from "../../../context/appContext";
+import HomePost from "@components/home/HomePost";
+import { AppContext } from "@context/appContext";
 import { RefreshControl } from "react-native-gesture-handler";
 
 // use local search parameters

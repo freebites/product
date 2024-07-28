@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 
 import { router } from "expo-router";
 import { Image } from "react-native-elements";
-import { useAuth } from "../../../context/auth";
-import { getOneUser } from "../../../../api/user/usercrud";
+import { useAuth } from "@context/auth";
+import { getOneUser } from "@api/user/usercrud";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../../firebase";
 
@@ -38,11 +38,12 @@ const ProfileCard = (props) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-
       try {
         const data = await getOneUser(user.uid);
-        if (data.profile){
-          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
+        if (data.profile) {
+          const url = await getDownloadURL(
+            ref(storage, "profilePictures/" + data.profile)
+          );
           setProfilePicURL(url);
         } else setProfilePicURL(placeholder);
       } catch (error) {
@@ -51,11 +52,14 @@ const ProfileCard = (props) => {
       }
     };
     fetchUser();
-  }, [])
+  }, []);
 
   return (
     <View style={{ marginBottom: 15 }}>
-      <Image source={profilePicURL? {uri : profilePicURL} : placeholder} style={style.picture}></Image>
+      <Image
+        source={profilePicURL ? { uri: profilePicURL } : placeholder}
+        style={style.picture}
+      ></Image>
       <Pressable
         style={{
           position: "absolute",
