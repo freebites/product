@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import React, { createContext } from "react";
+import React from "react";
 import { auth } from "../../firebase";
 import { useNotifications } from "@components/notifications/useNotifications";
 import { getOneUser, updateUser } from "@api/user/usercrud";
@@ -73,7 +73,7 @@ export function useProtectedRoute(user: UserType) {
     ) {
       // redirect them to the login page, hack fix to prevent infinite loop
       // user.uid = "PLACEHOLDER";
-      router.replace("/loginPage");
+      router.replace("/login");
     } else if (user != EmptyUser && user.uid != "" && inAuthGroup) {
       router.replace("/"); // stay on apge
     }

@@ -15,7 +15,7 @@ export default function SignIn() {
           href={{ pathname: "/loginPage", params: { login: "true" } }}
           asChild
         >
-          <RectangleOrangeButton text="Login" />
+          <RectangleOrangeButton text="Login" bold />
         </Link>
 
         <Link
