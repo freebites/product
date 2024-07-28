@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet, Text, Pressable, View, Image } from "react-native";
+import React from "react";
+import { StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Modal from "react-native-modal";
-import { Icon } from "react-native-elements";
-import CancelButton from "../post/PostModal/CancelButton";
 
 interface FreeBitesConfirmationModalProps {
   headText: string;
@@ -28,7 +26,13 @@ function FreeBitesConfirmationModal(props: FreeBitesConfirmationModalProps) {
         hasBackdrop
         backdropOpacity={0.55}
         coverScreen
-        onBackdropPress={setModalVisible}
+        onBackdropPress={async () => {
+          setModalVisible();
+
+          if (pressEffect) {
+            onPress();
+          }
+        }}
         style={styles.modalContainer}
       >
         <View style={styles.bottomView}>
@@ -71,12 +75,12 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "100%",
-    height: 153,
+    height: 87,
     marginBottom: 10,
     backgroundColor: "white",
     borderRadius: 20,
-    paddingTop: 15,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -108,7 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   modalText: {
-    paddingLeft: 25,
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",

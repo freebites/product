@@ -15,6 +15,7 @@ const DeleteModal = (props: DeleteButtonProps) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const { postID, userPost, setRefreshing, fetchData } = props;
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   const deleteFunc = async () => {
     await deleteOne(postID);
@@ -49,8 +50,8 @@ const DeleteModal = (props: DeleteButtonProps) => {
             buttonText2="No, oops"
             buttonIcon2={null}
             onPress1={() => {
-              setConfirmVisible(true);
-              setModalVisible(false);
+              setDeleting(true);
+              changeModalVisible();
             }}
             onPress2={() => {
               setModalVisible(false);
@@ -58,6 +59,11 @@ const DeleteModal = (props: DeleteButtonProps) => {
             hasCancelButton={false}
             modalVisible={modalVisible}
             setModalVisible={changeModalVisible}
+            onModalHide={() => {
+              if (deleting) {
+                changeConfirmVisible();
+              }
+            }}
           />
 
           <Pressable onPress={() => setModalVisible(true)}>

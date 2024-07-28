@@ -3,10 +3,8 @@ import { PostProvider } from "../../../context/postContext";
 import { Pressable, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BackButton from "../../../components/common/BackButton";
-import ProgressBar from "../../../components/post/ProgressBar";
 import FreeBitesModal from "../../../components/home/FreeBitesModal";
 import { Ionicons } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 
 interface openOptionsProps {
@@ -75,6 +73,7 @@ export default function ProfileLayout() {
         hasCancelButton={true}
         modalVisible={modalVisible}
         setModalVisible={toggleModal}
+        onModalHide={() => null}
       />
     </PostProvider>
   );
