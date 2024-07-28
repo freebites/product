@@ -98,7 +98,7 @@ const gallery = () => {
       </KeyboardAvoidingView>
       <FreebitesButton
         text="Next Step"
-        allowed={postData.description !== ""}
+        disabled={postData.description === ""}
         onPress={() => {
           router.push("/post/tags");
         }}

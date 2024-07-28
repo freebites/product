@@ -131,7 +131,7 @@ export default function location() {
       />
       <FreebitesButton
         text="Next Step"
-        allowed={postData.location !== null}
+        disabled={postData.location === null}
         onPress={() => {
           router.push("/post/reviewpost");
         }}

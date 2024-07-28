@@ -1,24 +1,25 @@
 import { Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef } from "react";
+import { COLORS } from "constants/theme";
 
 interface FreebitesButtonProps {
   onPress?: () => void;
   text: string;
-  allowed: boolean;
+  disabled?: boolean;
   bold?: boolean;
 }
 const FreebitesButton = (props: FreebitesButtonProps, ref: React.Ref<any>) => {
-  const { onPress, text, allowed, bold } = props;
+  const { onPress, text, disabled, bold } = props;
   return (
     <Pressable
-      onPress={allowed ? onPress : undefined}
+      onPress={disabled ? undefined : onPress}
       ref={ref}
       style={({ pressed }) => [
         {
           opacity: pressed ? 0.5 : 1,
         },
         styles.button,
-        { backgroundColor: !allowed ? "#808080" : "#F19D48" },
+        { backgroundColor: disabled ? "#808080" : COLORS.orange[90] },
       ]}
     >
       <Text style={[styles.text, { fontWeight: bold ? "bold" : "normal" }]}>

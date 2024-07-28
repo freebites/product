@@ -110,7 +110,6 @@ const tags = () => {
       </Link> */}
       <FreebitesButton
         text="Next Step"
-        allowed
         onPress={() => {
           router.push("/post/location");
         }}

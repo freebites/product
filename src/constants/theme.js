@@ -1,4 +1,4 @@
-const COLORS = {
+export const COLORS = {
   orange: {
     100: "#F17A00",
     99: "#F18518",

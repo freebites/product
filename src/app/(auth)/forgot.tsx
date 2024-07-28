@@ -53,7 +53,7 @@ export default function ForgotPassword() {
       <FreebitesButton
         onPress={continuePressed}
         text="Continue"
-        allowed={email.length > 0}
+        disabled={email.length === 0}
         bold
       />
     </SafeAreaView>

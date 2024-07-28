@@ -15,14 +15,14 @@ export default function SignIn() {
           href={{ pathname: "/loginPage", params: { login: "true" } }}
           asChild
         >
-          <FreebitesButton text="Login" allowed />
+          <FreebitesButton text="Login" />
         </Link>
 
         <Link
           href={{ pathname: "/signupPage", params: { login: "false" } }}
           asChild
         >
-          <FreebitesButton text="Sign Up" allowed bold />
+          <FreebitesButton text="Sign Up" bold />
         </Link>
       </View>
     </SafeAreaView>

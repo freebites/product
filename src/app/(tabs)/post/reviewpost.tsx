@@ -158,7 +158,6 @@ export default function reviewpost() {
       </KeyboardAvoidingView>
       <FreebitesButton
         text="Post"
-        allowed
         onPress={() => {
           router.push("/home");
           uploadAllImages(postData.imageURIs);
