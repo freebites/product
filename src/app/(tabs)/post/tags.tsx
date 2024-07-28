@@ -2,12 +2,10 @@ import {
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Link, useFocusEffect } from "expo-router";
+import { Link, router, useFocusEffect } from "expo-router";
 import React, { useContext } from "react";
 import { PostContext } from "@context/postContext";
 import TagMultiSelect from "@components/post/TagMultiSelect";
@@ -15,8 +13,8 @@ import BinarySelect from "@components/common/BinarySelect";
 import ImageViewer from "@components/common/ImageViewer";
 import { postStyles } from "./styles/postStyles";
 import HorizontalRule from "@components/common/HorizontalRule";
-import NextButtonText from "@components/post/NextButtonText";
 import ProgressBar from "@components/post/ProgressBar";
+import FreebitesButton from "@components/common/FreebitesButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here
@@ -107,9 +105,16 @@ const tags = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Link href="/post/location" asChild>
+      {/* <Link href="/post/location" asChild>
         <NextButtonText validInput={true} />
-      </Link>
+      </Link> */}
+      <FreebitesButton
+        text="Next Step"
+        allowed
+        onPress={() => {
+          router.push("/post/location");
+        }}
+      />
     </SafeAreaView>
   );
 };

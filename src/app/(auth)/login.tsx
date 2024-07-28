@@ -1,16 +1,9 @@
-import {
-  View,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { useAuth } from "@context/auth";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import React from "react";
-import LoginButton from "@components/login/LoginButton";
-import { Welcome } from "@components";
+import Welcome from "@components/home/Welcome";
 import { globalStyles } from "@components/global";
+import FreebitesButton from "@components/common/FreebitesButton";
 
 export default function SignIn() {
   return (
@@ -22,14 +15,14 @@ export default function SignIn() {
           href={{ pathname: "/loginPage", params: { login: "true" } }}
           asChild
         >
-          <LoginButton text="Login" allowed />
+          <FreebitesButton text="Login" allowed />
         </Link>
 
         <Link
           href={{ pathname: "/signupPage", params: { login: "false" } }}
           asChild
         >
-          <LoginButton text="Sign Up" allowed />
+          <FreebitesButton text="Sign Up" allowed bold />
         </Link>
       </View>
     </SafeAreaView>

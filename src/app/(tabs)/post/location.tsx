@@ -1,4 +1,4 @@
-import { Link, useFocusEffect } from "expo-router";
+import { Link, router, useFocusEffect } from "expo-router";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import ImageViewer from "@components/common/ImageViewer";
@@ -12,6 +12,7 @@ import MapView from "react-native-maps";
 import { getGeolocationWithPlaceID } from "@api/util/maps";
 import NextButtonText from "@components/post/NextButtonText";
 import ProgressBar from "@components/post/ProgressBar";
+import FreebitesButton from "@components/common/FreebitesButton";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 interface latlong {
@@ -128,9 +129,13 @@ export default function location() {
         disabled={!locationSelected}
         coordinates={coordinates}
       />
-      <Link href="/post/reviewpost" asChild>
-        <NextButtonText validInput={true} />
-      </Link>
+      <FreebitesButton
+        text="Next Step"
+        allowed={postData.location !== null}
+        onPress={() => {
+          router.push("/post/reviewpost");
+        }}
+      />
     </SafeAreaView>
   );
 }

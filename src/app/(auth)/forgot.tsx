@@ -1,19 +1,11 @@
-import {
-  View,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  Text,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import LoginButton from "@components/login/LoginButton";
+import { SafeAreaView, TextInput, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
 import { globalStyles } from "@components/global";
 import { getOneUserEmail } from "@api/user/usercrud";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { COLORS } from "../../constants";
+import FreebitesButton from "@components/common/FreebitesButton";
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -58,7 +50,12 @@ export default function ForgotPassword() {
         }}
       />
       <Text>{errorMessage}</Text>
-      <LoginButton onPress={continuePressed} text="Continue" allowed />
+      <FreebitesButton
+        onPress={continuePressed}
+        text="Continue"
+        allowed={email.length > 0}
+        bold
+      />
     </SafeAreaView>
   );
 }

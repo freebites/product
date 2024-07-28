@@ -1,15 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Image,
-} from "react-native";
-import LoginButton from "./LoginButton";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
 import { useAuth } from "@context/auth";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
@@ -20,6 +9,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
+import FreebitesButton from "@components/common/FreebitesButton";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -185,10 +175,11 @@ const SignupSection = () => {
         }}
       >
         {/* LoginButton */}
-        <LoginButton
+        <FreebitesButton
           onPress={handleSubmitData}
           text="Sign Up"
           allowed={isChecked}
+          bold
         />
         <Text style={{ color: COLORS.neutral[70] }}>
           Have an account?{"    "}

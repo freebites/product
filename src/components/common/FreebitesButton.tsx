@@ -1,13 +1,14 @@
 import { Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef } from "react";
 
-interface LoginButtonProps {
+interface FreebitesButtonProps {
   onPress?: () => void;
   text: string;
   allowed: boolean;
+  bold?: boolean;
 }
-const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
-  const { onPress, text, allowed } = props;
+const FreebitesButton = (props: FreebitesButtonProps, ref: React.Ref<any>) => {
+  const { onPress, text, allowed, bold } = props;
   return (
     <Pressable
       onPress={allowed ? onPress : undefined}
@@ -20,7 +21,9 @@ const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
         { backgroundColor: !allowed ? "#808080" : "#F19D48" },
       ]}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, { fontWeight: bold ? "bold" : "normal" }]}>
+        {text}
+      </Text>
     </Pressable>
   );
 };
@@ -38,7 +41,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: "#FFFCFA",
-    fontWeight: "bold",
   },
 });
-export default forwardRef(LoginButton);
+export default forwardRef(FreebitesButton);
