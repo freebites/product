@@ -8,9 +8,9 @@ import {
   Text,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import LoginButton from "../../components/login/LoginButton";
-import { globalStyles } from "../../components/global";
-import { getOneUserEmail } from "../../../api/user/usercrud";
+import LoginButton from "@components/login/LoginButton";
+import { globalStyles } from "@components/global";
+import { getOneUserEmail } from "@api/user/usercrud";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { COLORS } from "../../constants";

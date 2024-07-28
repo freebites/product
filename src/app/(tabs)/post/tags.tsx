@@ -9,14 +9,14 @@ import {
 } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
 import React, { useContext } from "react";
-import { PostContext } from "../../../context/postContext";
-import TagMultiSelect from "../../../components/post/TagMultiSelect";
-import BinarySelect from "../../../components/common/BinarySelect";
-import ImageViewer from "../../../components/common/ImageViewer";
+import { PostContext } from "@context/postContext";
+import TagMultiSelect from "@components/post/TagMultiSelect";
+import BinarySelect from "@components/common/BinarySelect";
+import ImageViewer from "@components/common/ImageViewer";
 import { postStyles } from "./styles/postStyles";
-import HorizontalRule from "../../../components/common/HorizontalRule";
-import NextButtonText from "../../../components/post/NextButtonText";
-import ProgressBar from "../../../components/post/ProgressBar";
+import HorizontalRule from "@components/common/HorizontalRule";
+import NextButtonText from "@components/post/NextButtonText";
+import ProgressBar from "@components/post/ProgressBar";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // declare object that's only the tags here

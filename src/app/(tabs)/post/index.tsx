@@ -1,8 +1,5 @@
-import OpenCamera from "../../../components/common/Camera";
+import OpenCamera from "@components/common/Camera";
 
 export default function openCamera() {
-  
-  return (
-    <OpenCamera profile={false}/>
-  );
+  return <OpenCamera profile={false} />;
 }

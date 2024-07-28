@@ -11,8 +11,8 @@ import {
 } from "firebase/auth";
 import React, { createContext } from "react";
 import { auth } from "../../firebase";
-import { useNotifications } from "../components/notifications/useNotifications";
-import { getOneUser, updateUser } from "../../api/user/usercrud";
+import { useNotifications } from "@components/notifications/useNotifications";
+import { getOneUser, updateUser } from "@api/user/usercrud";
 import { EmptyUser, UserType } from "./userContext";
 
 //////////

@@ -1,7 +1,7 @@
 import { Link, useFocusEffect } from "expo-router";
 import React, { useContext } from "react";
-import ImageViewer from "../../../components/common/ImageViewer";
-import { PostContext } from "../../../context/postContext";
+import ImageViewer from "@components/common/ImageViewer";
+import { PostContext } from "@context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   View,
@@ -10,10 +10,11 @@ import {
   KeyboardAvoidingView,
   Text,
 } from "react-native";
-import NextButtonText from "../../../components/post/NextButtonText";
-import Description from "../../../components/post/Description";
+import NextButtonText from "@components/post/NextButtonText";
+import Description from "@components/post/Description";
 import { postStyles } from "./styles/postStyles";
-import ProgressBar from "../../../components/post/ProgressBar";
+import ProgressBar from "@components/post/ProgressBar";
+import LoginButton from "@components/login/LoginButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
@@ -95,9 +96,10 @@ const gallery = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Link href="/post/tags" asChild>
+      {/* <Link href="/post/tags" asChild>
         <NextButtonText validInput={postData.description != ""} />
-      </Link>
+      </Link> */}
+      <LoginButton text="Next Step" allowed={postData.description !== ""} />
     </SafeAreaView>
   );
 };

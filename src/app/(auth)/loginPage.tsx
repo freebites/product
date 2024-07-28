@@ -10,10 +10,10 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
-import { globalStyles } from "../../components/global";
+import { globalStyles } from "@components/global";
 import { TouchableOpacity } from "react-native";
-import LoginSection from "../../components/login/LoginSection";
-import SignupSection from "../../components/login/SignupSection";
+import LoginSection from "@components/login/LoginSection";
+import SignupSection from "@components/login/SignupSection";
 import { Link, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { TouchableHighlight } from "react-native-gesture-handler";

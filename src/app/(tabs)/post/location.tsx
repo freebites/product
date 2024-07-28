@@ -1,17 +1,17 @@
 import { Link, useFocusEffect } from "expo-router";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
-import ImageViewer from "../../../components/common/ImageViewer";
+import ImageViewer from "@components/common/ImageViewer";
 
-import { PostContext } from "../../../context/postContext";
+import { PostContext } from "@context/postContext";
 import { postStyles } from "./styles/postStyles";
 import { Text, SafeAreaView, View, TextInput, StyleSheet } from "react-native";
-import PlacesSearchBar from "../../../components/common/PlacesSearchBar";
-import GoogleMapView from "../../../components/common/GoogleMapView";
+import PlacesSearchBar from "@components/common/PlacesSearchBar";
+import GoogleMapView from "@components/common/GoogleMapView";
 import MapView from "react-native-maps";
-import { getGeolocationWithPlaceID } from "../../../../api/util/maps";
-import NextButtonText from "../../../components/post/NextButtonText";
-import ProgressBar from "../../../components/post/ProgressBar";
+import { getGeolocationWithPlaceID } from "@api/util/maps";
+import NextButtonText from "@components/post/NextButtonText";
+import ProgressBar from "@components/post/ProgressBar";
 const placeholder = require("../../../assets/images/kemal.jpg");
 
 interface latlong {

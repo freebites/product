@@ -10,10 +10,10 @@ import {
   Image,
 } from "react-native";
 import LoginButton from "./LoginButton";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
-import { create } from "../../../api/user/usercrud";
+import { create } from "@api/user/usercrud";
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";

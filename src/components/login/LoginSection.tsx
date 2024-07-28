@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import LoginButton from "./LoginButton";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 import { useState } from "react";
 import React from "react";
 import { Link } from "expo-router";
@@ -104,7 +104,7 @@ const LoginSection = () => {
             signIn(email, password);
           }}
           text="Get Started"
-          allowed
+          allowed={email.length > 0 && password.length > 0}
         />
 
         <Text style={{ color: COLORS.neutral[70] }}>

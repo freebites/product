@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import { COLORS } from "../../constants";
 import React, { useContext, useState } from "react";
 import SubmitButton from "./SubmitButton";
-import { PostContext } from "../../context/postContext";
+import { PostContext } from "@context/postContext";
 
 interface FilterPopUpProps {
   type: string;

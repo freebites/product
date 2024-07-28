@@ -9,16 +9,16 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { Link } from "expo-router";
-import { PostContext } from "../../../context/postContext";
+import { PostContext } from "@context/postContext";
 import { EmptyPost, postType } from "../../../../types/PostTypes";
-import ImageViewer from "../../../components/common/ImageViewer";
+import ImageViewer from "@components/common/ImageViewer";
 import { storage } from "../../../../firebase";
 import { ref, uploadBytes } from "firebase/storage";
-import create from "../../../../api/posts/create";
-import NextButtonText from "../../../components/post/NextButtonText";
+import create from "@api/posts/create";
+import NextButtonText from "@components/post/NextButtonText";
 import { postStyles } from "./styles/postStyles";
 import { COLORS } from "../../../constants";
-import { useAuth } from "../../../context/auth";
+import { useAuth } from "@context/auth";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 
