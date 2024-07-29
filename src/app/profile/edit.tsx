@@ -17,9 +17,9 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { globalStyles } from "@components/global";
-import EditProfileHeader from "@components/profile/EditProfileHeader";
-import EditProfileInput from "@components/profile/EditProfileInput";
+import { globalStyles } from "../../components/global";
+import EditProfileHeader from "../../components/profile/EditProfileHeader";
+import EditProfileInput from "../../components/profile/EditProfileInput";
 
 import {
   BottomSheetBackdrop,
@@ -29,9 +29,8 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import EditModal from "@components/profile/EditModal";
-import { validateRoutePerms } from "@context/auth";
+import { validateRoutePerms, useAuth } from "@context/auth";
 import { getOneUser, updateUser } from "@api/user/usercrud";
-import { useAuth } from "@context/auth";
 import { EmptyUser, UserType } from "@context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";

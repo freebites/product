@@ -7,16 +7,13 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { EmptyPost, postType, comment } from "../../../types/PostTypes";
+import { EmptyPost, postType, comment } from "freebites-types";
 import { CommentsModal } from "./CommentsModal";
 import { Divider, Icon } from "react-native-elements";
 import { getOne } from "@api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
-import update from "@api/posts/update";
 import { storage } from "../../../firebase";
 import { useAuth } from "@context/auth";
-import DisplayComments from "./DisplayComments";
 import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
@@ -24,10 +21,6 @@ import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
-const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
-const msg = require("../../assets/icons/freebites/msg.png");
-const lactose = require("../../assets/icons/freebites/lactose.png");
-
 interface PostCardProps {
   id: string;
 }

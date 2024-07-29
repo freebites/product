@@ -1,8 +1,8 @@
 import { Link, useLocalSearchParams } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
 import GalleryButton from "../post/GalleryButton";
+import { EmptyPost } from "freebites-types";
 import { PostContext } from "@context/postContext";
-import { EmptyPost } from "../../../types/PostTypes";
 import { manipulateAsync } from "expo-image-manipulator";
 import NextButton from "../post/NextButton";
 import { Camera, CameraType } from "expo-camera/legacy";

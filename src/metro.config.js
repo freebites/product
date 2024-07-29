@@ -2,17 +2,16 @@ const { getDefaultConfig } = require("expo/metro-config");
 const path = require("path");
 
 // Find the project and workspace directories
-const projectRoot = __dirname;
+const currentDir = __dirname;
+
+
 // This can be replaced with `find-yarn-workspace-root`
 // const monorepoRoot = path.resolve(projectRoot, '../..');
 
-/// repo -> monorepoRoot
-///// project1 --> projecRoot
-///// project2
-const config = getDefaultConfig(projectRoot);
-const frontendRoot = path.resolve(projectRoot, "src");
-const backendRoot = path.resolve(projectRoot, "backend");
-
+const config = getDefaultConfig(currentDir, "../");
+const frontendRoot = path.resolve(currentDir);
+const backendRoot = path.resolve(currentDir, "../backend");
+const projectRoot = path.resolve(currentDir, "../");
 // 1. Watch all files within the monorepo
 config.watchFolders = [projectRoot, frontendRoot, backendRoot];
 // 2. Let Metro know where to resolve packages and in what order
@@ -26,16 +25,7 @@ config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
   "@components": path.resolve(frontendRoot, "components"),
   "@context:": path.resolve(frontendRoot, "context"),
-  "@api": path.resolve(projectRoot, "/api"),
+  "@api": path.resolve(frontendRoot, "api"),
 };
 
 module.exports = config;
-
-// const defaultConfig = getDefaultConfig(__dirname);
-// defaultConfig.resolver.sourceExts.push("cjs");
-// defaultConfig.resolver.sourceExts = [
-//   ...defaultConfig.resolver.sourceExts,
-//   "mjs",
-//   "cjs",
-// ];
-// module.exports = defaultConfig;

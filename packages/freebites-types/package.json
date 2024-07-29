@@ -1,0 +1,13 @@
+{
+    "name": "freebites-types",
+    "version": "1.0.0",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+      "build": "tsc"
+    },
+    "peerDependencies": {
+      "typescript": "~5.3.3"
+    }
+  }
+  

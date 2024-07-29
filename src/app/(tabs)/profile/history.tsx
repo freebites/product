@@ -5,7 +5,7 @@ import Header from "@components/common/Header";
 import { useAuth, validateRoutePerms } from "@context/auth";
 import { useGlobalSearchParams } from "expo-router";
 import { getWithFilter, getAllPosts } from "@api/posts/read";
-import { postType } from "../../../../types/PostTypes";
+import { postType } from "freebites-types";
 import { router } from "expo-router";
 import HomePost from "@components/home/HomePost";
 import { AppContext } from "@context/appContext";

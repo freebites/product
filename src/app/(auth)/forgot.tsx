@@ -1,7 +1,15 @@
-import { SafeAreaView, TextInput, StyleSheet, Text } from "react-native";
-import React, { useState } from "react";
-import { globalStyles } from "@components/global";
-import { getOneUserEmail } from "@api/user/usercrud";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Text,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { globalStyles } from "../../components/global";
+import { getOneUserEmail } from "../../api/user/usercrud";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { COLORS } from "../../constants";

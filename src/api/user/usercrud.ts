@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useNotifications } from "src/components/notifications/useNotifications";
+import { useNotifications } from "components/notifications/useNotifications";
 
-import { UserType } from "types/UserTypes.ts";
+import { UserType } from "freebites-types";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getAllUsers = async (): Promise<UserType[]> => {
@@ -23,16 +23,19 @@ export const getOneUser = async (userID: string): Promise<UserType> => {
   }
 };
 
-export const getOneUserEmail = async (emailAddress: string): Promise<UserType> => {
+export const getOneUserEmail = async (
+  emailAddress: string
+): Promise<UserType> => {
   try {
-    const response = await axios.get(`${apiURL}/api/Users/Email/${emailAddress}`);
+    const response = await axios.get(
+      `${apiURL}/api/Users/Email/${emailAddress}`
+    );
     return response.data;
   } catch (error) {
     console.log("error getting all items:", error);
     throw error;
   }
- }
-
+};
 
 interface CreateProps {
   uid: string;

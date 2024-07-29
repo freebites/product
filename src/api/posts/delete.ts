@@ -1,5 +1,5 @@
 import axios from "axios";
-import { storage } from "../../firebase";
+import { storage } from "../../../firebase";
 import { ref, deleteObject } from "firebase/storage";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 const deleteOne = async (itemID: string) => {

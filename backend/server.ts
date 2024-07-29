@@ -1,5 +1,3 @@
-import accountConnection from "./config/userDatabase";
-
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -7,7 +5,7 @@ import bodyParser from "body-parser";
 import postRouter from "./routes/postRoutes";
 import userRouter from "./routes/userRoutes";
 import notifyRouter from "./routes/notifyRoutes";
-import type { UserType } from "./types/UserTypes";
+import type { UserType } from "freebites-types";
 import Expo from "expo-server-sdk";
 import type { ExpoPushMessage, ExpoPushTicket } from "expo-server-sdk";
 import User from "./models/userModel";

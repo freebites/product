@@ -7,7 +7,7 @@ import { Request, Response } from "express";
  * authors: @vle04 @LordofMankid
  */
 import User from "../models/userModel";
-import { UserType } from "../../types/UserTypes";
+import { UserType } from "freebites-types";
 
 /**
  * @description Get all user from the database.

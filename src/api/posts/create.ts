@@ -1,6 +1,5 @@
 import axios from "axios";
-import { postType, tags } from "../../types/PostTypes";
-import { UserType } from "../../types/UserTypes";
+import { postType, tags, UserType } from "freebites-types";
 import { getAllUsers, getOneUser } from "api/user/usercrud";
 import { notifyUsers } from "api/notify/notifyUsers";
 
