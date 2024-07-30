@@ -12,16 +12,10 @@ import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
 import { COLORS } from "../../constants/theme";
 import * as Sharing from "expo-sharing";
-import { ReportModal } from "../home/ReportModal.tsx";
 
 const OptionModel = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
-
-  const closeReportModal = () => {
-    setModalVisible(false);
-    setReportModalVisible(false);
-  };
 
   const [text, changeText] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -137,7 +131,6 @@ const OptionModel = () => {
             </View>
           ) : (
             //Option Modal
-
             <View>
               <View style={styles.textContainer}>
                 <View style={styles.headText}>
@@ -149,7 +142,6 @@ const OptionModel = () => {
                 <Pressable
                   style={styles.optionButton}
                   onPress={() => {
-                    // setModalVisible(false);
                     setReportModalVisible(true);
                   }}
                 >
@@ -160,7 +152,7 @@ const OptionModel = () => {
                   style={styles.optionButton}
                   onPress={() =>
                     Sharing.shareAsync(
-                      "https://www.youtube.com/watch?v=N3uGzshhntM"
+                      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                     )
                   }
                 >
@@ -179,75 +171,6 @@ const OptionModel = () => {
           )}
         </KeyboardAvoidingView>
       </Modal>
-
-      {/* {!reportModalVisible ? (
-        <View>
-          <Modal
-            animationIn={undefined}
-            animationInTiming={400}
-            animationOut={"slideOutDown"}
-            animationOutTiming={!reportModalVisible ? 0 : 1}
-            isVisible={modalVisible}
-            backdropTransitionInTiming={0}
-            backdropTransitionOutTiming={!reportModalVisible ? 0 : 1}
-            hasBackdrop
-            backdropOpacity={0.55}
-            coverScreen
-            onBackdropPress={() => {
-              setModalVisible(false);
-            }}
-            style={styles.modalContainer}
-          >
-            <Image
-              source={require("../../assets/icons/freebites/FreeBitesLogoSmall.png")}
-              style={styles.imgStyle}
-            />
-            <View style={styles.textContainer}>
-              <View style={styles.headText}>
-                <Text style={styles.modalText}>
-                  Would you like to report or share this post?
-                </Text>
-              </View>
-
-              <Pressable
-                style={styles.optionButton}
-                onPress={() => {
-                  setModalVisible(false);
-                  setReportModalVisible(true);
-                }}
-              >
-                <Text style={styles.textStyle}>Report</Text>
-              </Pressable>
-
-              <Pressable
-                style={styles.optionButton}
-                onPress={() =>
-                  Sharing.shareAsync(
-                    "https://www.youtube.com/watch?v=N3uGzshhntM"
-                  )
-                }
-              >
-                <Text style={styles.textStyle}>Share</Text>
-              </Pressable>
-            </View>
-
-            <Pressable
-              style={styles.cancelButton}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={styles.textStyle}>Cancel</Text>
-              <Icon type={"antDesign"} name={"close"} />
-            </Pressable>
-          </Modal>
-        </View>
-      ) : (
-        <View>
-          <ReportModal
-            reportVisible={reportModalVisible}
-            setReportVisible={closeReportModal}
-          ></ReportModal>
-        </View>
-      )} */}
     </View>
   );
 };
