@@ -7,6 +7,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { getOneUser, updateUser } from "../../../api/user/usercrud";
 import { useAuth } from "../../context/auth";
 import { uploadPicture } from "./UploadPicture";
+import { AppContext } from "../../context/appContext";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 const choosephoto = require(" ../../../assets/icons/choosephoto.png");
@@ -19,6 +20,7 @@ interface EditModalProps {
 
 const EditModal = ( {setShowCamera} : EditModalProps) => {
   const {user} = useAuth();
+  const { setProfilePicURL } = React.useContext(AppContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -30,7 +32,8 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
     });
 
     if (!result.canceled) {
-      uploadPicture(result.assets[0].uri, user.uid);
+      const url = await uploadPicture(result.assets[0].uri, user.uid);
+      setProfilePicURL(url);
     }
   };
 
@@ -48,6 +51,7 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
       };
   
       await updateUser({ user: updatedUserData, userID: user.uid });
+      setProfilePicURL(undefined);
       Alert.alert("Profile picture deleted successfully");
     } catch (error) {
       console.error("Error deleting profile picture:", error);

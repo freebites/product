@@ -32,14 +32,17 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
 import OpenCamera from "../../components/common/Camera";
 import MissingImageSvg from "../../components/home/svg/missingImageSVG";
+import { AppContext } from "../../context/appContext";
+import PronounsSelector from "../../components/profile/PronounsSelector";
+
 
 const editProfile = () => {
   
-  const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
+  //const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
   const [showCamera, setShowCamera] = useState(false);
-  const [profilePicURL, setProfilePicURL] = useState("");
+  const { profilePicURL, setProfilePicURL } = React.useContext(AppContext);
   const { user } = useAuth();
 
   enum UserFields {
@@ -48,6 +51,24 @@ const editProfile = () => {
     lastName = 'lastName',
     pronouns = 'pronouns',
   }
+
+  const pronounsOptions = [
+    'co', 'cos',
+    'e', 'ey', 'em', 'eir',
+    'fae', 'faee',
+    'he', 'him', 'his',
+    'she', 'her', 'hers',
+    'mer', 'mers',
+    'ne', 'nir', 'nirs',
+    'nee', 'ner', 'ners',
+    'per', 'pers',
+    'they', 'them', 'theirs',
+    'thon', 'thons',
+    've', 'ver', 'vis',
+    'vi', 'vir',
+    'xe', 'xem', 'xyr',
+    'ze', 'zie', 'zir', 'hir'
+  ];
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -66,19 +87,15 @@ const editProfile = () => {
     fetchUser();
   },[])
 
-  const handleDataChange = (attribute : UserFields, text : string) => {
+  const handleDataChange = (attribute : UserFields, text : string | string[]) => {
     setUserData(prevData => ({
       ...prevData,
       [attribute]: text
     }));
   };
 
-  const validateRequired = (text: string) => {
-    return !text ? "This field is required" :  null
-  };
-
-  const validatePronouns = (text: string) => {
-    return !text ? "Pronouns are required" :  null
+  const validateRequired = (text: string | string[]) => {
+    return (!text || text.length === 0) ? "This field is required" :  null
   };
 
   validateRoutePerms();
@@ -94,13 +111,12 @@ const editProfile = () => {
 
     try {
       const currentUserData = await getOneUser(user.uid); 
-  
       // Update the user data
       const updatedUserData = {
         ...currentUserData,
         ...userData
       };
-  
+
       await updateUser({ user: updatedUserData, userID: user.uid }); 
       Alert.alert("Profile updated successfully");
   
@@ -147,7 +163,7 @@ const editProfile = () => {
                     snapPoints={snapPoints}
                     enablePanDownToClose={true}
                   >
-                    <BottomSheetView style={styles.contentContainer}>
+                    <BottomSheetView >
                       <EditModal setShowCamera={setShowCamera}/>
                     </BottomSheetView>
                   </BottomSheetModal>
@@ -187,11 +203,10 @@ const editProfile = () => {
                     onChangeText={(text) => handleDataChange(UserFields.userName, text)}
                     validate={validateRequired}
                   />
-                  <EditProfileInput
-                    title="Pronouns"
+                  <PronounsSelector
                     value={userData?.pronouns}
-                    onChangeText={(text) => handleDataChange(UserFields.pronouns, text)}
-                    validate={validatePronouns}
+                    onChange={(text) => handleDataChange(UserFields.pronouns, text)}
+                    validate={validateRequired}
                     options={pronounsOptions}
                   />
                 </View>

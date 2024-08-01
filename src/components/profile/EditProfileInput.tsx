@@ -9,11 +9,10 @@ interface EditProfileInputProps {
   onChangeText: (text: string) => void;
   validate?: (text: string) => string | null;
   multiline?: boolean;
-  options?: string[];
 }
 
 const EditProfileInput = (props: EditProfileInputProps) => {
-  const { title, multiline, value, onChangeText, validate, options } = props;
+  const { title, multiline, value, onChangeText, validate } = props;
   const [error, setError] = useState<string | null>(null);
 
   const handleChangeText = (text: string) => {
@@ -29,18 +28,6 @@ const EditProfileInput = (props: EditProfileInputProps) => {
   return (
     <View style={styles.container}>
       <Text style={{ color: "#9e9797", fontSize: 20 }}>{title}</Text>
-      {options ? (
-        <View style={styles.textInput}>
-          <RNPickerSelect
-            onValueChange={handleDropdownChange}
-            items={options.map(option => ({
-              label: option,
-              value: option.toLowerCase(),
-            }))}
-            value={value}
-          />
-        </View>
-      ) : (
         <TextInput
           style={[
             styles.textInput,
@@ -50,7 +37,6 @@ const EditProfileInput = (props: EditProfileInputProps) => {
           value={value}
           onChangeText={handleChangeText}
         />
-      )}
       {error && <Text style={{ color: "red" }}>{error}</Text>}
     </View>
   );

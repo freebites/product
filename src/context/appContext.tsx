@@ -27,6 +27,8 @@ type AppContextType = {
   setUserToFilter: (arg0: string) => void;
   perishable: string;
   setPerishable: (arg0: string) => void;
+  profilePicURL: string | undefined;
+  setProfilePicURL: (arg0: string | undefined) => void;
 };
 
 export const noLocation: locationInfo = {
@@ -46,6 +48,8 @@ export const AppContext = React.createContext<AppContextType>({
   setUserToFilter: () => {},
   perishable: "",
   setPerishable: () => {},
+  profilePicURL: undefined,
+  setProfilePicURL: () => {},
 });
 
 export const AppContextProvider = (props: { children: any }) => {
@@ -68,6 +72,8 @@ export const AppContextProvider = (props: { children: any }) => {
   const [perishable, setPerishable] = useState<string>("");
 
   const [userToFilter, setUserToFilter] = useState<string>("");
+
+  const [profilePicURL, setProfilePicURL] = useState<string>("");
 
   useEffect(() => {
     const getState = async () => {
@@ -108,6 +114,8 @@ export const AppContextProvider = (props: { children: any }) => {
         setUserToFilter,
         perishable,
         setPerishable,
+        profilePicURL,
+        setProfilePicURL,
       }}
     >
       {props.children}

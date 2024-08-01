@@ -13,15 +13,16 @@ import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
 import { COLORS } from "../../constants";
+const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "../../context/auth";
-import { getTimeDifference } from "../common/GetTimeDifference";
 import MissingImageSvg from "./svg/missingImageSVG";
 import { getOneUser } from "../../../api/user/usercrud";
 import { EmptyUser, UserType } from "../../context/userContext";
+import { getTimeDifference } from "../../utils";
 
 interface HomePostProps {
   post: postType;
@@ -30,8 +31,6 @@ interface HomePostProps {
   fetchData: () => void;
   style?: object;
 }
-
-const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 export const HomePost = (props: HomePostProps) => {
   const { post, onPress, setRefreshing, fetchData } = props;
@@ -58,7 +57,7 @@ export const HomePost = (props: HomePostProps) => {
         const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${post.location.place_id}&key=${apiKey}`;
         const response = await fetch(url, {method: "GET", mode: "cors"});
         const data = await response.json();
-        setAddress(data.result.formatted_address);
+        setAddress(data.result? data.result.formatted_address : "Location not available");
       } catch (error) {
         console.error("Error fetching place details:", error);
         return null;
@@ -76,7 +75,9 @@ export const HomePost = (props: HomePostProps) => {
         if (data.profile){
           const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
           setPostedByPic(url);
-        } 
+        }  else {
+          setPostedByPic(placeholder);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       } 

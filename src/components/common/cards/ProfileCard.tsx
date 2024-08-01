@@ -8,6 +8,7 @@ import { getOneUser } from "../../../../api/user/usercrud";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../../firebase";
 import MissingImageSvg from "../../../components/home/svg/missingImageSVG";
+import { AppContext } from "../../../context/appContext";
 
 const editbutton = require("../../../assets/icons/editbutton.png");
 
@@ -34,7 +35,7 @@ const style = StyleSheet.create({
 
 const ProfileCard = (props) => {
   const { user } = useAuth();
-  const [profilePicURL, setProfilePicURL] = useState("");
+  const { profilePicURL, setProfilePicURL } = React.useContext(AppContext);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

@@ -7,7 +7,7 @@ export type UserType = {
   password: string;
   profile: string;
   bio: string;
-  pronouns: string;
+  pronouns: string[];
   expoToken: string;
 };
 
@@ -20,6 +20,6 @@ export const EmptyUser: UserType = {
   password: "",
   profile: "",
   bio: "",
-  pronouns: "",
+  pronouns: [],
   expoToken: "",
 };

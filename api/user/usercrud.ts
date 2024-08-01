@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNotifications } from "src/components/notifications/useNotifications";
 
-import { UserType } from "types/UserTypes.ts";
+import { UserType } from "types/UserTypes";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getAllUsers = async (): Promise<UserType[]> => {
@@ -52,7 +52,7 @@ export const create = async (props: CreateProps) => {
     userName: "",
     profile: "",
     bio: "",
-    pronouns: "",
+    pronouns: [],
     expoToken: token?.data,
   };
 
@@ -75,6 +75,6 @@ export const updateUser = async (props: UpdateProps) => {
   try {
     await axios.put(`${apiURL}/api/Users/${userID}`, user);
   } catch (error) {
-    console.error("Error updating item IN FRONTEND  :", error);
+    throw new Error("Error updating item IN FRONTEND  :" + error);
   }
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "react-native";
 import { storage } from "../../../firebase";
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { getOneUser, updateUser } from "../../../api/user/usercrud";
 
 export const uploadPicture = async (uri: string, userId: string) => {
@@ -19,11 +19,12 @@ export const uploadPicture = async (uri: string, userId: string) => {
     const storageRef = ref(storage, 'profilePictures/' + uri.substring(uri.lastIndexOf("/") + 1));
 
     const snapshot = await uploadBytes(storageRef, blob);
-    const fullPath = await snapshot.ref.fullPath;
+
+    const url = await getDownloadURL(snapshot.ref);
 
     Alert.alert("Profile picture updated successfully");
 
-    return fullPath;
+    return url;
   } catch (error) {
     console.error("Failed to upload picture:", error);
   }
