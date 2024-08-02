@@ -1,27 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 
 interface PronounSelectorProps {
-    value: string[];
-    onChange: (selectedPronouns: string[]) => void;
-    validate?: (selectedPronouns: string[]) => string | null;
-    options: string[];
+  value: string[];
+  onChange: (selectedPronouns: string[]) => void;
+  validate?: (selectedPronouns: string[]) => string | null;
+  options: string[];
 }
 
-const PronounSelector = (props : PronounSelectorProps) => {
-    const { value, onChange, validate, options } = props;
-    const [selectedPronouns, setSelectedPronouns] = useState<string[]>(value || []);
-    const [error, setError] = useState<string | null>(null);
-    const [inputValue, setInputValue] = useState<string>('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+const PronounSelector = (props: PronounSelectorProps) => {
+  const { value, onChange, validate, options } = props;
+  const [selectedPronouns, setSelectedPronouns] = useState<string[]>(
+    value || []
+  );
+  const [error, setError] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-    useEffect(() => {
-        if (validate) {
-            setError(validate(selectedPronouns));
-        }
-    }, [selectedPronouns, validate]);
+  useEffect(() => {
+    if (validate) {
+      setError(validate(selectedPronouns));
+    }
+  }, [selectedPronouns, validate]);
 
-  const handleInputChange = (text : string) => {
+  const handleInputChange = (text: string) => {
     setInputValue(text);
     if (text) {
       const filteredSuggestions = options.filter(
@@ -35,57 +44,61 @@ const PronounSelector = (props : PronounSelectorProps) => {
     }
   };
 
-    const addPronoun = (pronoun : string) => {
-        const updatedPronouns = [...selectedPronouns, pronoun];
-        setSelectedPronouns(updatedPronouns);
-        setInputValue('');
-        setSuggestions([]);
-        if (onChange) {
-        onChange(updatedPronouns);
-        }
-    };
+  const addPronoun = (pronoun: string) => {
+    const updatedPronouns = [...selectedPronouns, pronoun];
+    setSelectedPronouns(updatedPronouns);
+    setInputValue("");
+    setSuggestions([]);
+    if (onChange) {
+      onChange(updatedPronouns);
+    }
+  };
 
-    const removePronoun = (pronoun : string) => {
-        const updatedPronouns = selectedPronouns.filter((p) => p !== pronoun);
-        setSelectedPronouns(updatedPronouns);
-        if (onChange) {
-            onChange(updatedPronouns);
-        }
-    };
+  const removePronoun = (pronoun: string) => {
+    const updatedPronouns = selectedPronouns.filter((p) => p !== pronoun);
+    setSelectedPronouns(updatedPronouns);
+    if (onChange) {
+      onChange(updatedPronouns);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Pronouns:</Text>
       <TextInput
-        style={[styles.input, error ? { borderBottomColor: "red" } : { borderBottomColor: "#9e9797" } ]}
+        style={[
+          styles.input,
+          error
+            ? { borderBottomColor: "red" }
+            : { borderBottomColor: "#9e9797" },
+        ]}
         value={inputValue}
         onChangeText={handleInputChange}
         placeholder="Type a pronoun"
       />
-        {suggestions.length > 0 && (
-            <ScrollView style={styles.suggestions}>
-            {suggestions.map((suggestion) => (
+      {suggestions.length > 0 && (
+        <ScrollView style={styles.suggestions}>
+          {suggestions.map((suggestion) => (
             <TouchableOpacity
-                key={suggestion}
-                style={styles.suggestionItem}
-                onPress={() => addPronoun(suggestion)}
+              key={suggestion}
+              style={styles.suggestionItem}
+              onPress={() => addPronoun(suggestion)}
             >
-                <Text>{suggestion}</Text>
+              <Text>{suggestion}</Text>
             </TouchableOpacity>
-            ))}
+          ))}
         </ScrollView>
       )}
-        {error && <Text style={{ color: "red" }}>{error}</Text>}
+      {error && <Text style={{ color: "red" }}>{error}</Text>}
 
       <View style={styles.selectedContainer}>
-        {selectedPronouns
-            .map((pronoun : string) => (
-                <View key={pronoun} style={styles.selectedPronoun}>
-                    <Text style={styles.selectedText}>{pronoun}</Text>
-                    <TouchableOpacity onPress={() => removePronoun(pronoun)}>
-                    <Text style={styles.removeButton}>×</Text>
-                    </TouchableOpacity>
-                </View>
+        {selectedPronouns.map((pronoun: string) => (
+          <View key={pronoun} style={styles.selectedPronoun}>
+            <Text style={styles.selectedText}>{pronoun}</Text>
+            <TouchableOpacity onPress={() => removePronoun(pronoun)}>
+              <Text style={styles.removeButton}>×</Text>
+            </TouchableOpacity>
+          </View>
         ))}
       </View>
     </View>
@@ -94,60 +107,61 @@ const PronounSelector = (props : PronounSelectorProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    maxWidth: 215,
-    minWidth: 215,
+    flex: 1,
+    // padding: 10,
+    // maxWidth: 215,
+    minWidth: 250,
     height: 250,
   },
   title: {
     fontSize: 20,
     marginBottom: 10,
-    color: '#9e9797',
+    color: "#9e9797",
   },
   input: {
     padding: 10,
     borderWidth: 1,
-    borderColor: '#9e9797',
+    borderColor: "#9e9797",
     borderRadius: 5,
     marginBottom: 10,
     fontSize: 17,
   },
   suggestions: {
-    maxHeight: 150, 
-    backgroundColor: '#f0f0f0',
+    maxHeight: 150,
+    backgroundColor: "#f0f0f0",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     marginBottom: 10,
   },
   suggestionItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   selectedContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   selectedPronoun: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 5,
-    backgroundColor: '#F0E1D2',
+    backgroundColor: "#F0E1D2",
     borderRadius: 20,
     marginRight: 5,
     marginBottom: 5,
   },
   selectedText: {
-    color: '#9e9797',
+    color: "#9e9797",
     fontSize: 17,
     opacity: 0.7,
     marginRight: 5,
   },
   removeButton: {
-    color: '#9e9797',
+    color: "#9e9797",
     opacity: 0.7,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

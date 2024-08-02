@@ -9,9 +9,16 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
-  ActivityIndicator
+  Platform,
+  ActivityIndicator,
 } from "react-native";
-import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { globalStyles } from "../../components/global";
 import EditProfileHeader from "../../components/profile/EditProfileHeader";
 import EditProfileInput from "../../components/profile/EditProfileInput";
@@ -35,9 +42,7 @@ import MissingImageSvg from "../../components/home/svg/missingImageSVG";
 import { AppContext } from "../../context/appContext";
 import PronounsSelector from "../../components/profile/PronounsSelector";
 
-
 const editProfile = () => {
-  
   //const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
@@ -46,28 +51,54 @@ const editProfile = () => {
   const { user } = useAuth();
 
   enum UserFields {
-    userName = 'userName',
-    firstName = 'firstName',
-    lastName = 'lastName',
-    pronouns = 'pronouns',
+    userName = "userName",
+    firstName = "firstName",
+    lastName = "lastName",
+    pronouns = "pronouns",
   }
 
   const pronounsOptions = [
-    'co', 'cos',
-    'e', 'ey', 'em', 'eir',
-    'fae', 'faee',
-    'he', 'him', 'his',
-    'she', 'her', 'hers',
-    'mer', 'mers',
-    'ne', 'nir', 'nirs',
-    'nee', 'ner', 'ners',
-    'per', 'pers',
-    'they', 'them', 'theirs',
-    'thon', 'thons',
-    've', 'ver', 'vis',
-    'vi', 'vir',
-    'xe', 'xem', 'xyr',
-    'ze', 'zie', 'zir', 'hir'
+    "co",
+    "cos",
+    "e",
+    "ey",
+    "em",
+    "eir",
+    "fae",
+    "faee",
+    "he",
+    "him",
+    "his",
+    "she",
+    "her",
+    "hers",
+    "mer",
+    "mers",
+    "ne",
+    "nir",
+    "nirs",
+    "nee",
+    "ner",
+    "ners",
+    "per",
+    "pers",
+    "they",
+    "them",
+    "theirs",
+    "thon",
+    "thons",
+    "ve",
+    "ver",
+    "vis",
+    "vi",
+    "vir",
+    "xe",
+    "xem",
+    "xyr",
+    "ze",
+    "zie",
+    "zir",
+    "hir",
   ];
 
   useEffect(() => {
@@ -75,27 +106,29 @@ const editProfile = () => {
       try {
         const data = await getOneUser(user.uid);
         setUserData(data);
-        if (data.profile){
-          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
+        if (data.profile) {
+          const url = await getDownloadURL(
+            ref(storage, "profilePictures/" + data.profile)
+          );
           setProfilePicURL(url);
-        } 
+        }
       } catch (error) {
         console.error("Error fetching post:", error);
       }
       setLoading(false);
     };
     fetchUser();
-  },[])
+  }, []);
 
-  const handleDataChange = (attribute : UserFields, text : string | string[]) => {
-    setUserData(prevData => ({
+  const handleDataChange = (attribute: UserFields, text: string | string[]) => {
+    setUserData((prevData) => ({
       ...prevData,
-      [attribute]: text
+      [attribute]: text,
     }));
   };
 
   const validateRequired = (text: string | string[]) => {
-    return (!text || text.length === 0) ? "This field is required" :  null
+    return !text || text.length === 0 ? "This field is required" : null;
   };
 
   validateRoutePerms();
@@ -107,24 +140,28 @@ const editProfile = () => {
   };
 
   const handleSubmit = async () => {
-    if (!userData.firstName || !userData.lastName || !userData.userName || !userData.pronouns) return;
+    if (
+      !userData.firstName ||
+      !userData.lastName ||
+      !userData.userName ||
+      !userData.pronouns
+    )
+      return;
 
     try {
-      const currentUserData = await getOneUser(user.uid); 
+      const currentUserData = await getOneUser(user.uid);
       // Update the user data
       const updatedUserData = {
         ...currentUserData,
-        ...userData
+        ...userData,
       };
 
-      await updateUser({ user: updatedUserData, userID: user.uid }); 
+      await updateUser({ user: updatedUserData, userID: user.uid });
       Alert.alert("Profile updated successfully");
-  
     } catch (error) {
       console.error("Error during user data update:", error);
     }
   };
-
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -139,12 +176,14 @@ const editProfile = () => {
   );
 
   if (showCamera) {
-    return <OpenCamera profile={true}/>;
+    return <OpenCamera profile={true} />;
   }
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={[globalStyles.containerLight, { position: "relative" }]}>
+      <SafeAreaView
+        style={[globalStyles.containerLight, { position: "relative" }]}
+      >
         <EditProfileHeader onSubmit={handleSubmit} />
         <TouchableWithoutFeedback
           onPress={() => {
@@ -152,8 +191,14 @@ const editProfile = () => {
           }}
           accessible={false}
         >
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1, marginBottom: 20 }}
+          >
+            <ScrollView
+              contentContainerStyle={styles.scrollContainer}
+              showsVerticalScrollIndicator={false}
+            >
               <View style={styles.formContainer}>
                 <View style={styles.imageContainer}>
                   <BottomSheetModal
@@ -163,24 +208,40 @@ const editProfile = () => {
                     snapPoints={snapPoints}
                     enablePanDownToClose={true}
                   >
-                    <BottomSheetView >
-                      <EditModal setShowCamera={setShowCamera}/>
+                    <BottomSheetView>
+                      <EditModal setShowCamera={setShowCamera} />
                     </BottomSheetView>
                   </BottomSheetModal>
                   {loading ? (
-                    <View style={{...styles.profileImage, alignItems: "center", justifyContent:"center"}}>
+                    <View
+                      style={{
+                        ...styles.profileImage,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <ActivityIndicator size="large" color="#F19D48" />
                     </View>
+                  ) : profilePicURL ? (
+                    <Image
+                      source={{ uri: profilePicURL }}
+                      style={styles.profileImage}
+                    />
                   ) : (
-                    profilePicURL ? (
-                      <Image source={{uri: profilePicURL}} style={styles.profileImage}/>
-                    ) : (
-                      <View style={{...styles.profileImage, alignItems: "center", justifyContent:"center"}}>
-                        <MissingImageSvg />
-                      </View>
-                    )
+                    <View
+                      style={{
+                        ...styles.profileImage,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <MissingImageSvg />
+                    </View>
                   )}
-                  <Text style={styles.changePhotoText} onPress={handleImagePress}>
+                  <Text
+                    style={styles.changePhotoText}
+                    onPress={handleImagePress}
+                  >
                     Change profile photo
                   </Text>
                 </View>
@@ -188,24 +249,32 @@ const editProfile = () => {
                   <EditProfileInput
                     title="First Name"
                     value={userData?.firstName}
-                    onChangeText={(text) => handleDataChange(UserFields.firstName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.firstName, text)
+                    }
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Last Name"
                     value={userData?.lastName}
-                    onChangeText={(text) => handleDataChange(UserFields.lastName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.lastName, text)
+                    }
                     validate={validateRequired}
                   />
                   <EditProfileInput
                     title="Username"
                     value={userData?.userName}
-                    onChangeText={(text) => handleDataChange(UserFields.userName, text)}
+                    onChangeText={(text) =>
+                      handleDataChange(UserFields.userName, text)
+                    }
                     validate={validateRequired}
                   />
                   <PronounsSelector
                     value={userData?.pronouns}
-                    onChange={(text) => handleDataChange(UserFields.pronouns, text)}
+                    onChange={(text) =>
+                      handleDataChange(UserFields.pronouns, text)
+                    }
                     validate={validateRequired}
                     options={pronounsOptions}
                   />
@@ -229,19 +298,20 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-around",
+    // justifyContent: "space-around",
     width: "100%",
     maxHeight: "60%",
     marginBottom: "3%",
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 20,
+    // paddingBottom: 20,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "scroll",
   },
   formContainer: {
-    paddingTop: 80,
+    marginTop: 20,
     alignItems: "center",
     width: "100%",
   },
@@ -262,7 +332,7 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 1,
-    width: "80%",
+    width: "90%",
     justifyContent: "flex-start",
   },
 });

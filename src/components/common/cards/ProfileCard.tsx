@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 
 import { router } from "expo-router";
@@ -12,7 +18,85 @@ import { AppContext } from "../../../context/appContext";
 
 const editbutton = require("../../../assets/icons/editbutton.png");
 
-const style = StyleSheet.create({
+interface ProfileCardProps {
+  firstName: string;
+  lastName: string;
+  email: string;
+  bio: string;
+}
+const ProfileCard = (props: ProfileCardProps) => {
+  const { firstName, lastName, email, bio } = props;
+  const { user } = useAuth();
+  const { profilePicURL, setProfilePicURL } = React.useContext(AppContext);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const data = await getOneUser(user.uid);
+        if (data.profile) {
+          const url = await getDownloadURL(
+            ref(storage, "profilePictures/" + data.profile)
+          );
+          setProfilePicURL(url);
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
+
+  return (
+    <View style={{ marginBottom: 15 }}>
+      {loading ? (
+        <View
+          style={{
+            ...styles.picture,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="large" color="#F19D48" />
+        </View>
+      ) : profilePicURL ? (
+        <Image source={{ uri: profilePicURL }} style={styles.picture} />
+      ) : (
+        <View
+          style={{
+            ...styles.picture,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <MissingImageSvg />
+        </View>
+      )}
+
+      <View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.nameText}>{firstName + lastName}</Text>
+          <Text> </Text>
+
+          <Pressable
+            onPress={() => {
+              router.push({
+                pathname: "/profile/edit",
+                params: { id: user.uid },
+              });
+            }}
+          >
+            <Image style={styles.editButton} source={editbutton}></Image>
+          </Pressable>
+        </View>
+        <Text style={styles.emailText}>{email}</Text>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
   picture: {
     height: 161,
     width: 143,
@@ -31,73 +115,9 @@ const style = StyleSheet.create({
     fontSize: 14,
     alignSelf: "center",
   },
+  editButton: {
+    width: 30,
+    height: 30,
+  },
 });
-
-const ProfileCard = (props) => {
-  const { user } = useAuth();
-  const { profilePicURL, setProfilePicURL } = React.useContext(AppContext);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-
-      try {
-        const data = await getOneUser(user.uid);
-        if (data.profile){
-          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
-          setProfilePicURL(url);
-        }
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
-      setLoading(false);
-    };
-    fetchUser();
-  }, [])
-
-  return (
-    <View style={{ marginBottom: 15 }}>
-      {loading ? (
-        <View style={{...style.picture, alignItems: "center", justifyContent:"center"}}>
-          <ActivityIndicator size="large" color="#F19D48" />
-        </View>      
-        ) : (
-        profilePicURL ? (
-          <Image source={{uri: profilePicURL}} style={style.picture}/>
-        ) : (
-          <View style={{...style.picture, alignItems: "center", justifyContent:"center"}}>
-            <MissingImageSvg />
-          </View>
-        )
-      )}      
-      <Pressable
-        style={{
-          position: "absolute",
-          alignSelf: "flex-end",
-          paddingTop: 140,
-        }}
-        onPress={() => {
-          router.push({
-            pathname: "/profile/edit",
-            params: { id: user.uid },
-          });
-        }}
-      >
-        <Image
-          style={{
-            width: 30,
-            height: 30,
-          }}
-          source={editbutton}
-        ></Image>
-      </Pressable>
-
-      <View>
-        <Text style={style.nameText}>{props.name}</Text>
-        <Text style={style.emailText}>{props.email}</Text>
-      </View>
-    </View>
-  );
-};
-
 export default ProfileCard;

@@ -27,7 +27,8 @@ const Profile = () => {
 
       <View>
         <ProfileCard
-          name={currUser.firstName}
+          firstName={currUser.firstName}
+          lastName={currUser.lastName}
           email={currUser.emailAddress}
           bio={currUser.bio}
         />
