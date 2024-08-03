@@ -29,6 +29,8 @@ const SignupSection = () => {
   const [lastName, setLastName] = useState<string>("");
   const [emailAddress, setEmail] = useState<string>("");
   const [password, setNewPassword] = useState<string>("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
@@ -72,8 +74,6 @@ const SignupSection = () => {
 
     if (valid) {
       setNewPassword(password);
-    } else {
-      console.log("not valid bruv");
     }
   };
 
@@ -96,10 +96,11 @@ const SignupSection = () => {
         const newEmail = emailAddress.toLowerCase();
         create({ uid, firstName, lastName, emailAddress: newEmail });
       })
-      .catch((error) => {
+      .catch((error: any) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("user creation failed with: ", errorCode, errorMessage);
+        if (errorCode == "auth/invalid-email") {
+          setEmailErrorMessage("Invalid email address. Please try again.");
+        }
       });
   };
 
@@ -112,6 +113,31 @@ const SignupSection = () => {
 
     setupStorage();
   }, []);
+
+  useEffect(() => {
+    if (emailErrorMessage) {
+      const timer = setTimeout(() => {
+        setEmailErrorMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [emailErrorMessage]);
+
+  useEffect(() => {
+    // Enable the button if the password is valid and other required fields are filled
+    if (
+      validated.newValidated &&
+      firstName &&
+      lastName &&
+      emailAddress &&
+      isChecked
+    ) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [validated.newValidated, firstName, lastName, emailAddress, isChecked]);
 
   /*
 
@@ -184,7 +210,10 @@ const SignupSection = () => {
         />
         <Text style={styles.title}>Email Address</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            emailErrorMessage ? styles.errorBorder : null,
+          ]}
           placeholder=""
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -192,6 +221,9 @@ const SignupSection = () => {
             handleEmail(text);
           }}
         />
+        {emailErrorMessage ? (
+          <Text style={styles.errorText}>{emailErrorMessage}</Text>
+        ) : null}
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={styles.textInput}
@@ -233,7 +265,7 @@ const SignupSection = () => {
         <LoginButton
           onPress={handleSubmitData}
           text="Sign Up"
-          allowed={isChecked}
+          allowed={isButtonEnabled}
         />
         <Text style={{ color: COLORS.neutral[70] }}>
           Have an account?{"    "}
@@ -277,6 +309,9 @@ const styles = StyleSheet.create({
     color: COLORS.error[70],
     textAlign: "left",
     width: "70%",
+  },
+  errorBorder: {
+    borderColor: COLORS.error[70],
   },
 });
 

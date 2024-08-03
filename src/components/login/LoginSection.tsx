@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import LoginButton from "./LoginButton";
 import { useAuth } from "../../context/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
@@ -26,7 +26,8 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
 
   const handleEmail = (text: string) => {
     setEmail(text.toLowerCase());
@@ -36,25 +37,34 @@ const LoginSection = () => {
   };
   const handleLogin = async () => {
     try {
-      console.log('signing in..."');
       const loginTest = await signIn(email, password);
-    } catch (error) {
-      console.error("fuck you", error);
-      setErrorMessage("Incorrect password. Please try again.");
+    } catch (error: any) {
+      if (error.code === "auth/invalid-email") {
+        setEmailErrorMessage("Invalid email address. Please try again.");
+        setPasswordErrorMessage("");
+      } else if (
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/invalid-credential"
+      ) {
+        setPasswordErrorMessage("Incorrect password. Please try again.");
+        setEmailErrorMessage("");
+      } else {
+        setEmailErrorMessage("An error occurred. Please try again.");
+        setPasswordErrorMessage("An error occurred. Please try again.");
+      }
     }
-
-    // .then(() => {
-    //   console.log("Sign in successful");
-    //   setErrorMessage(""); // Clear previous errors
-    // })
-    // .catch((error) => {
-    //   console.error("Error signing in:", error);
-    //   setErrorMessage("Incorrect password. Please try again.");
-    //   // if error = auth/too-many-requests
-    //   // return/set state of a conditionally rendered component that'll tell the user that they've signed in too many times
-    //   // make this red under the login field
-    // });
   };
+
+  useEffect(() => {
+    if (emailErrorMessage || passwordErrorMessage) {
+      const timer = setTimeout(() => {
+        setEmailErrorMessage("");
+        setPasswordErrorMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [emailErrorMessage, passwordErrorMessage]);
 
   return (
     <View
@@ -66,10 +76,12 @@ const LoginSection = () => {
       }}
     >
       <View style={styles.form}>
-        {/* Your other components */}
         <Text style={styles.title}>Username</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            emailErrorMessage ? styles.errorBorder : null,
+          ]}
           placeholder=""
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -77,11 +89,14 @@ const LoginSection = () => {
             handleEmail(text);
           }}
         />
+        {emailErrorMessage ? (
+          <Text style={styles.errorText}>{emailErrorMessage}</Text>
+        ) : null}
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={[
             styles.textInput,
-            errorMessage ? styles.errorBorder : null, // Apply error border if there's an error message
+            passwordErrorMessage ? styles.errorBorder : null,
           ]}
           placeholder=""
           secureTextEntry
@@ -90,15 +105,14 @@ const LoginSection = () => {
             handlePassword(text);
           }}
         />
-        {errorMessage ? (
-          <Text style={styles.errorText}>{errorMessage}</Text>
+        {passwordErrorMessage ? (
+          <Text style={styles.errorText}>{passwordErrorMessage}</Text>
         ) : null}
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
           <Checkbox value={isChecked} onValueChange={setIsChecked} />
           {/* Remember me checkbox -> add session/login to async storage */}
-
           <View style={{ flex: 1, flexDirection: "row", gap: 89 }}>
             <Text
               style={{
