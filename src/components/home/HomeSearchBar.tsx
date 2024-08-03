@@ -1,7 +1,6 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef, useState } from "react";
 import {
-  Image,
   StyleSheet,
   Pressable,
   Keyboard,
@@ -9,35 +8,15 @@ import {
   View,
   Dimensions,
   SafeAreaView,
-  Text,
 } from "react-native";
 import {
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
 } from "react-native-google-places-autocomplete";
 import SearchModal from "./SearchModal";
-import Svg, {
-  Circle,
-  Ellipse,
-  G,
-  TSpan,
-  TextPath,
-  Path,
-  Polygon,
-  Polyline,
-  Line,
-  Rect,
-  Use,
-  Symbol,
-  Defs,
-  LinearGradient,
-  RadialGradient,
-  Stop,
-  ClipPath,
-  Pattern,
-  Mask,
-} from "react-native-svg";
 import { COLORS } from "../../constants";
+import SearchOptions from "../../assets/icons/search-options";
+import SearchLocation from "../../assets/icons/search-location";
 
 // constants
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
@@ -68,14 +47,7 @@ const SearchFilterIcon = () => {
       >
         <View style={styles.verticleLine}></View>
         <View style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}>
-          <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <Path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3 6.75C3 6.33579 3.33579 6 3.75 6H20.25C20.6642 6 21 6.33579 21 6.75C21 7.16421 20.6642 7.5 20.25 7.5H3.75C3.33579 7.5 3 7.16421 3 6.75ZM3 12C3 11.5858 3.33579 11.25 3.75 11.25H20.25C20.6642 11.25 21 11.5858 21 12C21 12.4142 20.6642 12.75 20.25 12.75H3.75C3.33579 12.75 3 12.4142 3 12ZM11.25 17.25C11.25 16.8358 11.5858 16.5 12 16.5H20.25C20.6642 16.5 21 16.8358 21 17.25C21 17.6642 20.6642 18 20.25 18H12C11.5858 18 11.25 17.6642 11.25 17.25Z"
-              fill="#0F172A"
-            />
-          </Svg>
+          <SearchOptions/>
         </View>
         <SearchModal ref={bottomSheetModalRef} />
       </Pressable>
@@ -84,32 +56,9 @@ const SearchFilterIcon = () => {
 };
 
 const SearchIcon = () => {
-  // const searchIcon = require("../../assets/icons/freebites/search.png");
   return (
     <View style={styles.LeftComponent}>
-      <Svg width="18" height="21" viewBox="0 0 18 21" fill="none">
-        <G clip-path="url(#clip0_5998_3250)">
-          <Path
-            d="M12 8.5C12 10.1569 10.6569 11.5 9 11.5C7.34315 11.5 6 10.1569 6 8.5C6 6.84315 7.34315 5.5 9 5.5C10.6569 5.5 12 6.84315 12 8.5Z"
-            stroke="#0F172A"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <Path
-            d="M16.5 8.5C16.5 15.6421 9 19.75 9 19.75C9 19.75 1.5 15.6421 1.5 8.5C1.5 4.35786 4.85786 1 9 1C13.1421 1 16.5 4.35786 16.5 8.5Z"
-            stroke="#0F172A"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </G>
-        <Defs>
-          <ClipPath id="clip0_5998_3250">
-            <Rect width="18" height="21" fill="white" />
-          </ClipPath>
-        </Defs>
-      </Svg>
+      <SearchLocation/>
     </View>
   );
 };
@@ -181,6 +130,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
               handleChangeText(text);
             },
             placeholderTextColor: COLORS.neutral[50],
+            clearButtonMode: "never",
           }}
           enablePoweredByContainer={false}
           renderRightButton={() => <SearchFilterIcon />}
