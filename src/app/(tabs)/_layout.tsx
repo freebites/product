@@ -1,24 +1,17 @@
-import { Tabs, Redirect, useSegments } from "expo-router";
-import { Image, View } from "react-native";
-
 import React from "react";
+import { Tabs, Redirect, useSegments } from "expo-router";
 import { useAuth } from "../../context/auth";
-import { AppContextProvider } from "../../context/appContext";
-import ProgressBar from "../../components/post/ProgressBar";
 import ActiveProfileIcon from "../../components/home/svg/ActiveProfileIcon";
 import ProfileIcon from "../../components/home/svg/ProfileIcon";
 import ActiveHomeIcon from "../../components/home/svg/ActiveHomeIcon";
 import HomeIcon from "../../components/home/svg/HomeIcon";
-
-const homeIcon = require("../../assets/icons/freebites/home-icon.png");
-const postIcon = require("../../assets/icons/freebites/add-post.png");
-const profIcon = require("../../assets/icons/freebites/profile.png");
+import { Icon } from "react-native-elements";
 
 export default () => {
   const { user } = useAuth();
   const segments = useSegments();
 
-  const isActive = (route : string) => segments[1] === route;
+  const isActive = (route: string) => segments[1] === route;
 
   if (user === undefined || user === null || user.uid === null) {
     return <Redirect href="/home" />;
@@ -38,7 +31,8 @@ export default () => {
         name="home"
         options={{
           headerShown: false,
-          tabBarIcon: () => isActive("home") ? <ActiveHomeIcon /> : <HomeIcon />,
+          tabBarIcon: () =>
+            isActive("home") ? <ActiveHomeIcon /> : <HomeIcon />,
           tabBarShowLabel: false,
         }}
       />
@@ -47,7 +41,7 @@ export default () => {
         name="post"
         options={{
           headerShown: false,
-          tabBarIcon: () => <Image source={postIcon} />,
+          tabBarIcon: () => <Icon name="add-circle" size={50} color="grey" />,
           tabBarShowLabel: false,
           href: "/post",
           tabBarStyle: {
@@ -60,7 +54,8 @@ export default () => {
         options={{
           href: { pathname: `/profile`, params: { id: user.uid } },
           headerShown: false,
-          tabBarIcon: () => isActive("profile") ? <ActiveProfileIcon /> : <ProfileIcon />,
+          tabBarIcon: () =>
+            isActive("profile") ? <ActiveProfileIcon /> : <ProfileIcon />,
           tabBarShowLabel: false,
         }}
       />
