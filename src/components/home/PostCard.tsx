@@ -22,6 +22,7 @@ import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
+import OptionModel from "./OptionModel";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
@@ -76,7 +77,7 @@ export const PostCard = (props: PostCardProps) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        <Icon type={"entypo"} name={"dots-three-horizontal"} />
+        <OptionModel></OptionModel>
       </Header>
 
       <View style={styles.mainbox}>
