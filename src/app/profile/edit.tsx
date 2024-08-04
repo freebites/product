@@ -41,9 +41,9 @@ import OpenCamera from "../../components/common/Camera";
 import MissingImageSvg from "../../components/home/svg/missingImageSVG";
 import { AppContext } from "../../context/appContext";
 import PronounsSelector from "../../components/profile/PronounsSelector";
+import { pronounsOptions } from "../../utils";
 
 const editProfile = () => {
-  //const [pronounsOptions] = useState(["She/Her", "He/Him", "They/Them"]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserType>(EmptyUser);
   const [showCamera, setShowCamera] = useState(false);
@@ -56,50 +56,6 @@ const editProfile = () => {
     lastName = "lastName",
     pronouns = "pronouns",
   }
-
-  const pronounsOptions = [
-    "co",
-    "cos",
-    "e",
-    "ey",
-    "em",
-    "eir",
-    "fae",
-    "faee",
-    "he",
-    "him",
-    "his",
-    "she",
-    "her",
-    "hers",
-    "mer",
-    "mers",
-    "ne",
-    "nir",
-    "nirs",
-    "nee",
-    "ner",
-    "ners",
-    "per",
-    "pers",
-    "they",
-    "them",
-    "theirs",
-    "thon",
-    "thons",
-    "ve",
-    "ver",
-    "vis",
-    "vi",
-    "vir",
-    "xe",
-    "xem",
-    "xyr",
-    "ze",
-    "zie",
-    "zir",
-    "hir",
-  ];
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -186,10 +142,10 @@ const editProfile = () => {
       >
         <EditProfileHeader onSubmit={handleSubmit} />
         <TouchableWithoutFeedback
+          style={{ backgroundColor: "red" }}
           onPress={() => {
             Keyboard.dismiss();
           }}
-          accessible={false}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -298,14 +254,12 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     alignItems: "center",
-    // justifyContent: "space-around",
     width: "100%",
     maxHeight: "60%",
     marginBottom: "3%",
   },
   scrollContainer: {
     flexGrow: 1,
-    // paddingBottom: 20,
     alignItems: "center",
     justifyContent: "center",
     overflow: "scroll",

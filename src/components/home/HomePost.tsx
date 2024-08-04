@@ -41,50 +41,52 @@ export const HomePost = (props: HomePostProps) => {
   const [postedByData, setPostedByData] = useState<UserType>(EmptyUser);
   const [postedByPic, setPostedByPic] = useState<string>("");
 
-
   // temp fix for null
   if (!post.imageURIs) {
     post.imageURIs = [];
   }
   const [imageURL, setImageURL] = useState<string>("");
 
-  const timeAgo = getTimeDifference({ postTime : post.postTime });
+  const timeAgo = getTimeDifference({ postTime: post.postTime });
 
   useEffect(() => {
     const fetchAddress = async () => {
       try {
         const apiKey = process.env.EXPO_PUBLIC_API_KEY;
         const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${post.location.place_id}&key=${apiKey}`;
-        const response = await fetch(url, {method: "GET", mode: "cors"});
+        const response = await fetch(url, { method: "GET", mode: "cors" });
         const data = await response.json();
-        setAddress(data.result? data.result.formatted_address : "Location not available");
+        setAddress(
+          data.result ? data.result.formatted_address : "Location not available"
+        );
       } catch (error) {
         console.error("Error fetching place details:", error);
         return null;
       }
     };
     if (post.location.place_id) fetchAddress();
-  }, [])
- 
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getOneUser(post.postedBy);
         setPostedByData(data);
-        if (data.profile){
-          const url = await getDownloadURL(ref(storage, "profilePictures/" + data.profile));
+        if (data.profile) {
+          const url = await getDownloadURL(
+            ref(storage, "profilePictures/" + data.profile)
+          );
           setPostedByPic(url);
-        }  else {
+        } else {
           setPostedByPic(placeholder);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
-      } 
+      }
       setLoadingPP(false);
     };
     fetchUserData();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const loadImageURL = async () => {
@@ -103,13 +105,11 @@ export const HomePost = (props: HomePostProps) => {
 
   return (
     <View>
-
-    <Pressable style={styles.mainbox} onPress={onPress}>
-      <View style={styles.imagebox}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color="#F19D48" />
-        ) : (
-          imageURL ? (
+      <Pressable style={styles.mainbox} onPress={onPress}>
+        <View style={styles.imagebox}>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="#F19D48" />
+          ) : imageURL ? (
             <Image
               source={{
                 uri: imageURL,
@@ -118,69 +118,74 @@ export const HomePost = (props: HomePostProps) => {
             />
           ) : (
             <MissingImageSvg />
-          )
+          )}
+        </View>
+        {postedByData.userName && (
+          <View style={styles.topbox}>
+            {loadingPP ? (
+              <ActivityIndicator color="#F19D48" />
+            ) : (
+              <Image
+                source={postedByPic ? { uri: postedByPic } : placeholder}
+                style={{ width: 13.916, height: 13.916 }}
+              />
+            )}
+            <Text style={{ fontSize: 8.118, color: COLORS.neutral[100] }}>
+              {postedByData?.userName}
+            </Text>
+          </View>
         )}
-      </View>
-      {postedByData.userName &&    
-      <View style={styles.topbox}>
-        {loadingPP? <ActivityIndicator color="#F19D48"/> : <Image source={postedByPic? {uri : postedByPic} : placeholder} style={{ width: 13.916, height: 13.916 }} />}
-        <Text style={{ fontSize: 8.118, color: COLORS.neutral[100] }}>
-          {postedByData?.userName}
-        </Text>
-      </View>
-      }
 
-      <View style={{ width: "100%", flex: 1, flexDirection: "row" }}>
-        <View style={styles.leftbox}>
-          <View style={styles.time}>
-            <Image source={clock} style={{ width: 9, height: 9 }} />
-            <Text style={{ color: COLORS.brown[30], fontSize: 10 }}>
-              {timeAgo}
-            </Text>
+        <View style={{ width: "100%", flex: 1, flexDirection: "row" }}>
+          <View style={styles.leftbox}>
+            <View style={styles.time}>
+              <Image source={clock} style={{ width: 9, height: 9 }} />
+              <Text style={{ color: COLORS.brown[30], fontSize: 10 }}>
+                {timeAgo}
+              </Text>
+            </View>
+
+            <View style={styles.location}>
+              <Text
+                style={{
+                  color: COLORS.brown[70],
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                {address ?? "Location not available"}
+              </Text>
+            </View>
+
+            <Text style={styles.description}>{post.description}</Text>
           </View>
 
-          <View style={styles.location}>
-            {/* <Text>location</Text> */}
-            <Text
-              style={{
-                color: COLORS.brown[70],
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
+          <View style={styles.rightbox}>
+            <View>
+              <Pressable
+                style={true ? { display: "none" } : { opacity: 0 }}
+                disabled={true ? true : false}
+              >
+                <Image source={trash} style={{ width: 24, height: 24 }} />
+              </Pressable>
+            </View>
+            <View
+              style={{ flexDirection: "row", gap: 6, alignSelf: "flex-end" }}
             >
-              {address ? address : "Location not available"}
-            </Text>
+              <Image source={clock} style={{ width: 24, height: 24 }} />
+              <Image source={clock} style={{ width: 24, height: 24 }} />
+              <Image source={clock} style={{ width: 24, height: 24 }} />
+            </View>
           </View>
-
-          <Text style={styles.description}>
-            {post.description}
-          </Text>
         </View>
 
-        <View style={styles.rightbox}>
-          <View>
-            <Pressable
-              style={true ? { display: "none" } : { opacity: 0 }}
-              disabled={true ? true : false}
-            >
-              <Image source={trash} style={{ width: 24, height: 24 }} />
-            </Pressable>
-          </View>
-          <View style={{ flexDirection: "row", gap: 6, alignSelf: "flex-end" }}>
-            <Image source={clock} style={{ width: 24, height: 24 }} />
-            <Image source={clock} style={{ width: 24, height: 24 }} />
-            <Image source={clock} style={{ width: 24, height: 24 }} />
-          </View>
-        </View>
-      </View>
-
-      <DeleteModal
-        postID={post._id}
-        userPost={post.postedBy === user.uid}
-        setRefreshing={setRefreshing}
-        fetchData={fetchData}
-      />
-    </Pressable>
+        <DeleteModal
+          postID={post._id}
+          userPost={post.postedBy === user.uid}
+          setRefreshing={setRefreshing}
+          fetchData={fetchData}
+        />
+      </Pressable>
     </View>
   );
 };
@@ -207,8 +212,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    width: "100%", 
-    height: "100%", 
+    width: "100%",
+    height: "100%",
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
   },
