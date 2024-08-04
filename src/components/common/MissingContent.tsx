@@ -2,20 +2,18 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
 interface MissingContentProps {
-    title: string,
-    body: string,
+  title: string;
+  body: string;
 }
 
-const MissingContentTemplate = ( props : MissingContentProps) => {
-    const {title, body} = props;
-    return (
-        <View style={styles.textContainer}>
-            <Text style={styles.textTitle}>{title}</Text>
-            <Text style={styles.textBody}>
-                {body}
-            </Text>
-        </View>
-    );
+const MissingContentTemplate = (props: MissingContentProps) => {
+  const { title, body } = props;
+  return (
+    <View style={styles.textContainer}>
+      <Text style={styles.textTitle}>{title}</Text>
+      <Text style={styles.textBody}>{body}</Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
