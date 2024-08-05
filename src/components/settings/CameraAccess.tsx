@@ -10,7 +10,7 @@ const checkmark = require("../../assets/icons/freebites/check.png");
 const CameraAccess = () => {
   const [allow, setAllow] = useState<boolean>(false);
   const [status, requestPermission] = useCameraPermissions();
-  
+
   useEffect(() => {
     const requestPermissions = async () => {
       if (Platform.OS !== "web") {
@@ -25,35 +25,21 @@ const CameraAccess = () => {
     requestPermissions();
   }, []);
 
-  const askPhotoPermissions = async () => {
-    // check if user can come back to app after going to settings without restarting app
-    Alert.alert(
-      "Permission Denied",
-      "Photo access permissions are denied. Please enable them in settings.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Open Settings", onPress: () => Linking.openSettings() },
-      ]
-    );
-  };
-
   return (
     <View>
-      <TouchableOpacity onPress={askPhotoPermissions}>
-        <Text style={styles.subTitle}>Camera Access</Text>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>Allowed</Text>
-            {allow && <Feather name="check" size={24} color="green" />}
-          </View>
+      <Text style={styles.subTitle}>Camera Access</Text>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>Allowed</Text>
+          {allow && <Feather name="check" size={24} color="green" />}
         </View>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>Not Allowed</Text>
-            {!allow && <Feather name="check" size={24} color="green" />}
-          </View>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>Not Allowed</Text>
+          {!allow && <Feather name="check" size={24} color="green" />}
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };

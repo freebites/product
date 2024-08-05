@@ -21,7 +21,14 @@ const AccountSection = () => {
         >
           <Text> Change password </Text>
         </Link>
-        <ToggleOption storageKey="changeUsername" text="Change username" />
+        <Link
+          asChild
+          href={{
+            pathname: `/profile/edit`,
+          }}
+        >
+          <Text> Change username </Text>
+        </Link>
         <Text onPress={() => signOut()} style={{ marginVertical: 10 }}>
           Log Out
         </Text>

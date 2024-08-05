@@ -16,7 +16,6 @@ const downArrow = require("../../assets/icons/freebites/chevron-left.png");
 interface DropdownProps {
   title: string;
   children?: ReactNode;
-  timeout?: number;
 }
 
 // Enable LayoutAnimation on Android
@@ -28,7 +27,7 @@ if (
 }
 
 const Dropdown = (props: DropdownProps) => {
-  const { title, children, timeout } = props;
+  const { title, children } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [showChildren, setShowChildren] = useState(false);
   let timeoutId: NodeJS.Timeout | null = null;
@@ -36,21 +35,8 @@ const Dropdown = (props: DropdownProps) => {
   const toggleDropdown = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsOpen(!isOpen);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      setShowChildren(isOpen); // Show children after timeout
-    }, timeout);
+    setShowChildren(isOpen);
   };
-
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, []);
 
   return (
     <View style={styles.container}>

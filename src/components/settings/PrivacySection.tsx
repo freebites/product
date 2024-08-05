@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform, Alert, Linking } from "react-native";
 import React, { useEffect } from "react";
 import { globalStyles } from "../global";
 import ToggleOption from "./ToggleOption";
@@ -12,12 +12,25 @@ import LocationAccess from "./LocationAccess";
 import CameraAccess from "./CameraAccess";
 
 const PrivacySection = () => {
+  const askLocationPermissions = async () => {
+    // check if user can come back to app after going to settings without restarting app
+    Alert.alert(
+      "Change privacy in your Settings",
+      "Privacy settings are adjustable in the Settings App",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Open Settings", onPress: () => Linking.openSettings() },
+      ]
+    );
+  };
   return (
     <View>
       <Dropdown title="Privacy">
-        <PhotoAccess />
-        <LocationAccess />
-        <CameraAccess />
+        <TouchableOpacity onPress={askLocationPermissions}>
+          <PhotoAccess />
+          <LocationAccess />
+          <CameraAccess />
+        </TouchableOpacity>
       </Dropdown>
     </View>
   );

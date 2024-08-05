@@ -10,16 +10,11 @@ const AboutSection = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowDropdown(true);
-    }, 2000); // Set timeout to 1 second
-
-    // Clear timeout if the component unmounts
-    return () => clearTimeout(timer);
+    setShowDropdown(true);
   }, []);
   return (
     <View>
-      <Dropdown title="About" timeout={5000}>
+      <Dropdown title="About">
         <Text style={styles.text}>
           Made by students for students, Freebites is an app that alerts you
           guys of free food opportunities on campus to tackle food waste and
@@ -27,8 +22,10 @@ const AboutSection = () => {
         </Text>
         <Text style={styles.text}>
           We’d love to hear from you! If you have any questions, feedback, or
-          want to get involved, please feel free to reach out. We’re committed
-          to providing you with the best experience possible!
+          want to get involved, please feel free to reach out. 
+        </Text>
+        <Text style={styles.text}>
+          We’re committed to providing you with the best experience possible!
         </Text>
       </Dropdown>
     </View>

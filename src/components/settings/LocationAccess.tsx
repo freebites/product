@@ -13,7 +13,6 @@ import { Feather } from "@expo/vector-icons";
 const checkmark = require("../../assets/icons/freebites/check.png");
 
 const LocationAccess = () => {
-  const [whenInUse, setWhenInUse] = useState<boolean>(false);
   const [always, setAlways] = useState<boolean>(false);
   const [none, setNone] = useState<boolean>(false);
 
@@ -23,70 +22,36 @@ const LocationAccess = () => {
     const requestPermissions = async () => {
       if (Platform.OS !== "web") {
         const response = await requestForegroundPermissionsAsync();
-        console.log("response", response);
         if (response.status === PermissionStatus.GRANTED) {
-          if (response.ios?.scope === "whenInUse") {
-            toggleSwitch("whenInUse");
-          } else if (response.ios?.scope === "always") {
-            toggleSwitch("always");
-          } else if (response.ios?.scope === "none") {
-            toggleSwitch("none");
-          } else {
-            console.log("fuck we do not know: ", response.ios);
-          }
+          toggleSwitch("allowed");
+        } else {
+          toggleSwitch("not allowed");
         }
-        console.log(status);
-        if (!ios) {
-          console.log("not ios");
-        }
-      } else {
-        console.log("platform is web");
       }
     };
     requestPermissions();
   }, []);
 
-  const askLocationPermissions = async () => {
-    // check if user can come back to app after going to settings without restarting app
-    Alert.alert(
-      "Change Location in your Settings",
-      "Photo access permissions are denied. Please enable them in settings.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Open Settings", onPress: () => Linking.openSettings() },
-      ]
-    );
-  };
-
   const toggleSwitch = (option: string) => {
-    setWhenInUse(option === "whenInUse");
-    setAlways(option === "always");
-    setNone(option === "none");
+    setAlways(option === "allowed");
+    setNone(option === "not allowed");
   };
 
   return (
     <View>
-      <TouchableOpacity onPress={askLocationPermissions}>
-        <Text style={styles.subTitle}>Location tracker</Text>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>Always</Text>
-            {always && <Feather name="check" size={24} color="green" />}
-          </View>
+      <Text style={styles.subTitle}>Location tracker</Text>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>Always</Text>
+          {always && <Feather name="check" size={24} color="green" />}
         </View>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>While using the app</Text>
-            {whenInUse && <Feather name="check" size={24} color="green" />}
-          </View>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>None</Text>
+          {none && <Feather name="check" size={24} color="green" />}
         </View>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>None</Text>
-            {none && <Feather name="check" size={24} color="green" />}
-          </View>
-        </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };

@@ -37,18 +37,6 @@ const PhotoAccess = () => {
     requestPermissions();
   }, []);
 
-  const askPhotoPermissions = async () => {
-    // check if user can come back to app after going to settings without restarting app
-    Alert.alert(
-      "Permission Denied",
-      "Photo access permissions are denied. Please enable them in settings.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Open Settings", onPress: () => Linking.openSettings() },
-      ]
-    );
-  };
-
   const toggleSwitch = (option: string) => {
     setAllPhotos(option === "allPhotos");
     setNoPhotos(option === "noPhotos");
@@ -57,27 +45,25 @@ const PhotoAccess = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={askPhotoPermissions}>
-        <Text style={styles.subTitle}>Photo Access</Text>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>All photos</Text>
-            {allPhotos && <Feather name="check" size={24} color="green" />}
-          </View>
+      <Text style={styles.subTitle}>Photo Access</Text>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>All photos</Text>
+          {allPhotos && <Feather name="check" size={24} color="green" />}
         </View>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>No Photos</Text>
-            {noPhotos && <Feather name="check" size={24} color="green" />}
-          </View>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>No Photos</Text>
+          {noPhotos && <Feather name="check" size={24} color="green" />}
         </View>
-        <View style={styles.container}>
-          <View style={styles.switchStyle}>
-            <Text style={styles.text}>Only selected photos</Text>
-            {selectedPhotos && <Feather name="check" size={24} color="green" />}
-          </View>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.switchStyle}>
+          <Text style={styles.text}>Only selected photos</Text>
+          {selectedPhotos && <Feather name="check" size={24} color="green" />}
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
