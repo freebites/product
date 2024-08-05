@@ -5,7 +5,6 @@ import Header from "../../../components/common/Header";
 import NotificationSection from "../../../components/settings/NotificationSection";
 import AccountSection from "../../../components/settings/AccountSection";
 import ContactSection from "../../../components/settings/ContactSection";
-import LogoutSection from "../../../components/settings/LogoutSection";
 import PrivacySection from "../../../components/settings/PrivacySection";
 import HelpSection from "../../../components/settings/HelpSection";
 import AboutSection from "../../../components/settings/AboutSection";
