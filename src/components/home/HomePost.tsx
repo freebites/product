@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
-import { postType } from "../../../types/PostTypes";
+import { postType } from "freebites-types";
 import { COLORS } from "../../constants";
 
 const clock = require("../../assets/icons/clock.png");
