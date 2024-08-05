@@ -1,7 +1,7 @@
-import { Link, useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useContext } from "react";
-import ImageViewer from "../../../components/common/ImageViewer";
-import { PostContext } from "../../../context/postContext";
+import ImageViewer from "@components/common/ImageViewer";
+import { PostContext } from "@context/postContext";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   View,
@@ -10,10 +10,10 @@ import {
   KeyboardAvoidingView,
   Text,
 } from "react-native";
-import NextButtonText from "../../../components/post/NextButtonText";
-import Description from "../../../components/post/Description";
+import Description from "@components/post/Description";
 import { postStyles } from "./styles/postStyles";
-import ProgressBar from "../../../components/post/ProgressBar";
+import ProgressBar from "@components/post/ProgressBar";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const placeholder = require("../../../assets/images/kemal.jpg");
 // TODO: add images to context, drafting
@@ -31,6 +31,7 @@ const gallery = () => {
       imageURIs: imageLinks,
     });
   };
+  const router = useRouter();
 
   // handler for clearing images - async function
   // talk with designers about flow for adding images - when is the user
@@ -95,9 +96,13 @@ const gallery = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Link href="/post/tags" asChild>
-        <NextButtonText validInput={postData.description != ""} />
-      </Link>
+      <RectangleOrangeButton
+        text="Next Step"
+        disabled={postData.description === ""}
+        onPress={() => {
+          router.push("/post/tags");
+        }}
+      />
     </SafeAreaView>
   );
 };

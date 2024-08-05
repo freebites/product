@@ -1,9 +1,9 @@
 import React from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import BackButton from "../../../components/common/BackButton";
-import PostCard from "../../../components/home/PostCard";
-import { globalStyles } from "../../../components/global";
+import BackButton from "@components/common/BackButton";
+import PostCard from "@components/home/PostCard";
+import { globalStyles } from "@components/global";
 
 export const postPopUp = () => {
   let params = useLocalSearchParams();

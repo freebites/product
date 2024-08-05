@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import TagButton from "./TagButton";
+import { PostContext } from "@context/postContext";
+import FilterModal from "./FilterModal";
+import OtherButton from "./OtherButton";
 
 // takes in a changeHandler function for an array, (a setState function)
 // and an array of strings, tagOptions, to denote the options
@@ -12,33 +15,30 @@ interface TagMultiSelectProps {
   type: string;
 }
 const TagMultiSelect = (props: TagMultiSelectProps) => {
+  const { changeHandler, tagOptions, type } = props;
   // local tags copy for editing/rendering buttons
-  const [tags, setTags] = useState<string[]>([]);
 
-  // unimplmented for now... TODO: ask designers how 'other' tags should be
-  // implemented and how they should be displayed...should they be new buttons
-  // or should they be different
-  const [other, setOther] = useState("other");
+  const { postData } = useContext(PostContext);
+  const tagList = type == "diet" ? postData.tags.diet : postData.tags.allergens;
+
+  const [other, setOther] = useState(false);
 
   const handleTagSelection = (tag: string) => {
-    let newTags; // temp storage variable to ensure tags are synced between
-    // local useState and changeHandler
-
-    if (tags.includes(tag)) {
+    let newTags = [];
+    if (tagList.includes(tag)) {
       // if tag is in the tags array, remove from the array
-      newTags = tags.filter((t) => t !== tag);
+      newTags = tagList.filter((t) => t !== tag);
     } else {
       // update the array with the new tag
-      newTags = [...tags, tag];
+      newTags = [...tagList, tag];
     }
 
     // only after new tags are updated do we pass them into the setStates
-    setTags(newTags);
-    props.changeHandler(newTags);
+    changeHandler(newTags);
   };
 
   const renderTags = () => {
-    const availableTags = props.tagOptions; // array of selectable tags
+    const availableTags = tagOptions; // array of selectable tags
 
     // map this array of tags to a new tagButton
     // key prop is necessary for mapping, but we otherwise don't use it
@@ -47,7 +47,7 @@ const TagMultiSelect = (props: TagMultiSelectProps) => {
         key={index}
         tag={tag}
         onPress={() => handleTagSelection(tag)}
-        isSelected={tags.includes(tag)}
+        isSelected={tagList.includes(tag)}
         color={undefined}
         selectedColor={undefined}
       />
@@ -57,12 +57,12 @@ const TagMultiSelect = (props: TagMultiSelectProps) => {
   return (
     <View style={styles.container}>
       {renderTags()}
-      <TagButton
-        tag={other}
-        onPress={() => handleTagSelection(other)}
-        isSelected={tags.includes(other)}
-        color={undefined}
-        selectedColor={undefined}
+      <OtherButton onPress={() => setOther(true)} />
+      <FilterModal
+        isVisible={other}
+        children={undefined}
+        onClose={() => setOther(false)}
+        type={type}
       />
     </View>
   );

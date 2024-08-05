@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity} from "react-native";
 import { router } from "expo-router";
 import { globalStyles } from "../global";
 
@@ -10,7 +10,11 @@ function PrevPage() {
   router.back();
 }
 
-const EditProfileHeader = () => {
+interface SubmitButtonProps {
+  onSubmit: () => void; 
+}
+
+const EditProfileHeader: React.FC<SubmitButtonProps> = ({onSubmit}) => {
   return (
     <View style={styles.headerUI}>
       <View style={styles.headerTextUI}>
@@ -18,7 +22,9 @@ const EditProfileHeader = () => {
           <Image source={left} />
         </Pressable>
         <Text style={globalStyles.headerText}>My Profile</Text>
-        <Image source={check} />
+        <TouchableOpacity onPress={onSubmit}>
+          <Image source={check}/>
+        </TouchableOpacity>
       </View>
     </View>
   );

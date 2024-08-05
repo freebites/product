@@ -1,11 +1,23 @@
-import { Image, View, Text, StyleSheet, Pressable } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { postType } from "../../../types/PostTypes";
+import { COLORS } from "../../constants";
+
+const clock = require("../../assets/icons/clock.png");
+const trash = require("../../assets/icons/trash.png");
+const avatar = require("../../assets/icons/janesmith.png");
 import DeleteModal from "./DeleteModal";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
@@ -53,11 +65,56 @@ export const HomePost = (props: HomePostProps) => {
           style={styles.image}
         />
       </View>
-      <View style={styles.sidebox}>
-        <View style={styles.location}>
-          <Text style={styles.text}>{post.title}</Text>
+
+      <View style={styles.topbox}>
+        <Image source={avatar} style={{ width: 13.916, height: 13.916 }} />
+        <Text style={{ fontSize: 8.118, color: COLORS.neutral[100] }}>
+          Jane Smith
+        </Text>
+      </View>
+
+      <View style={{ width: "100%", flex: 1, flexDirection: "row" }}>
+        <View style={styles.leftbox}>
+          <View style={styles.time}>
+            <Image source={clock} style={{ width: 9, height: 9 }} />
+            <Text style={{ color: COLORS.brown[30], fontSize: 10 }}>
+              5 min ago
+            </Text>
+          </View>
+
+          <View style={styles.location}>
+            {/* <Text>location</Text> */}
+            <Text
+              style={{
+                color: COLORS.brown[70],
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
+              JCC 160{post.location ? post.location.place_id : post.location}
+            </Text>
+          </View>
+
+          <Text style={styles.description}>
+            Assorted pizzas from TCU event...{post.title}
+          </Text>
         </View>
-        <Text style={styles.description}>{post.title}</Text>
+
+        <View style={styles.rightbox}>
+          <View>
+            <Pressable
+              style={true ? { display: "none" } : { opacity: 0 }}
+              disabled={true ? true : false}
+            >
+              <Image source={trash} style={{ width: 24, height: 24 }} />
+            </Pressable>
+          </View>
+          <View style={{ flexDirection: "row", gap: 6, alignSelf: "flex-end" }}>
+            <Image source={clock} style={{ width: 24, height: 24 }} />
+            <Image source={clock} style={{ width: 24, height: 24 }} />
+            <Image source={clock} style={{ width: 24, height: 24 }} />
+          </View>
+        </View>
       </View>
 
       <DeleteModal
@@ -74,30 +131,59 @@ const styles = StyleSheet.create({
   mainbox: {
     width: "100%",
     backgroundColor: "white",
-    height: 151,
+    height: 224,
 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-
-    flexDirection: "row",
+    flexDirection: "column",
   },
   imagebox: {
-    width: 135,
+    width: "100%",
+    height: 125,
     marginRight: 10,
   },
   image: {
     flex: 1,
-    borderRadius: 15,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
   },
-  sidebox: {
-    flex: 3,
-    marginLeft: 10,
+  leftbox: {
+    width: "65%",
     flexDirection: "column",
+    borderBottomLeftRadius: 15,
+    paddingLeft: 25,
+    paddingVertical: 18,
+    gap: 4,
+  },
+  rightbox: {
+    flexDirection: "column",
+    width: "35%",
+    borderBottomRightRadius: 15,
+    paddingHorizontal: 24,
+    paddingVertical: 18,
+    alignItems: "flex-end",
+    gap: 13,
+  },
+  topbox: {
+    width: 69,
+    height: 20.874,
+    borderRadius: 6.79,
+    marginLeft: 17,
+    marginVertical: 17,
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 4.64,
+    gap: 2.9,
+    position: "absolute",
+  },
+  time: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
   },
   location: {
     height: 25,
@@ -110,8 +196,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   description: {
-    height: 40,
     flexDirection: "row",
+    color: COLORS.brown[50],
+    fontSize: 12,
   },
   text: {
     fontSize: 10,

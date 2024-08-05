@@ -1,7 +1,7 @@
 // Example using Animated API
 import React, { SetStateAction, useContext, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { PostContext } from "../../context/postContext";
+import { PostContext } from "@context/postContext";
 import { useFocusEffect } from "expo-router";
 import { COLORS } from "../../constants";
 import Animated, {

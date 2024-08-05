@@ -1,24 +1,30 @@
 import { Text, StyleSheet, Pressable } from "react-native";
 import React, { forwardRef } from "react";
+import { COLORS } from "constants/theme";
 
-interface LoginButtonProps {
+interface ButtonProps {
   onPress?: () => void;
   text: string;
+  disabled?: boolean;
+  bold?: boolean;
 }
-const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
-  const { onPress, text } = props;
+const RectangleOrangeButton = (props: ButtonProps, ref: React.Ref<any>) => {
+  const { onPress, text, disabled, bold } = props;
   return (
     <Pressable
-      onPress={onPress}
+      onPress={disabled ? undefined : onPress}
       ref={ref}
       style={({ pressed }) => [
         {
           opacity: pressed ? 0.5 : 1,
         },
         styles.button,
+        { backgroundColor: disabled ? "#808080" : COLORS.orange[90] },
       ]}
     >
-      <Text>{text}</Text>
+      <Text style={[styles.text, { fontWeight: bold ? "bold" : "normal" }]}>
+        {text}
+      </Text>
     </Pressable>
   );
 };
@@ -26,7 +32,6 @@ const LoginButton = (props: LoginButtonProps, ref: React.Ref<any>) => {
 const styles = StyleSheet.create({
   button: {
     width: "80%",
-    backgroundColor: "#EDA76E",
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
@@ -35,7 +40,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   text: {
-    fontSize: 13,
+    fontSize: 16,
+    color: "#FFFCFA",
   },
 });
-export default forwardRef(LoginButton);
+export default forwardRef(RectangleOrangeButton);

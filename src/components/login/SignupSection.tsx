@@ -1,14 +1,15 @@
-import { View, Text, StyleSheet, TextInput, Platform } from "react-native";
-import LoginButton from "./LoginButton";
-import { useAuth } from "../../context/auth";
-import { create } from "../../../api/user/usercrud";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { useAuth } from "@context/auth";
+import { COLORS } from "../../constants";
+import Checkbox from "expo-checkbox";
+import { create } from "@api/user/usercrud";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -18,6 +19,7 @@ const SignupSection = () => {
   const [emailAddress, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const handleFirstName = (text: string) => {
     setFirstName(text);
   };
@@ -108,8 +110,6 @@ const SignupSection = () => {
 				<LoginInput title="Last Name" />
 				<LoginInput title="Email Address" />
 				<LoginInput title="Password" isPassword="true" />
-				
-				
 				*/}
 
         <Text style={styles.title}>First Name</Text>
@@ -148,6 +148,20 @@ const SignupSection = () => {
             handlePassword(text);
           }}
         />
+
+        <View style={{ flex: 1, flexDirection: "row", gap: 16 }}>
+          <Checkbox value={isChecked} onValueChange={setIsChecked} />
+          <Text style={{ color: COLORS.neutral[70], fontSize: 11 }}>
+            I have read and agree to the{" "}
+            <Link
+              href={{ pathname: "/loginPage" }}
+              style={{ textDecorationLine: "underline" }}
+            >
+              <Text>Community Guidelines</Text>
+            </Link>
+            {"\n"}and terms of use
+          </Text>
+        </View>
       </View>
 
       <View
@@ -157,11 +171,27 @@ const SignupSection = () => {
           width: "100%",
           alignItems: "center",
           marginTop: 20,
+          gap: 12,
         }}
       >
         {/* LoginButton */}
-        <LoginButton onPress={handleSubmitData} text="Sign Up" />
-        <Link href="/forgot">Forgot password?</Link>
+        <RectangleOrangeButton
+          onPress={handleSubmitData}
+          text="Sign Up"
+          disabled={
+            emailAddress.length === 0 || password.length === 0 || !isChecked
+          }
+          bold
+        />
+        <Text style={{ color: COLORS.neutral[70] }}>
+          Have an account?{"    "}
+          <Link
+            href={{ pathname: "/loginPage" }}
+            style={{ textDecorationLine: "underline", alignSelf: "flex-end" }}
+          >
+            <Text>Login</Text>
+          </Link>
+        </Text>
       </View>
     </View>
   );
@@ -171,22 +201,24 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-around",
     width: "100%",
-    maxHeight: "60%",
-    marginBottom: "3%",
   },
   textInput: {
-    // backgroundColor: "red",
-    minWidth: 150,
-    width: "70%",
-    borderBottomWidth: 1,
-    borderBottomColor: "#9e9797",
+    width: 330,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLORS.neutral[50],
+    backgroundColor: "#F3F2F2",
+    marginBottom: 12,
+    paddingHorizontal: 24,
   },
   title: {
-    color: "#9e9797",
+    color: COLORS.neutral[100],
     alignSelf: "flex-start",
-    paddingLeft: "15%",
+    paddingLeft: "8%",
+    marginBottom: 4,
+    fontSize: 14,
   },
 });
 

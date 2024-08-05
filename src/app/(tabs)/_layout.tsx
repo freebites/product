@@ -2,9 +2,9 @@ import { Tabs, Redirect } from "expo-router";
 import { Image, View } from "react-native";
 
 import React from "react";
-import { useAuth } from "../../context/auth";
-import { AppContextProvider } from "../../context/appContext";
-import ProgressBar from "../../components/post/ProgressBar";
+import { useAuth } from "@context/auth";
+import { AppContextProvider } from "@context/appContext";
+import ProgressBar from "@components/post/ProgressBar";
 
 const homeIcon = require("../../assets/icons/freebites/home-icon.png");
 const postIcon = require("../../assets/icons/freebites/add-post.png");

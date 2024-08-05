@@ -10,13 +10,13 @@ import React, { useEffect, useState } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
 import Header from "../common/Header";
-import { getOneUser } from "../../../api/user/usercrud";
+import { getOneUser } from "@api/user/usercrud";
 import { EmptyUser, UserType } from "../../../types/UserTypes";
-import { getWithFilter } from "../../../api/posts/read";
+import { getWithFilter } from "@api/posts/read";
 import HomePost from "./HomePost";
 import GrowToggle from "./GrowToggle";
 import { router } from "expo-router";
-import { globalStyles } from "../../components/global";
+import { globalStyles } from "@components/global";
 import { postType } from "../../../types/PostTypes";
 
 const placeholder = require("../../assets/icons/placeholder.png");

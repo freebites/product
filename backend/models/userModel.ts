@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
   uid: { type: String, required: true, unique: true }, // firebase UID. we use this instead of the mongoDB _id
   firstName: String,
   lastName: String,
+  userName: String,
   emailAddress: String,
   password: String,
   profile: String,
