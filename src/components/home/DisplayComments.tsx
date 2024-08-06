@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PostDate from "./PostDate";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import { postType } from "types/PostTypes";
+import { postType } from "freebites-types";
 import { router } from "expo-router";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 
@@ -13,7 +13,6 @@ interface DisplayCommentsProps {
 }
 
 export const DisplayComments = (props: DisplayCommentsProps) => {
-
   return (
     <ScrollView style={{ zIndex: 30 }}>
       <TouchableOpacity>
@@ -22,14 +21,17 @@ export const DisplayComments = (props: DisplayCommentsProps) => {
             <TouchableOpacity
               key={comment.username + comment.body}
               onPress={() => {
-                props.setModalVisible(false)
+                props.setModalVisible(false);
                 router.push({
                   pathname: "home/profilePopUp",
                   params: { id: comment.postedBy },
-                })}
-              }
+                });
+              }}
             >
-              <View style={styles.comments} key={comment.username + comment.body} >
+              <View
+                style={styles.comments}
+                key={comment.username + comment.body}
+              >
                 <Image
                   source={require("../../assets/icons/freebites/3d_avatar_25.png")}
                 />

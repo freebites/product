@@ -10,7 +10,7 @@ import {
 import React, { useContext } from "react";
 import { router } from "expo-router";
 import { PostContext } from "@context/postContext";
-import { EmptyPost } from "../../../../types/PostTypes";
+import { EmptyPost } from "freebites-types";
 import ImageViewer from "@components/common/ImageViewer";
 import { storage } from "../../../../firebase";
 import { ref, uploadBytes } from "firebase/storage";

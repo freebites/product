@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import React, { useMemo, useEffect, useRef } from "react";
-import { postType } from "../../../types/PostTypes";
+import { postType } from "freebites-types";
 
 import DisplayComments from "./DisplayComments";
 
