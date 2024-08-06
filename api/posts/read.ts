@@ -1,5 +1,5 @@
 import axios from "axios";
-import { postType } from "types/PostTypes";
+import { postType } from "freebites-types";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 export const getOne = async (itemID: string): Promise<postType> => {
@@ -18,6 +18,7 @@ export const getWithFilter = async (params: {
   longitude: string | number;
   userID: string;
   perishable: string;
+  sort?: string;
 }) => {
   try {
     // add the params to the URL as needed

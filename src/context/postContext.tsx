@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { EmptyPost, TagOptionType, postType } from "../../types/PostTypes";
+import { EmptyPost, TagOptionType, postType } from "freebites-types";
 
 type PostContextType = {
   postData: postType;

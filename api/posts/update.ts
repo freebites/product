@@ -1,5 +1,5 @@
 import axios from "axios";
-import { postType } from "types/PostTypes";
+import { postType } from "freebites-types";
 
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 

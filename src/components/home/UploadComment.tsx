@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
-import { postType, comment } from "../../../types/PostTypes";
+import { postType, comment } from "freebites-types";
 import update from "@api/posts/update";
 import { useAuth } from "@context/auth";
 

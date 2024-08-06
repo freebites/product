@@ -11,7 +11,7 @@ import { AppContext, locationInfo, noLocation } from "@context/appContext";
 import HomeSearchBar from "@components/home/HomeSearchBar";
 import { useAuth } from "@context/auth";
 import GrowToggle from "@components/home/GrowToggle";
-import { postType } from "../../../../types/PostTypes";
+import { postType } from "freebites-types";
 import { setItem } from "../../../local-storage/asyncStorage";
 
 const Home = () => {

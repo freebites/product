@@ -11,13 +11,12 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
 import Header from "../common/Header";
 import { getOneUser } from "@api/user/usercrud";
-import { EmptyUser, UserType } from "../../../types/UserTypes";
+import { EmptyUser, UserType, postType } from "freebites-types";
 import { getWithFilter } from "@api/posts/read";
 import HomePost from "./HomePost";
 import GrowToggle from "./GrowToggle";
 import { router } from "expo-router";
 import { globalStyles } from "@components/global";
-import { postType } from "../../../types/PostTypes";
 
 const placeholder = require("../../assets/icons/placeholder.png");
 
@@ -49,10 +48,11 @@ const UserProfileCard = (props: UserProfileCardProps) => {
 
   const fetchData = async () => {
     let postData = await getWithFilter({
-      diet: [],
+      diet: [""],
       latitude: "",
       longitude: "",
       userID: id,
+      perishable: "",
       sort: "",
     });
     setPosts(postData);
