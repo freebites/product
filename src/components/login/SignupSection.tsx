@@ -6,7 +6,7 @@ import { create } from "@api/user/usercrud";
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
 import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
