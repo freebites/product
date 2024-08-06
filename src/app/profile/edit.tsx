@@ -75,7 +75,6 @@ const editProfile = () => {
     };
     fetchUser();
   }, []);
-  }, []);
 
   const handleDataChange = (attribute: UserFields, text: string | string[]) => {
     setUserData((prevData) => ({
@@ -104,13 +103,6 @@ const editProfile = () => {
       !userData.pronouns
     )
       return;
-    if (
-      !userData.firstName ||
-      !userData.lastName ||
-      !userData.userName ||
-      !userData.pronouns
-    )
-      return;
 
     try {
       const currentUserData = await getOneUser(user.uid);
@@ -120,8 +112,6 @@ const editProfile = () => {
         ...userData,
         ...userData,
       };
-
-      await updateUser({ user: updatedUserData, userID: user.uid });
 
       await updateUser({ user: updatedUserData, userID: user.uid });
       Alert.alert("Profile updated successfully");
@@ -144,14 +134,10 @@ const editProfile = () => {
 
   if (showCamera) {
     return <OpenCamera profile={true} />;
-    return <OpenCamera profile={true} />;
   }
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView
-        style={[globalStyles.containerLight, { position: "relative" }]}
-      >
       <SafeAreaView
         style={[globalStyles.containerLight, { position: "relative" }]}
       >
