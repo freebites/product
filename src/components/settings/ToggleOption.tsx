@@ -1,6 +1,11 @@
-import { View, Text, StyleSheet, Switch } from "react-native";
+import { View, Text, StyleSheet, Switch, Pressable, Image } from "react-native";
 import React, { useState, useEffect } from "react";
-import { getItemWithDefault, setItem } from "../../local-storage/asyncStorage";
+import { getItemWithDefault, setItem } from "../../utils/asyncStorage";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+import { Feather } from "@expo/vector-icons";
+
+const checkmark = require("../../assets/icons/freebites/check.png");
 
 interface ToggleOptionProps {
   storageKey: string;
@@ -29,12 +34,10 @@ const ToggleOption = (props: ToggleOptionProps) => {
   };
   return (
     <View style={styles.container}>
-      <Text>{text}</Text>
-      <Switch
-        style={styles.switchStyle}
-        value={isEnabled}
-        onValueChange={toggleSwitch}
-      />
+      <TouchableOpacity style={styles.switchStyle} onPress={toggleSwitch}>
+        <Text style={styles.text}>{text}</Text>
+        {isEnabled && <Feather name="check" size={24} color="green" />}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -42,10 +45,10 @@ const ToggleOption = (props: ToggleOptionProps) => {
 const styles = StyleSheet.create({
   switchStyle: {
     display: "flex",
-    width: 66,
+    flexDirection: "row",
+    width: "100%",
     height: 29,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "space-between",
     flexShrink: 0,
   },
   container: {
@@ -53,6 +56,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: "4%",
     marginBottom: "0%",
+  },
+  image: {
+    height: 20,
+    width: 20,
+  },
+  text: {
+    fontSize: 12,
+    color: "#58565D",
   },
 });
 
