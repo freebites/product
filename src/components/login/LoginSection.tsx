@@ -1,24 +1,11 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Image,
-} from "react-native";
-import LoginButton from "./LoginButton";
-import { useAuth } from "../../context/auth";
-import { useState, useEffect } from "react";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { useAuth } from "@context/auth";
+import { useEffect, useState } from "react";
 import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
-import Svg, { Circle, Rect } from "react-native-svg";
 import Checkbox from "expo-checkbox";
-
-const logo = require("../../assets/icons/freebites/logo.png");
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const LoginSection = () => {
   const { signIn } = useAuth();
@@ -140,12 +127,13 @@ const LoginSection = () => {
           marginTop: 36,
         }}
       >
-        <LoginButton
+        <RectangleOrangeButton
           onPress={() => {
             handleLogin();
           }}
           text="Get Started"
-          allowed
+          disabled={email.length === 0 || password.length === 0}
+          bold
         />
 
         <Text style={{ color: COLORS.neutral[70] }}>

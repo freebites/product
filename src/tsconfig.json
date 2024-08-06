@@ -16,7 +16,10 @@
     "types": ["node"],
     "baseUrl": "./",
     "paths": {
-      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@api/*": ["../api/*"]
     }
   },
   "exclude": [

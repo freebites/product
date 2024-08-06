@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { AppContext, filterTypes } from "../../context/appContext";
+import { AppContext, filterTypes } from "@context/appContext";
 import { setItem } from "../../local-storage/asyncStorage";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 

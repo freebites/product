@@ -1,8 +1,8 @@
 import React from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { globalStyles } from "../../../components/global";
-import UserProfileCard from "../../../components/home/UserProfileCard";
+import { globalStyles } from "@components/global";
+import UserProfileCard from "@components/home/UserProfileCard";
 
 export const profilePopUp = () => {
   let params = useLocalSearchParams();

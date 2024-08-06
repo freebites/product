@@ -10,18 +10,19 @@ import React, { useEffect, useState } from "react";
 import { EmptyPost, postType, comment } from "../../../types/PostTypes";
 import { CommentsModal } from "./CommentsModal";
 import { Divider, Icon } from "react-native-elements";
-import { getOne } from "../../../api/posts/read";
+import { getOne } from "@api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
 import { TextInput } from "react-native-gesture-handler";
-import update from "../../../api/posts/update";
+import update from "@api/posts/update";
 import { storage } from "../../../firebase";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 import DisplayComments from "./DisplayComments";
 import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
+import OptionModel from "./OptionModel";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
@@ -76,7 +77,7 @@ export const PostCard = (props: PostCardProps) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        <Icon type={"entypo"} name={"dots-three-horizontal"} />
+        <OptionModel></OptionModel>
       </Header>
 
       <View style={styles.mainbox}>

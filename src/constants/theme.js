@@ -75,7 +75,7 @@ const COLORS = {
     30: "#F3F0F4",
     20: "#FFFCFA",
     10: "#FFFBFE",
-  }
+  },
 };
 
 const FONT = {

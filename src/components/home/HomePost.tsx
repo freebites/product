@@ -17,7 +17,7 @@ const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
 const avatar = require("../../assets/icons/janesmith.png");
 import DeleteModal from "./DeleteModal";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 
 const placeholderImage = require("../../assets/images/kemal.jpg");
 

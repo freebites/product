@@ -4,8 +4,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { storage } from "../../../firebase";
 import { deleteObject, ref } from "firebase/storage";
-import { getOneUser, updateUser } from "../../../api/user/usercrud";
-import { useAuth } from "../../context/auth";
+import { getOneUser, updateUser } from "@api/user/usercrud";
+import { useAuth } from "@context/auth";
 import { uploadPicture } from "./UploadPicture";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
@@ -17,8 +17,8 @@ interface EditModalProps {
   setShowCamera: (show: boolean) => void;
 }
 
-const EditModal = ( {setShowCamera} : EditModalProps) => {
-  const {user} = useAuth();
+const EditModal = ({ setShowCamera }: EditModalProps) => {
+  const { user } = useAuth();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,15 +38,19 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
     try {
       const userData = await getOneUser(user.uid);
       if (userData.profile) {
-        const fileRef = ref(storage, 'profilePictures/' + userData.profile.substring(userData.profile.lastIndexOf("/") + 1));
-        await deleteObject(fileRef); 
+        const fileRef = ref(
+          storage,
+          "profilePictures/" +
+            userData.profile.substring(userData.profile.lastIndexOf("/") + 1)
+        );
+        await deleteObject(fileRef);
       }
-  
+
       const updatedUserData = {
         ...userData,
         profile: null,
       };
-  
+
       await updateUser({ user: updatedUserData, userID: user.uid });
       Alert.alert("Profile picture deleted successfully");
     } catch (error) {
@@ -54,7 +58,6 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
     }
   };
 
-  
   return (
     <View style={styles.container}>
       <Image
@@ -82,7 +85,7 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
             <Image source={choosephoto} />
             <Text style={{ color: "#505A4E" }}>Photo Album</Text>
           </View>
-        </TouchableOpacity >
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowCamera(true)}>
           <View style={styles.modalColumns}>
             <Image source={camera} />
@@ -95,7 +98,6 @@ const EditModal = ( {setShowCamera} : EditModalProps) => {
             <Text style={{ color: "#505A4E" }}>Remove Photo</Text>
           </View>
         </TouchableOpacity>
-
       </View>
     </View>
   );
