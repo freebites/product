@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { globalStyles } from "../global";
 import ToggleOption from "./ToggleOption";
 import BorderLine from "./BorderLine";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import Dropdown from "./Dropdown";
 
 const AboutSection = () => {
@@ -22,7 +22,7 @@ const AboutSection = () => {
         </Text>
         <Text style={styles.text}>
           We’d love to hear from you! If you have any questions, feedback, or
-          want to get involved, please feel free to reach out. 
+          want to get involved, please feel free to reach out.
         </Text>
         <Text style={styles.text}>
           We’re committed to providing you with the best experience possible!

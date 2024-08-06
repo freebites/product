@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getItemWithDefault } from "../local-storage/asyncStorage";
+import { getItemWithDefault } from "../utils/asyncStorage";
 
 /* this is a context to store application state, UI preferences, etc.
  * Update as needed.

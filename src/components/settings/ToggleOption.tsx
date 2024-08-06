@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Switch, Pressable, Image } from "react-native";
 import React, { useState, useEffect } from "react";
-import { getItemWithDefault, setItem } from "../../local-storage/asyncStorage";
+import { getItemWithDefault, setItem } from "../../utils/asyncStorage";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { Feather } from "@expo/vector-icons";

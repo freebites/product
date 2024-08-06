@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Platform, Alert, Linking } from "react-native";
 import React, { useEffect, useState } from "react";
 import { globalStyles } from "../global";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import {
   useForegroundPermissions,
   requestForegroundPermissionsAsync,

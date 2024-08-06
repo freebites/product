@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { globalStyles } from "../global";
 import ToggleOption from "./ToggleOption";
 import BorderLine from "./BorderLine";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import Dropdown from "./Dropdown";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";

@@ -4,7 +4,7 @@ import { globalStyles } from "../global";
 import { Link } from "expo-router";
 import ToggleOption from "./ToggleOption";
 import BorderLine from "./BorderLine";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import Dropdown from "./Dropdown";
 import { useAuth } from "../../context/auth";
 
