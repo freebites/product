@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableHighlight,
-  StyleSheet,
-  ScrollView,
-} from "react-native"; // views are divs and text a p tags
-import { globalStyles } from "../../../components/global";
-import HomePost from "../../../components/home/HomePost";
+import { View, Text, StyleSheet, ScrollView } from "react-native"; // views are divs and text a p tags
+import { globalStyles } from "@components/global";
+import HomePost from "@components/home/HomePost";
 import { router } from "expo-router";
-import { getWithFilter } from "../../../../api/posts/read";
-import { PostContext } from "../../../context/postContext";
+import { getWithFilter } from "@api/posts/read";
+import { PostContext } from "@context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
 import FilterList from "../../../components/home/FilterList";
 import {
@@ -23,7 +16,7 @@ import {
 import HomeSearchBar from "../../../components/home/HomeSearchBar";
 import { useAuth } from "../../../context/auth";
 import GrowToggle from "../../../components/home/GrowToggle";
-import { postType } from "../../../../types/PostTypes";
+import { postType } from "freebites-types";
 import { setItem } from "../../../local-storage/asyncStorage";
 import NetInfo from "@react-native-community/netinfo";
 import MissingContentTemplate from "../../../components/common/MissingContent";
@@ -127,12 +120,15 @@ const Home = () => {
     setUserToFilter(newUserToFilter);
   };
 
-  if (!isConnected){
+  if (!isConnected) {
     return (
       <View style={[globalStyles.container]}>
-        <MissingContentTemplate title={"No internet connection"} body={"Try refreshing the page or logging back into the app."}/>
+        <MissingContentTemplate
+          title={"No internet connection"}
+          body={"Try refreshing the page or logging back into the app."}
+        />
       </View>
-    )
+    );
   }
 
   return (
@@ -186,19 +182,25 @@ const Home = () => {
       AllPosts.filter((eachPost: postType) => {
         return eachPost.postedBy === userToFilter;
       }).length === 0 ? (
-        <MissingContentTemplate title={"No history yet"} body={"Try making a post by clicking on the + button on the homepage!"}/>
+        <MissingContentTemplate
+          title={"No history yet"}
+          body={
+            "Try making a post by clicking on the + button on the homepage!"
+          }
+        />
       ) : (
         <ScrollView
           contentContainerStyle={styles.postContainer}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
           }
+          showsVerticalScrollIndicator={false}
         >
           {refreshing ? (
             // Render the loading skeleton while refreshing
             <View style={styles.skeletonContainer}>
-              <HomePostSkeleton/>
-              <HomePostSkeleton/>
+              <HomePostSkeleton />
+              <HomePostSkeleton />
             </View>
           ) : (
             AllPosts.map((eachPost) => {

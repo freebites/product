@@ -1,22 +1,37 @@
 import React from "react";
 import { Alert } from "react-native";
 import { storage } from "../../../firebase";
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { getOneUser, updateUser } from "../../../api/user/usercrud";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { getOneUser, updateUser } from "@api/user/usercrud";
 
 export const uploadPicture = async (uri: string, userId: string) => {
   try {
     const userData = await getOneUser(userId);
     if (userData.profile) {
-      const oldFileRef = ref(storage, 'profilePictures/' + userData.profile.substring(userData.profile.lastIndexOf("/") + 1));
-      await deleteObject(oldFileRef); 
+      const oldFileRef = ref(
+        storage,
+        "profilePictures/" +
+          userData.profile.substring(userData.profile.lastIndexOf("/") + 1)
+      );
+      await deleteObject(oldFileRef);
     }
-    await updateUser({ user: {...userData, profile: uri.substring(uri.lastIndexOf("/") + 1)} , userID: userId }); 
+    await updateUser({
+      user: { ...userData, profile: uri.substring(uri.lastIndexOf("/") + 1) },
+      userID: userId,
+    });
 
     const response: any = await fetch(uri);
     const blob = await response.blob();
 
-    const storageRef = ref(storage, 'profilePictures/' + uri.substring(uri.lastIndexOf("/") + 1));
+    const storageRef = ref(
+      storage,
+      "profilePictures/" + uri.substring(uri.lastIndexOf("/") + 1)
+    );
 
     const snapshot = await uploadBytes(storageRef, blob);
 

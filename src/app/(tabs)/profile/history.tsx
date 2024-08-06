@@ -1,14 +1,12 @@
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { globalStyles } from "../../../components/global";
-import Header from "../../../components/common/Header";
-import { useAuth, validateRoutePerms } from "../../../context/auth";
-import { useGlobalSearchParams } from "expo-router";
-import { getWithFilter, getAllPosts } from "../../../../api/posts/read";
-import { postType } from "../../../../types/PostTypes";
+import { globalStyles } from "@components/global";
+import Header from "@components/common/Header";
+import { useAuth, validateRoutePerms } from "@context/auth";
+import { getAllPosts } from "@api/posts/read";
+import { postType } from "freebites-types";
 import { router } from "expo-router";
-import HomePost from "../../../components/home/HomePost";
-import { AppContext } from "../../../context/appContext";
+import HomePost from "@components/home/HomePost";
 import { RefreshControl } from "react-native-gesture-handler";
 import MissingContentTemplate from "../../../components/common/MissingContent";
 

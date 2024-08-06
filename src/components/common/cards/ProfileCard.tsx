@@ -9,8 +9,8 @@ import React, { useEffect, useState } from "react";
 
 import { router } from "expo-router";
 import { Image } from "react-native-elements";
-import { useAuth } from "../../../context/auth";
-import { getOneUser } from "../../../../api/user/usercrud";
+import { useAuth } from "@context/auth";
+import { getOneUser } from "@api/user/usercrud";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../../firebase";
 import MissingImageSvg from "../../../components/home/svg/missingImageSVG";

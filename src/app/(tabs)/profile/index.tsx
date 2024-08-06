@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "expo-router";
 import { View, SafeAreaView } from "react-native";
-import { globalStyles } from "../../../components/global";
-import ProfileCard from "../../../components/common/cards/ProfileCard";
-import PlainButton from "../../../components/common/PlainButton";
-import { useAuth } from "../../../context/auth";
-import { getOneUser } from "../../../../api/user/usercrud";
-import { EmptyUser, UserType } from "../../../context/userContext";
+import { globalStyles } from "@components/global";
+import ProfileCard from "@components/common/cards/ProfileCard";
+import PlainButton from "@components/common/PlainButton";
+import { useAuth } from "@context/auth";
+import { getOneUser } from "@api/user/usercrud";
+import { EmptyUser, UserType } from "@context/userContext";
 
-import Header from "../../../components/common/Header";
+import Header from "@components/common/Header";
 
 const Profile = () => {
   const { user } = useAuth();

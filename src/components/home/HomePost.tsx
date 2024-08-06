@@ -11,14 +11,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { storage } from "../../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
-import { postType } from "../../../types/PostTypes";
+import { postType } from "freebites-types";
 import { COLORS } from "../../constants";
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 
 const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
 import DeleteModal from "./DeleteModal";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "@context/auth";
 import MissingImageSvg from "./svg/missingImageSVG";
 import { getOneUser } from "../../../api/user/usercrud";
 import { EmptyUser, UserType } from "../../context/userContext";

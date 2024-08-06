@@ -1,8 +1,8 @@
 import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-import { globalStyles } from "../../../components/global";
-import Header from "../../../components/common/Header";
 import MissingContentTemplate from "../../../components/common/MissingContent";
+import { globalStyles } from "@components/global";
+import Header from "@components/common/Header";
 
 /*
 	TODO: 
@@ -15,7 +15,10 @@ const drafts = () => {
   return (
     <SafeAreaView style={globalStyles.container}>
       <Header text="Drafts" />
-        <MissingContentTemplate title={"No drafts yet"} body={"Try making a post by clicking on the + button on the homepage!"}/>
+      <MissingContentTemplate
+        title={"No drafts yet"}
+        body={"Try making a post by clicking on the + button on the homepage!"}
+      />
     </SafeAreaView>
   );
 };

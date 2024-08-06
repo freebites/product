@@ -1,25 +1,33 @@
 import { Link, useLocalSearchParams } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
 import GalleryButton from "../post/GalleryButton";
-import { PostContext } from "../../context/postContext";
-import { EmptyPost } from "../../../types/PostTypes";
+import { PostContext } from "@context/postContext";
+import { EmptyPost } from "freebites-types";
 import { manipulateAsync } from "expo-image-manipulator";
 import NextButton from "../post/NextButton";
 import { Camera, CameraType } from "expo-camera/legacy";
-import { View, StyleSheet, Text, TouchableOpacity, Button, Image, Alert } from "react-native";
-import { useAuth } from "../../context/auth";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Button,
+  Image,
+  Alert,
+} from "react-native";
+import { useAuth } from "@context/auth";
 import { uploadPicture } from "../profile/UploadPicture";
 
 interface OpenCameraProps {
-    profile: boolean,
+  profile: boolean;
 }
 
-export default function OpenCamera(props : OpenCameraProps) {
+export default function OpenCamera(props: OpenCameraProps) {
   const { profile } = props;
   const { postData, updatePostData } = useContext(PostContext);
   const cameraRef = useRef<Camera>(null);
   const { user } = useAuth();
-  
+
   // handler for storing image URIs
   const handleUpdateImages = (imageLinks: string[]) => {
     // append image links to old array
@@ -54,7 +62,6 @@ export default function OpenCamera(props : OpenCameraProps) {
         );
         if (profile) {
           uploadPicture(manipulateResult.uri, user.uid);
-          
         } else {
           handleUpdateImages([manipulateResult.uri]);
         }
@@ -67,7 +74,7 @@ export default function OpenCamera(props : OpenCameraProps) {
   //////////////
   // ask for permissions before:
   // note: during testing, our phones already gave permissions automatically
-  // and we're not sure if this is because it persists across loading or not 
+  // and we're not sure if this is because it persists across loading or not
   if (permission == null) {
     // Camera permissions are still loading
     return <View />;
@@ -99,9 +106,11 @@ export default function OpenCamera(props : OpenCameraProps) {
               <Text style={styles.closeText}>x</Text>
             </TouchableOpacity>
           </Link>
-          {!profile && <View style={styles.galleryContainer}>
-            <GalleryButton onPress={handleUpdateImages}></GalleryButton>
-          </View>}
+          {!profile && (
+            <View style={styles.galleryContainer}>
+              <GalleryButton onPress={handleUpdateImages}></GalleryButton>
+            </View>
+          )}
 
           <View style={styles.borderContainer}>
             <View style={styles.border}>

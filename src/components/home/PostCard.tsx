@@ -8,21 +8,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { EmptyPost, postType, comment } from "../../../types/PostTypes";
+import { EmptyPost, postType } from "freebites-types";
 import { CommentsModal } from "./CommentsModal";
 import { Divider, Icon } from "react-native-elements";
-import { getOne } from "../../../api/posts/read";
+import { getOne } from "@api/posts/read";
 import { getDownloadURL, ref, StorageError } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
-import update from "../../../api/posts/update";
 import { storage } from "../../../firebase";
-import { useAuth } from "../../context/auth";
-import DisplayComments from "./DisplayComments";
+import { useAuth } from "@context/auth";
 import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
 import PostDate from "./PostDate";
 import DisplayTags from "./DisplayTags";
+import OptionModel from "./OptionModel";
 const placeholderImage = require("../../assets/images/kemal.jpg");
 const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
@@ -74,21 +72,20 @@ export const PostCard = (props: PostCardProps) => {
     setModalVisible(!modalVisible);
   };
 
-  if (error){
+  if (error) {
     return (
       <View>
-         <InfoModal
-            modalVisible={modalVisible}
-            setModalVisible={changeModalVisible}
-          ></InfoModal>
+        <InfoModal
+          modalVisible={modalVisible}
+          setModalVisible={changeModalVisible}
+        ></InfoModal>
 
-          <Header text="Post Description">
-            <Icon type={"entypo"} name={"dots-three-horizontal"} />
-          </Header>
-          <PostCardSkeleton />
-
+        <Header text="Post Description">
+          <Icon type={"entypo"} name={"dots-three-horizontal"} />
+        </Header>
+        <PostCardSkeleton />
       </View>
-    )
+    );
   }
 
   return (
@@ -99,24 +96,22 @@ export const PostCard = (props: PostCardProps) => {
       ></InfoModal>
 
       <Header text="Post Description">
-        <Icon type={"entypo"} name={"dots-three-horizontal"} />
+        <OptionModel></OptionModel>
       </Header>
 
       <View style={styles.mainbox}>
         <View style={styles.imageContainer}>
           {isLoading ? (
-              <ActivityIndicator size="large" color="#F19D48" />
-            ) : (
-              imageURL ? (
-                <Image
-                  source={{
-                    uri: imageURL,
-                  }}
-                  style={styles.image}
-                />
-              ) : (
-                <MissingImageSvg />
-              )
+            <ActivityIndicator size="large" color="#F19D48" />
+          ) : imageURL ? (
+            <Image
+              source={{
+                uri: imageURL,
+              }}
+              style={styles.image}
+            />
+          ) : (
+            <MissingImageSvg />
           )}
         </View>
         <View style={styles.titleContainer}>
@@ -229,7 +224,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: "100%", 
+    height: "100%",
     borderRadius: 15,
   },
   description: {

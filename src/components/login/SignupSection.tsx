@@ -1,25 +1,15 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Image,
-} from "react-native";
-import LoginButton from "./LoginButton";
-import { useAuth } from "../../context/auth";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { useAuth } from "@context/auth";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
-import { create } from "../../../api/user/usercrud";
+import { create } from "@api/user/usercrud";
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setItem } from "../../local-storage/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
+import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const SignupSection = () => {
   const { signIn } = useAuth();
@@ -185,10 +175,13 @@ const SignupSection = () => {
         }}
       >
         {/* LoginButton */}
-        <LoginButton
+        <RectangleOrangeButton
           onPress={handleSubmitData}
           text="Sign Up"
-          allowed={isChecked}
+          disabled={
+            emailAddress.length === 0 || password.length === 0 || !isChecked
+          }
+          bold
         />
         <Text style={{ color: COLORS.neutral[70] }}>
           Have an account?{"    "}

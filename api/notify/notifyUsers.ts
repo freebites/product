@@ -1,6 +1,5 @@
 import axios from "axios";
-import { UserType } from "../../src/context/userContext";
-import { port } from "backend/server";
+import { UserType } from "@context/userContext";
 const apiURL = process.env.EXPO_PUBLIC_MONGO_ENDPOINT;
 
 interface NotifyUserProps {

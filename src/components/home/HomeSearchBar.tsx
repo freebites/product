@@ -1,7 +1,6 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef, useState } from "react";
 import {
-  Image,
   StyleSheet,
   Pressable,
   Keyboard,
@@ -15,6 +14,9 @@ import {
   GooglePlacesAutocompleteRef,
 } from "react-native-google-places-autocomplete";
 import SearchModal from "./SearchModal";
+import { COLORS } from "../../constants";
+import SearchOptions from "../../assets/icons/search-options";
+import SearchLocation from "../../assets/icons/search-location";
 
 // constants
 const apiKey = process.env.EXPO_PUBLIC_API_KEY;
@@ -36,24 +38,29 @@ const SearchFilterIcon = () => {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <Pressable
-      style={styles.RightComponent}
-      onPress={handlePresentModalPress}
-      onPressIn={() => setIsPressed(true)} // Set isPressed to true when press starts
-      onPressOut={() => setIsPressed(false)} // Reset isPressed when press ends
-    >
-      <Image
-        style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}
-        source={require("../../assets/icons/freebites/filter.png")}
-      />
-      <SearchModal ref={bottomSheetModalRef} />
-    </Pressable>
+    <View>
+      <Pressable
+        style={styles.RightComponent}
+        onPress={handlePresentModalPress}
+        onPressIn={() => setIsPressed(true)} // Set isPressed to true when press starts
+        onPressOut={() => setIsPressed(false)} // Reset isPressed when press ends
+      >
+        <View style={styles.verticleLine}></View>
+        <View style={[styles.stretch, { opacity: isPressed ? 0.25 : 1 }]}>
+          <SearchOptions/>
+        </View>
+        <SearchModal ref={bottomSheetModalRef} />
+      </Pressable>
+    </View>
   );
 };
 
 const SearchIcon = () => {
-  const searchIcon = require("../../assets/icons/freebites/search.png");
-  return <Image source={searchIcon} style={styles.searchIcon} />;
+  return (
+    <View style={styles.LeftComponent}>
+      <SearchLocation/>
+    </View>
+  );
 };
 
 interface HomeSearchBarProps {
@@ -89,7 +96,7 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
       <SafeAreaView style={styles.searchBarContainer}>
         <GooglePlacesAutocomplete
           ref={ref}
-          placeholder="Search"
+          placeholder="Search location"
           onPress={async (data, details) => {
             // 'details' is provided when fetchDetails = true
             const coords = data === null ? null : details?.geometry.location;
@@ -122,6 +129,8 @@ const HomeSearchBar = (props: HomeSearchBarProps) => {
             onChangeText: (text) => {
               handleChangeText(text);
             },
+            placeholderTextColor: COLORS.neutral[50],
+            clearButtonMode: "never",
           }}
           enablePoweredByContainer={false}
           renderRightButton={() => <SearchFilterIcon />}
@@ -156,7 +165,7 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: -1, // Ensure the overlay is behind the autocomplete options
+    zIndex: 0, // Ensure the overlay is behind the autocomplete options
   },
   textInputContainer: {
     backgroundColor: "rgba(0,0,0,0)",
@@ -167,13 +176,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 42,
-    paddingLeft: 50,
     borderRadius: 0,
     color: "#5d5d5d",
     fontSize: 16,
     borderWidth: 0,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
   },
   predefinedPlacesDescription: {
     color: "#1faadb",
@@ -218,12 +224,34 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingRight: 35,
+    gap: 19,
+  },
+  LeftComponent: {
+    backgroundColor: "white",
+    height: 42,
+    width: 42,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    justifyContent: "center",
+    paddingLeft: 18,
   },
   searchBarContainer: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  verticleLine: {
+    height: "70%",
+    width: 1,
+    backgroundColor: COLORS.neutral[50],
   },
 });
 

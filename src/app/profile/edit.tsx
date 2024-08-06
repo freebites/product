@@ -19,9 +19,9 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { globalStyles } from "../../components/global";
-import EditProfileHeader from "../../components/profile/EditProfileHeader";
-import EditProfileInput from "../../components/profile/EditProfileInput";
+import { globalStyles } from "@components/global";
+import EditProfileHeader from "@components/profile/EditProfileHeader";
+import EditProfileInput from "@components/profile/EditProfileInput";
 
 import {
   BottomSheetBackdrop,
@@ -30,14 +30,14 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import EditModal from "../../components/profile/EditModal";
-import { validateRoutePerms } from "../../context/auth";
-import { getOneUser, updateUser } from "../../../api/user/usercrud";
-import { useAuth } from "../../context/auth";
-import { EmptyUser, UserType } from "../../context/userContext";
+import EditModal from "@components/profile/EditModal";
+import { validateRoutePerms } from "@context/auth";
+import { getOneUser, updateUser } from "@api/user/usercrud";
+import { useAuth } from "@context/auth";
+import { EmptyUser, UserType } from "@context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
-import OpenCamera from "../../components/common/Camera";
+import OpenCamera from "@components/common/Camera";
 import MissingImageSvg from "../../components/home/svg/missingImageSVG";
 import { AppContext } from "../../context/appContext";
 import PronounsSelector from "../../components/profile/PronounsSelector";
@@ -75,6 +75,7 @@ const editProfile = () => {
     };
     fetchUser();
   }, []);
+  }, []);
 
   const handleDataChange = (attribute: UserFields, text: string | string[]) => {
     setUserData((prevData) => ({
@@ -103,6 +104,13 @@ const editProfile = () => {
       !userData.pronouns
     )
       return;
+    if (
+      !userData.firstName ||
+      !userData.lastName ||
+      !userData.userName ||
+      !userData.pronouns
+    )
+      return;
 
     try {
       const currentUserData = await getOneUser(user.uid);
@@ -110,7 +118,10 @@ const editProfile = () => {
       const updatedUserData = {
         ...currentUserData,
         ...userData,
+        ...userData,
       };
+
+      await updateUser({ user: updatedUserData, userID: user.uid });
 
       await updateUser({ user: updatedUserData, userID: user.uid });
       Alert.alert("Profile updated successfully");
@@ -133,10 +144,14 @@ const editProfile = () => {
 
   if (showCamera) {
     return <OpenCamera profile={true} />;
+    return <OpenCamera profile={true} />;
   }
 
   return (
     <BottomSheetModalProvider>
+      <SafeAreaView
+        style={[globalStyles.containerLight, { position: "relative" }]}
+      >
       <SafeAreaView
         style={[globalStyles.containerLight, { position: "relative" }]}
       >

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import Item from "../models/postModel";
-import { postType } from "../../types/PostTypes";
+import { postType } from "freebites-types";
 import { Error } from "mongoose";
 
 /*
