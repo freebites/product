@@ -38,9 +38,9 @@ import { EmptyUser, UserType } from "@context/userContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../../firebase";
 import OpenCamera from "@components/common/Camera";
-import MissingImageSvg from "../../components/home/svg/missingImageSVG";
-import { AppContext } from "../../context/appContext";
-import PronounsSelector from "../../components/profile/PronounsSelector";
+import MissingImageSvg from "@components/home/svg/missingImageSVG";
+import { AppContext } from "@context/appContext";
+import PronounsSelector from "@components/profile/PronounsSelector";
 import { pronounsOptions } from "../../utils";
 
 const editProfile = () => {

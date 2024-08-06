@@ -20,8 +20,8 @@ const trash = require("../../assets/icons/trash.png");
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "@context/auth";
 import MissingImageSvg from "./svg/missingImageSVG";
-import { getOneUser } from "../../../api/user/usercrud";
-import { EmptyUser, UserType } from "../../context/userContext";
+import { getOneUser } from "@api/user/usercrud";
+import { EmptyUser, UserType } from "@context/userContext";
 import { getTimeDifference } from "../../utils";
 
 interface HomePostProps {

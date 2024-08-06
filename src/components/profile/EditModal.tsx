@@ -7,7 +7,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { getOneUser, updateUser } from "@api/user/usercrud";
 import { useAuth } from "@context/auth";
 import { uploadPicture } from "./UploadPicture";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "@context/appContext";
 
 const placeholder = require(" ../../../assets/icons/freebites/placeholder.png");
 const choosephoto = require(" ../../../assets/icons/choosephoto.png");

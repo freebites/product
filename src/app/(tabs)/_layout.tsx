@@ -1,10 +1,10 @@
 import React from "react";
 import { Tabs, Redirect, useSegments } from "expo-router";
-import { useAuth } from "../../context/auth";
-import ActiveProfileIcon from "../../components/home/svg/ActiveProfileIcon";
-import ProfileIcon from "../../components/home/svg/ProfileIcon";
-import ActiveHomeIcon from "../../components/home/svg/ActiveHomeIcon";
-import HomeIcon from "../../components/home/svg/HomeIcon";
+import { useAuth } from "@context/auth";
+import ActiveProfileIcon from "@components/home/svg/ActiveProfileIcon";
+import ProfileIcon from "@components/home/svg/ProfileIcon";
+import ActiveHomeIcon from "@components/home/svg/ActiveHomeIcon";
+import HomeIcon from "@components/home/svg/HomeIcon";
 import { Icon } from "react-native-elements";
 
 export default () => {

@@ -1,9 +1,9 @@
 import { Stack, router } from "expo-router";
-import { PostProvider } from "../../../context/postContext";
+import { PostProvider } from "@context/postContext";
 import { Pressable, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import BackButton from "../../../components/common/BackButton";
-import FreeBitesModal from "../../../components/home/FreeBitesModal";
+import BackButton from "@components/common/BackButton";
+import FreeBitesModal from "@components/home/FreeBitesModal";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 

@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
 import { globalStyles } from "@components/global";
 import Header from "@components/common/Header";
 import { useAuth, validateRoutePerms } from "@context/auth";
@@ -8,7 +8,7 @@ import { postType } from "freebites-types";
 import { router } from "expo-router";
 import HomePost from "@components/home/HomePost";
 import { RefreshControl } from "react-native-gesture-handler";
-import MissingContentTemplate from "../../../components/common/MissingContent";
+import MissingContentTemplate from "@components/common/MissingContent";
 
 // use local search parameters
 const History = () => {
@@ -61,7 +61,12 @@ const History = () => {
           })}
         </ScrollView>
       ) : (
-        <MissingContentTemplate title={"No history yet"} body={"Try making a post by clicking on the + button on the homepage!"}/>
+        <MissingContentTemplate
+          title={"No history yet"}
+          body={
+            "Try making a post by clicking on the + button on the homepage!"
+          }
+        />
       )}
     </SafeAreaView>
   );

@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
 import React, { useState, useEffect } from "react";
-import { getItemWithDefault, setItem } from "../../local-storage/asyncStorage";
+import { getItemWithDefault, setItem } from "../../utils/asyncStorage";
 
 interface ToggleOptionProps {
   storageKey: string;

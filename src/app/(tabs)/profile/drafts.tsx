@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-import MissingContentTemplate from "../../../components/common/MissingContent";
+import MissingContentTemplate from "@components/common/MissingContent";
 import { globalStyles } from "@components/global";
 import Header from "@components/common/Header";
 

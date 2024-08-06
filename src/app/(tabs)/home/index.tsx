@@ -7,20 +7,15 @@ import { router } from "expo-router";
 import { getWithFilter } from "@api/posts/read";
 import { PostContext } from "@context/postContext";
 import { RefreshControl } from "react-native-gesture-handler";
-import FilterList from "../../../components/home/FilterList";
-import {
-  AppContext,
-  locationInfo,
-  noLocation,
-} from "../../../context/appContext";
-import HomeSearchBar from "../../../components/home/HomeSearchBar";
-import { useAuth } from "../../../context/auth";
-import GrowToggle from "../../../components/home/GrowToggle";
+import { AppContext, locationInfo, noLocation } from "@context/appContext";
+import HomeSearchBar from "@components/home/HomeSearchBar";
+import { useAuth } from "@context/auth";
+import GrowToggle from "@components/home/GrowToggle";
 import { postType } from "freebites-types";
-import { setItem } from "../../../local-storage/asyncStorage";
+import { setItem } from "../../../utils/asyncStorage";
 import NetInfo from "@react-native-community/netinfo";
-import MissingContentTemplate from "../../../components/common/MissingContent";
-import HomePostSkeleton from "../../../components/home/HomePostSkeleton";
+import MissingContentTemplate from "@components/common/MissingContent";
+import HomePostSkeleton from "@components/home/HomePostSkeleton";
 
 const Home = () => {
   const [AllPosts, setPosts] = useState<postType[]>([]);

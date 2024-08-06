@@ -3,11 +3,9 @@ import React, { useEffect } from "react";
 import { globalStyles } from "../global";
 import ToggleOption from "./ToggleOption";
 import BorderLine from "./BorderLine";
-import {setItem} from "../../local-storage/asyncStorage"
+import { setItem } from "../../utils/asyncStorage";
 
 const NotificationSection = () => {
-  
-
   return (
     <View>
       <Text>Notifications</Text>
