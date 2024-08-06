@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { View, Text, Image } from "react-native";
-import { tags } from "../../../types/PostTypes";
+import { View } from "react-native";
+import { tags } from "freebites-types";
 import { TagCard } from "../post/TagCard";
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const perishableImg = require("../../assets/icons/freebites/perishable.png");

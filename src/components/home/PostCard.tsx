@@ -7,16 +7,13 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { EmptyPost, postType, comment } from "../../../types/PostTypes";
+import { EmptyPost, postType } from "freebites-types";
 import { CommentsModal } from "./CommentsModal";
 import { Divider, Icon } from "react-native-elements";
 import { getOne } from "@api/posts/read";
 import { getDownloadURL, ref } from "firebase/storage";
-import { TextInput } from "react-native-gesture-handler";
-import update from "@api/posts/update";
 import { storage } from "../../../firebase";
 import { useAuth } from "@context/auth";
-import DisplayComments from "./DisplayComments";
 import InfoModal from "./InfoModal";
 import Header from "../common/Header";
 import UploadComment from "./UploadComment";
