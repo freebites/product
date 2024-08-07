@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import MissingPost from './svg/MissingPost';
+import MissingPost from '../../assets/icons/home/MissingPost';
 
 const PostCardSkeleton = () => {
   return (

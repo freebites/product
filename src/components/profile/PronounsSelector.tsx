@@ -7,23 +7,24 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import { pronounsOptions } from "../../utils";
 
 interface PronounSelectorProps {
   value: string[];
   onChange: (selectedPronouns: string[]) => void;
   validate?: (selectedPronouns: string[]) => string | null;
-  options: string[];
 }
 
 const PronounSelector = (props: PronounSelectorProps) => {
-  const { value, onChange, validate, options } = props;
+  const { value, onChange, validate } = props;
   const [selectedPronouns, setSelectedPronouns] = useState<string[]>(
     value || []
   );
   const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-
+  const options = pronounsOptions;
+  
   useEffect(() => {
     if (validate) {
       setError(validate(selectedPronouns));

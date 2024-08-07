@@ -26,8 +26,8 @@ const infoIcon = require("../../assets/icons/freebites/information-circle.png");
 const vegetarian = require("../../assets/icons/freebites/vegetarian.png");
 const msg = require("../../assets/icons/freebites/msg.png");
 const lactose = require("../../assets/icons/freebites/lactose.png");
-import MissingImageSvg from "./svg/missingImageSVG";
 import PostCardSkeleton from "./PostCardSkeleton";
+import MissingImageSvg from "../../assets/icons/home/missingImageSVG";
 
 interface PostCardProps {
   id: string;

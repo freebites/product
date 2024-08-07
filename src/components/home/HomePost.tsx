@@ -19,10 +19,10 @@ const clock = require("../../assets/icons/clock.png");
 const trash = require("../../assets/icons/trash.png");
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "@context/auth";
-import MissingImageSvg from "./svg/missingImageSVG";
 import { getOneUser } from "@api/user/usercrud";
 import { EmptyUser, UserType } from "@context/userContext";
 import { getTimeDifference } from "../../utils";
+import MissingImageSvg from "../../assets/icons/home/missingImageSVG";
 
 interface HomePostProps {
   post: postType;
