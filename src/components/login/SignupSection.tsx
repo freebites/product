@@ -210,9 +210,12 @@ const SignupSection = () => {
             handleEmail(text);
           }}
         />
-        {emailErrorMessage ? (
-          <Text style={styles.errorText}>{emailErrorMessage}</Text>
-        ) : null}
+        <View style={styles.errorContainer}>
+          {emailErrorMessage ? (
+            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+          ) : null}
+        </View>
+
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={styles.textInput}
@@ -304,6 +307,10 @@ const styles = StyleSheet.create({
   },
   errorBorder: {
     borderColor: COLORS.error[70],
+  },
+  errorContainer: {
+    minHeight: 10,
+    justifyContent: "center",
   },
 });
 

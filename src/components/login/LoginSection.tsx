@@ -1,6 +1,6 @@
 import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
 import { useAuth } from "@context/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
@@ -22,25 +22,26 @@ const LoginSection = () => {
   const handlePassword = (text: string) => {
     setPassword(text);
   };
-  const handleLogin = async () => {
+
+  const handleLogin = useCallback(async () => {
     try {
-      const loginTest = await signIn(email, password);
+      await signIn(email, password);
     } catch (error: any) {
       if (error.code === "auth/invalid-email") {
         setEmailErrorMessage("Invalid email address. Please try again.");
         setPasswordErrorMessage("");
-      } else if (
-        error.code === "auth/wrong-password" ||
-        error.code === "auth/invalid-credential"
-      ) {
+      } else if (error.code === "auth/wrong-password") {
         setPasswordErrorMessage("Incorrect password. Please try again.");
         setEmailErrorMessage("");
+      } else if (error.code === "auth/invalid-credential") {
+        setEmailErrorMessage("Invalid email address. Please try again.");
+        setPasswordErrorMessage("");
       } else {
-        setEmailErrorMessage("An error occurred. Please try again.");
-        setPasswordErrorMessage("An error occurred. Please try again.");
+        setEmailErrorMessage("");
+        setPasswordErrorMessage("Error signing in. Please try again.");
       }
     }
-  };
+  }, [email, password, signIn]);
 
   useEffect(() => {
     if (emailErrorMessage || passwordErrorMessage) {
@@ -76,9 +77,11 @@ const LoginSection = () => {
             handleEmail(text);
           }}
         />
-        {emailErrorMessage ? (
-          <Text style={styles.errorText}>{emailErrorMessage}</Text>
-        ) : null}
+        <View style={styles.errorContainer}>
+          {emailErrorMessage ? (
+            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+          ) : null}
+        </View>
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={[
@@ -92,15 +95,17 @@ const LoginSection = () => {
             handlePassword(text);
           }}
         />
-        {passwordErrorMessage ? (
-          <Text style={styles.errorText}>{passwordErrorMessage}</Text>
-        ) : null}
+        <View style={styles.errorContainer}>
+          {passwordErrorMessage ? (
+            <Text style={[styles.errorText]}>{passwordErrorMessage}</Text>
+          ) : null}
+        </View>
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
           <Checkbox value={isChecked} onValueChange={setIsChecked} />
           {/* Remember me checkbox -> add session/login to async storage */}
-          <View style={{ flex: 1, flexDirection: "row", gap: 89 }}>
+          <View style={styles.rememberContainer}>
             <Text
               style={{
                 color: COLORS.neutral[70],
@@ -110,7 +115,10 @@ const LoginSection = () => {
             </Text>
             <Link
               href={{ pathname: "/forgot" }}
-              style={{ color: COLORS.neutral[70], alignSelf: "flex-end" }}
+              style={{
+                color: COLORS.neutral[70],
+                paddingRight: "10%",
+              }}
             >
               <Text>Forgot password?</Text>
             </Link>
@@ -128,9 +136,7 @@ const LoginSection = () => {
         }}
       >
         <RectangleOrangeButton
-          onPress={() => {
-            handleLogin();
-          }}
+          onPress={handleLogin}
           text="Get Started"
           disabled={email.length === 0 || password.length === 0}
           bold
@@ -182,7 +188,15 @@ const styles = StyleSheet.create({
   errorText: {
     color: COLORS.error[70],
     marginTop: -10,
-    marginBottom: 10,
+    paddingRight: "14%",
+  },
+  errorContainer: {
+    minHeight: 10,
+  },
+  rememberContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 export default LoginSection;
