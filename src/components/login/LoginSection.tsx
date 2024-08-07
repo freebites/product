@@ -1,13 +1,11 @@
 import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
 import { useAuth } from "@context/auth";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import React from "react";
 import { Link } from "expo-router";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
 import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
-
-const logo = require("../../assets/icons/freebites/logo.png");
 
 const LoginSection = () => {
   const { signIn } = useAuth();
@@ -15,6 +13,8 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
 
   const handleEmail = (text: string) => {
     setEmail(text.toLowerCase());
@@ -23,7 +23,37 @@ const LoginSection = () => {
     setPassword(text);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = useCallback(async () => {
+    try {
+      await signIn(email, password);
+    } catch (error: any) {
+      if (error.code === "auth/invalid-email") {
+        setEmailErrorMessage("Invalid email address. Please try again.");
+        setPasswordErrorMessage("");
+      } else if (error.code === "auth/wrong-password") {
+        setPasswordErrorMessage("Incorrect password. Please try again.");
+        setEmailErrorMessage("");
+      } else if (error.code === "auth/invalid-credential") {
+        setEmailErrorMessage("Invalid email address. Please try again.");
+        setPasswordErrorMessage("");
+      } else {
+        setEmailErrorMessage("");
+        setPasswordErrorMessage("Error signing in. Please try again.");
+      }
+    }
+  }, [email, password, signIn]);
+
+  useEffect(() => {
+    if (emailErrorMessage || passwordErrorMessage) {
+      const timer = setTimeout(() => {
+        setEmailErrorMessage("");
+        setPasswordErrorMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [emailErrorMessage, passwordErrorMessage]);
+
   return (
     <View
       style={{
@@ -34,10 +64,12 @@ const LoginSection = () => {
       }}
     >
       <View style={styles.form}>
-        {/* Your other components */}
         <Text style={styles.title}>Username</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            emailErrorMessage ? styles.errorBorder : null,
+          ]}
           placeholder=""
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -45,9 +77,17 @@ const LoginSection = () => {
             handleEmail(text);
           }}
         />
+        <View style={styles.errorContainer}>
+          {emailErrorMessage ? (
+            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+          ) : null}
+        </View>
         <Text style={styles.title}>Password</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            passwordErrorMessage ? styles.errorBorder : null,
+          ]}
           placeholder=""
           secureTextEntry
           autoComplete={Platform.OS === "ios" ? "password-new" : "new-password"}
@@ -55,13 +95,17 @@ const LoginSection = () => {
             handlePassword(text);
           }}
         />
+        <View style={styles.errorContainer}>
+          {passwordErrorMessage ? (
+            <Text style={[styles.errorText]}>{passwordErrorMessage}</Text>
+          ) : null}
+        </View>
         <View
           style={{ flex: 1, flexDirection: "row", gap: 16, paddingLeft: 30 }}
         >
           <Checkbox value={isChecked} onValueChange={setIsChecked} />
           {/* Remember me checkbox -> add session/login to async storage */}
-
-          <View style={{ flex: 1, flexDirection: "row", gap: 89 }}>
+          <View style={styles.rememberContainer}>
             <Text
               style={{
                 color: COLORS.neutral[70],
@@ -71,7 +115,10 @@ const LoginSection = () => {
             </Text>
             <Link
               href={{ pathname: "/forgot" }}
-              style={{ color: COLORS.neutral[70], alignSelf: "flex-end" }}
+              style={{
+                color: COLORS.neutral[70],
+                paddingRight: "10%",
+              }}
             >
               <Text>Forgot password?</Text>
             </Link>
@@ -89,9 +136,7 @@ const LoginSection = () => {
         }}
       >
         <RectangleOrangeButton
-          onPress={() => {
-            signIn(email, password);
-          }}
+          onPress={handleLogin}
           text="Get Started"
           disabled={email.length === 0 || password.length === 0}
           bold
@@ -136,6 +181,22 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     paddingLeft: "8%",
     fontSize: 14,
+  },
+  errorBorder: {
+    borderColor: COLORS.error[70],
+  },
+  errorText: {
+    color: COLORS.error[70],
+    marginTop: -10,
+    paddingRight: "14%",
+  },
+  errorContainer: {
+    minHeight: 10,
+  },
+  rememberContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 export default LoginSection;

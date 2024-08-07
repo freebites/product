@@ -6,20 +6,66 @@ import { create } from "@api/user/usercrud";
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { setItem } from "../../local-storage/asyncStorage";
+import { setItem } from "../../utils/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
 import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
 
 const SignupSection = () => {
-  const { signIn } = useAuth();
+  const { user, setUser, signIn } = useAuth();
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [emailAddress, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [password, setNewPassword] = useState<string>("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const [errors, setErrors] = useState<{
+    oldError: string;
+    newError: string;
+    confirmError: string;
+  }>({
+    oldError: "",
+    newError: "",
+    confirmError: "",
+  });
+
+  const [validated, setValidated] = useState<{
+    oldValidated: boolean;
+    newValidated: boolean;
+    confirmValidated: boolean;
+  }>({
+    oldValidated: true,
+    newValidated: false,
+    confirmValidated: false,
+  });
+
+  const validateNewPassword = (password: string) => {
+    var regularExpression =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    const valid = regularExpression.test(password);
+
+    setValidated((prevState) => ({
+      ...prevState,
+      newValidated: valid,
+    }));
+
+    setErrors((prevState) => ({
+      ...prevState,
+      newError: valid
+        ? ""
+        : "Password needs at least 1 number, 1 symbol, 1 capital, and between 8-16 characters",
+    }));
+
+    if (valid) {
+      setNewPassword(password);
+    }
+  };
+
   const handleFirstName = (text: string) => {
     setFirstName(text);
   };
@@ -28,9 +74,6 @@ const SignupSection = () => {
   };
   const handleEmail = (text: string) => {
     setEmail(text);
-  };
-  const handlePassword = (text: string) => {
-    setPassword(text);
   };
   const handleSubmitData = () => {
     // firebase shit
@@ -42,10 +85,11 @@ const SignupSection = () => {
         const newEmail = emailAddress.toLowerCase();
         create({ uid, firstName, lastName, emailAddress: newEmail });
       })
-      .catch((error) => {
+      .catch((error: any) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("user creation failed with: ", errorCode, errorMessage);
+        if (errorCode == "auth/invalid-email") {
+          setEmailErrorMessage("Invalid email address. Please try again.");
+        }
       });
   };
 
@@ -58,6 +102,31 @@ const SignupSection = () => {
 
     setupStorage();
   }, []);
+
+  useEffect(() => {
+    if (emailErrorMessage) {
+      const timer = setTimeout(() => {
+        setEmailErrorMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [emailErrorMessage]);
+
+  useEffect(() => {
+    // Enable the button if the password is valid and other required fields are filled
+    if (
+      validated.newValidated &&
+      firstName &&
+      lastName &&
+      emailAddress &&
+      isChecked
+    ) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [validated.newValidated, firstName, lastName, emailAddress, isChecked]);
 
   /*
 
@@ -130,7 +199,10 @@ const SignupSection = () => {
         />
         <Text style={styles.title}>Email Address</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            emailErrorMessage ? styles.errorBorder : null,
+          ]}
           placeholder=""
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -138,6 +210,12 @@ const SignupSection = () => {
             handleEmail(text);
           }}
         />
+        <View style={styles.errorContainer}>
+          {emailErrorMessage ? (
+            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+          ) : null}
+        </View>
+
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={styles.textInput}
@@ -145,9 +223,10 @@ const SignupSection = () => {
           secureTextEntry
           autoComplete={Platform.OS === "ios" ? "password-new" : "new-password"}
           onChangeText={(text) => {
-            handlePassword(text);
+            validateNewPassword(text);
           }}
         />
+        <Text style={styles.errorText}>{errors.newError}</Text>
 
         <View style={{ flex: 1, flexDirection: "row", gap: 16 }}>
           <Checkbox value={isChecked} onValueChange={setIsChecked} />
@@ -219,6 +298,19 @@ const styles = StyleSheet.create({
     paddingLeft: "8%",
     marginBottom: 4,
     fontSize: 14,
+  },
+  errorText: {
+    fontSize: 12,
+    color: COLORS.error[70],
+    textAlign: "left",
+    width: "70%",
+  },
+  errorBorder: {
+    borderColor: COLORS.error[70],
+  },
+  errorContainer: {
+    minHeight: 10,
+    justifyContent: "center",
   },
 });
 
