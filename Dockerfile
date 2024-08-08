@@ -1,8 +1,6 @@
 # Use an official Node.js runtime as the base image
 FROM node:20
 
-RUN npm install -g npm@latest
-
 # Set the working directory in the container
 WORKDIR ./
 ENV HOST 0.0.0.0
