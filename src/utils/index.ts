@@ -41,7 +41,7 @@ export const getTimeDifference = (props: GetTimeDifferenceProps) => {
   return `${yearsDifference} year${yearsDifference > 1 ? "s" : ""} ago`;
 };
 
-export const pronounsOptions = [
+export const PronounsOptions = [
   "co",
   "cos",
   "e",
