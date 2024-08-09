@@ -10,6 +10,7 @@ import { setItem } from "../../utils/asyncStorage";
 import React from "react";
 import { Link } from "expo-router";
 import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
+import { ErrorCodes, ErrorMessage } from "freebites-types/ErrorCodes";
 
 const SignupSection = () => {
   const { user, setUser, signIn } = useAuth();
@@ -87,8 +88,8 @@ const SignupSection = () => {
       })
       .catch((error: any) => {
         const errorCode = error.code;
-        if (errorCode == "auth/invalid-email") {
-          setEmailErrorMessage("Invalid email address. Please try again.");
+        if (errorCode == ErrorCodes.INVALID_EMAIL) {
+          setEmailErrorMessage(ErrorMessage.INVALID_EMAIL);
         }
       });
   };

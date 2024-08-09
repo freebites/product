@@ -6,6 +6,10 @@ import { Link } from "expo-router";
 import { COLORS } from "../../constants";
 import Checkbox from "expo-checkbox";
 import RectangleOrangeButton from "@components/common/RectangleOrangeButton";
+import {
+  ErrorCodes,
+  ErrorMessage,
+} from "../../../packages/freebites-types/ErrorCodes";
 
 const LoginSection = () => {
   const { signIn } = useAuth();
@@ -13,8 +17,7 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleEmail = (text: string) => {
     setEmail(text.toLowerCase());
@@ -27,32 +30,27 @@ const LoginSection = () => {
     try {
       await signIn(email, password);
     } catch (error: any) {
-      if (error.code === "auth/invalid-email") {
-        setEmailErrorMessage("Invalid email address. Please try again.");
-        setPasswordErrorMessage("");
-      } else if (error.code === "auth/wrong-password") {
-        setPasswordErrorMessage("Incorrect password. Please try again.");
-        setEmailErrorMessage("");
-      } else if (error.code === "auth/invalid-credential") {
-        setEmailErrorMessage("Invalid email address. Please try again.");
-        setPasswordErrorMessage("");
+      if (error.code === ErrorCodes.INVALID_EMAIL) {
+        setErrorMessage(ErrorMessage.INVALID_EMAIL);
+      } else if (error.code === ErrorCodes.WRONG_PASSWORD) {
+        setErrorMessage(ErrorMessage.INVALID_PASSWORD);
+      } else if (error.code === ErrorCodes.INVALID_CREDENTIAL) {
+        setErrorMessage(ErrorMessage.INVALID_EMAIL);
       } else {
-        setEmailErrorMessage("");
-        setPasswordErrorMessage("Error signing in. Please try again.");
+        setErrorMessage(ErrorMessage.INVALID_CREDENTIAL);
       }
     }
   }, [email, password, signIn]);
 
   useEffect(() => {
-    if (emailErrorMessage || passwordErrorMessage) {
+    if (errorMessage) {
       const timer = setTimeout(() => {
-        setEmailErrorMessage("");
-        setPasswordErrorMessage("");
+        setErrorMessage("");
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [emailErrorMessage, passwordErrorMessage]);
+  }, [errorMessage]);
 
   return (
     <View
@@ -68,7 +66,10 @@ const LoginSection = () => {
         <TextInput
           style={[
             styles.textInput,
-            emailErrorMessage ? styles.errorBorder : null,
+            errorMessage == ErrorMessage.INVALID_CREDENTIAL ||
+            errorMessage == ErrorMessage.INVALID_EMAIL
+              ? styles.errorBorder
+              : null,
           ]}
           placeholder=""
           keyboardType="email-address"
@@ -78,15 +79,18 @@ const LoginSection = () => {
           }}
         />
         <View style={styles.errorContainer}>
-          {emailErrorMessage ? (
-            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+          {errorMessage == ErrorMessage.INVALID_CREDENTIAL ||
+          errorMessage == ErrorMessage.INVALID_EMAIL ? (
+            <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
         </View>
         <Text style={styles.title}>Password</Text>
         <TextInput
           style={[
             styles.textInput,
-            passwordErrorMessage ? styles.errorBorder : null,
+            errorMessage == ErrorMessage.INVALID_PASSWORD
+              ? styles.errorBorder
+              : null,
           ]}
           placeholder=""
           secureTextEntry
@@ -96,8 +100,8 @@ const LoginSection = () => {
           }}
         />
         <View style={styles.errorContainer}>
-          {passwordErrorMessage ? (
-            <Text style={[styles.errorText]}>{passwordErrorMessage}</Text>
+          {errorMessage == ErrorMessage.INVALID_PASSWORD ? (
+            <Text style={[styles.errorText]}>{errorMessage}</Text>
           ) : null}
         </View>
         <View
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: COLORS.error[70],
     marginTop: -10,
-    paddingRight: "14%",
+    paddingRight: "11%",
   },
   errorContainer: {
     minHeight: 10,

@@ -14,8 +14,8 @@ import { auth } from "../../firebase";
 import { useNotifications } from "@components/notifications/useNotifications";
 import { getOneUser, updateUser } from "@api/user/usercrud";
 import { EmptyUser, UserType } from "./userContext";
-import { err } from "react-native-svg";
 import { FirebaseError } from "firebase/app";
+import { ErrorCodes } from "../../packages/freebites-types/ErrorCodes";
 
 //////////
 // type PostContextType = {
@@ -89,29 +89,6 @@ export function Provider({ children }: any) {
 
   const login = async (email: string, password: string) => {
     // firebase sign in function
-    // signInWithEmailAndPassword(auth, email, password).then(
-    //   async (userCredential) => {
-    //     const uid = userCredential.user.uid; // user.uid
-    //     //Get Device Speicific Token and update the user's tokens
-    //     if (process.env.EXPO_PUBLIC_TEST === "production") {
-    //       const newExpoToken = await useNotifications();
-    //       const newMongoUser = await getOneUser(user.uid);
-    //       const { expoToken, ...other } = newMongoUser;
-    //       if (newExpoToken && newMongoUser.expoToken !== newExpoToken.data) {
-    //         await updateUser({
-    //           userID: user.uid,
-    //           user: { ...other, expoToken: newExpoToken.data },
-    //         });
-    //       }
-    //     }
-    //     const mongoUser = await getOneUser(uid); // get user from mongoDB
-    //     setAuth(mongoUser);
-    //   }
-    // );
-    // .catch((error) => {
-    //   throw error;
-    // });
-
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -137,15 +114,14 @@ export function Provider({ children }: any) {
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         if (
-          error.code === "auth/too-many-requests" ||
-          error.code === "auth/invalid-email"
+          error.code === ErrorCodes.TOO_MANY_REQUESTS ||
+          error.code === ErrorCodes.INVALID_EMAIL
         ) {
           throw error;
         } else {
           console.error(error.code);
         }
       }
-      // console.error("Error signing in:", error);
       throw error;
     }
   };
